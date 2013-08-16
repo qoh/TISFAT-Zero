@@ -12,3 +12,13 @@ C:\Documents and Settings\Ippy Kwew\My Documents\Visual Studio 2010\Projects\TIS
 C:\Documents and Settings\Ippy Kwew\My Documents\GitHub\TISFAT-Zero\C#\bin\Debug\TISFAT-ZERO.exe.config
 C:\Documents and Settings\Ippy Kwew\My Documents\GitHub\TISFAT-Zero\C#\obj\x86\Debug\TISFAT-ZERO.exe
 C:\Documents and Settings\Ippy Kwew\My Documents\GitHub\TISFAT-Zero\C#\obj\x86\Debug\TISFAT-ZERO.pdb
+C:\Users\User\Documents\GitHub\TISFAT\bin\Debug\TISFAT-ZERO.exe.config
+C:\Users\User\Documents\GitHub\TISFAT\obj\x86\Debug\TISFAT-ZERO.exe
+C:\Users\User\Documents\GitHub\TISFAT\obj\x86\Debug\TISFAT-ZERO.pdb
+C:\Users\User\Documents\GitHub\TISFAT\bin\Debug\TISFAT-ZERO.exe
+C:\Users\User\Documents\GitHub\TISFAT\bin\Debug\TISFAT-ZERO.pdb
+C:\Users\User\Documents\GitHub\TISFAT\obj\x86\Debug\TISFAT-ZERO.csprojResolveAssemblyReference.cache
+C:\Users\User\Documents\GitHub\TISFAT\obj\x86\Debug\TISFAT_ZERO.MainF.resources
+C:\Users\User\Documents\GitHub\TISFAT\obj\x86\Debug\TISFAT_ZERO.Preferences.resources
+C:\Users\User\Documents\GitHub\TISFAT\obj\x86\Debug\TISFAT_ZERO.Properties.Resources.resources
+C:\Users\User\Documents\GitHub\TISFAT\obj\x86\Debug\TISFAT-ZERO.csproj.GenerateResource.Cache

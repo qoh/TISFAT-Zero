@@ -15,8 +15,8 @@ namespace TISFAT_ZERO
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            MainF mf = new MainF();
-            Application.Run(mf);
+
+            Application.Run(new MainF());
         }
     }
 }
