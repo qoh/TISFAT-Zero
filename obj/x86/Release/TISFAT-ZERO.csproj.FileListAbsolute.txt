@@ -1,0 +1,39 @@
+C:\Documents and Settings\Ippy Kwew\Local Settings\Application Data\Temporary Projects\TISFAT-ZERO\bin\Release\TISFAT-ZERO.exe
+C:\Documents and Settings\Ippy Kwew\Local Settings\Application Data\Temporary Projects\TISFAT-ZERO\bin\Release\TISFAT-ZERO.pdb
+C:\Documents and Settings\Ippy Kwew\Local Settings\Application Data\Temporary Projects\TISFAT-ZERO\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\Ippy Kwew\Local Settings\Application Data\Temporary Projects\TISFAT-ZERO\obj\x86\Release\TISFAT_ZERO.Properties.Resources.resources
+C:\Documents and Settings\Ippy Kwew\Local Settings\Application Data\Temporary Projects\TISFAT-ZERO\obj\x86\Release\GenerateResource.read.1.tlog
+C:\Documents and Settings\Ippy Kwew\Local Settings\Application Data\Temporary Projects\TISFAT-ZERO\obj\x86\Release\GenerateResource.write.1.tlog
+C:\Documents and Settings\Ippy Kwew\Local Settings\Application Data\Temporary Projects\TISFAT-ZERO\obj\x86\Release\TISFAT-ZERO.exe
+C:\Documents and Settings\Ippy Kwew\Local Settings\Application Data\Temporary Projects\TISFAT-ZERO\obj\x86\Release\TISFAT-ZERO.pdb
+C:\Documents and Settings\Ippy Kwew\my documents\visual studio 2010\Projects\TISFAT-ZERO\TISFAT-ZERO\obj\x86\Release\TISFAT-ZERO.exe
+C:\Documents and Settings\Ippy Kwew\my documents\visual studio 2010\Projects\TISFAT-ZERO\TISFAT-ZERO\obj\x86\Release\TISFAT-ZERO.pdb
+C:\Documents and Settings\Ippy Kwew\my documents\visual studio 2010\Projects\TISFAT-ZERO\TISFAT-ZERO\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\Ippy Kwew\my documents\visual studio 2010\Projects\TISFAT-ZERO\TISFAT-ZERO\obj\x86\Release\TISFAT_ZERO.Properties.Resources.resources
+C:\Documents and Settings\Ippy Kwew\my documents\visual studio 2010\Projects\TISFAT-ZERO\TISFAT-ZERO\obj\x86\Release\GenerateResource.read.1.tlog
+C:\Documents and Settings\Ippy Kwew\my documents\visual studio 2010\Projects\TISFAT-ZERO\TISFAT-ZERO\obj\x86\Release\GenerateResource.write.1.tlog
+C:\Documents and Settings\Ippy Kwew\My Documents\Visual Studio 2010\Projects\TISFAT-ZERO\TISFAT-ZERO\bin\Release\TISFAT-ZERO.exe
+C:\Documents and Settings\Ippy Kwew\My Documents\Visual Studio 2010\Projects\TISFAT-ZERO\TISFAT-ZERO\bin\Release\TISFAT-ZERO.pdb
+C:\Documents and Settings\Ippy Kwew\My Documents\Visual Studio 2010\Projects\TISFAT-ZERO\TISFAT-ZERO\obj\x86\Release\TISFAT_ZERO.Main.resources
+C:\Documents and Settings\Ippy Kwew\My Documents\Visual Studio 2010\Projects\TISFAT-ZERO\TISFAT-ZERO\obj\x86\Release\TISFAT_ZERO.Preferences.resources
+C:\Documents and Settings\Ippy Kwew\My Documents\GitHub\TISFAT-Zero\C#\bin\Release\TISFAT-ZERO.exe.config
+C:\Documents and Settings\Ippy Kwew\My Documents\GitHub\TISFAT-Zero\C#\bin\Release\TISFAT-ZERO.exe
+C:\Documents and Settings\Ippy Kwew\My Documents\GitHub\TISFAT-Zero\C#\bin\Release\TISFAT-ZERO.pdb
+C:\Documents and Settings\Ippy Kwew\My Documents\GitHub\TISFAT-Zero\C#\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\Ippy Kwew\My Documents\GitHub\TISFAT-Zero\C#\obj\x86\Release\TISFAT_ZERO.MainF.resources
+C:\Documents and Settings\Ippy Kwew\My Documents\GitHub\TISFAT-Zero\C#\obj\x86\Release\TISFAT_ZERO.Preferences.resources
+C:\Documents and Settings\Ippy Kwew\My Documents\GitHub\TISFAT-Zero\C#\obj\x86\Release\TISFAT_ZERO.Properties.Resources.resources
+C:\Documents and Settings\Ippy Kwew\My Documents\GitHub\TISFAT-Zero\C#\obj\x86\Release\GenerateResource.read.1.tlog
+C:\Documents and Settings\Ippy Kwew\My Documents\GitHub\TISFAT-Zero\C#\obj\x86\Release\GenerateResource.write.1.tlog
+C:\Documents and Settings\Ippy Kwew\My Documents\GitHub\TISFAT-Zero\C#\obj\x86\Release\TISFAT-ZERO.exe
+C:\Documents and Settings\Ippy Kwew\My Documents\GitHub\TISFAT-Zero\C#\obj\x86\Release\TISFAT-ZERO.pdb
+C:\Users\Evar-\Documents\Coding\Github\TISFAT\C#\bin\Release\TISFAT-ZERO.exe.config
+C:\Users\Evar-\Documents\Coding\Github\TISFAT\C#\obj\x86\Release\TISFAT-ZERO.exe
+C:\Users\Evar-\Documents\Coding\Github\TISFAT\C#\obj\x86\Release\TISFAT-ZERO.pdb
+C:\Users\Evar-\Documents\Coding\Github\TISFAT\C#\bin\Release\TISFAT-ZERO.exe
+C:\Users\Evar-\Documents\Coding\Github\TISFAT\C#\bin\Release\TISFAT-ZERO.pdb
+C:\Users\Evar-\Documents\Coding\Github\TISFAT\C#\obj\x86\Release\TISFAT-ZERO.csprojResolveAssemblyReference.cache
+C:\Users\Evar-\Documents\Coding\Github\TISFAT\C#\obj\x86\Release\TISFAT_ZERO.MainF.resources
+C:\Users\Evar-\Documents\Coding\Github\TISFAT\C#\obj\x86\Release\TISFAT_ZERO.Preferences.resources
+C:\Users\Evar-\Documents\Coding\Github\TISFAT\C#\obj\x86\Release\TISFAT_ZERO.Properties.Resources.resources
+C:\Users\Evar-\Documents\Coding\Github\TISFAT\C#\obj\x86\Release\TISFAT-ZERO.csproj.GenerateResource.Cache
