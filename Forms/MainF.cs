@@ -9,12 +9,13 @@ namespace TISFAT_ZERO
 	{
 		private Toolbox theToolbox;
 		private Canvas theCanvas;
+        private Timeline tline;
         bool bChanged;
         bool bOld;
 
 		private int lastScroll = 0, lastWidth = 650;
 		private int sX, sY;
-        
+        public int layersCount = 2;
 
 		public MainF()
 		{
@@ -46,23 +47,22 @@ namespace TISFAT_ZERO
 			f.Location = new Point(175, 10);
 			this.splitContainer1.Panel2.Controls.Add(f);
 
-			Timeline ti = new Timeline(this);
-			ti.TopLevel = false;
-			ti.Parent = this.splitContainer1.Panel1;
-			ti.StartPosition = FormStartPosition.Manual;
-			ti.Location = new Point(0, 0);
-			this.splitContainer1.Panel1.Controls.Add(ti);
+			tline = new Timeline(this);
+            tline.TopLevel = false;
+			tline.Parent = this.splitContainer1.Panel1;
+            tline.Size = new Size(this.splitContainer1.Width - 2, splitContainer1.Panel1.Height);
+			tline.StartPosition = FormStartPosition.Manual;
+			tline.Location = new Point(0, 0);
+			this.splitContainer1.Panel1.Controls.Add(tline);
 
-			ti.Show();
+            this.framesPanel.Location = new Point(9080, 0);
+
+            tline.Show();
 			
 			f.Show();
-			//this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
+			
 			theToolbox = t;
 			theCanvas = f;
-		}
-
-		private void panel4_Paint(object sender, PaintEventArgs e)
-		{
 		}
 
 		private void editToolStripMenuItem_Click(object sender, EventArgs e)
@@ -84,121 +84,6 @@ namespace TISFAT_ZERO
 		{
 			StickFigure f = new StickFigure();
 			f.Draw(true);
-		}
-
-		private void timelinePanel_Paint(object sender, PaintEventArgs e)
-		{
-			/*
-			Pen lp = new Pen(Color.Black);
-			//Calculate how many frames need to be drawn
-			int frames = (int)Math.Min(Math.Ceiling(timelinePanel.Width / 9d), Math.Ceiling(this.Width / 9d));
-
-			int p1Hscroll = panel1.HorizontalScroll.Value;
-			byte type = 0; // 0: end draw, 1: start draw, 2: full redraw, 3: no redraw
-			if (p1Hscroll > lastScroll)
-				type = 0;
-			else if (p1Hscroll < lastScroll)
-				type = 1;
-			else if (this.Width > lastWidth)
-				type = 2;
-			else if (this.Width < lastWidth)
-				type = 3;
-			else //Otherwise it's safe to say we should redraw the entire thing.
-				type = 2;
-
-
-			int offset = p1Hscroll / 9;
-
-			switch (type)
-			{
-				case 0:
-					frames = (int)Math.Ceiling((p1Hscroll - lastScroll) / 9d) + 1;
-					offset += (int)Math.Ceiling(panel1.Width / 9d) - frames;
-
-					break;
-				case 1:
-					frames = (int)Math.Ceiling((lastScroll - p1Hscroll) / 9d) + 1;
-
-					break;
-				case 2:
-
-
-					break;
-				case 3:
-					return;
-
-					break;
-				default:
-					return;
-			}
-			
-			lastWidth = this.Width;
-			lastScroll = p1Hscroll;
-
-			Graphics g = timelinePanel.CreateGraphics();
-
-			Font fo = SystemFonts.DefaultFont;
-			for (int a = offset; a-offset < frames; a++)
-			{
-				int xx = a * 9;
-				if ((a + 1) % 100 == 0)
-				{
-					g.DrawLines(lp, new Point[] { new Point(xx + 8, 0), new Point(xx + 8, 15), new Point(xx, 15) });
-					g.FillRectangle(new SolidBrush(Color.Pink), a * 9, 0, 8, 15);
-
-					g.DrawString(((a + 1) % 10).ToString(), fo, Brushes.Black, new PointF(xx - 1, 1));
-				}
-				else if ((a + 1) % 10 == 0)
-				{
-					g.DrawLines(lp, new Point[] { new Point(xx + 8, 0), new Point(xx + 8, 15), new Point(xx, 15) });
-					g.FillRectangle(new SolidBrush(Color.Cyan), a * 9, 0, 8, 15);
-
-					g.DrawString(((a + 1) % 10).ToString(), fo, Brushes.Black, new PointF(xx - 1, 1));
-				}
-				else
-				{
-					g.DrawLines(lp, new Point[] { new Point(xx + 8, 0), new Point(xx + 8, 15), new Point(xx, 15) });
-					g.FillRectangle(new SolidBrush(Color.LightGray), a * 9, 0, 8, 15);
-
-					g.DrawString(((a + 1) % 10).ToString(), fo, Brushes.Black, new PointF(xx-1, 1));
-				}
-			}
-			//
-			g.Dispose();
-			lp.Dispose();
-			 */
-		}
-
-		private void drawFrame(Graphics g, Pen lp, Color C, int x, int y) //x, y makes up top corner of pixel
-		{
-			g.DrawLines(lp, new Point[] { new Point(x + 8, y), new Point(x + 8, y + 15), new Point(x, y + 15) });
-			g.FillRectangle(new SolidBrush(C), x, y, 8, 15);
-		}
-
-		private void drawFrame(Graphics g, Pen lp, Color C, int x, int y, char c) //x, y makes up top corner of pixel
-		{
-			g.DrawLines(lp, new Point[] { new Point(x + 8, y), new Point(x + 8, y + 15), new Point(x, y + 15) });
-			g.FillRectangle(new SolidBrush(C), x, y, 8, 15);
-			Font fo = SystemFonts.DefaultFont;
-
-			g.DrawString("" + c, fo, Brushes.Black, new PointF(x - 1, y + 1));
-		}
-
-		private void timelinePanel_MouseMove(object sender, MouseEventArgs e)
-		{
-		}
-
-		private void layersPanel_Paint(object sender, PaintEventArgs e)
-		{
-			/*
-			Pen lp = new Pen(Color.DarkGray), blk = new Pen(Color.Black);
-			Graphics g = layersPanel.CreateGraphics();
-			g.DrawLines(blk, new Point[] { new Point(79, 0), new Point(79, 31), new Point(0, 31) });
-			g.DrawLine(blk, new Point(0, 15), new Point(79, 15));
-			g.FillRectangles(new SolidBrush(Color.CornflowerBlue), new Rectangle[] { new Rectangle(0, 0, 79, 15), new Rectangle(0, 16, 79, 15) });
-			g.DrawString("T I M E L I N E", SystemFonts.DefaultFont, new SolidBrush(Color.Black), 1, 1.5f);
-			g.DrawString("V I D E O", SystemFonts.DefaultFont, new SolidBrush(Color.Black), 13, 17);
-			 */
 		}
 
 		private void timelinePanel_MouseDown(object sender, MouseEventArgs e)
@@ -239,6 +124,34 @@ namespace TISFAT_ZERO
 
             fs = new FileStream(strFileName, FileMode.Open);
 
+        }
+
+        private void MainF_Resize(object sender, EventArgs e)
+        {
+            int height = layersCount * 16;
+
+            tline.Size = new Size(this.splitContainer1.Width - 2, height);
+        }
+
+        private void splitContainer1_Panel1_Resize(object sender, EventArgs e)
+        {
+            int height = layersCount * 16;
+            if (splitContainer1.Panel1.Height < 32)
+                splitContainer1.SplitterDistance = 32;
+            try
+            {
+                tline.Size = new Size(this.Width - 2 - (height > splitContainer1.Panel1.Height ? 18 : 0), height);
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void splitContainer1_Panel1_Scroll(object sender, ScrollEventArgs e)
+        {
+            tline.Location = new Point(0, 0);
+            tline.Refresh();
         }
 	}
 }

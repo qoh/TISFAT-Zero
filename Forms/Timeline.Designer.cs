@@ -11,7 +11,7 @@ namespace TISFAT_ZERO
 		/// </summary>
 		private System.ComponentModel.IContainer components = null;
 
-		/*protected override CreateParams CreateParams
+		protected override CreateParams CreateParams
 		{
 			get
 			{
@@ -19,7 +19,7 @@ namespace TISFAT_ZERO
 				cp.ExStyle |= 0x02000000;  // Turn on WS_EX_COMPOSITED
 				return cp;
 			}
-		}*/
+		}
 
 		/// <summary>
 		/// Clean up any resources being used.
@@ -48,7 +48,7 @@ namespace TISFAT_ZERO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1036, 82);
+            this.ClientSize = new System.Drawing.Size(1, 1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximumSize = new System.Drawing.Size(9080, 100);
@@ -56,7 +56,6 @@ namespace TISFAT_ZERO
             this.Text = "Timeline";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Timeline_Paint);
             this.ResumeLayout(false);
-
 		}
 
 		#endregion

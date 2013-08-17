@@ -68,8 +68,10 @@ namespace TISFAT_ZERO
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.drawStickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.framesPanel = new System.Windows.Forms.Panel();
             this.mnu_strip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -338,6 +340,9 @@ namespace TISFAT_ZERO
             // 
             this.splitContainer1.Panel1.AutoScroll = true;
             this.splitContainer1.Panel1.BackColor = System.Drawing.Color.White;
+            this.splitContainer1.Panel1.Controls.Add(this.framesPanel);
+            this.splitContainer1.Panel1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.splitContainer1_Panel1_Scroll);
+            this.splitContainer1.Panel1.Resize += new System.EventHandler(this.splitContainer1_Panel1_Resize);
             // 
             // splitContainer1.Panel2
             // 
@@ -346,6 +351,13 @@ namespace TISFAT_ZERO
             this.splitContainer1.Size = new System.Drawing.Size(642, 510);
             this.splitContainer1.SplitterDistance = 135;
             this.splitContainer1.TabIndex = 1;
+            // 
+            // framesPanel
+            // 
+            this.framesPanel.Location = new System.Drawing.Point(0, 0);
+            this.framesPanel.Name = "framesPanel";
+            this.framesPanel.Size = new System.Drawing.Size(1, 1);
+            this.framesPanel.TabIndex = 0;
             // 
             // MainF
             // 
@@ -361,8 +373,10 @@ namespace TISFAT_ZERO
             this.Text = "TISFAT : Zero";
             this.Load += new System.EventHandler(this.Main_Load);
             this.ResizeEnd += new System.EventHandler(this.Main_ResizeEnd);
+            this.Resize += new System.EventHandler(this.MainF_Resize);
             this.mnu_strip1.ResumeLayout(false);
             this.mnu_strip1.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -408,6 +422,7 @@ namespace TISFAT_ZERO
         private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem drawStickToolStripMenuItem;
 		public System.Windows.Forms.SplitContainer splitContainer1;
+        private Panel framesPanel;
     }
 }
 
