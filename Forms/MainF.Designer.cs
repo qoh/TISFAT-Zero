@@ -90,70 +90,70 @@ namespace TISFAT_ZERO
             this.toolStripSeparator3,
             this.exitTISFATToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // newMovieToolStripMenuItem
             // 
             this.newMovieToolStripMenuItem.Name = "newMovieToolStripMenuItem";
-            this.newMovieToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.newMovieToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.newMovieToolStripMenuItem.Text = "New Movie ...";
             // 
             // openMovieToolStripMenuItem
             // 
             this.openMovieToolStripMenuItem.Name = "openMovieToolStripMenuItem";
-            this.openMovieToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.openMovieToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.openMovieToolStripMenuItem.Text = "Open Movie ...";
             // 
             // saveMovieToolStripMenuItem
             // 
             this.saveMovieToolStripMenuItem.Name = "saveMovieToolStripMenuItem";
-            this.saveMovieToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.saveMovieToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.saveMovieToolStripMenuItem.Text = "Save Movie ...";
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.saveAsToolStripMenuItem.Text = "Save As ...";
             // 
             // closeMovieToolStripMenuItem
             // 
             this.closeMovieToolStripMenuItem.Name = "closeMovieToolStripMenuItem";
-            this.closeMovieToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.closeMovieToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.closeMovieToolStripMenuItem.Text = "Close Movie ...";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(143, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(148, 6);
             // 
             // exportToolStripMenuItem
             // 
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.exportToolStripMenuItem.Text = "Export";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(143, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(148, 6);
             // 
             // movieToolStripMenuItem
             // 
             this.movieToolStripMenuItem.Name = "movieToolStripMenuItem";
-            this.movieToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.movieToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.movieToolStripMenuItem.Text = "Movie";
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(143, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(148, 6);
             // 
             // exitTISFATToolStripMenuItem
             // 
             this.exitTISFATToolStripMenuItem.Name = "exitTISFATToolStripMenuItem";
-            this.exitTISFATToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.exitTISFATToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.exitTISFATToolStripMenuItem.Text = "Exit TISFAT";
             this.exitTISFATToolStripMenuItem.Click += new System.EventHandler(this.exitTISFATToolStripMenuItem_Click);
             // 
@@ -167,42 +167,42 @@ namespace TISFAT_ZERO
             this.toolStripSeparator6,
             this.preferencesToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.editToolStripMenuItem.Text = "Edit";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
             // undoToolStripMenuItem
             // 
             this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
-            this.undoToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.undoToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.undoToolStripMenuItem.Text = "Undo";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(146, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(150, 6);
             // 
             // copyFramesetToolStripMenuItem
             // 
             this.copyFramesetToolStripMenuItem.Name = "copyFramesetToolStripMenuItem";
-            this.copyFramesetToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.copyFramesetToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.copyFramesetToolStripMenuItem.Text = "Copy Frameset";
             // 
             // pasteFramesetToolStripMenuItem
             // 
             this.pasteFramesetToolStripMenuItem.Name = "pasteFramesetToolStripMenuItem";
-            this.pasteFramesetToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.pasteFramesetToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.pasteFramesetToolStripMenuItem.Text = "Paste Frameset";
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(146, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(150, 6);
             // 
             // preferencesToolStripMenuItem
             // 
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences..";
             this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
             // 
@@ -220,25 +220,25 @@ namespace TISFAT_ZERO
             // layerToolStripMenuItem
             // 
             this.layerToolStripMenuItem.Name = "layerToolStripMenuItem";
-            this.layerToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.layerToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
             this.layerToolStripMenuItem.Text = "Layer ...";
             // 
             // framesetToolStripMenuItem
             // 
             this.framesetToolStripMenuItem.Name = "framesetToolStripMenuItem";
-            this.framesetToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.framesetToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
             this.framesetToolStripMenuItem.Text = "Frameset";
             // 
             // keyframeToolStripMenuItem
             // 
             this.keyframeToolStripMenuItem.Name = "keyframeToolStripMenuItem";
-            this.keyframeToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.keyframeToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
             this.keyframeToolStripMenuItem.Text = "Keyframe";
             // 
             // keyframeWithCurrentPoseToolStripMenuItem
             // 
             this.keyframeWithCurrentPoseToolStripMenuItem.Name = "keyframeWithCurrentPoseToolStripMenuItem";
-            this.keyframeWithCurrentPoseToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.keyframeWithCurrentPoseToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
             this.keyframeWithCurrentPoseToolStripMenuItem.Text = "Keyframe with current pose";
             // 
             // removeToolStripMenuItem
@@ -248,25 +248,25 @@ namespace TISFAT_ZERO
             this.framesetToolStripMenuItem1,
             this.keyframeToolStripMenuItem1});
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
             this.removeToolStripMenuItem.Text = "Remove";
             // 
             // layerToolStripMenuItem1
             // 
             this.layerToolStripMenuItem1.Name = "layerToolStripMenuItem1";
-            this.layerToolStripMenuItem1.Size = new System.Drawing.Size(120, 22);
+            this.layerToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
             this.layerToolStripMenuItem1.Text = "Layer";
             // 
             // framesetToolStripMenuItem1
             // 
             this.framesetToolStripMenuItem1.Name = "framesetToolStripMenuItem1";
-            this.framesetToolStripMenuItem1.Size = new System.Drawing.Size(120, 22);
+            this.framesetToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
             this.framesetToolStripMenuItem1.Text = "Frameset";
             // 
             // keyframeToolStripMenuItem1
             // 
             this.keyframeToolStripMenuItem1.Name = "keyframeToolStripMenuItem1";
-            this.keyframeToolStripMenuItem1.Size = new System.Drawing.Size(120, 22);
+            this.keyframeToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
             this.keyframeToolStripMenuItem1.Text = "Keyframe";
             // 
             // helpToolStripMenuItem
@@ -276,25 +276,26 @@ namespace TISFAT_ZERO
             this.toolStripSeparator5,
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // helpToolStripMenuItem1
             // 
             this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
-            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(103, 22);
+            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.helpToolStripMenuItem1.Text = "Help";
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(100, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(149, 6);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // mnu_strip1
             // 
@@ -318,13 +319,13 @@ namespace TISFAT_ZERO
             this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.drawStickToolStripMenuItem});
             this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
-            this.debugToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
+            this.debugToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
             this.debugToolStripMenuItem.Text = "Debug";
             // 
             // drawStickToolStripMenuItem
             // 
             this.drawStickToolStripMenuItem.Name = "drawStickToolStripMenuItem";
-            this.drawStickToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.drawStickToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.drawStickToolStripMenuItem.Text = "Draw Stick";
             this.drawStickToolStripMenuItem.Click += new System.EventHandler(this.drawStickToolStripMenuItem_Click);
             // 

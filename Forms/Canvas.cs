@@ -166,26 +166,33 @@ namespace TISFAT_ZERO
 			{
                 if (!(ModifierKeys == Keys.Control))
                 {
-                   // try
-                    //{
+                    try
+                    {
                         StickJoint f = activeFigure.selectPoint(new Point(e.X, e.Y), 4);
                         theToolbox.lbl_selectedJoint.Text = "Selected Joint: " + f.name;
                         theToolbox.lbl_jointLength.Text = "Joint Length: " + f.CalcLength(null).ToString();
 
                         selectedJoint = f;
-                    //}
-                   // catch
-                    //{
-                       // return;
-                   // }
+                    }
+                    catch
+                    {
+                        return;
+                    }
                     draw = true;
                 }
                 else if (ModifierKeys == Keys.Control)
                 {
-                    StickJoint f = activeFigure.selectPoint(new Point(e.X, e.Y), 4);
-                    f.state = (f.state == 1) ? f.state = 0 : f.state = 1;
-                    Invalidate();
-                    selectedJoint = f;
+                    try
+                    {
+                        StickJoint f = activeFigure.selectPoint(new Point(e.X, e.Y), 4);
+                        f.state = (f.state == 1) ? f.state = 0 : f.state = 1;
+                        Invalidate();
+                        selectedJoint = f;
+                    }
+                    catch
+                    {
+                        return;
+                    }
                 }
 			}
             if (e.Button == MouseButtons.Right & !(e.Button == MouseButtons.Left))

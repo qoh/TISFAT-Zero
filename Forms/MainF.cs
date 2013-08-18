@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using TISFAT_ZERO.Forms;
 
 namespace TISFAT_ZERO
 {
@@ -152,6 +153,12 @@ namespace TISFAT_ZERO
         {
             tline.Location = new Point(0, 0);
             tline.Refresh();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            About f = new About();
+            f.ShowDialog();
         }
 	}
 }
