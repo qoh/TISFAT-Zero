@@ -11,7 +11,7 @@ namespace TISFAT_ZERO
 		/// </summary>
 		private System.ComponentModel.IContainer components = null;
 
-		protected override CreateParams CreateParams
+		/*protected override CreateParams CreateParams
 		{
 			get
 			{
@@ -19,7 +19,7 @@ namespace TISFAT_ZERO
 				cp.ExStyle |= 0x02000000;  // Turn on WS_EX_COMPOSITED
 				return cp;
 			}
-		}
+		}*/
 
 		/// <summary>
 		/// Clean up any resources being used.

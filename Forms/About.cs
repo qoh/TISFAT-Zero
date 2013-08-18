@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace TISFAT_ZERO.Forms
+namespace TISFAT_ZERO
 {
     public partial class About : Form
     {

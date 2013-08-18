@@ -17,24 +17,24 @@ namespace TISFAT_ZERO
 		{
 			InitializeComponent();
 			mainForm = m;
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
 		}
 
 		private void Timeline_Paint(object sender, PaintEventArgs e)
-		{
+        {
+            Graphics g = e.Graphics;
+            g.Clear(Color.White);
 			Pen lp = new Pen(Color.Black);
 			//Calculate how many frames need to be drawn
 			int frames = (mainForm.Width-80) / 9;
             int scroll = mainForm.splitContainer1.Panel1.HorizontalScroll.Value;
 			int offset = (int)Math.Max(scroll - 80d, 0) / 9;
 
-            Graphics g = e.Graphics;
-            g.Clear(Color.White);
+
             Pen blk = new Pen(Color.Black);
-            g.DrawLines(blk, new Point[] { new Point(79, 0), new Point(79, 31), new Point(0, 31) });
-            g.DrawLine(blk, new Point(0, 15), new Point(79, 15));
-            g.FillRectangles(new SolidBrush(Color.CornflowerBlue), new Rectangle[] { new Rectangle(0, 0, 79, 15), new Rectangle(0, 16, 79, 15) });
+            g.DrawLines(blk, new Point[] { new Point(79, 0), new Point(79, 15), new Point(0, 15) });
+            g.FillRectangle(new SolidBrush(Color.CornflowerBlue), new Rectangle(0, 0, 79, 15));
             g.DrawString("T I M E L I N E", SystemFonts.DefaultFont, new SolidBrush(Color.Black), 1, 1.5f);
-            g.DrawString("V I D E O", SystemFonts.DefaultFont, new SolidBrush(Color.Black), 13, 17);
 			Font fo = SystemFonts.DefaultFont;
 			for (int a = offset; a - offset < frames; a++)
 			{

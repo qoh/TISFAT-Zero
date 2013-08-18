@@ -373,7 +373,6 @@ namespace TISFAT_ZERO
             this.Name = "MainF";
             this.Text = "TISFAT : Zero";
             this.Load += new System.EventHandler(this.Main_Load);
-            this.ResizeEnd += new System.EventHandler(this.Main_ResizeEnd);
             this.Resize += new System.EventHandler(this.MainF_Resize);
             this.mnu_strip1.ResumeLayout(false);
             this.mnu_strip1.PerformLayout();

@@ -1,4 +1,4 @@
-﻿namespace TISFAT_ZERO.Forms
+﻿namespace TISFAT_ZERO
 {
     partial class About
     {

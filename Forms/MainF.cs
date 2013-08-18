@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
-using TISFAT_ZERO.Forms;
 
 namespace TISFAT_ZERO
 {
@@ -76,29 +75,10 @@ namespace TISFAT_ZERO
 			//f.ShowDialog();
 		}
 
-		private void Main_ResizeEnd(object sender, EventArgs e)
-		{
-			//label2.Location = new Point(label2.Parent.Location.X / 2, label2.Parent.Location.Y / 2);
-		}
-
 		private void drawStickToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			StickFigure f = new StickFigure();
 			f.Draw(true);
-		}
-
-		private void timelinePanel_MouseDown(object sender, MouseEventArgs e)
-		{
-			/*
-			int sX = e.X / 9, sY = e.Y / 16;
-			Graphics g = timelinePanel.CreateGraphics();
-			Pen lp = new Pen(Color.Black);
-			drawFrame(g, lp, Color.Red, sX * 9, sY * 16);
-			g.Dispose();
-			lp.Dispose();
-
-			onFrameSelected();
-			 */
 		}
 
 		private void onFrameSelected()
@@ -106,15 +86,13 @@ namespace TISFAT_ZERO
 			//Do stuff here
 		}
 
-
-
         //Outline for loading files.
         public void LoadFile(string strFileName)
         {
             int f, g, h, i, nFrameSetCount, nFramesCount, x, y, nWide, nHigh, nType, nActionCount, misc, nSkip;
             Layer pLayer;
             //SingleFrame pFrameSet
-            Frame pFrame;
+            KeyFrame pFrame;
             String[] strInfo, strLayerName = new string[255];
             FileStream fs;
             bool bRead, bLoadNew, bTrans, bFirstLayer, bMore, bNewFormat;
@@ -137,8 +115,8 @@ namespace TISFAT_ZERO
         private void splitContainer1_Panel1_Resize(object sender, EventArgs e)
         {
             int height = layersCount * 16;
-            if (splitContainer1.Panel1.Height < 32)
-                splitContainer1.SplitterDistance = 32;
+            if (splitContainer1.Panel1.Height < 51)
+                splitContainer1.SplitterDistance = 51;
             try
             {
                 tline.Size = new Size(this.Width - 2 - (height > splitContainer1.Panel1.Height ? 18 : 0), height);
@@ -151,7 +129,7 @@ namespace TISFAT_ZERO
 
         private void splitContainer1_Panel1_Scroll(object sender, ScrollEventArgs e)
         {
-            tline.Location = new Point(0, 0);
+            tline.Location = new Point(0, tline.Location.Y);
             tline.Refresh();
         }
 
