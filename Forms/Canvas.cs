@@ -82,8 +82,13 @@ namespace TISFAT_ZERO
 			theCanvasGraphics.Clear(Color.White);
             for (int i = 0; i < stickFigureList.Count; i++)
 			{
-                stickFigureList[i].Draw(false);
-                stickFigureList[i].DrawHandles();
+				StickFigure x = stickFigureList[i];
+
+				if (x.drawFigure)
+				{
+					x.Draw(false);
+					x.DrawHandles();
+				}
 			}
 		}
 
@@ -157,6 +162,16 @@ namespace TISFAT_ZERO
 		public static void removeStickFigure(StickFigure figure)
 		{
 			stickFigureList.Remove(figure);
+		}
+
+		public static void activateFigure(StickFigure fig)
+		{
+			foreach (StickFigure f in stickFigureList)
+			{
+				f.isActiveFigure = f == fig;
+			}
+
+			theCanvas.Refresh();
 		}
 
 		//Debug stuff, and selection of joints. This also causes the canvas to be redrawn on mouse move.

@@ -89,7 +89,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\Frames.cs" />
     <Compile Include="Scripts\Functions.cs" />
-    <Compile Include="Scripts\Layer.cs" />
+    <Compile Include="Scripts\Layers.cs" />
     <Compile Include="Scripts\StickFigure.cs" />
     <EmbeddedResource Include="Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>

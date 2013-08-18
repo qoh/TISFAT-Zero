@@ -15,7 +15,7 @@ namespace TISFAT_ZERO
 
 		private int lastScroll = 0, lastWidth = 650;
 		private int sX, sY;
-        public int layersCount = 2;
+        public int layersCount = 5;
 
 		public MainF()
 		{
@@ -114,7 +114,7 @@ namespace TISFAT_ZERO
 
         private void splitContainer1_Panel1_Resize(object sender, EventArgs e)
         {
-            int height = layersCount * 16;
+            int height = layersCount * 16 + 1;
             if (splitContainer1.Panel1.Height < 51)
                 splitContainer1.SplitterDistance = 51;
             try

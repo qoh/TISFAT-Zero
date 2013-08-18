@@ -200,6 +200,7 @@ namespace TISFAT_ZERO
     {
         public bool isActiveFigure;
         public bool drawHandles = true;
+		public bool drawFigure = true;
 
         public StickJoint[] Joints = new StickJoint[12];
         /*
@@ -216,7 +217,7 @@ namespace TISFAT_ZERO
          * 10 = Right Foot
          */
 
-        public StickFigure()
+        public StickFigure(bool activate = true)
         {
             Joints[0] = new StickJoint("Neck", new Point(222, 158), 60, Color.Black, Color.Blue, 0, 0, true, Joints[1], false);
             Joints[1] = new StickJoint("Shoulder", new Point(222, 155), 12, Color.Black, Color.Yellow, 0, 0, false, Joints[0]);
@@ -238,6 +239,7 @@ namespace TISFAT_ZERO
                     Joints[i].CalcLength(null);
                 }
             }
+
             for (int i = 0; i < Joints.Count(); i++)
             {
                 if (Joints[i].parent != null)
@@ -246,10 +248,18 @@ namespace TISFAT_ZERO
                 }
             }
 
-            Canvas.addStickFigure(this);
-            Canvas.activeFigure = this;
-            isActiveFigure = true;
+			if (activate)
+			{
+				Canvas.addStickFigure(this);
+				Canvas.activeFigure = this;
+				isActiveFigure = true;
+			}
         }
+
+		public void activate()
+		{
+			Canvas.activateFigure(this);
+		}
 
         public void flipArms()
         {
