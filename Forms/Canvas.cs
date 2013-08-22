@@ -49,11 +49,13 @@ namespace TISFAT_ZERO
                     Refresh();
 				}
 			}
-            for (int i = 0; i < stickFigureList.Count; i++)
+			for (int i = 0; i < stickFigureList.Count; i++)
             {
                 if(stickFigureList[i].getPointAt(new Point(e.X, e.Y), 4) != -1)
                 {
-                    activeFigure.isActiveFigure = false;
+					if(activeFigure != null)
+						activeFigure.isActiveFigure = false;
+
                     activeFigure = stickFigureList[i];
                     activeFigure.isActiveFigure = true;
 

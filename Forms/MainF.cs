@@ -55,7 +55,7 @@ namespace TISFAT_ZERO
 			tline.Location = new Point(0, 0);
 			this.splitContainer1.Panel1.Controls.Add(tline);
 
-            this.framesPanel.Location = new Point(9080, 0);
+            this.framesPanel.Location = new Point(4580, 0);
 
             tline.Show();
 			
@@ -114,12 +114,12 @@ namespace TISFAT_ZERO
 
         private void splitContainer1_Panel1_Resize(object sender, EventArgs e)
         {
-            int height = layersCount * 16 + 1;
+            //int height = layersCount * 16 + 1;
             if (splitContainer1.Panel1.Height < 51)
                 splitContainer1.SplitterDistance = 51;
             try
             {
-                tline.Size = new Size(this.Width - 2 - (height > splitContainer1.Panel1.Height ? 18 : 0), height);
+                tline.Size = new Size(this.Width - 2 - (tline.Size.Height > splitContainer1.Panel1.Height ? 18 : 0), tline.Size.Height);
             }
             catch
             {

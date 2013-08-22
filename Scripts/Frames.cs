@@ -11,30 +11,19 @@ namespace TISFAT_ZERO
 
     public class StickFrame : KeyFrame
     {
-        public Point[] jointPos;
-		public uint pos;
+        public StickJoint[] sjoints;
         static readonly byte type = 1;
 
-        public StickFrame(Point[] ps, uint po)
+        public StickFrame(StickJoint[] ps, uint po)
         {
 			pos = po;
-            jointPos = ps;
-        }
-
-        public StickFrame(StickJoint[] joints, uint po)
-        {
-			pos = po;
-
-            jointPos = new Point[joints.Length];
-
-            for (int a = 0; a < joints.Length; a++)
-                jointPos[a] = joints[a].location;
+            sjoints = ps;
         }
 
 		public StickFrame(StickFrame old)
 		{
 			pos = old.pos;
-			jointPos = old.jointPos;
+			sjoints = old.sjoints;
 		}
     }
 }

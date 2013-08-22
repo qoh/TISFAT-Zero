@@ -51,7 +51,7 @@ namespace TISFAT_ZERO
             this.ClientSize = new System.Drawing.Size(1, 1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.MaximumSize = new System.Drawing.Size(9080, 100);
+            this.MaximumSize = new System.Drawing.Size(0, 0);
             this.Name = "Timeline";
             this.Text = "Timeline";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Timeline_Paint);

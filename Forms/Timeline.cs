@@ -25,13 +25,15 @@ namespace TISFAT_ZERO
 			mainForm = m;
 
 			layers = new List<Layer>();
-			Layer x = new StickLayer("Layer1"), y = new StickLayer("asdf"), X = new StickLayer("2346"), Y = new StickLayer("nope");
-			layers.Add(x); layers.Add(X); layers.Add(y); layers.Add(Y);
+			for(int a = 0; a < 3; a++)
+				layers.Add(new StickLayer(a + " Layer lol"));
 			this.Refresh();
+			((StickLayer)layers[0]).doDisplay(5);
 		}
 
 		private void Timeline_Paint(object sender, PaintEventArgs e)
-        {
+		{
+			#region Timeline Rendering
 			//Create the graphics object then clear to the background colour of the majortiy of frames (light gray)
             Graphics g = e.Graphics;
             g.Clear(Color.FromArgb(220, 220, 220));
@@ -42,7 +44,7 @@ namespace TISFAT_ZERO
 			//Calculate how many frames need to be drawn and what the offset is
 			int frames = (mainForm.Width-80) / 9;
             int scroll = mainForm.splitContainer1.Panel1.HorizontalScroll.Value;
-			int offset = (int)Math.Max(scroll - 80d, 0) / 9;
+			int offset = scroll / 9;
 
 			//Grab the font we need to use to draw strings
 			Font fo = SystemFonts.DefaultFont;
@@ -74,23 +76,63 @@ namespace TISFAT_ZERO
 
 				//If the frame is not a special colour, don't fill it in (as it's already filled in with that colour)
 				if ((a + 1) % 10 == 0)
-					g.FillRectangle(new SolidBrush(x), xx, 0, 8, 16 * layers.Count - 1);
+					g.FillRectangle(new SolidBrush(x), xx, 0, 8, 16 * layers.Count + 15);
 
 				//Write in the number
 				g.DrawString(((a + 1) % 10).ToString(), fo, Brushes.Black, new PointF(xx - 1, 1));
 			}
 
-			Height = layers.Count * 16;
+			Height = layers.Count * 16 + 16;
 
 			//Draw all the frame outlines
 			for (int a = 0, b = 88; a < frames; a++, b = 88 + 9 * a)
 				g.DrawLine(blk, new Point(b, 0), new Point(b, Height));
-			for (int a = 0, b = 15; a < layers.Count; a++, b = 16 * a + 15)
+
+			//This one has <= instead of < so that the line on the bottom of the last layer gets drawn
+			for (int a = 0, b = 15; a <= layers.Count; a++, b = 16 * a + 15)
 				g.DrawLine(blk, new Point(80, b), new Point(frames * 9 + 80, b));
 
+			#endregion x
+
+			//Fill in keyframes and such
+			for (int a = 0; a < layers.Count; a++)
+			{
+				Layer l = layers[a];
+
+				//Figure out the y axis of where we need to draw
+				int y = a * 16 + 16;
+
+				//Get the positions of the first and last keyframe
+				int first = (int)l.firstKF - offset;
+				int last = (int)l.lastKF - offset;
+
+				
+				int count = (int)Math.Min(frames, last - first);
+
+				//Draw all the frames in the layer (I'll implement framesets later ok)
+				for (int b = first, kind = 0; b <= count + first; b++)
+				{
+					Color x = Color.White;
+					if (l.keyFrames[kind].pos == b + offset)
+					{
+						kind++;
+						x = Color.Yellow;
+					}
+
+					if (b < 0)
+						continue;
+
+					g.FillRectangle(new SolidBrush(x), b * 9 + 80, y, 8, 15);
+				}
+			}
 
 			//Dispose of the pens (because apparently this is necessary)
 			blk.Dispose(); bblk.Dispose();
+		}
+
+		public void addLayer(Layer l)
+		{
+			layers.Add(l);
 		}
 	}
 }

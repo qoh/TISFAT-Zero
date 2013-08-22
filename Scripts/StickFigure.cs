@@ -248,9 +248,10 @@ namespace TISFAT_ZERO
                 }
             }
 
+			Canvas.addStickFigure(this);
+			this.drawFigure = activate;
 			if (activate)
 			{
-				Canvas.addStickFigure(this);
 				Canvas.activeFigure = this;
 				isActiveFigure = true;
 			}
