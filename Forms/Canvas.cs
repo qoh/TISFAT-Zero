@@ -48,6 +48,13 @@ namespace TISFAT_ZERO
 					selectedJoint.SetPos(e.X, e.Y);
                     Refresh();
 				}
+                foreach (StickFigure fig in stickFigureList)
+                {
+                    if(!(fig == activeFigure))
+                    {
+                        fig.isActiveFigure = false;
+                    }
+                }
 			}
 			for (int i = 0; i < stickFigureList.Count; i++)
             {
@@ -158,6 +165,7 @@ namespace TISFAT_ZERO
             }
 			stickFigureList.Add(figure);
             figure.isActiveFigure = true;
+            theToolbox.lbl_stickFigures.Text = "StickFigure List: " + stickFigureList.Count;
             theCanvas.Refresh();
 		}
 
@@ -241,6 +249,13 @@ namespace TISFAT_ZERO
         private void flipLegsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             activeFigure.flipLegs();
+        }
+
+        public StickFigure createFigure()
+        {
+            StickFigure figure = new StickFigure();
+
+            return figure;
         }
 	}
 }

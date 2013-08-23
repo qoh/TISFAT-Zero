@@ -249,17 +249,18 @@ namespace TISFAT_ZERO
             }
 
 			Canvas.addStickFigure(this);
-			this.drawFigure = activate;
-			if (activate)
-			{
-				Canvas.activeFigure = this;
-				isActiveFigure = true;
-			}
+			//this.drawFigure = activate;
+            this.activate();
         }
 
 		public void activate()
 		{
+            for (int i = 0; i < Canvas.stickFigureList.Count(); i++)
+            {
+                Canvas.stickFigureList[i].isActiveFigure = false;
+            }
 			Canvas.activateFigure(this);
+            isActiveFigure = true;
 		}
 
         public void flipArms()

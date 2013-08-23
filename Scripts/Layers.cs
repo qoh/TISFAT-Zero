@@ -28,15 +28,15 @@ namespace TISFAT_ZERO
 	{
 		private StickFigure fig;
 
-		public StickLayer(string nom)
+		public StickLayer(string nom, StickFigure figure)
 		{
 			firstKF = 5;
 			lastKF = 50;
 			keyFrames = new List<KeyFrame>();
-			keyFrames.Add(new StickFrame(new StickFigure(false).Joints, 5));
-			keyFrames.Add(new StickFrame(new StickFigure(false).Joints, 50));
+			keyFrames.Add(new StickFrame(figure.Joints, 5));
+			keyFrames.Add(new StickFrame(figure.Joints, 50));
 
-			fig = new StickFigure(false);
+            fig = figure;
 
 			name = nom; //nomnomnom
 		}

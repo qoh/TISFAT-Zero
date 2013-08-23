@@ -47,7 +47,7 @@ namespace TISFAT_ZERO
 			f.Location = new Point(175, 10);
 			this.splitContainer1.Panel2.Controls.Add(f);
 
-			tline = new Timeline(this);
+			tline = new Timeline(this, f);
             tline.TopLevel = false;
 			tline.Parent = this.splitContainer1.Panel1;
             tline.Size = new Size(this.splitContainer1.Width - 2, splitContainer1.Panel1.Height);

@@ -15,18 +15,20 @@ namespace TISFAT_ZERO
 		private Point[] p1 = new Point[] { new Point(79, 0), new Point(79, 15), new Point(0, 15) };
 
 		public MainF mainForm;
+        public Canvas theCanvas;
 
 		//List of layers
 		public List<Layer> layers;
 
-		public Timeline(MainF m)
+		public Timeline(MainF m, Canvas canvas)
 		{
 			InitializeComponent(); 
 			mainForm = m;
+            theCanvas = canvas;
 
 			layers = new List<Layer>();
 			for(int a = 0; a < 3; a++)
-				layers.Add(new StickLayer(a + " Layer lol"));
+				layers.Add(new StickLayer(a + " Layer lol",theCanvas.createFigure()));
 			this.Refresh();
 			((StickLayer)layers[0]).doDisplay(5);
 		}

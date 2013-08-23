@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Toolbox));
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.lbl_jointLength = new System.Windows.Forms.Label();
@@ -43,6 +42,7 @@
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
+            this.lbl_stickFigures = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -62,6 +62,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.Controls.Add(this.lbl_stickFigures);
             this.panel2.Controls.Add(this.lbl_jointLength);
             this.panel2.Controls.Add(this.lbl_selectedJoint);
             this.panel2.Controls.Add(this.label1);
@@ -191,6 +192,15 @@
             this.button6.Text = "button6";
             this.button6.UseVisualStyleBackColor = true;
             // 
+            // lbl_stickFigures
+            // 
+            this.lbl_stickFigures.AutoSize = true;
+            this.lbl_stickFigures.Location = new System.Drawing.Point(12, 76);
+            this.lbl_stickFigures.Name = "lbl_stickFigures";
+            this.lbl_stickFigures.Size = new System.Drawing.Size(85, 13);
+            this.lbl_stickFigures.TabIndex = 4;
+            this.lbl_stickFigures.Text = "StickFigure List: ";
+            // 
             // Toolbox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -226,5 +236,6 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
+        public System.Windows.Forms.Label lbl_stickFigures;
     }
 }
