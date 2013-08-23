@@ -7,15 +7,17 @@ namespace TISFAT_ZERO
 {
 	public partial class Canvas : Form
 	{
-		public static MainF mainForm;
-		public static Toolbox theToolbox;
-		public static Canvas theCanvas;
+        #region Variables
+        public static MainF mainForm;
+        public static Toolbox theToolbox;
+        public static Canvas theCanvas;
         public static Graphics theCanvasGraphics;
 
-		public static List<StickFigure> stickFigureList = new List<StickFigure>();
-		public static StickFigure activeFigure;
-		public static StickJoint selectedJoint = new StickJoint("null", new Point(0, 0), 0, Color.Transparent, Color.Transparent);
-		private bool draw;
+        public static List<StickFigure> stickFigureList = new List<StickFigure>();
+        public static StickFigure activeFigure;
+        public static StickJoint selectedJoint = new StickJoint("null", new Point(0, 0), 0, Color.Transparent, Color.Transparent);
+        private bool draw; 
+        #endregion
 
 		//Instantiate the class
 		public Canvas(MainF f, Toolbox t)
@@ -30,38 +32,39 @@ namespace TISFAT_ZERO
 			InitializeComponent();
 		}
 
-		//Debug stuff, and dragging joints.
-		private void Canvas_MouseMove(object sender, MouseEventArgs e)
-		{
-			theToolbox.lbl_xPos.Text = "X Pos: " + e.X.ToString();
-			theToolbox.lbl_yPos.Text = "Y Pos: " + e.Y.ToString();
+        #region Mouse Events
+        //Debug stuff, and dragging joints.
+        private void Canvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            theToolbox.lbl_xPos.Text = "X Pos: " + e.X.ToString();
+            theToolbox.lbl_yPos.Text = "Y Pos: " + e.Y.ToString();
 
-			if (draw)
-			{
-				if (!(selectedJoint.name == "null"))
-				{
-					//if (selectedJoint.jointname == "Head")
-					//{
-					//    return;
-					//}
+            if (draw)
+            {
+                if (!(selectedJoint.name == "null"))
+                {
+                    //if (selectedJoint.jointname == "Head")
+                    //{
+                    //    return;
+                    //}
 
-					selectedJoint.SetPos(e.X, e.Y);
+                    selectedJoint.SetPos(e.X, e.Y);
                     Refresh();
-				}
+                }
                 foreach (StickFigure fig in stickFigureList)
                 {
-                    if(!(fig == activeFigure))
+                    if (!(fig == activeFigure))
                     {
                         fig.isActiveFigure = false;
                     }
                 }
-			}
-			for (int i = 0; i < stickFigureList.Count; i++)
+            }
+            for (int i = 0; i < stickFigureList.Count; i++)
             {
-                if(stickFigureList[i].getPointAt(new Point(e.X, e.Y), 4) != -1)
+                if (stickFigureList[i].getPointAt(new Point(e.X, e.Y), 4) != -1)
                 {
-					if(activeFigure != null)
-						activeFigure.isActiveFigure = false;
+                    if (activeFigure != null)
+                        activeFigure.isActiveFigure = false;
 
                     activeFigure = stickFigureList[i];
                     activeFigure.isActiveFigure = true;
@@ -71,124 +74,24 @@ namespace TISFAT_ZERO
                 }
             }
 
-			if (!(activeFigure == null) & !draw)
-			{
-				if (activeFigure.getPointAt(new Point(e.X, e.Y), 4) != -1)
-				{
-					this.Cursor = Cursors.Hand;
-				}
-				else
-				{
-					this.Cursor = Cursors.Default;
-				}
-			}
-		}
-
-		//This is called whenever the form is invalidated.
-		private void Canvas_Paint(object sender, PaintEventArgs e)
-		{
-            theCanvasGraphics = e.Graphics;
-			theCanvasGraphics.Clear(Color.White);
-            for (int i = 0; i < stickFigureList.Count; i++)
-			{
-				StickFigure x = stickFigureList[i];
-
-				if (x.drawFigure)
-				{
-					x.Draw(false);
-					x.DrawHandles();
-				}
-			}
-		}
-
-		private void Canvas_Load(object sender, EventArgs e)
-		{
-		}
-
-		//Method that handles drawing of shapes
-
-        /// <summary>
-        /// Draws the graphics.
-        /// </summary>
-        /// <param name="type">1 = Line, 1 = Circle, 2 = Handle, 3 = Hollow Handle</param>
-        /// <param name="pen">Pen Color</param>
-        /// <param name="one">Point one</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        /// <param name="two">Point two. (only used in line type)</param>
-		public static void drawGraphics(int type, Pen pen, Point one, int width, int height, Point two)
-		{
-			if (type == 0) //Line
-			{
-                theCanvasGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-				pen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-				pen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
-				theCanvasGraphics.DrawLine(pen, two, one);
-				pen.Dispose();
-			}
-			else if (type == 1) //Circle
-			{
-                theCanvasGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-				Brush brush = new SolidBrush(pen.Color);
-
-				theCanvasGraphics.DrawEllipse(pen, new Rectangle(one.X - width / 2, one.Y - height / 2, width, height));
-				pen.Dispose();
-				
-			}
-			else if (type == 2) //Handle
-			{
-				theCanvasGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
-				Rectangle rect = new Rectangle(one.X, one.Y, 5, 5);
-				Brush brush = new SolidBrush(pen.Color);
-
-				theCanvasGraphics.FillRectangle(brush, Functions.Center(rect).X, Functions.Center(rect).Y, 5, 5);
-                pen.Dispose();
-			}
-
-			else if (type == 3) //Hollow Handle
-			{
-				
-				theCanvasGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-				Rectangle rect = new Rectangle(one.X, one.Y, 5, 5);
-
-				theCanvasGraphics.DrawRectangle(pen, Functions.Center(rect).X, Functions.Center(rect).Y, 6, 6);
-				pen.Dispose();
-				
-			}
-		}
-
-		public static void addStickFigure(StickFigure figure)
-		{
-            for (int i = 0; i < stickFigureList.Count; i++)
+            if (!(activeFigure == null) & !draw)
             {
-                stickFigureList[i].isActiveFigure = false;
+                if (activeFigure.getPointAt(new Point(e.X, e.Y), 4) != -1)
+                {
+                    this.Cursor = Cursors.Hand;
+                }
+                else
+                {
+                    this.Cursor = Cursors.Default;
+                }
             }
-			stickFigureList.Add(figure);
-            figure.isActiveFigure = true;
-            theToolbox.lbl_stickFigures.Text = "StickFigure List: " + stickFigureList.Count;
-            theCanvas.Refresh();
-		}
+        }
 
-		public static void removeStickFigure(StickFigure figure)
-		{
-			stickFigureList.Remove(figure);
-		}
-
-		public static void activateFigure(StickFigure fig)
-		{
-			foreach (StickFigure f in stickFigureList)
-			{
-				f.isActiveFigure = f == fig;
-			}
-
-			theCanvas.Refresh();
-		}
-
-		//Debug stuff, and selection of joints. This also causes the canvas to be redrawn on mouse move.
-		private void Canvas_MouseDown(object sender, MouseEventArgs e)
-		{
-			if (e.Button == MouseButtons.Left)
-			{
+        //Debug stuff, and selection of joints. This also causes the canvas to be redrawn on mouse move.
+        private void Canvas_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
                 if (!(ModifierKeys == Keys.Control))
                 {
                     try
@@ -219,28 +122,135 @@ namespace TISFAT_ZERO
                         return;
                     }
                 }
-			}
+            }
             if (e.Button == MouseButtons.Right & !(e.Button == MouseButtons.Left))
             {
-                
+
                 draw = true;
             }
-		}
+        }
 
-		//Deselect the joint, and stop redrawing the canvas.
-		private void Canvas_MouseUp(object sender, MouseEventArgs e)
-		{
-			if (e.Button == MouseButtons.Left)
-			{
-				selectedJoint = new StickJoint("null", new Point(0, 0), 0, Color.Transparent, Color.Transparent);
-				draw = false;
-			}
+        //Deselect the joint, and stop redrawing the canvas.
+        private void Canvas_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                selectedJoint = new StickJoint("null", new Point(0, 0), 0, Color.Transparent, Color.Transparent);
+                draw = false;
+            }
             if (e.Button == MouseButtons.Right)
             {
                 draw = false;
             }
-		}
+        } 
+        #endregion
 
+        #region Graphics
+        //This is called whenever the form is invalidated.
+        private void Canvas_Paint(object sender, PaintEventArgs e)
+        {
+            theCanvasGraphics = e.Graphics;
+            theCanvasGraphics.Clear(Color.White);
+            for (int i = 0; i < stickFigureList.Count; i++)
+            {
+                StickFigure x = stickFigureList[i];
+
+                if (x.drawFigure)
+                {
+                    x.Draw(false);
+                    x.DrawHandles();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Draws the graphics.
+        /// </summary>
+        /// <param name="type">1 = Line, 1 = Circle, 2 = Handle, 3 = Hollow Handle</param>
+        /// <param name="pen">Pen Color</param>
+        /// <param name="one">Point one</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="two">Point two. (only used in line type)</param>
+        public static void drawGraphics(int type, Pen pen, Point one, int width, int height, Point two)
+        {
+            if (type == 0) //Line
+            {
+                theCanvasGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                pen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+                pen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+                theCanvasGraphics.DrawLine(pen, two, one);
+                pen.Dispose();
+            }
+            else if (type == 1) //Circle
+            {
+                theCanvasGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                Brush brush = new SolidBrush(pen.Color);
+
+                theCanvasGraphics.DrawEllipse(pen, new Rectangle(one.X - width / 2, one.Y - height / 2, width, height));
+                pen.Dispose();
+
+            }
+            else if (type == 2) //Handle
+            {
+                theCanvasGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+                Rectangle rect = new Rectangle(one.X, one.Y, 5, 5);
+                Brush brush = new SolidBrush(pen.Color);
+
+                theCanvasGraphics.FillRectangle(brush, Functions.Center(rect).X, Functions.Center(rect).Y, 5, 5);
+                pen.Dispose();
+            }
+
+            else if (type == 3) //Hollow Handle
+            {
+
+                theCanvasGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                Rectangle rect = new Rectangle(one.X, one.Y, 5, 5);
+
+                theCanvasGraphics.DrawRectangle(pen, Functions.Center(rect).X, Functions.Center(rect).Y, 6, 6);
+                pen.Dispose();
+
+            }
+        } 
+        #endregion
+
+        #region Figures
+        public static void addStickFigure(StickFigure figure)
+        {
+            for (int i = 0; i < stickFigureList.Count; i++)
+            {
+                stickFigureList[i].isActiveFigure = false;
+            }
+            stickFigureList.Add(figure);
+            figure.isActiveFigure = true;
+            theToolbox.lbl_stickFigures.Text = "StickFigure List: " + stickFigureList.Count;
+            theCanvas.Refresh();
+        }
+
+        public static void removeStickFigure(StickFigure figure)
+        {
+            stickFigureList.Remove(figure);
+        }
+
+        public static void activateFigure(StickFigure fig)
+        {
+            foreach (StickFigure f in stickFigureList)
+            {
+                f.isActiveFigure = f == fig;
+            }
+
+            theCanvas.Refresh();
+        }
+
+        public StickFigure createFigure()
+        {
+            StickFigure figure = new StickFigure();
+
+            return figure;
+        } 
+        #endregion
+
+        #region Right Click Menu
         private void flipArmsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             activeFigure.flipArms();
@@ -249,13 +259,7 @@ namespace TISFAT_ZERO
         private void flipLegsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             activeFigure.flipLegs();
-        }
-
-        public StickFigure createFigure()
-        {
-            StickFigure figure = new StickFigure();
-
-            return figure;
-        }
+        } 
+        #endregion
 	}
 }

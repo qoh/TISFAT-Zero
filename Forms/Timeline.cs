@@ -11,14 +11,16 @@ namespace TISFAT_ZERO
 {
 	public partial class Timeline : Form
 	{
-		//This is the set of points used for drawing the black outline of the timeline layer
-		private Point[] p1 = new Point[] { new Point(79, 0), new Point(79, 15), new Point(0, 15) };
+        #region Variables
+        //This is the set of points used for drawing the black outline of the timeline layer
+        private Point[] p1 = new Point[] { new Point(79, 0), new Point(79, 15), new Point(0, 15) };
 
-		public MainF mainForm;
+        public MainF mainForm;
         public Canvas theCanvas;
 
-		//List of layers
-		public List<Layer> layers;
+        //List of layers
+        public List<Layer> layers; 
+        #endregion
 
 		public Timeline(MainF m, Canvas canvas)
 		{

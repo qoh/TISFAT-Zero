@@ -7,6 +7,7 @@ namespace TISFAT_ZERO
 {
     public class StickJoint
     {
+        #region Variables
         //Defining Public Varaibles
         public string name;
 
@@ -44,8 +45,10 @@ namespace TISFAT_ZERO
 
         public Color color;
         public Color handleColor;
-        public Color defaultHandleColor;
+        public Color defaultHandleColor; 
+        #endregion
 
+        #region Functions
         public StickJoint(string newname, Point newLocation, int newThickness, Color newColor, Color newHandleColor, int newState = 0, int newDrawState = 0, bool newFill = false, StickJoint newParent = null, bool newHandleDrawn = true)
         {
             name = newname;
@@ -74,6 +77,36 @@ namespace TISFAT_ZERO
             return start.length;
         }
 
+        public StickJoint AddChild(int vx, int vy)
+        {
+            StickJoint pJoint;
+            int xDiff, yDiff;
+            double dAngle1, dAngle2;
+
+            pJoint = new StickJoint("Child", new Point(0, 0), 10, Color.Black, Color.Blue);
+            pJoint.SetPos(vx, vy);
+            pJoint.parent = this;
+            xDiff = pJoint.location.X - location.X;
+            yDiff = pJoint.location.Y - location.Y;
+            pJoint.length = Math.Round(Math.Sqrt((xDiff * xDiff) + (yDiff * yDiff)));
+
+            pJoint.AngleToParent = 360;
+            if (parent != null)
+            {
+                dAngle1 = 180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI);
+                xDiff = location.X - parent.location.X;
+                yDiff = location.Y - parent.location.Y;
+                dAngle2 = 180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI);
+                pJoint.AngleToParent = (dAngle2 - dAngle1);
+            }
+
+            children.Add(pJoint);
+
+            return pJoint;
+        } 
+        #endregion
+
+        #region Positioning
         public void SetPosAbs(double vx, double vy)
         {
             location.X = Convert.ToInt32(vx);
@@ -163,44 +196,16 @@ namespace TISFAT_ZERO
             }
 
             Recalc(pThis);
-        }
-
-        public StickJoint AddChild(int vx, int vy)
-        {
-            StickJoint pJoint;
-            int xDiff, yDiff;
-            double dAngle1, dAngle2;
-
-            pJoint = new StickJoint("Child", new Point(0, 0), 10, Color.Black, Color.Blue);
-            pJoint.SetPos(vx, vy);
-            pJoint.parent = this;
-            xDiff = pJoint.location.X - location.X;
-            yDiff = pJoint.location.Y - location.Y;
-            pJoint.length = Math.Round(Math.Sqrt((xDiff * xDiff) + (yDiff * yDiff)));
-
-            pJoint.AngleToParent = 360;
-            if (parent != null)
-            {
-                dAngle1 = 180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI);
-                xDiff = location.X - parent.location.X;
-                yDiff = location.Y - parent.location.Y;
-                dAngle2 = 180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI);
-                pJoint.AngleToParent = (dAngle2 - dAngle1);
-            }
-
-            children.Add(pJoint);
-
-            return pJoint;
-        }
-
-
+        } 
+        #endregion
     }
 
     public class StickFigure
     {
+        #region Variables
         public bool isActiveFigure;
         public bool drawHandles = true;
-		public bool drawFigure = true;
+        public bool drawFigure = true;
 
         public StickJoint[] Joints = new StickJoint[12];
         /*
@@ -217,8 +222,11 @@ namespace TISFAT_ZERO
          * 10 = Right Foot
          */
 
+        #endregion
+
         public StickFigure(bool activate = true)
         {
+            #region Define Joints/Position
             Joints[0] = new StickJoint("Neck", new Point(222, 158), 60, Color.Black, Color.Blue, 0, 0, true, Joints[1], false);
             Joints[1] = new StickJoint("Shoulder", new Point(222, 155), 12, Color.Black, Color.Yellow, 0, 0, false, Joints[0]);
             Joints[2] = new StickJoint("RElbow", new Point(238, 166), 12, Color.Black, Color.Red, 0, 0, false, Joints[1]);
@@ -230,8 +238,10 @@ namespace TISFAT_ZERO
             Joints[8] = new StickJoint("LFoot", new Point(202, 241), 12, Color.Black, Color.Blue, 0, 0, false, Joints[7]);
             Joints[9] = new StickJoint("RKnee", new Point(234, 217), 12, Color.Black, Color.Red, 0, 0, false, Joints[6]);
             Joints[10] = new StickJoint("RFoot", new Point(243, 240), 12, Color.Black, Color.Red, 0, 0, false, Joints[9]);
-            Joints[11] = new StickJoint("Head", new Point(222, 150), 13, Color.Black, Color.Yellow, 0, 1, true, Joints[0]);
+            Joints[11] = new StickJoint("Head", new Point(222, 150), 13, Color.Black, Color.Yellow, 0, 1, true, Joints[0]); 
+            #endregion
 
+            #region Calculate joint Lengths/Add Children to Parents
             for (int i = 0; i < Joints.Count(); i++)
             {
                 if (Joints[i].parent != null)
@@ -246,7 +256,8 @@ namespace TISFAT_ZERO
                 {
                     Joints[i].parent.children.Add(Joints[i]);
                 }
-            }
+            } 
+            #endregion
 
 			Canvas.addStickFigure(this);
 			//this.drawFigure = activate;
@@ -263,6 +274,7 @@ namespace TISFAT_ZERO
             isActiveFigure = true;
 		}
 
+        #region Figure Manipulation
         public void flipArms()
         {
             Point rElbow = Joints[2].location;
@@ -291,8 +303,10 @@ namespace TISFAT_ZERO
             Joints[10].location = lFoot;
 
             Draw(true);
-        }
+        } 
+        #endregion
 
+        #region Graphics/Drawing
         public void Draw(bool fromthingy)
         {
             if (fromthingy)
@@ -331,8 +345,10 @@ namespace TISFAT_ZERO
                     }
                 }
             }
-        }
+        } 
+        #endregion
 
+        #region Point Selection
         public int getPointAt(Point coords, int tolerance)
         {
             if (!(Joints.Count() > 0))
@@ -386,6 +402,7 @@ namespace TISFAT_ZERO
             }
 
             return Joints[index];
-        }
+        } 
+        #endregion
     }
 }
