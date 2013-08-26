@@ -19,7 +19,8 @@ namespace TISFAT_ZERO
         public Canvas theCanvas;
 
         //List of layers
-        public List<Layer> layers; 
+        public static List<Layer> layers;
+		public int layercount = 0;
         #endregion
 
 		public Timeline(MainF m, Canvas canvas)
@@ -29,10 +30,10 @@ namespace TISFAT_ZERO
             theCanvas = canvas;
 
 			layers = new List<Layer>();
-			for(int a = 0; a < 3; a++)
-				layers.Add(new StickLayer(a + " Layer lol",theCanvas.createFigure()));
+			for (int a = 0; a < 3; a++)
+				addStickLayer("Layer " + a);
 			this.Refresh();
-			((StickLayer)layers[0]).doDisplay(5);
+			setFrame(3);
 		}
 
 		private void Timeline_Paint(object sender, PaintEventArgs e)
@@ -134,9 +135,27 @@ namespace TISFAT_ZERO
 			blk.Dispose(); bblk.Dispose();
 		}
 
-		public void addLayer(Layer l)
+		public StickLayer addStickLayer(string name)
 		{
-			layers.Add(l);
+			StickFigure x = theCanvas.createFigure();
+			x.int1 = layercount++;
+
+			StickLayer n = new StickLayer(name, x);
+			layers.Add(n);
+
+			return n;
+		}
+
+		public void setFrame(uint pos)
+		{
+			for (int a = 0; a < layers.Count; a++)
+				((StickLayer)layers[a]).doDisplay(pos);
+		}
+
+		public void popupThingy()
+		{
+			testEnter f = new testEnter(this);
+			f.ShowDialog();
 		}
 	}
 }

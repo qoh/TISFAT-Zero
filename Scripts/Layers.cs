@@ -27,14 +27,15 @@ namespace TISFAT_ZERO
 	public class StickLayer : Layer
 	{
 		private StickFigure fig;
+		public int selectedFrame = -1;
 
 		public StickLayer(string nom, StickFigure figure)
 		{
-			firstKF = 5;
-			lastKF = 50;
+			firstKF = 3;
+			lastKF = 5;
 			keyFrames = new List<KeyFrame>();
-			keyFrames.Add(new StickFrame(figure.Joints, 5));
-			keyFrames.Add(new StickFrame(figure.Joints, 50));
+			keyFrames.Add(new StickFrame((StickJoint[])figure.Joints.Clone(), 3));
+			keyFrames.Add(new StickFrame((StickJoint[])figure.Joints.Clone(), 5));
 
             fig = figure;
 
@@ -43,11 +44,12 @@ namespace TISFAT_ZERO
 
 		public void doDisplay(uint pos)
 		{
-			bool render = false;
+			bool render = false; int x = -1;
 			for (int a = 0; a < keyFrames.Count; a++)
 			{
 				if (pos == keyFrames[a].pos)
 				{
+					x = a;
 					render = true;
 					fig.Joints = ((StickFrame)keyFrames[a]).sjoints;
 					break;
@@ -56,6 +58,7 @@ namespace TISFAT_ZERO
 			fig.drawFigure = render;
 			fig.drawHandles = render;
 			fig.isActiveFigure = true;
+			selectedFrame = x;
 		}
 
 		//Insert a keyframe at position pos in the timeline
@@ -65,8 +68,7 @@ namespace TISFAT_ZERO
 			if (pos < firstKF)
 			{
 				firstKF = pos;
-				KeyFrame x = keyFrames[0];
-				x.pos = keyFrames[0].pos - 1;
+				StickFrame x = new StickFrame(((StickFrame)keyFrames[0]).sjoints, keyFrames[0].pos - 1);
 
 				keyFrames.Insert(0, x);
 

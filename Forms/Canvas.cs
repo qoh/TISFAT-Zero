@@ -244,7 +244,7 @@ namespace TISFAT_ZERO
 
         public StickFigure createFigure()
         {
-            StickFigure figure = new StickFigure();
+			StickFigure figure = new StickFigure(false);
 
             return figure;
         } 

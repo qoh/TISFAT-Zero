@@ -196,6 +196,7 @@ namespace TISFAT_ZERO
             }
 
             Recalc(pThis);
+			this.ParentFigure.onJointMoved();
         } 
         #endregion
     }
@@ -206,6 +207,7 @@ namespace TISFAT_ZERO
         public bool isActiveFigure;
         public bool drawHandles = true;
         public bool drawFigure = true;
+		public int int1 = -1, int2 = -1;
 
         public StickJoint[] Joints = new StickJoint[12];
         /*
@@ -238,7 +240,11 @@ namespace TISFAT_ZERO
             Joints[8] = new StickJoint("LFoot", new Point(202, 241), 12, Color.Black, Color.Blue, 0, 0, false, Joints[7]);
             Joints[9] = new StickJoint("RKnee", new Point(234, 217), 12, Color.Black, Color.Red, 0, 0, false, Joints[6]);
             Joints[10] = new StickJoint("RFoot", new Point(243, 240), 12, Color.Black, Color.Red, 0, 0, false, Joints[9]);
-            Joints[11] = new StickJoint("Head", new Point(222, 150), 13, Color.Black, Color.Yellow, 0, 1, true, Joints[0]); 
+            Joints[11] = new StickJoint("Head", new Point(222, 150), 13, Color.Black, Color.Yellow, 0, 1, true, Joints[0]);
+
+			for (int a = 0; a < 12; a++)
+				Joints[a].ParentFigure = this;
+
             #endregion
 
             #region Calculate joint Lengths/Add Children to Parents
@@ -260,8 +266,10 @@ namespace TISFAT_ZERO
             #endregion
 
 			Canvas.addStickFigure(this);
-			//this.drawFigure = activate;
-            this.activate();
+			this.drawFigure = activate;
+			this.drawHandles = activate;
+			if(activate)
+				this.activate();
         }
 
 		public void activate()
@@ -275,6 +283,15 @@ namespace TISFAT_ZERO
 		}
 
         #region Figure Manipulation
+		public void onJointMoved()
+		{
+			if (int1 < 0)
+				return;
+
+			StickLayer currLayer = (StickLayer)Timeline.layers[int1];
+			((StickFrame)(currLayer.keyFrames[currLayer.selectedFrame])).sjoints = this.Joints;
+		}
+
         public void flipArms()
         {
             Point rElbow = Joints[2].location;

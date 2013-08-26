@@ -148,5 +148,10 @@ namespace TISFAT_ZERO
             this.Close();
         }
         #endregion
+
+		private void setFrameToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			tline.popupThingy();
+		}
 	}
 }
