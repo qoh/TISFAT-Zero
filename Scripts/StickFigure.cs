@@ -154,7 +154,8 @@ namespace TISFAT_ZERO
                 cy = Math.Round(pJoint.length * Math.Sin(dRads));
                 pJoint.SetPosAbs(Math.Round(pStart.location.X + cx), Math.Round(pStart.location.Y + cy));
                 Recalc(pJoint);
-            }
+			}
+			this.ParentFigure.onJointMoved();
         }
 
         public void SetPos(int vx, int vy)
@@ -196,6 +197,7 @@ namespace TISFAT_ZERO
             }
 
             Recalc(pThis);
+
 			this.ParentFigure.onJointMoved();
         } 
         #endregion
@@ -230,6 +232,7 @@ namespace TISFAT_ZERO
         {
             #region Define Joints/Position
             Joints[0] = new StickJoint("Neck", new Point(222, 158), 60, Color.Black, Color.Blue, 0, 0, true, Joints[1], false);
+			
             Joints[1] = new StickJoint("Shoulder", new Point(222, 155), 12, Color.Black, Color.Yellow, 0, 0, false, Joints[0]);
             Joints[2] = new StickJoint("RElbow", new Point(238, 166), 12, Color.Black, Color.Red, 0, 0, false, Joints[1]);
             Joints[3] = new StickJoint("RHand", new Point(246, 184), 12, Color.Black, Color.Red, 0, 0, false, Joints[2]);
@@ -289,7 +292,9 @@ namespace TISFAT_ZERO
 				return;
 
 			StickLayer currLayer = (StickLayer)Timeline.layers[int1];
-			((StickFrame)(currLayer.keyFrames[currLayer.selectedFrame])).sjoints = this.Joints;
+			((StickFrame)(currLayer.keyFrames[currLayer.selectedFrame])).Joints = this.Joints.ToArray();
+			Canvas.theCanvas.Invalidate();
+			int asdf = 523;
 		}
 
         public void flipArms()

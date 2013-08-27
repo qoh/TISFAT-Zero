@@ -21,6 +21,8 @@ namespace TISFAT_ZERO
         //List of layers
         public static List<Layer> layers;
 		public int layercount = 0;
+		public uint selectedFrame;
+		public int selectedLayer;
         #endregion
 
 		public Timeline(MainF m, Canvas canvas)
@@ -149,7 +151,17 @@ namespace TISFAT_ZERO
 		public void setFrame(uint pos)
 		{
 			for (int a = 0; a < layers.Count; a++)
-				((StickLayer)layers[a]).doDisplay(pos);
+				if(a != selectedLayer)
+					((StickLayer)layers[a]).doDisplay(pos, false);
+			((StickLayer)layers[selectedLayer]).doDisplay(pos);
+		}
+
+		public void setFrame()
+		{
+			for (int a = 0; a < layers.Count; a++)
+				if (a != selectedLayer)
+					((StickLayer)layers[a]).doDisplay(selectedFrame, false);
+			((StickLayer)layers[selectedLayer]).doDisplay(selectedFrame);
 		}
 
 		public void popupThingy()

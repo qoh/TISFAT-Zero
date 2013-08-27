@@ -61,7 +61,7 @@ namespace TISFAT_ZERO
             }
             for (int i = 0; i < stickFigureList.Count; i++)
             {
-                if (stickFigureList[i].getPointAt(new Point(e.X, e.Y), 4) != -1)
+				if (stickFigureList[i].getPointAt(new Point(e.X, e.Y), 4) != -1 && stickFigureList[i].drawHandles)
                 {
                     if (activeFigure != null)
                         activeFigure.isActiveFigure = false;
@@ -158,7 +158,7 @@ namespace TISFAT_ZERO
                 if (x.drawFigure)
                 {
                     x.Draw(false);
-                    x.DrawHandles();
+					x.DrawHandles();
                 }
             }
         }

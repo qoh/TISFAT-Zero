@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Drawing;
 
 namespace TISFAT_ZERO
 {
@@ -26,39 +27,62 @@ namespace TISFAT_ZERO
 
 	public class StickLayer : Layer
 	{
+
 		private StickFigure fig;
 		public int selectedFrame = -1;
 
 		public StickLayer(string nom, StickFigure figure)
 		{
+			fig = figure;
+
 			firstKF = 3;
 			lastKF = 5;
 			keyFrames = new List<KeyFrame>();
-			keyFrames.Add(new StickFrame((StickJoint[])figure.Joints.Clone(), 3));
-			keyFrames.Add(new StickFrame((StickJoint[])figure.Joints.Clone(), 5));
-
-            fig = figure;
+			keyFrames.Add(new StickFrame(3));
+			keyFrames.Add(new StickFrame(5));
 
 			name = nom; //nomnomnom
 		}
 
-		public void doDisplay(uint pos)
+		public void doDisplay(uint pos, bool current = true)
 		{
 			bool render = false; int x = -1;
+
+			if (selectedFrame >= 0)
+			{
+				StickFrame frm = (StickFrame)keyFrames[selectedFrame];
+				for (int a = 0; a < frm.Joints.Length; a++)
+				{
+					frm.Joints[a].ParentFigure = null;
+				}
+			}
+
+			
+
 			for (int a = 0; a < keyFrames.Count; a++)
 			{
 				if (pos == keyFrames[a].pos)
 				{
 					x = a;
 					render = true;
-					fig.Joints = ((StickFrame)keyFrames[a]).sjoints;
+					fig.Joints = ((StickFrame)keyFrames[a]).Joints;
 					break;
 				}
 			}
+
 			fig.drawFigure = render;
-			fig.drawHandles = render;
+			fig.drawHandles = render & current;
 			fig.isActiveFigure = true;
 			selectedFrame = x;
+
+			if (selectedFrame >= 0)
+			{
+				StickFrame frm = (StickFrame)keyFrames[selectedFrame];
+				for (int a = 0; a < frm.Joints.Length; a++)
+				{
+					frm.Joints[a].ParentFigure = fig;
+				}
+			}
 		}
 
 		//Insert a keyframe at position pos in the timeline
@@ -68,7 +92,7 @@ namespace TISFAT_ZERO
 			if (pos < firstKF)
 			{
 				firstKF = pos;
-				StickFrame x = new StickFrame(((StickFrame)keyFrames[0]).sjoints, keyFrames[0].pos - 1);
+				StickFrame x = new StickFrame(((StickFrame)keyFrames[0]).Joints, keyFrames[0].pos - 1);
 
 				keyFrames.Insert(0, x);
 
