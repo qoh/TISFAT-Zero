@@ -16,7 +16,7 @@ namespace TISFAT_ZERO
         public static List<StickFigure> stickFigureList = new List<StickFigure>();
         public static StickFigure activeFigure;
         public static StickJoint selectedJoint = new StickJoint("null", new Point(0, 0), 0, Color.Transparent, Color.Transparent);
-        private bool draw; 
+        public bool draw; 
         #endregion
 
 		//Instantiate the class
@@ -147,7 +147,7 @@ namespace TISFAT_ZERO
 
         #region Graphics
         //This is called whenever the form is invalidated.
-        private void Canvas_Paint(object sender, PaintEventArgs e)
+        public void Canvas_Paint(object sender, PaintEventArgs e)
         {
             theCanvasGraphics = e.Graphics;
             theCanvasGraphics.Clear(Color.White);
@@ -163,6 +163,12 @@ namespace TISFAT_ZERO
             }
         }
 
+        private void drawTimer_Tick(object sender, EventArgs e)
+        {
+            if(!draw)
+                Refresh();
+        }
+
         /// <summary>
         /// Draws the graphics.
         /// </summary>
@@ -176,7 +182,7 @@ namespace TISFAT_ZERO
         {
             if (type == 0) //Line
             {
-                theCanvasGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                theCanvasGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 pen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
                 pen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
                 theCanvasGraphics.DrawLine(pen, two, one);

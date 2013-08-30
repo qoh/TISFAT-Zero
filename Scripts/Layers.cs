@@ -30,8 +30,9 @@ namespace TISFAT_ZERO
 
 		private StickFigure fig;
 		public int selectedFrame = -1;
+        private Canvas theCanvas;
 
-		public StickLayer(string nom, StickFigure figure)
+		public StickLayer(string nom, StickFigure figure, Canvas aTheCanvas)
 		{
 			fig = figure;
 
@@ -40,6 +41,8 @@ namespace TISFAT_ZERO
 			keyFrames = new List<KeyFrame>();
 			keyFrames.Add(new StickFrame(3));
 			keyFrames.Add(new StickFrame(5));
+
+            theCanvas = aTheCanvas;
 
 			name = nom; //nomnomnom
 		}

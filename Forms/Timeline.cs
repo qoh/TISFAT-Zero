@@ -32,7 +32,7 @@ namespace TISFAT_ZERO
             theCanvas = canvas;
 
 			layers = new List<Layer>();
-			for (int a = 0; a < 3; a++)
+			for (int a = 0; a < 1; a++)
 				addStickLayer("Layer " + a);
 			this.Refresh();
 			setFrame(3);
@@ -142,7 +142,7 @@ namespace TISFAT_ZERO
 			StickFigure x = theCanvas.createFigure();
 			x.int1 = layercount++;
 
-			StickLayer n = new StickLayer(name, x);
+			StickLayer n = new StickLayer(name, x, theCanvas);
 			layers.Add(n);
 
 			return n;

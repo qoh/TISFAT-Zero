@@ -62,6 +62,7 @@ namespace TISFAT_ZERO
             this.flipVerticallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.flipLegsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.flipArmsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.drawTimer = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -162,6 +163,12 @@ namespace TISFAT_ZERO
             this.flipArmsToolStripMenuItem.Text = "Flip Arms";
             this.flipArmsToolStripMenuItem.Click += new System.EventHandler(this.flipArmsToolStripMenuItem_Click);
             // 
+            // drawTimer
+            // 
+            this.drawTimer.Enabled = true;
+            this.drawTimer.Interval = 50;
+            this.drawTimer.Tick += new System.EventHandler(this.drawTimer_Tick);
+            // 
             // Canvas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -199,5 +206,6 @@ namespace TISFAT_ZERO
         private System.Windows.Forms.ToolStripMenuItem flipVerticallyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem flipLegsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem flipArmsToolStripMenuItem;
+        private Timer drawTimer;
     }
 }
