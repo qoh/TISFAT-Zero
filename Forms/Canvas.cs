@@ -24,6 +24,7 @@ namespace TISFAT_ZERO
 		{
 			mainForm = f;
 			theCanvas = this;
+			StickFigure.test = this;
 			theToolbox = t;
             //theCanvasGraphics = this.CreateGraphics();
             
@@ -161,12 +162,6 @@ namespace TISFAT_ZERO
 					x.DrawHandles();
                 }
             }
-        }
-
-        private void drawTimer_Tick(object sender, EventArgs e)
-        {
-            if(!draw)
-                Refresh();
         }
 
         /// <summary>

@@ -69,7 +69,6 @@ namespace TISFAT_ZERO
 			this.drawStickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.framesPanel = new System.Windows.Forms.Panel();
-			this.setFrameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnu_strip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -318,8 +317,7 @@ namespace TISFAT_ZERO
 			// debugToolStripMenuItem
 			// 
 			this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.drawStickToolStripMenuItem,
-            this.setFrameToolStripMenuItem});
+            this.drawStickToolStripMenuItem});
 			this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
 			this.debugToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
 			this.debugToolStripMenuItem.Text = "Debug";
@@ -327,8 +325,8 @@ namespace TISFAT_ZERO
 			// drawStickToolStripMenuItem
 			// 
 			this.drawStickToolStripMenuItem.Name = "drawStickToolStripMenuItem";
-			this.drawStickToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.drawStickToolStripMenuItem.Text = "Draw Stick";
+			this.drawStickToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+			this.drawStickToolStripMenuItem.Text = "Add Stick Layer";
 			this.drawStickToolStripMenuItem.Click += new System.EventHandler(this.drawStickToolStripMenuItem_Click);
 			// 
 			// splitContainer1
@@ -361,13 +359,6 @@ namespace TISFAT_ZERO
 			this.framesPanel.Name = "framesPanel";
 			this.framesPanel.Size = new System.Drawing.Size(1, 1);
 			this.framesPanel.TabIndex = 0;
-			// 
-			// setFrameToolStripMenuItem
-			// 
-			this.setFrameToolStripMenuItem.Name = "setFrameToolStripMenuItem";
-			this.setFrameToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.setFrameToolStripMenuItem.Text = "setFrame";
-			this.setFrameToolStripMenuItem.Click += new System.EventHandler(this.setFrameToolStripMenuItem_Click);
 			// 
 			// MainF
 			// 
@@ -431,8 +422,7 @@ namespace TISFAT_ZERO
         private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem drawStickToolStripMenuItem;
 		public System.Windows.Forms.SplitContainer splitContainer1;
-        private Panel framesPanel;
-		private ToolStripMenuItem setFrameToolStripMenuItem;
+		private Panel framesPanel;
     }
 }
 

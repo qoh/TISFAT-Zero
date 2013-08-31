@@ -133,8 +133,8 @@ namespace TISFAT_ZERO
 
         private void drawStickToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            StickFigure f = new StickFigure();
-            f.Draw(true);
+			tline.addStickLayer("LAYER NAME");
+			tline.Refresh();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -148,10 +148,5 @@ namespace TISFAT_ZERO
             this.Close();
         }
         #endregion
-
-		private void setFrameToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			tline.popupThingy();
-		}
 	}
 }

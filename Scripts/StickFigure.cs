@@ -210,6 +210,7 @@ namespace TISFAT_ZERO
         public bool drawHandles = true;
         public bool drawFigure = true;
 		public int int1 = -1, int2 = -1;
+		public static Canvas test;
 
         public StickJoint[] Joints = new StickJoint[12];
         /*
@@ -293,8 +294,6 @@ namespace TISFAT_ZERO
 
 			StickLayer currLayer = (StickLayer)Timeline.layers[int1];
 			((StickFrame)(currLayer.keyFrames[currLayer.selectedFrame])).Joints = this.Joints.ToArray();
-			Canvas.theCanvas.Invalidate();
-			int asdf = 523;
 		}
 
         public void flipArms()

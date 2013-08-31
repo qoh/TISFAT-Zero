@@ -23,6 +23,8 @@ namespace TISFAT_ZERO
 		public int layercount = 0;
 		public uint selectedFrame;
 		public int selectedLayer;
+
+		private bool mouseDown = false;
         #endregion
 
 		public Timeline(MainF m, Canvas canvas)
@@ -32,8 +34,10 @@ namespace TISFAT_ZERO
             theCanvas = canvas;
 
 			layers = new List<Layer>();
-			for (int a = 0; a < 1; a++)
+			for (int a = 0; a < 3; a++)
 				addStickLayer("Layer " + a);
+			selectedFrame = 3;
+			selectedLayer = 0;
 			this.Refresh();
 			setFrame(3);
 		}
@@ -41,12 +45,13 @@ namespace TISFAT_ZERO
 		private void Timeline_Paint(object sender, PaintEventArgs e)
 		{
 			#region Timeline Rendering
+
 			//Create the graphics object then clear to the background colour of the majortiy of frames (light gray)
             Graphics g = e.Graphics;
             g.Clear(Color.FromArgb(220, 220, 220));
 
 			//Create a black pen
-			Pen blk = new Pen(Color.SlateGray), bblk = new Pen(Color.Black);
+			Pen blk = new Pen(Color.FromArgb(140, 140, 140)), bblk = new Pen(Color.Black);
 
 			//Calculate how many frames need to be drawn and what the offset is
 			int frames = (mainForm.Width-80) / 9;
@@ -67,6 +72,8 @@ namespace TISFAT_ZERO
 				g.DrawLines(bblk, new Point[] { new Point(79, 16 * a - 1), new Point(79, 16 * a + 15), new Point(0, 16 * a + 15) });
 				g.DrawString(layers[a-1].name, fo, new SolidBrush(Color.Black), 1, 16 * a + 0.4f);
 			}
+
+			g.FillRectangle(new SolidBrush(Color.FromArgb(200, 200, 200)), new Rectangle(80, 16 * selectedLayer + 16, Width, 16));
 
 			//Draw the timeline frames
 			for (int a = offset; a - offset < frames; a++)
@@ -99,7 +106,9 @@ namespace TISFAT_ZERO
 			for (int a = 0, b = 15; a <= layers.Count; a++, b = 16 * a + 15)
 				g.DrawLine(blk, new Point(80, b), new Point(frames * 9 + 80, b));
 
-			#endregion x
+			#endregion Timeline Rendering
+
+			#region Layer Rendering
 
 			//Fill in keyframes and such
 			for (int a = 0; a < layers.Count; a++)
@@ -123,7 +132,7 @@ namespace TISFAT_ZERO
 					if (l.keyFrames[kind].pos == b + offset)
 					{
 						kind++;
-						x = Color.Yellow;
+						x = Color.Gold;
 					}
 
 					if (b < 0)
@@ -132,6 +141,15 @@ namespace TISFAT_ZERO
 					g.FillRectangle(new SolidBrush(x), b * 9 + 80, y, 8, 15);
 				}
 			}
+
+			int sFrameLoc = ((int)selectedFrame - offset) * 9 + 80;
+
+			if (selectedFrame >= offset && selectedFrame - offset < frames)
+			{
+				g.FillRectangle(new SolidBrush(Color.Red), sFrameLoc, selectedLayer * 16 + 16, 8, 15);
+			}
+
+			#endregion Layer Rendering
 
 			//Dispose of the pens (because apparently this is necessary)
 			blk.Dispose(); bblk.Dispose();
@@ -154,6 +172,7 @@ namespace TISFAT_ZERO
 				if(a != selectedLayer)
 					((StickLayer)layers[a]).doDisplay(pos, false);
 			((StickLayer)layers[selectedLayer]).doDisplay(pos);
+			theCanvas.Refresh();
 		}
 
 		public void setFrame()
@@ -162,12 +181,29 @@ namespace TISFAT_ZERO
 				if (a != selectedLayer)
 					((StickLayer)layers[a]).doDisplay(selectedFrame, false);
 			((StickLayer)layers[selectedLayer]).doDisplay(selectedFrame);
+			theCanvas.Refresh();
 		}
 
-		public void popupThingy()
+		private void Timeline_MouseDown(object sender, MouseEventArgs e)
 		{
-			testEnter f = new testEnter(this);
-			f.ShowDialog();
+			int x = e.X, y = e.Y;
+			if (x > 80)
+			{
+				if (y > 16)
+				{
+					selectedFrame = (uint)(x - 80) / 9;
+					if(y < layers.Count() * 16 + 16)
+						selectedLayer = (y - 16) / 16;
+
+					setFrame();
+					Refresh();
+				}
+			}
+		}
+
+		private void onFrameSelected(byte type)
+		{
+
 		}
 	}
 }

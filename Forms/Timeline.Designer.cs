@@ -42,20 +42,21 @@ namespace TISFAT_ZERO
 		/// </summary>
 		private void InitializeComponent()
 		{
-            this.SuspendLayout();
-            // 
-            // Timeline
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1, 1);
-            this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.MaximumSize = new System.Drawing.Size(0, 0);
-            this.Name = "Timeline";
-            this.Text = "Timeline";
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Timeline_Paint);
-            this.ResumeLayout(false);
+			this.SuspendLayout();
+			// 
+			// Timeline
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.ClientSize = new System.Drawing.Size(1, 1);
+			this.DoubleBuffered = true;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+			this.Name = "Timeline";
+			this.Text = "Timeline";
+			this.Paint += new System.Windows.Forms.PaintEventHandler(this.Timeline_Paint);
+			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseDown);
+			this.ResumeLayout(false);
+
 		}
 
 		#endregion

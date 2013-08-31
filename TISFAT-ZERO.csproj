@@ -73,12 +73,6 @@
     <Compile Include="Forms\Preferences.Designer.cs">
       <DependentUpon>Preferences.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\testEnter.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\testEnter.Designer.cs">
-      <DependentUpon>testEnter.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Timeline.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -108,9 +102,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Preferences.resx">
       <DependentUpon>Preferences.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\testEnter.resx">
-      <DependentUpon>testEnter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Timeline.resx">
       <DependentUpon>Timeline.cs</DependentUpon>
