@@ -201,9 +201,24 @@ namespace TISFAT_ZERO
 			}
 		}
 
-		private void onFrameSelected(byte type)
+		private byte selectedFrameType()
 		{
 
+			StickLayer selLayer = (StickLayer)layers[selectedLayer];
+
+			foreach (KeyFrame x in selLayer.keyFrames)
+			{
+				if (((StickFrame)x).pos == selectedFrame)
+					return 1;
+			}
+
+			if (selectedFrame > selLayer.firstKF && selectedFrame < selLayer.lastKF)
+				return 2;
+
+			// 0: blank
+			// 1: Keyframe
+			// 2: Tween frame
+			return 0;
 		}
 	}
 }
