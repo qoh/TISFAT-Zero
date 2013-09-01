@@ -37,10 +37,11 @@ namespace TISFAT_ZERO
 			fig = figure;
 
 			firstKF = 3;
-			lastKF = 5;
+			lastKF = 10;
 			keyFrames = new List<KeyFrame>();
 			keyFrames.Add(new StickFrame(3));
-			keyFrames.Add(new StickFrame(5));
+			keyFrames.Add(new StickFrame(7));
+			keyFrames.Add(new StickFrame(10));
 
             theCanvas = aTheCanvas;
 
@@ -49,7 +50,7 @@ namespace TISFAT_ZERO
 
 		public void doDisplay(uint pos, bool current = true)
 		{
-			bool render = false; int x = -1;
+			bool render = false; int x = -1, start = -1, end = -1;
 
 			if (selectedFrame >= 0)
 			{
@@ -59,7 +60,6 @@ namespace TISFAT_ZERO
 					frm.Joints[a].ParentFigure = null;
 				}
 			}
-
 			
 
 			for (int a = 0; a < keyFrames.Count; a++)
@@ -70,6 +70,31 @@ namespace TISFAT_ZERO
 					render = true;
 					fig.Joints = ((StickFrame)keyFrames[a]).Joints;
 					break;
+				}
+				if (pos < keyFrames[a].pos)
+				{
+					end = a;
+					break;
+				}
+				else if (pos > keyFrames[a].pos)
+				{
+					start = a;
+				}
+			}
+			
+
+			if (!render)
+			{
+				if (pos > firstKF && pos < lastKF)
+				{
+					float percent = (float)(pos - firstKF) / (lastKF - firstKF);
+					StickFrame s = (StickFrame)keyFrames[start], e = (StickFrame)keyFrames[end];
+
+					for (int a = 0; a < 12; a++)
+					{
+						fig.Joints[a].Tween(s.Joints[a], e.Joints[a], percent);
+					}
+					render = true;
 				}
 			}
 
