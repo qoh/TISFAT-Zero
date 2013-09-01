@@ -34,7 +34,7 @@ namespace TISFAT_ZERO
             theCanvas = canvas;
 
 			layers = new List<Layer>();
-			for (int a = 0; a < 3; a++)
+			for (int a = 0; a < 1; a++)
 				addStickLayer("Layer " + a);
 			selectedFrame = 3;
 			selectedLayer = 0;
@@ -191,7 +191,7 @@ namespace TISFAT_ZERO
 			{
 				if (y > 16)
 				{
-					selectedFrame = (uint)(x - 80) / 9;
+                    selectedFrame = (uint)(x - 80) / 9 + (uint)mainForm.splitContainer1.Panel1.HorizontalScroll.Value / 9;
 					if(y < layers.Count() * 16 + 16)
 						selectedLayer = (y - 16) / 16;
 
@@ -203,22 +203,129 @@ namespace TISFAT_ZERO
 
 		private byte selectedFrameType()
 		{
+            StickLayer selLayer = (StickLayer)layers[selectedLayer];
 
-			StickLayer selLayer = (StickLayer)layers[selectedLayer];
+            if (selectedFrame == selLayer.firstKF)
+                return 2;
+            else if (selectedFrame == selLayer.lastKF)
+                return 3;
 
-			foreach (KeyFrame x in selLayer.keyFrames)
-			{
-				if (((StickFrame)x).pos == selectedFrame)
-					return 1;
-			}
+            foreach (KeyFrame x in selLayer.keyFrames)
+            {
+                if (((StickFrame)x).pos == selectedFrame)
+                    return 1;
+            }
 
-			if (selectedFrame > selLayer.firstKF && selectedFrame < selLayer.lastKF)
-				return 2;
+            if (selectedFrame > selLayer.firstKF && selectedFrame < selLayer.lastKF)
+                return 4;
 
-			// 0: blank
-			// 1: Keyframe
-			// 2: Tween frame
-			return 0;
+            // 0: blank
+            // 1: Keyframe
+            // 2: first keyframe
+            // 3: last keyframe
+            // 4: Tween frame
+            return 0;
+
 		}
+
+        private void cxt_Menu_Opening(object sender, CancelEventArgs e)
+        {
+            int frameType = selectedFrameType();
+
+            if (frameType == 0)
+            {
+                tst_insertKeyframe.Enabled = false;
+                tst_removeKeyframe.Enabled = false;
+                tst_setPosePrvKfrm.Enabled = false;
+                tst_setPoseNxtKfrm.Enabled = false;
+                tst_onionSkinning.Enabled = false;
+
+                tst_insertFrameset.Enabled = true;
+                tst_removeFrameset.Enabled = false;
+
+                tst_moveLayerUp.Enabled = true;
+                tst_moveLayerDown.Enabled = true;
+                tst_insertLayer.Enabled = true;
+                tst_removeLayer.Enabled = true;
+
+                tst_keyFrameAction.Enabled = false;
+
+                tst_hideLayer.Enabled = true;
+                tst_showLayer.Enabled = true;
+
+                tst_gotoFrame.Enabled = true;
+            }
+
+            else if (frameType == 1)
+            {
+                tst_insertKeyframe.Enabled = false;
+                tst_removeKeyframe.Enabled = true;
+                tst_setPosePrvKfrm.Enabled = true;
+                tst_setPoseNxtKfrm.Enabled = true;
+                tst_onionSkinning.Enabled = true;
+
+                tst_insertFrameset.Enabled = false;
+                tst_removeFrameset.Enabled = true;
+
+                tst_moveLayerUp.Enabled = true;
+                tst_moveLayerDown.Enabled = true;
+                tst_insertLayer.Enabled = true;
+                tst_removeLayer.Enabled = true;
+
+                tst_keyFrameAction.Enabled = true;
+
+                tst_hideLayer.Enabled = true;
+                tst_showLayer.Enabled = true;
+
+                tst_gotoFrame.Enabled = true;
+            }
+            else if (frameType == 2 | frameType == 3)
+            {
+                tst_insertKeyframe.Enabled = false;
+                tst_removeKeyframe.Enabled = false;
+                tst_setPosePrvKfrm.Enabled = true;
+                tst_setPoseNxtKfrm.Enabled = true;
+                tst_onionSkinning.Enabled = true;
+
+                tst_insertFrameset.Enabled = false;
+                tst_removeFrameset.Enabled = true;
+
+                tst_moveLayerUp.Enabled = true;
+                tst_moveLayerDown.Enabled = true;
+                tst_insertLayer.Enabled = true;
+                tst_removeLayer.Enabled = true;
+
+                tst_keyFrameAction.Enabled = true;
+
+                tst_hideLayer.Enabled = true;
+                tst_showLayer.Enabled = true;
+
+                tst_gotoFrame.Enabled = true;
+            }
+
+            else if (frameType == 4)
+            {
+                tst_insertKeyframe.Enabled = true;
+                tst_removeKeyframe.Enabled = false;
+                tst_setPosePrvKfrm.Enabled = false;
+                tst_setPoseNxtKfrm.Enabled = false;
+                tst_onionSkinning.Enabled = false;
+
+                tst_insertFrameset.Enabled = false;
+                tst_removeFrameset.Enabled = true;
+
+                tst_moveLayerUp.Enabled = true;
+                tst_moveLayerDown.Enabled = true;
+                tst_insertLayer.Enabled = true;
+                tst_removeLayer.Enabled = true;
+
+                tst_keyFrameAction.Enabled = false;
+
+                tst_hideLayer.Enabled = true;
+                tst_showLayer.Enabled = true;
+
+                tst_gotoFrame.Enabled = true;
+            }
+        }
 	}
 }
