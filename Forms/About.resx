@@ -120,6 +120,15 @@
   <data name="label2.Text" xml:space="preserve">
     <value>TISFAT:Zero is an updated version of Noshbar's old program TISFAT, rewritten from the ground up. The goal of this program is to give users an amazing animation experience, with a much more stable platform and robust codebase.</value>
   </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>A Special thanks goes to the following members of The Sektorz community for showing their support by donating:
+
+Challa
+CANDYdisturber
+
+An extra special thanks goes to CANDYdisturber for creating the icons that makes TISFAT look so nice
+Thanks, guys!</value>
+  </data>
   <data name="label4.Text" xml:space="preserve">
     <value>Meet the devlopers:
 

@@ -74,7 +74,6 @@
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.Color.Gainsboro;
             this.splitContainer1.Panel1.Controls.Add(this.pnl_About);
-            this.splitContainer1.Panel1.Controls.Add(this.pnl_Thanks);
             this.splitContainer1.Panel1.Controls.Add(this.pnl_Developers);
             this.splitContainer1.Panel1.Padding = new System.Windows.Forms.Padding(1);
             // 
@@ -90,6 +89,7 @@
             // pnl_About
             // 
             this.pnl_About.Controls.Add(this.label2);
+            this.pnl_About.Controls.Add(this.pnl_Thanks);
             this.pnl_About.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnl_About.Location = new System.Drawing.Point(1, 1);
             this.pnl_About.Name = "pnl_About";
@@ -110,7 +110,7 @@
             // 
             this.pnl_Thanks.Controls.Add(this.label3);
             this.pnl_Thanks.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnl_Thanks.Location = new System.Drawing.Point(1, 1);
+            this.pnl_Thanks.Location = new System.Drawing.Point(0, 0);
             this.pnl_Thanks.Name = "pnl_Thanks";
             this.pnl_Thanks.Size = new System.Drawing.Size(236, 173);
             this.pnl_Thanks.TabIndex = 1;
@@ -121,8 +121,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(233, 164);
             this.label3.TabIndex = 0;
-            this.label3.Text = "A Special thanks goes to the following members of The Sektorz community for showi" +
-    "ng their support by donating:\r\n\r\nChalla\r\nCANDYdisturber\r\n";
+            this.label3.Text = resources.GetString("label3.Text");
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pnl_Developers
