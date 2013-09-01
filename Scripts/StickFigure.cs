@@ -224,6 +224,8 @@ namespace TISFAT_ZERO
         public bool drawFigure = true;
 		public int int1 = -1, int2 = -1;
 		public static Canvas test;
+        public bool isDrawn = false;
+        public bool isTweenFigure = false;
 
         public StickJoint[] Joints = new StickJoint[12];
         /*

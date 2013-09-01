@@ -24,6 +24,8 @@ namespace TISFAT_ZERO
 
         private int[] fx = new int[12];
         private int[] fy = new int[12];
+
+        public StickFigure tweenFig;
         #endregion
 
 		//Instantiate the class
@@ -196,10 +198,17 @@ namespace TISFAT_ZERO
             {
                 StickFigure x = stickFigureList[i];
 
-                if (x.drawFigure)
+                if (!x.isTweenFigure)
+                {
+                    if (x.drawFigure)
+                    {
+                        x.Draw(false);
+                        x.DrawHandles();
+                    }
+                }
+                else if (x.isTweenFigure & x.isDrawn)
                 {
                     x.Draw(false);
-					x.DrawHandles();
                 }
             }
         }
@@ -302,6 +311,13 @@ namespace TISFAT_ZERO
             activeFigure.flipLegs();
         } 
         #endregion
+
+        private void Canvas_Load(object sender, EventArgs e)
+        {
+            tweenFig = new StickFigure();
+            tweenFig.drawHandles = false;
+            tweenFig.isTweenFigure = true;
+        }
 
 	}
 }

@@ -69,6 +69,8 @@ namespace TISFAT_ZERO
 					x = a;
 					render = true;
 					fig.Joints = ((StickFrame)keyFrames[a]).Joints;
+                    if(!(theCanvas.tweenFig == null))
+                        theCanvas.tweenFig.isDrawn = false;
 					break;
 				}
 				if (pos < keyFrames[a].pos)
@@ -85,17 +87,22 @@ namespace TISFAT_ZERO
 
 			if (!render)
 			{
-				if (pos > firstKF && pos < lastKF)
-				{
-					float percent = (float)(pos - firstKF) / (lastKF - firstKF);
-					StickFrame s = (StickFrame)keyFrames[start], e = (StickFrame)keyFrames[end];
+                if (pos > firstKF && pos < lastKF)
+                {
+                    StickFrame s = (StickFrame)keyFrames[start], e = (StickFrame)keyFrames[end];
+                    float percent = (float)(pos - s.pos) / (e.pos - s.pos);
+                    theCanvas.tweenFig.isDrawn = true;
 
-					for (int a = 0; a < 12; a++)
-					{
-						fig.Joints[a].Tween(s.Joints[a], e.Joints[a], percent);
-					}
-					render = true;
-				}
+                    for (int a = 0; a < 12; a++)
+                    {
+                        theCanvas.tweenFig.Joints[a].location = s.Joints[a].location;
+                        theCanvas.tweenFig.Joints[a].Tween(s.Joints[a], e.Joints[a], percent);
+                    }
+                }
+                else
+                {
+                    theCanvas.tweenFig.isDrawn = false;
+                }
 			}
 
 			fig.drawFigure = render;

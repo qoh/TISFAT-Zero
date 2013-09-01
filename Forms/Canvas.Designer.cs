@@ -173,6 +173,7 @@ namespace TISFAT_ZERO
             this.Name = "Canvas";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Canvas";
+            this.Load += new System.EventHandler(this.Canvas_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
