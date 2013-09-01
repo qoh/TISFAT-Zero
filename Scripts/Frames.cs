@@ -17,10 +17,29 @@ namespace TISFAT_ZERO
         public StickFrame(StickJoint[] ps, uint po)
         {
 			pos = po;
-            Joints = ps;
+            Joints[0] = new StickJoint("Neck", ps[0].location, 60, Color.Black, Color.Blue, 0, 0, true, Joints[1], false);
+            Joints[1] = new StickJoint("Shoulder", ps[1].location, 12, Color.Black, Color.Yellow, 0, 0, false, Joints[0]);
+            Joints[2] = new StickJoint("RElbow", ps[2].location, 12, Color.Black, Color.Red, 0, 0, false, Joints[1]);
+            Joints[3] = new StickJoint("RHand", ps[3].location, 12, Color.Black, Color.Red, 0, 0, false, Joints[2]);
+            Joints[4] = new StickJoint("LElbow", ps[4].location, 12, Color.Black, Color.Blue, 0, 0, false, Joints[1]);
+            Joints[5] = new StickJoint("LHand", ps[5].location, 12, Color.Black, Color.Blue, 0, 0, false, Joints[4]);
+            Joints[6] = new StickJoint("Hip", ps[6].location, 12, Color.Black, Color.Yellow, 0, 0, false, Joints[1]);
+            Joints[7] = new StickJoint("LKnee", ps[7].location, 12, Color.Black, Color.Blue, 0, 0, false, Joints[6]);
+            Joints[8] = new StickJoint("LFoot", ps[8].location, 12, Color.Black, Color.Blue, 0, 0, false, Joints[7]);
+            Joints[9] = new StickJoint("RKnee", ps[9].location, 12, Color.Black, Color.Red, 0, 0, false, Joints[6]);
+            Joints[10] = new StickJoint("RFoot", ps[10].location, 12, Color.Black, Color.Red, 0, 0, false, Joints[9]);
+            Joints[11] = new StickJoint("Head", ps[11].location, 13, Color.Black, Color.Yellow, 0, 1, true, Joints[0]);
+
+            for (int i = 0; i < Joints.Length; i++)
+                if (Joints[i].parent != null)
+                    Joints[i].CalcLength(null);
+
+            for (int i = 0; i < Joints.Length; i++)
+                if (Joints[i].parent != null)
+                    Joints[i].parent.children.Add(Joints[i]);
         }
 
-		public StickFrame(StickFrame old)
+        public StickFrame(StickFrame old)
 		{
 			pos = old.pos;
 			Joints = old.Joints;

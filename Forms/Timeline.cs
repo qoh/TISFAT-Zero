@@ -23,6 +23,8 @@ namespace TISFAT_ZERO
 		public int layercount = 0;
 		public uint selectedFrame;
 		public int selectedLayer;
+        public byte selectedType;
+        public KeyFrame selectedKeyFrame;
 
 		private bool mouseDown = false;
         #endregion
@@ -166,7 +168,7 @@ namespace TISFAT_ZERO
             setFrame(n.firstKF);
 			return n;
 		}
-
+        //back to sleep with me lolk
 		public void setFrame(uint pos)
 		{
 			for (int a = 0; a < layers.Count; a++)
@@ -197,6 +199,9 @@ namespace TISFAT_ZERO
 						selectedLayer = (y - 16) / 16;
 
 					setFrame();
+                    selectedType = selectedFrameType();
+                    if (e.Button == MouseButtons.Left)
+                        mouseDown = true;
 					Refresh();
 				}
 			}
@@ -207,16 +212,26 @@ namespace TISFAT_ZERO
             StickLayer selLayer = (StickLayer)layers[selectedLayer];
 
             if (selectedFrame == selLayer.firstKF)
+            {
+                selectedKeyFrame = selLayer.keyFrames[0];
                 return 2;
+            }
             else if (selectedFrame == selLayer.lastKF)
+            {
+                selectedKeyFrame = selLayer.keyFrames[selLayer.keyFrames.Count - 1];
                 return 3;
-
+            }
+            
             foreach (KeyFrame x in selLayer.keyFrames)
             {
                 if (((StickFrame)x).pos == selectedFrame)
+                {
+                    selectedKeyFrame = x;
                     return 1;
+                }
             }
 
+            selectedKeyFrame = null;
             if (selectedFrame > selLayer.firstKF && selectedFrame < selLayer.lastKF)
                 return 4;
 
@@ -327,6 +342,83 @@ namespace TISFAT_ZERO
 
                 tst_gotoFrame.Enabled = true;
             }
+        }
+
+        private void cxt_Menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            string name = e.ClickedItem.Name;
+
+            switch (name)
+            {
+                case "tst_insertKeyframe":
+                    ((StickLayer)layers[selectedLayer]).insertKeyFrame(selectedFrame);
+                    Refresh();
+                    break;
+
+                default:
+                    break;
+                    //implement other shiz here
+            }
+        }
+
+        private void Timeline_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!mouseDown)
+                return;
+
+            int x = e.X;
+
+            uint newSelected = (uint)(x - 80) / 9 + (uint)mainForm.splitContainer1.Panel1.HorizontalScroll.Value / 9;
+            int diff = (int)newSelected - (int)selectedFrame;
+
+            if (selectedFrame - newSelected == 0 || selectedType == 0)
+                return;
+
+            StickLayer l = (StickLayer)layers[selectedLayer];
+
+            if (selectedType > 0 && selectedType < 4)
+            {
+
+                if (selectedKeyFrame.pos == l.lastKF)
+                    l.lastKF = newSelected;
+                else if (selectedKeyFrame.pos == l.firstKF)
+                    l.firstKF = newSelected;
+                    
+                selectedKeyFrame.pos = newSelected;
+                selectedFrame = newSelected;
+                Refresh();
+                return;
+            }
+            else if (selectedType == 4)
+            {
+                if(diff < 0 && l.firstKF < -1 * diff)
+                {
+                    diff = -1 * (int)l.firstKF; //To make sure you can't make things go negative
+                }
+                if (diff > 0)
+                {
+                    uint d = (uint)diff;
+                    l.firstKF += d;
+                    l.lastKF += d;
+                    for (int a = 0; a < l.keyFrames.Count; a++)
+                        ((StickFrame)l.keyFrames[a]).pos += d;
+                }
+                else
+                {
+                    uint d = (uint)(-1 * diff);
+                    l.firstKF -= d;
+                    l.lastKF -= d;
+                    for (int a = 0; a < l.keyFrames.Count; a++)
+                        ((StickFrame)l.keyFrames[a]).pos -= d;
+                }
+                selectedFrame = newSelected;
+                Refresh();
+            }
+        }
+
+        private void Timeline_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
         }
 	}
 }

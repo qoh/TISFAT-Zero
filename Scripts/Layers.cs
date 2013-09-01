@@ -136,7 +136,7 @@ namespace TISFAT_ZERO
 			if (pos < firstKF)
 			{
 				firstKF = pos;
-				StickFrame x = new StickFrame(((StickFrame)keyFrames[0]).Joints, keyFrames[0].pos - 1);
+				StickFrame x = new StickFrame(((StickFrame)keyFrames[0]).Joints,pos);
 
 				keyFrames.Insert(0, x);
 
@@ -147,7 +147,7 @@ namespace TISFAT_ZERO
 				lastKF = pos;
 
 				KeyFrame x = keyFrames[keyFrames.Count - 1];
-				x.pos = keyFrames[keyFrames.Count - 1].pos + 1;
+				x.pos = pos;
 
 				keyFrames.Add(x);
 
@@ -158,23 +158,27 @@ namespace TISFAT_ZERO
 			int c = 0;
 
 			//Look through the list for the nearest keyframe (as we want to retain all it's properties except for the position in the timeline)
-			foreach (StickFrame k in keyFrames)
+			for(int a = 0; a < keyFrames.Count; a++)
 			{
+                StickFrame k = (StickFrame)keyFrames[a];
 				if (pos < k.pos)
-				{
-					n = new StickFrame(k);
-					n.pos = pos;
+                {
+                    n = new StickFrame(((StickFrame)keyFrames[c - 1]).Joints, pos);
+                    n.pos = pos;
+                    break;
 				}
+                else if(pos > k.pos)
+                {
+                    c++;
+                }
 				else if (pos == k.pos) // We can't insert a frame in the same spot as another!
 					return false;
 
-				c++;
 			}
 
-			keyFrames.Insert(c - 1, n);
+			keyFrames.Insert(c, n);
 
 			return true;
 		}
-
 	}
 }

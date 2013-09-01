@@ -311,7 +311,7 @@ namespace TISFAT_ZERO
             this.mnu_strip1.Location = new System.Drawing.Point(0, 0);
             this.mnu_strip1.Name = "mnu_strip1";
             this.mnu_strip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.mnu_strip1.Size = new System.Drawing.Size(642, 24);
+            this.mnu_strip1.Size = new System.Drawing.Size(664, 24);
             this.mnu_strip1.TabIndex = 0;
             this.mnu_strip1.Text = "menuStrip1";
             // 
@@ -351,8 +351,8 @@ namespace TISFAT_ZERO
             // 
             this.splitContainer1.Panel2.AutoScroll = true;
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.LightGray;
-            this.splitContainer1.Size = new System.Drawing.Size(642, 510);
-            this.splitContainer1.SplitterDistance = 135;
+            this.splitContainer1.Size = new System.Drawing.Size(664, 487);
+            this.splitContainer1.SplitterDistance = 104;
             this.splitContainer1.TabIndex = 1;
             this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
             // 
@@ -376,7 +376,7 @@ namespace TISFAT_ZERO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(642, 534);
+            this.ClientSize = new System.Drawing.Size(664, 511);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.mnu_strip1);
             this.MainMenuStrip = this.mnu_strip1;

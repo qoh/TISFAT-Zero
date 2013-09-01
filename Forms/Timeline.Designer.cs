@@ -58,13 +58,13 @@ namespace TISFAT_ZERO
             this.tst_insertLayer = new System.Windows.Forms.ToolStripMenuItem();
             this.tst_removeLayer = new System.Windows.Forms.ToolStripMenuItem();
             this.tst_separator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tst_keyFrameAction = new System.Windows.Forms.ToolStripMenuItem();
             this.tst_separator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tst_hideLayer = new System.Windows.Forms.ToolStripMenuItem();
             this.tst_showLayer = new System.Windows.Forms.ToolStripMenuItem();
             this.tst_separator5 = new System.Windows.Forms.ToolStripSeparator();
             this.tst_gotoFrame = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.cxt_Menu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -95,6 +95,7 @@ namespace TISFAT_ZERO
             this.cxt_Menu.Name = "cxt_Menu";
             this.cxt_Menu.Size = new System.Drawing.Size(234, 386);
             this.cxt_Menu.Opening += new System.ComponentModel.CancelEventHandler(this.cxt_Menu_Opening);
+            this.cxt_Menu.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.cxt_Menu_ItemClicked);
             // 
             // tst_insertKeyframe
             // 
@@ -188,6 +189,13 @@ namespace TISFAT_ZERO
             this.tst_separator3.Name = "tst_separator3";
             this.tst_separator3.Size = new System.Drawing.Size(230, 6);
             // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Enabled = false;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(233, 22);
+            this.toolStripMenuItem1.Text = "Keyframe Sound..";
+            // 
             // tst_keyFrameAction
             // 
             this.tst_keyFrameAction.Enabled = false;
@@ -226,13 +234,6 @@ namespace TISFAT_ZERO
             this.tst_gotoFrame.Size = new System.Drawing.Size(233, 22);
             this.tst_gotoFrame.Text = "Goto frame";
             // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Enabled = false;
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(233, 22);
-            this.toolStripMenuItem1.Text = "Keyframe Sound..";
-            // 
             // Timeline
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -245,6 +246,8 @@ namespace TISFAT_ZERO
             this.Text = "Timeline";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Timeline_Paint);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseMove);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseUp);
             this.cxt_Menu.ResumeLayout(false);
             this.ResumeLayout(false);
 
