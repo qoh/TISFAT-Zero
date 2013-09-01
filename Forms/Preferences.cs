@@ -16,11 +16,6 @@ namespace TISFAT_ZERO
 			InitializeComponent();
 		}
 
-		private void button1_Click(object sender, EventArgs e)
-		{
-			this.Close();
-		}
-
 		/* -Conf.Prop-
 		 * Default Save Location
 		 * Default Canvas Size X,Y
@@ -29,33 +24,6 @@ namespace TISFAT_ZERO
 		 */
 
 		//TODO: Fix all this crap.
-		private void initSettings()
-		{
-			if (Directory.Exists(folderPath))
-			{
-				if (File.Exists(folderPath + "conf.prop"))
-				{
-					string[] contents = File.ReadAllLines(folderPath + "conf.prop");
-
-					txt_defaultSaveLoc.Text = contents[0];
-					string[] canvasSize = contents[1].Split(',');
-
-					txt_canvasX.Text = canvasSize[0];
-					txt_canvasY.Text = canvasSize[1];
-					return;
-				}
-				else
-				{
-					createNewConfig();
-					initSettings();
-				}
-			}
-			else
-			{
-				createNewConfig();
-				initSettings();
-			}
-		}
 
 		private void createNewConfig()
 		{
@@ -79,15 +47,8 @@ namespace TISFAT_ZERO
 			}
 		}
 
-		private void btn_browseLocation_Click(object sender, EventArgs e)
-		{
-			dlg_folderBrowser.ShowDialog();
-			txt_defaultSaveLoc.Text = dlg_folderBrowser.SelectedPath;
-		}
-
 		private void Preferences_Load(object sender, EventArgs e)
 		{
-			initSettings();
 		}
 	}
 }

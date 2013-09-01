@@ -148,5 +148,10 @@ namespace TISFAT_ZERO
             this.Close();
         }
         #endregion
+
+        private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
+        {
+            lbl_selectionDummy.Focus();
+        }
 	}
 }
