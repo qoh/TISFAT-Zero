@@ -29,8 +29,13 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -39,16 +44,16 @@
             this.lbl_selectedJoint = new System.Windows.Forms.Label();
             this.lbl_yPos = new System.Windows.Forms.Label();
             this.lbl_xPos = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.lbl_selectionDummy = new System.Windows.Forms.Label();
+            this.lbl_frameCount = new System.Windows.Forms.Label();
+            this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
+            this.lbl_FPS = new System.Windows.Forms.Label();
+            this.btn_playPause = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -68,109 +73,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(164, 356);
             this.panel1.TabIndex = 2;
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.SystemColors.Control;
-            this.panel2.Controls.Add(this.tabControl1);
-            this.panel2.Controls.Add(this.label1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(164, 140);
-            this.panel2.TabIndex = 1;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(195, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(45, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Toolbox";
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(164, 140);
-            this.tabControl1.TabIndex = 1;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.BackColor = System.Drawing.Color.LightGray;
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(156, 114);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Control";
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.BackColor = System.Drawing.Color.LightGray;
-            this.tabPage2.Controls.Add(this.lbl_stickFigures);
-            this.tabPage2.Controls.Add(this.lbl_jointLength);
-            this.tabPage2.Controls.Add(this.lbl_selectedJoint);
-            this.tabPage2.Controls.Add(this.lbl_yPos);
-            this.tabPage2.Controls.Add(this.lbl_xPos);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(156, 114);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Debug";
-            // 
-            // lbl_stickFigures
-            // 
-            this.lbl_stickFigures.AutoSize = true;
-            this.lbl_stickFigures.Location = new System.Drawing.Point(3, 65);
-            this.lbl_stickFigures.Name = "lbl_stickFigures";
-            this.lbl_stickFigures.Size = new System.Drawing.Size(85, 13);
-            this.lbl_stickFigures.TabIndex = 9;
-            this.lbl_stickFigures.Text = "StickFigure List: ";
-            // 
-            // lbl_jointLength
-            // 
-            this.lbl_jointLength.AutoSize = true;
-            this.lbl_jointLength.Location = new System.Drawing.Point(3, 52);
-            this.lbl_jointLength.Name = "lbl_jointLength";
-            this.lbl_jointLength.Size = new System.Drawing.Size(71, 13);
-            this.lbl_jointLength.TabIndex = 8;
-            this.lbl_jointLength.Text = "Joint Length: ";
-            // 
-            // lbl_selectedJoint
-            // 
-            this.lbl_selectedJoint.AutoSize = true;
-            this.lbl_selectedJoint.Location = new System.Drawing.Point(3, 39);
-            this.lbl_selectedJoint.Name = "lbl_selectedJoint";
-            this.lbl_selectedJoint.Size = new System.Drawing.Size(80, 13);
-            this.lbl_selectedJoint.TabIndex = 7;
-            this.lbl_selectedJoint.Text = "Selected Joint: ";
-            // 
-            // lbl_yPos
-            // 
-            this.lbl_yPos.AutoSize = true;
-            this.lbl_yPos.Location = new System.Drawing.Point(3, 17);
-            this.lbl_yPos.Name = "lbl_yPos";
-            this.lbl_yPos.Size = new System.Drawing.Size(47, 13);
-            this.lbl_yPos.TabIndex = 6;
-            this.lbl_yPos.Text = "Y Pos: 0";
-            // 
-            // lbl_xPos
-            // 
-            this.lbl_xPos.AutoSize = true;
-            this.lbl_xPos.Location = new System.Drawing.Point(3, 4);
-            this.lbl_xPos.Name = "lbl_xPos";
-            this.lbl_xPos.Size = new System.Drawing.Size(47, 13);
-            this.lbl_xPos.TabIndex = 5;
-            this.lbl_xPos.Text = "X Pos: 0";
             // 
             // button5
             // 
@@ -268,6 +170,113 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.button1_MouseClick);
             // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.SystemColors.Control;
+            this.panel2.Controls.Add(this.tabControl1);
+            this.panel2.Controls.Add(this.label1);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(164, 140);
+            this.panel2.TabIndex = 1;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(164, 140);
+            this.tabControl1.TabIndex = 1;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.BackColor = System.Drawing.Color.LightGray;
+            this.tabPage1.Controls.Add(this.btn_playPause);
+            this.tabPage1.Controls.Add(this.lbl_FPS);
+            this.tabPage1.Controls.Add(this.maskedTextBox1);
+            this.tabPage1.Controls.Add(this.lbl_frameCount);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(156, 114);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Control";
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.BackColor = System.Drawing.Color.LightGray;
+            this.tabPage2.Controls.Add(this.lbl_stickFigures);
+            this.tabPage2.Controls.Add(this.lbl_jointLength);
+            this.tabPage2.Controls.Add(this.lbl_selectedJoint);
+            this.tabPage2.Controls.Add(this.lbl_yPos);
+            this.tabPage2.Controls.Add(this.lbl_xPos);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(156, 114);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Debug";
+            // 
+            // lbl_stickFigures
+            // 
+            this.lbl_stickFigures.AutoSize = true;
+            this.lbl_stickFigures.Location = new System.Drawing.Point(3, 65);
+            this.lbl_stickFigures.Name = "lbl_stickFigures";
+            this.lbl_stickFigures.Size = new System.Drawing.Size(85, 13);
+            this.lbl_stickFigures.TabIndex = 9;
+            this.lbl_stickFigures.Text = "StickFigure List: ";
+            // 
+            // lbl_jointLength
+            // 
+            this.lbl_jointLength.AutoSize = true;
+            this.lbl_jointLength.Location = new System.Drawing.Point(3, 52);
+            this.lbl_jointLength.Name = "lbl_jointLength";
+            this.lbl_jointLength.Size = new System.Drawing.Size(71, 13);
+            this.lbl_jointLength.TabIndex = 8;
+            this.lbl_jointLength.Text = "Joint Length: ";
+            // 
+            // lbl_selectedJoint
+            // 
+            this.lbl_selectedJoint.AutoSize = true;
+            this.lbl_selectedJoint.Location = new System.Drawing.Point(3, 39);
+            this.lbl_selectedJoint.Name = "lbl_selectedJoint";
+            this.lbl_selectedJoint.Size = new System.Drawing.Size(80, 13);
+            this.lbl_selectedJoint.TabIndex = 7;
+            this.lbl_selectedJoint.Text = "Selected Joint: ";
+            // 
+            // lbl_yPos
+            // 
+            this.lbl_yPos.AutoSize = true;
+            this.lbl_yPos.Location = new System.Drawing.Point(3, 17);
+            this.lbl_yPos.Name = "lbl_yPos";
+            this.lbl_yPos.Size = new System.Drawing.Size(47, 13);
+            this.lbl_yPos.TabIndex = 6;
+            this.lbl_yPos.Text = "Y Pos: 0";
+            // 
+            // lbl_xPos
+            // 
+            this.lbl_xPos.AutoSize = true;
+            this.lbl_xPos.Location = new System.Drawing.Point(3, 4);
+            this.lbl_xPos.Name = "lbl_xPos";
+            this.lbl_xPos.Size = new System.Drawing.Size(47, 13);
+            this.lbl_xPos.TabIndex = 5;
+            this.lbl_xPos.Text = "X Pos: 0";
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(195, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(45, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Toolbox";
+            // 
             // lbl_selectionDummy
             // 
             this.lbl_selectionDummy.AutoSize = true;
@@ -275,6 +284,44 @@
             this.lbl_selectionDummy.Name = "lbl_selectionDummy";
             this.lbl_selectionDummy.Size = new System.Drawing.Size(0, 13);
             this.lbl_selectionDummy.TabIndex = 19;
+            // 
+            // lbl_frameCount
+            // 
+            this.lbl_frameCount.AutoSize = true;
+            this.lbl_frameCount.Location = new System.Drawing.Point(43, 7);
+            this.lbl_frameCount.Name = "lbl_frameCount";
+            this.lbl_frameCount.Size = new System.Drawing.Size(70, 13);
+            this.lbl_frameCount.TabIndex = 0;
+            this.lbl_frameCount.Text = "Frame Count:";
+            // 
+            // maskedTextBox1
+            // 
+            this.maskedTextBox1.Location = new System.Drawing.Point(83, 29);
+            this.maskedTextBox1.Mask = "00";
+            this.maskedTextBox1.Name = "maskedTextBox1";
+            this.maskedTextBox1.Size = new System.Drawing.Size(26, 20);
+            this.maskedTextBox1.TabIndex = 1;
+            this.maskedTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // lbl_FPS
+            // 
+            this.lbl_FPS.AutoSize = true;
+            this.lbl_FPS.Location = new System.Drawing.Point(47, 32);
+            this.lbl_FPS.Name = "lbl_FPS";
+            this.lbl_FPS.Size = new System.Drawing.Size(30, 13);
+            this.lbl_FPS.TabIndex = 2;
+            this.lbl_FPS.Text = "FPS:";
+            // 
+            // btn_playPause
+            // 
+            this.btn_playPause.Font = new System.Drawing.Font("Lucida Sans", 8.25F);
+            this.btn_playPause.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
+            this.btn_playPause.Location = new System.Drawing.Point(41, 85);
+            this.btn_playPause.Name = "btn_playPause";
+            this.btn_playPause.Size = new System.Drawing.Size(75, 23);
+            this.btn_playPause.TabIndex = 3;
+            this.btn_playPause.Text = "Play";
+            this.btn_playPause.UseVisualStyleBackColor = true;
             // 
             // Toolbox
             // 
@@ -292,6 +339,8 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.ResumeLayout(false);
@@ -318,5 +367,9 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label lbl_selectionDummy;
+        private System.Windows.Forms.Label lbl_frameCount;
+        private System.Windows.Forms.Button btn_playPause;
+        private System.Windows.Forms.Label lbl_FPS;
+        private System.Windows.Forms.MaskedTextBox maskedTextBox1;
     }
 }
