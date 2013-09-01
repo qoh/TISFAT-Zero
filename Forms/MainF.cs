@@ -35,6 +35,9 @@ namespace TISFAT_ZERO
             t.Show();
 
             Canvas f = new Canvas(this, t);
+            f.Size = Properties.User.Default.CanvasSize;
+            f.BackColor = Properties.User.Default.CanvasColor;
+
             f.TopLevel = false;
             f.Parent = this.splitContainer1.Panel2;
             f.StartPosition = FormStartPosition.Manual;
@@ -127,8 +130,8 @@ namespace TISFAT_ZERO
 
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //Preferences f = new Preferences();
-            //f.ShowDialog();
+            Preferences f = new Preferences();
+            f.ShowDialog();
         }
 
         private void drawStickToolStripMenuItem_Click(object sender, EventArgs e)

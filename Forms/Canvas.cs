@@ -151,7 +151,7 @@ namespace TISFAT_ZERO
         public void Canvas_Paint(object sender, PaintEventArgs e)
         {
             theCanvasGraphics = e.Graphics;
-            theCanvasGraphics.Clear(Color.White);
+            theCanvasGraphics.Clear(this.BackColor);
             for (int i = 0; i < stickFigureList.Count; i++)
             {
                 StickFigure x = stickFigureList[i];
