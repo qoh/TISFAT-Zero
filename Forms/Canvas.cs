@@ -16,7 +16,14 @@ namespace TISFAT_ZERO
         public static List<StickFigure> stickFigureList = new List<StickFigure>();
         public static StickFigure activeFigure;
         public static StickJoint selectedJoint = new StickJoint("null", new Point(0, 0), 0, Color.Transparent, Color.Transparent);
-        public bool draw; 
+        public bool draw;
+
+        public bool mousemoved;
+        private int ox;
+        private int oy;
+
+        private int[] fx = new int[12];
+        private int[] fy = new int[12];
         #endregion
 
 		//Instantiate the class
@@ -40,7 +47,7 @@ namespace TISFAT_ZERO
             theToolbox.lbl_xPos.Text = "X Pos: " + e.X.ToString();
             theToolbox.lbl_yPos.Text = "Y Pos: " + e.Y.ToString();
 
-            if (draw)
+            if (draw & !(e.Button == MouseButtons.Right))
             {
                 if (!(selectedJoint.name == "null"))
                 {
@@ -60,6 +67,19 @@ namespace TISFAT_ZERO
                     }
                 }
             }
+            else if (draw & e.Button == MouseButtons.Right)
+            {
+                mousemoved = true;
+
+                for (int i = 0; i < activeFigure.Joints.Length; i++)
+                {
+                    activeFigure.Joints[i].location.X = fx[i] + (e.X - ox);
+                    activeFigure.Joints[i].location.Y = fy[i] + (e.Y - oy);
+                }
+
+                Refresh();
+            }
+
             for (int i = 0; i < stickFigureList.Count; i++)
             {
 				if (stickFigureList[i].getPointAt(new Point(e.X, e.Y), 4) != -1 && stickFigureList[i].drawHandles)
@@ -126,6 +146,13 @@ namespace TISFAT_ZERO
             }
             if (e.Button == MouseButtons.Right & !(e.Button == MouseButtons.Left))
             {
+                ox = e.X;
+                oy = e.Y;
+                for (int i = 0; i < activeFigure.Joints.Length; i++)
+                {
+                    fx[i] = activeFigure.Joints[i].location.X;
+                    fy[i] = activeFigure.Joints[i].location.Y;
+                }
 
                 draw = true;
             }
@@ -141,6 +168,11 @@ namespace TISFAT_ZERO
             }
             if (e.Button == MouseButtons.Right)
             {
+                if (!mousemoved)
+                {
+                    contextMenuStrip1.Show(new Point(e.X + contextMenuStrip1.Height, e.Y + contextMenuStrip1.Width));
+                }
+                mousemoved = false;
                 draw = false;
             }
         } 
@@ -150,6 +182,14 @@ namespace TISFAT_ZERO
         //This is called whenever the form is invalidated.
         public void Canvas_Paint(object sender, PaintEventArgs e)
         {
+            for (int i = 0; i < stickFigureList.Count; i++)
+            {
+                if (stickFigureList[i].drawHandles)
+                {
+                    activeFigure = stickFigureList[i];
+                }
+            }
+
             theCanvasGraphics = e.Graphics;
             theCanvasGraphics.Clear(this.BackColor);
             for (int i = 0; i < stickFigureList.Count; i++)
@@ -262,5 +302,6 @@ namespace TISFAT_ZERO
             activeFigure.flipLegs();
         } 
         #endregion
+
 	}
 }
