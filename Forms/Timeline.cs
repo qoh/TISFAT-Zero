@@ -163,6 +163,7 @@ namespace TISFAT_ZERO
 			StickLayer n = new StickLayer(name, x, theCanvas);
 			layers.Add(n);
 
+            setFrame(n.firstKF);
 			return n;
 		}
 
