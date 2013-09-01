@@ -31,6 +31,7 @@ namespace TISFAT_ZERO
 		private StickFigure fig;
 		public int selectedFrame = -1;
         private Canvas theCanvas;
+        private StickFigure tweenFig;
 
 		public StickLayer(string nom, StickFigure figure, Canvas aTheCanvas)
 		{
@@ -44,6 +45,8 @@ namespace TISFAT_ZERO
 			keyFrames.Add(new StickFrame(10));
 
             theCanvas = aTheCanvas;
+
+            tweenFig = new StickFigure(true, true);
 
 			name = nom; //nomnomnom
 		}
@@ -69,8 +72,11 @@ namespace TISFAT_ZERO
 					x = a;
 					render = true;
 					fig.Joints = ((StickFrame)keyFrames[a]).Joints;
-                    if(!(theCanvas.tweenFig == null))
-                        theCanvas.tweenFig.isDrawn = false;
+                    if (!(tweenFig == null))
+                    {
+                        tweenFig.isDrawn = false;
+                        theCanvas.drawTweenFigures = false;
+                    }
 					break;
 				}
 				if (pos < keyFrames[a].pos)
@@ -92,16 +98,19 @@ namespace TISFAT_ZERO
                     StickFrame s = (StickFrame)keyFrames[start], e = (StickFrame)keyFrames[end];
                     float percent = (float)(pos - s.pos) / (e.pos - s.pos);
                     theCanvas.tweenFig.isDrawn = true;
+                    if (!theCanvas.drawTweenFigures)
+                        theCanvas.drawTweenFigures = true;
 
                     for (int a = 0; a < 12; a++)
                     {
-                        theCanvas.tweenFig.Joints[a].location = s.Joints[a].location;
-                        theCanvas.tweenFig.Joints[a].Tween(s.Joints[a], e.Joints[a], percent);
+                        tweenFig.Joints[a].location = s.Joints[a].location;
+                        tweenFig.Joints[a].Tween(s.Joints[a], e.Joints[a], percent);
                     }
                 }
                 else
                 {
-                    theCanvas.tweenFig.isDrawn = false;
+                    tweenFig.isDrawn = false;
+                    theCanvas.drawTweenFigures = false;
                 }
 			}
 

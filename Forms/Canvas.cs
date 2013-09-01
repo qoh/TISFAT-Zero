@@ -14,9 +14,11 @@ namespace TISFAT_ZERO
         public static Graphics theCanvasGraphics;
 
         public static List<StickFigure> stickFigureList = new List<StickFigure>();
+        public List<StickFigure> tweenFigureList = new List<StickFigure>();
         public static StickFigure activeFigure;
         public static StickJoint selectedJoint = new StickJoint("null", new Point(0, 0), 0, Color.Transparent, Color.Transparent);
         public bool draw;
+        public bool drawTweenFigures = false;
 
         public bool mousemoved;
         private int ox;
@@ -206,9 +208,13 @@ namespace TISFAT_ZERO
                         x.DrawHandles();
                     }
                 }
-                else if (x.isTweenFigure & x.isDrawn)
+            }
+
+            if (drawTweenFigures)
+            {
+                for (int i = 0; i < tweenFigureList.Count; i++)
                 {
-                    x.Draw(false);
+                    tweenFigureList[i].Draw(false);
                 }
             }
         }
@@ -274,6 +280,12 @@ namespace TISFAT_ZERO
             stickFigureList.Add(figure);
             figure.isActiveFigure = true;
             theToolbox.lbl_stickFigures.Text = "StickFigure List: " + stickFigureList.Count;
+            theCanvas.Refresh();
+        }
+
+        public static void addTweenFigure(StickFigure figure)
+        {
+            theCanvas.tweenFigureList.Add(figure);
             theCanvas.Refresh();
         }
 
