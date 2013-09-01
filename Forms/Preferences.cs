@@ -42,6 +42,12 @@ namespace TISFAT_ZERO
 		private void Preferences_Load(object sender, EventArgs e)
 		{
             list_Menu.SelectedIndex = 0;
+            if (Properties.User.Default.DefaultSavePath == "")
+            {
+                txt_defaultSavePath.Text = Environment.SpecialFolder.MyDocuments + "\\TISFAT\\";
+                Properties.User.Default.DefaultSavePath = txt_defaultSavePath.Text;
+                Properties.User.Default.Save();
+            }
 
             txt_defaultSavePath.Text = Properties.User.Default.DefaultSavePath;
             pic_colorBox.BackColor = Properties.User.Default.CanvasColor;
@@ -68,7 +74,8 @@ namespace TISFAT_ZERO
         private void btn_defSavPathBrowse_Click(object sender, EventArgs e)
         {
             dlg_folderBrowser.ShowDialog();
-            txt_defaultSavePath.Text = dlg_folderBrowser.SelectedPath;
+            if(!(dlg_folderBrowser.SelectedPath == ""))
+                txt_defaultSavePath.Text = dlg_folderBrowser.SelectedPath;
         }
 
         private void btn_submitButton_Click(object sender, EventArgs e)

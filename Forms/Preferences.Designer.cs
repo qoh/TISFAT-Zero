@@ -279,6 +279,7 @@
             this.list_Menu.FormattingEnabled = true;
             this.list_Menu.Items.AddRange(new object[] {
             "+ General",
+            "+ Visuals",
             "+ Performance",
             "    -Playback",
             "+ Hotkeys"});

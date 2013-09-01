@@ -103,7 +103,20 @@ namespace TISFAT_ZERO
             children.Add(pJoint);
 
             return pJoint;
-        } 
+        }
+
+        public void Tween(StickJoint pStart, StickJoint pEnd, Single sPercent)
+        {
+            StickJoint pNew;
+            byte[] r = new byte[3];
+            byte[] g = new byte[3];
+            byte[] b = new byte[3];
+
+            location.X = (int)Math.Round(pStart.location.X + ((pEnd.location.X - pStart.location.X) * sPercent));
+            location.Y = (int)Math.Round(pStart.location.Y + ((pEnd.location.Y - pStart.location.Y) * sPercent));
+            length = (int)Math.Round(pStart.length + ((pEnd.length - pStart.length) * sPercent));
+
+        }
         #endregion
 
         #region Positioning
