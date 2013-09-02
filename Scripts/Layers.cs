@@ -14,6 +14,9 @@ namespace TISFAT_ZERO
 
 		public bool removeKeyFrame(uint pos)
 		{
+			if (pos == firstKF || pos == lastKF)
+				return false;
+
 			foreach (KeyFrame k in keyFrames)
 				if (pos == k.pos)
 				{
@@ -31,7 +34,7 @@ namespace TISFAT_ZERO
 		private StickFigure fig;
 		public int selectedFrame = -1;
         private Canvas theCanvas;
-        private StickFigure tweenFig;
+        public StickFigure tweenFig;
 
 		public StickLayer(string nom, StickFigure figure, Canvas aTheCanvas)
 		{
@@ -130,7 +133,7 @@ namespace TISFAT_ZERO
 		}
 
 		//Insert a keyframe at position pos in the timeline
-		public bool insertKeyFrame(uint pos)
+		public int insertKeyFrame(uint pos)
 		{
 			//If inserting before the first, then make the new keyframe the first and re-arrange list
 			if (pos < firstKF)
@@ -140,7 +143,7 @@ namespace TISFAT_ZERO
 
 				keyFrames.Insert(0, x);
 
-				return true;
+				return 0;
 			}
 			else if (pos > lastKF) //Do the same if it's more than the last
 			{
@@ -151,7 +154,7 @@ namespace TISFAT_ZERO
 
 				keyFrames.Add(x);
 
-				return true;
+				return keyFrames.Count - 1;
 			}
 
 			StickFrame n = null;
@@ -172,13 +175,13 @@ namespace TISFAT_ZERO
                     c++;
                 }
 				else if (pos == k.pos) // We can't insert a frame in the same spot as another!
-					return false;
+					return -1;
 
 			}
 
 			keyFrames.Insert(c, n);
 
-			return true;
+			return c;
 		}
 	}
 }
