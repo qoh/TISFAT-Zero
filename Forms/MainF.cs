@@ -52,7 +52,9 @@ namespace TISFAT_ZERO
 			tline.Location = new Point(0, 0);
 			this.splitContainer1.Panel1.Controls.Add(tline);
 
-			this.framesPanel.Location = new Point(4580, 0);
+			uint timelineLength = 5000;
+
+			this.framesPanel.Location = new Point((int)timelineLength * 9, 0);
 
 			tline.Show();
 

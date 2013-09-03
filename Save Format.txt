@@ -1,0 +1,35 @@
+-- TISFAT:Zero Save File Format --
+
+File Extension: .tzs
+File Signature:	TISFAT-0 (54 49 53 46 41 54 2D 30)
+Version:	4b	[Major] [Minor] [Revision] [Build]
+Block sig:		[00 00 29]
+End block sig:	[3B 7E]
+Block Type:	2b	[.. ..]
+Block:	xb		[BLOCKSIG] [BLOCKTYPE] [Block Data] [End block sig]
+
+Full File Format:
+[Sig] [Version] [Block 1] [Block 2] ... [Block N]
+
+-- Block Data Formats --
+Block:
+[BLOCKSIG] [Data] [ENDBLOCK]
+
+Layer Start:
+[00 01] [layerID (2b)] [layertype (1b)] [namelen (1b)] [layerName] [ENDBLOCK]
+
+Layer End:
+[00 02] [end. (65 6E 64 2E)] [ENDBLOCK]
+
+Keyframe:
+[00 00] [KFType (2b)] [Position (4b)] [KEYFRAME BLOCKS] [end! (65 6E 64 21)] [ENDBLOCK]
+
+Sound Define Block: (Total of 16 property bits, for 2 bytes)
+[01 00] [SoundID (2b)] [Properties (2b)] [Data Length (ulong, 8b)] [Sound Data] [ENDBLOCK]
+
+-- Keyframe Block Formats --
+Positions Block: (aka the int list)
+[80 00] [count (2b)] [Int 1] [Int 2] ... [Int N] [ENDBLOCK]
+
+Sound Block: (put directly before a keyframe to attach a sound to it)
+[80 01] [SoundID (2b)] [ENDBLOCK]

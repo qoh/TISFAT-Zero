@@ -11,6 +11,7 @@ namespace TISFAT_ZERO
         public uint firstKF, lastKF;
         public List<KeyFrame> keyFrames;
 		public string name;
+		public byte type;
 
 		public bool removeKeyFrame(uint pos)
 		{
@@ -43,6 +44,7 @@ namespace TISFAT_ZERO
 			//These are the default positions for keyframes.
 			firstKF = 0;
 			lastKF = 19;
+			type = 1;
 
 			keyFrames = new List<KeyFrame>();
 			keyFrames.Add(new StickFrame(firstKF));
