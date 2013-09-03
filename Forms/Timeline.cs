@@ -38,10 +38,10 @@ namespace TISFAT_ZERO
 			layers = new List<Layer>();
 			for (int a = 0; a < 1; a++)
 				addStickLayer("Layer " + a);
-			selectedFrame = 3;
+			selectedFrame = 0;
 			selectedLayer = 0;
 			this.Refresh();
-			setFrame(3);
+			setFrame();
 		}
 
 		private void Timeline_Paint(object sender, PaintEventArgs e)
@@ -172,14 +172,16 @@ namespace TISFAT_ZERO
 			setFrame(n.firstKF);
 			return n;
 		}
-		//back to sleep with me lolk
+
 		public void setFrame(uint pos)
 		{
 			for (int a = 0; a < layers.Count; a++)
 				if(a != selectedLayer)
 					((StickLayer)layers[a]).doDisplay(pos, false);
+
 			if(selectedLayer != -1)
 				((StickLayer)layers[selectedLayer]).doDisplay(pos);
+
 			theCanvas.Refresh();
 		}
 
@@ -188,8 +190,10 @@ namespace TISFAT_ZERO
 			for (int a = 0; a < layers.Count; a++)
 				if (a != selectedLayer)
 					((StickLayer)layers[a]).doDisplay(selectedFrame, false);
+
 			if (selectedLayer != -1)
 				((StickLayer)layers[selectedLayer]).doDisplay(selectedFrame);
+
 			theCanvas.Refresh();
 		}
 
@@ -405,12 +409,15 @@ namespace TISFAT_ZERO
 
 		private void Timeline_MouseMove(object sender, MouseEventArgs e)
 		{
+			//Don't do anything if we're playing back an animation or we don't have the mouse down.
 			if (!mouseDown || isPlaying)
 				return;
 
 			int x = e.X;
 			if (x < 80)
-				x = 80;
+				x = 80; //holdplz
+
+
 			uint newSelected = (uint)(x - 80) / 9 + (uint)mainForm.splitContainer1.Panel1.HorizontalScroll.Value / 9;
 
 			if (selectedLayer == -1)
@@ -427,14 +434,29 @@ namespace TISFAT_ZERO
 				return;
 
 			StickLayer l = (StickLayer)layers[selectedLayer];
+			List<KeyFrame> kfs = l.keyFrames;
 
 			if (selectedType > 0 && selectedType < 4)
 			{
+				int indOf = l.keyFrames.IndexOf(selectedKeyFrame);
 
+				//This code makes sure that the selected frame doesn't go over/under the positions of it's neighbouring frames
 				if (selectedKeyFrame.pos == l.lastKF)
+				{
+					newSelected = Math.Max(newSelected, kfs[kfs.Count - 2].pos + 1);
 					l.lastKF = newSelected;
+				}
 				else if (selectedKeyFrame.pos == l.firstKF)
+				{
+					newSelected = Math.Min(newSelected, kfs[1].pos - 1);
 					l.firstKF = newSelected;
+				}
+				else
+				{
+					uint backPos = kfs[indOf - 1].pos, frontPos = kfs[indOf + 1].pos;
+
+					newSelected = Math.Max(Math.Min(newSelected, frontPos - 1), backPos + 1);
+				}
                     
 				selectedKeyFrame.pos = newSelected;
 				selectedFrame = newSelected;

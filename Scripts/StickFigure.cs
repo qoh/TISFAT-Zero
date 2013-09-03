@@ -107,10 +107,10 @@ namespace TISFAT_ZERO
 
         public void Tween(StickJoint pStart, StickJoint pEnd, Single sPercent)
         {
-            StickJoint pNew;
-            byte[] r = new byte[3];
-            byte[] g = new byte[3];
-            byte[] b = new byte[3];
+			//StickJoint pNew;
+			//byte[] r = new byte[3];
+			//byte[] g = new byte[3];
+			//byte[] b = new byte[3];
 
             location.X = (int)Math.Round(pStart.location.X + ((pEnd.location.X - pStart.location.X) * sPercent));
             location.Y = (int)Math.Round(pStart.location.Y + ((pEnd.location.Y - pStart.location.Y) * sPercent));
@@ -367,7 +367,7 @@ namespace TISFAT_ZERO
             Joints[4].location = rElbow;
             Joints[5].location = rHand;
 
-            Draw(false);
+            Draw(true);
         }
 
         public void flipLegs()

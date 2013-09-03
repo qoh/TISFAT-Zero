@@ -279,7 +279,7 @@ namespace TISFAT_ZERO
             }
             stickFigureList.Add(figure);
             figure.isActiveFigure = true;
-            theToolbox.lbl_stickFigures.Text = "StickFigure List: " + stickFigureList.Count;
+            theToolbox.lbl_stickFigures.Text = "StickFigure List: " + stickFigureList.Count / 2; // divided by 2 because each layer has a tween figure
             theCanvas.Refresh();
         }
 

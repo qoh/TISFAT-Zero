@@ -28,16 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.button5 = new System.Windows.Forms.Button();
-			this.button6 = new System.Windows.Forms.Button();
-			this.button3 = new System.Windows.Forms.Button();
-			this.button4 = new System.Windows.Forms.Button();
-			this.button2 = new System.Windows.Forms.Button();
-			this.button1 = new System.Windows.Forms.Button();
-			this.panel2 = new System.Windows.Forms.Panel();
+			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Toolbox));
+			this.pnl_mainPanel = new System.Windows.Forms.Panel();
+			this.pnl_mainTools = new System.Windows.Forms.Panel();
+			this.btn_BGButton = new System.Windows.Forms.Button();
+			this.btn_poserButton = new System.Windows.Forms.Button();
+			this.btn_scaleButton = new System.Windows.Forms.Button();
+			this.fPropButton = new System.Windows.Forms.Button();
+			this.drawButton = new System.Windows.Forms.Button();
+			this.btn_addButton = new System.Windows.Forms.Button();
+			this.pnl_addTools = new System.Windows.Forms.Panel();
+			this.btn_cancelButton = new System.Windows.Forms.Button();
+			this.btn_addCircle = new System.Windows.Forms.Button();
+			this.btn_addPoly = new System.Windows.Forms.Button();
+			this.btn_addRectangle = new System.Windows.Forms.Button();
+			this.btn_addLine = new System.Windows.Forms.Button();
+			this.btn_addCustomStick = new System.Windows.Forms.Button();
+			this.btn_addStick = new System.Windows.Forms.Button();
+			this.pnl_ctrlPanel = new System.Windows.Forms.Panel();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.maskedTextBox1 = new TISFAT_ZERO.NumericEditBox.NumericEditBox();
 			this.btn_playPause = new System.Windows.Forms.Button();
 			this.lbl_FPS = new System.Windows.Forms.Label();
 			this.lbl_frameCount = new System.Windows.Forms.Label();
@@ -47,140 +59,246 @@
 			this.lbl_selectedJoint = new System.Windows.Forms.Label();
 			this.lbl_yPos = new System.Windows.Forms.Label();
 			this.lbl_xPos = new System.Windows.Forms.Label();
-			this.label1 = new System.Windows.Forms.Label();
 			this.lbl_selectionDummy = new System.Windows.Forms.Label();
-			this.maskedTextBox1 = new TISFAT_ZERO.NumericEditBox.NumericEditBox();
-			this.panel1.SuspendLayout();
-			this.panel2.SuspendLayout();
+			this.pnl_Drawing = new System.Windows.Forms.Panel();
+			this.pnl_paintPanel = new System.Windows.Forms.Panel();
+			this.btn_cancelButtonDraw = new System.Windows.Forms.Button();
+			this.animTimer = new System.Windows.Forms.Timer(this.components);
+			this.pnl_mainPanel.SuspendLayout();
+			this.pnl_mainTools.SuspendLayout();
+			this.pnl_addTools.SuspendLayout();
+			this.pnl_ctrlPanel.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
-			this.tabPage2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.maskedTextBox1)).BeginInit();
+			this.tabPage2.SuspendLayout();
+			this.pnl_Drawing.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// panel1
+			// pnl_mainPanel
 			// 
-			this.panel1.Controls.Add(this.button5);
-			this.panel1.Controls.Add(this.button6);
-			this.panel1.Controls.Add(this.button3);
-			this.panel1.Controls.Add(this.button4);
-			this.panel1.Controls.Add(this.button2);
-			this.panel1.Controls.Add(this.button1);
-			this.panel1.Controls.Add(this.panel2);
-			this.panel1.Controls.Add(this.lbl_selectionDummy);
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel1.Location = new System.Drawing.Point(0, 0);
-			this.panel1.Margin = new System.Windows.Forms.Padding(0);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(164, 356);
-			this.panel1.TabIndex = 2;
+			this.pnl_mainPanel.Controls.Add(this.pnl_mainTools);
+			this.pnl_mainPanel.Controls.Add(this.pnl_addTools);
+			this.pnl_mainPanel.Controls.Add(this.pnl_ctrlPanel);
+			this.pnl_mainPanel.Controls.Add(this.lbl_selectionDummy);
+			this.pnl_mainPanel.Controls.Add(this.pnl_Drawing);
+			this.pnl_mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnl_mainPanel.Location = new System.Drawing.Point(0, 0);
+			this.pnl_mainPanel.Margin = new System.Windows.Forms.Padding(0);
+			this.pnl_mainPanel.Name = "pnl_mainPanel";
+			this.pnl_mainPanel.Size = new System.Drawing.Size(163, 336);
+			this.pnl_mainPanel.TabIndex = 2;
 			// 
-			// button5
+			// pnl_mainTools
 			// 
-			this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.button5.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.button5.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.button5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
-			this.button5.Location = new System.Drawing.Point(85, 254);
-			this.button5.Name = "button5";
-			this.button5.Size = new System.Drawing.Size(73, 50);
-			this.button5.TabIndex = 18;
-			this.button5.TabStop = false;
-			this.button5.Text = "BG Color";
-			this.button5.UseVisualStyleBackColor = true;
-			this.button5.MouseClick += new System.Windows.Forms.MouseEventHandler(this.button1_MouseClick);
+			this.pnl_mainTools.Controls.Add(this.btn_BGButton);
+			this.pnl_mainTools.Controls.Add(this.btn_poserButton);
+			this.pnl_mainTools.Controls.Add(this.btn_scaleButton);
+			this.pnl_mainTools.Controls.Add(this.fPropButton);
+			this.pnl_mainTools.Controls.Add(this.drawButton);
+			this.pnl_mainTools.Controls.Add(this.btn_addButton);
+			this.pnl_mainTools.Location = new System.Drawing.Point(6, 142);
+			this.pnl_mainTools.Name = "pnl_mainTools";
+			this.pnl_mainTools.Size = new System.Drawing.Size(151, 203);
+			this.pnl_mainTools.TabIndex = 28;
 			// 
-			// button6
+			// btn_BGButton
 			// 
-			this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.button6.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.button6.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.button6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
-			this.button6.Location = new System.Drawing.Point(6, 254);
-			this.button6.Name = "button6";
-			this.button6.Size = new System.Drawing.Size(73, 50);
-			this.button6.TabIndex = 17;
-			this.button6.TabStop = false;
-			this.button6.Text = "Figure Poser";
-			this.button6.UseVisualStyleBackColor = true;
-			this.button6.MouseClick += new System.Windows.Forms.MouseEventHandler(this.button1_MouseClick);
+			this.btn_BGButton.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btn_BGButton.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btn_BGButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
+			this.btn_BGButton.Location = new System.Drawing.Point(77, 108);
+			this.btn_BGButton.Name = "btn_BGButton";
+			this.btn_BGButton.Size = new System.Drawing.Size(73, 50);
+			this.btn_BGButton.TabIndex = 24;
+			this.btn_BGButton.TabStop = false;
+			this.btn_BGButton.Text = "BG Color";
+			this.btn_BGButton.UseVisualStyleBackColor = true;
 			// 
-			// button3
+			// btn_poserButton
 			// 
-			this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.button3.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.button3.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.button3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
-			this.button3.Location = new System.Drawing.Point(85, 198);
-			this.button3.Name = "button3";
-			this.button3.Size = new System.Drawing.Size(73, 50);
-			this.button3.TabIndex = 16;
-			this.button3.TabStop = false;
-			this.button3.Text = "Scale Figure";
-			this.button3.UseVisualStyleBackColor = true;
-			this.button3.MouseClick += new System.Windows.Forms.MouseEventHandler(this.button1_MouseClick);
+			this.btn_poserButton.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btn_poserButton.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btn_poserButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
+			this.btn_poserButton.Location = new System.Drawing.Point(1, 108);
+			this.btn_poserButton.Name = "btn_poserButton";
+			this.btn_poserButton.Size = new System.Drawing.Size(73, 50);
+			this.btn_poserButton.TabIndex = 23;
+			this.btn_poserButton.TabStop = false;
+			this.btn_poserButton.Text = "Figure Poser";
+			this.btn_poserButton.UseVisualStyleBackColor = true;
 			// 
-			// button4
+			// btn_scaleButton
 			// 
-			this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.button4.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.button4.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.button4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
-			this.button4.Location = new System.Drawing.Point(6, 198);
-			this.button4.Name = "button4";
-			this.button4.Size = new System.Drawing.Size(73, 50);
-			this.button4.TabIndex = 15;
-			this.button4.TabStop = false;
-			this.button4.Text = "Figure Properties";
-			this.button4.UseVisualStyleBackColor = true;
-			this.button4.MouseClick += new System.Windows.Forms.MouseEventHandler(this.button1_MouseClick);
+			this.btn_scaleButton.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btn_scaleButton.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btn_scaleButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
+			this.btn_scaleButton.Location = new System.Drawing.Point(77, 56);
+			this.btn_scaleButton.Name = "btn_scaleButton";
+			this.btn_scaleButton.Size = new System.Drawing.Size(73, 50);
+			this.btn_scaleButton.TabIndex = 22;
+			this.btn_scaleButton.TabStop = false;
+			this.btn_scaleButton.Text = "Scale Figure";
+			this.btn_scaleButton.UseVisualStyleBackColor = true;
 			// 
-			// button2
+			// fPropButton
 			// 
-			this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.button2.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.button2.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.button2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
-			this.button2.Location = new System.Drawing.Point(85, 142);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(73, 50);
-			this.button2.TabIndex = 14;
-			this.button2.TabStop = false;
-			this.button2.Text = "Drawing";
-			this.button2.UseVisualStyleBackColor = true;
-			this.button2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.button1_MouseClick);
+			this.fPropButton.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.fPropButton.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.fPropButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
+			this.fPropButton.Location = new System.Drawing.Point(1, 56);
+			this.fPropButton.Name = "fPropButton";
+			this.fPropButton.Size = new System.Drawing.Size(73, 50);
+			this.fPropButton.TabIndex = 21;
+			this.fPropButton.TabStop = false;
+			this.fPropButton.Text = "Figure Properties";
+			this.fPropButton.UseVisualStyleBackColor = true;
 			// 
-			// button1
+			// drawButton
 			// 
-			this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.button1.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
-			this.button1.Location = new System.Drawing.Point(6, 142);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(73, 50);
-			this.button1.TabIndex = 13;
-			this.button1.TabStop = false;
-			this.button1.Text = "Add";
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.button1_MouseClick);
+			this.drawButton.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.drawButton.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.drawButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
+			this.drawButton.Location = new System.Drawing.Point(77, 4);
+			this.drawButton.Name = "drawButton";
+			this.drawButton.Size = new System.Drawing.Size(73, 50);
+			this.drawButton.TabIndex = 20;
+			this.drawButton.TabStop = false;
+			this.drawButton.Text = "Drawing";
+			this.drawButton.UseVisualStyleBackColor = true;
+			this.drawButton.Click += new System.EventHandler(this.drawButton_Click_1);
 			// 
-			// panel2
+			// btn_addButton
 			// 
-			this.panel2.BackColor = System.Drawing.SystemColors.Control;
-			this.panel2.Controls.Add(this.tabControl1);
-			this.panel2.Controls.Add(this.label1);
-			this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel2.Location = new System.Drawing.Point(0, 0);
-			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(164, 140);
-			this.panel2.TabIndex = 1;
+			this.btn_addButton.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btn_addButton.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btn_addButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
+			this.btn_addButton.Location = new System.Drawing.Point(1, 4);
+			this.btn_addButton.Name = "btn_addButton";
+			this.btn_addButton.Size = new System.Drawing.Size(73, 50);
+			this.btn_addButton.TabIndex = 19;
+			this.btn_addButton.TabStop = false;
+			this.btn_addButton.Text = "Add";
+			this.btn_addButton.UseVisualStyleBackColor = true;
+			this.btn_addButton.Click += new System.EventHandler(this.addButton_Click);
+			// 
+			// pnl_addTools
+			// 
+			this.pnl_addTools.Controls.Add(this.btn_cancelButton);
+			this.pnl_addTools.Controls.Add(this.btn_addCircle);
+			this.pnl_addTools.Controls.Add(this.btn_addPoly);
+			this.pnl_addTools.Controls.Add(this.btn_addRectangle);
+			this.pnl_addTools.Controls.Add(this.btn_addLine);
+			this.pnl_addTools.Controls.Add(this.btn_addCustomStick);
+			this.pnl_addTools.Controls.Add(this.btn_addStick);
+			this.pnl_addTools.Location = new System.Drawing.Point(198, 142);
+			this.pnl_addTools.Name = "pnl_addTools";
+			this.pnl_addTools.Size = new System.Drawing.Size(151, 203);
+			this.pnl_addTools.TabIndex = 27;
+			// 
+			// btn_cancelButton
+			// 
+			this.btn_cancelButton.Location = new System.Drawing.Point(34, 164);
+			this.btn_cancelButton.Name = "btn_cancelButton";
+			this.btn_cancelButton.Size = new System.Drawing.Size(75, 23);
+			this.btn_cancelButton.TabIndex = 25;
+			this.btn_cancelButton.Text = "Cancel";
+			this.btn_cancelButton.UseVisualStyleBackColor = true;
+			this.btn_cancelButton.Click += new System.EventHandler(this.btn_cancelButton_Click);
+			// 
+			// btn_addCircle
+			// 
+			this.btn_addCircle.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addCircle.BackgroundImage")));
+			this.btn_addCircle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btn_addCircle.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btn_addCircle.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btn_addCircle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
+			this.btn_addCircle.Location = new System.Drawing.Point(77, 108);
+			this.btn_addCircle.Name = "btn_addCircle";
+			this.btn_addCircle.Size = new System.Drawing.Size(73, 50);
+			this.btn_addCircle.TabIndex = 24;
+			this.btn_addCircle.TabStop = false;
+			this.btn_addCircle.UseVisualStyleBackColor = true;
+			// 
+			// btn_addPoly
+			// 
+			this.btn_addPoly.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addPoly.BackgroundImage")));
+			this.btn_addPoly.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btn_addPoly.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btn_addPoly.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btn_addPoly.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
+			this.btn_addPoly.Location = new System.Drawing.Point(1, 108);
+			this.btn_addPoly.Name = "btn_addPoly";
+			this.btn_addPoly.Size = new System.Drawing.Size(73, 50);
+			this.btn_addPoly.TabIndex = 23;
+			this.btn_addPoly.TabStop = false;
+			this.btn_addPoly.UseVisualStyleBackColor = true;
+			// 
+			// btn_addRectangle
+			// 
+			this.btn_addRectangle.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addRectangle.BackgroundImage")));
+			this.btn_addRectangle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btn_addRectangle.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btn_addRectangle.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btn_addRectangle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
+			this.btn_addRectangle.Location = new System.Drawing.Point(77, 56);
+			this.btn_addRectangle.Name = "btn_addRectangle";
+			this.btn_addRectangle.Size = new System.Drawing.Size(73, 50);
+			this.btn_addRectangle.TabIndex = 22;
+			this.btn_addRectangle.TabStop = false;
+			this.btn_addRectangle.UseVisualStyleBackColor = true;
+			// 
+			// btn_addLine
+			// 
+			this.btn_addLine.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addLine.BackgroundImage")));
+			this.btn_addLine.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btn_addLine.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btn_addLine.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btn_addLine.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
+			this.btn_addLine.Location = new System.Drawing.Point(1, 56);
+			this.btn_addLine.Name = "btn_addLine";
+			this.btn_addLine.Size = new System.Drawing.Size(73, 50);
+			this.btn_addLine.TabIndex = 21;
+			this.btn_addLine.TabStop = false;
+			this.btn_addLine.UseVisualStyleBackColor = true;
+			// 
+			// btn_addCustomStick
+			// 
+			this.btn_addCustomStick.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addCustomStick.BackgroundImage")));
+			this.btn_addCustomStick.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btn_addCustomStick.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btn_addCustomStick.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btn_addCustomStick.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
+			this.btn_addCustomStick.Location = new System.Drawing.Point(77, 4);
+			this.btn_addCustomStick.Name = "btn_addCustomStick";
+			this.btn_addCustomStick.Size = new System.Drawing.Size(73, 50);
+			this.btn_addCustomStick.TabIndex = 20;
+			this.btn_addCustomStick.TabStop = false;
+			this.btn_addCustomStick.UseVisualStyleBackColor = true;
+			// 
+			// btn_addStick
+			// 
+			this.btn_addStick.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addStick.BackgroundImage")));
+			this.btn_addStick.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btn_addStick.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btn_addStick.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btn_addStick.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
+			this.btn_addStick.Location = new System.Drawing.Point(1, 4);
+			this.btn_addStick.Name = "btn_addStick";
+			this.btn_addStick.Size = new System.Drawing.Size(73, 50);
+			this.btn_addStick.TabIndex = 19;
+			this.btn_addStick.TabStop = false;
+			this.btn_addStick.UseVisualStyleBackColor = true;
+			// 
+			// pnl_ctrlPanel
+			// 
+			this.pnl_ctrlPanel.BackColor = System.Drawing.SystemColors.Control;
+			this.pnl_ctrlPanel.Controls.Add(this.tabControl1);
+			this.pnl_ctrlPanel.Dock = System.Windows.Forms.DockStyle.Top;
+			this.pnl_ctrlPanel.Location = new System.Drawing.Point(0, 0);
+			this.pnl_ctrlPanel.Name = "pnl_ctrlPanel";
+			this.pnl_ctrlPanel.Size = new System.Drawing.Size(163, 140);
+			this.pnl_ctrlPanel.TabIndex = 1;
 			// 
 			// tabControl1
 			// 
@@ -190,7 +308,7 @@
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(164, 140);
+			this.tabControl1.Size = new System.Drawing.Size(163, 140);
 			this.tabControl1.TabIndex = 1;
 			// 
 			// tabPage1
@@ -203,9 +321,32 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(156, 114);
+			this.tabPage1.Size = new System.Drawing.Size(155, 114);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Control";
+			// 
+			// maskedTextBox1
+			// 
+			this.maskedTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.maskedTextBox1.Location = new System.Drawing.Point(81, 42);
+			this.maskedTextBox1.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.maskedTextBox1.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.maskedTextBox1.Name = "maskedTextBox1";
+			this.maskedTextBox1.Size = new System.Drawing.Size(35, 23);
+			this.maskedTextBox1.TabIndex = 4;
+			this.maskedTextBox1.Value = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
 			// 
 			// btn_playPause
 			// 
@@ -222,7 +363,7 @@
 			// lbl_FPS
 			// 
 			this.lbl_FPS.AutoSize = true;
-			this.lbl_FPS.Location = new System.Drawing.Point(47, 32);
+			this.lbl_FPS.Location = new System.Drawing.Point(47, 47);
 			this.lbl_FPS.Name = "lbl_FPS";
 			this.lbl_FPS.Size = new System.Drawing.Size(30, 13);
 			this.lbl_FPS.TabIndex = 2;
@@ -248,7 +389,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(156, 114);
+			this.tabPage2.Size = new System.Drawing.Size(155, 114);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Debug";
 			// 
@@ -297,17 +438,6 @@
 			this.lbl_xPos.TabIndex = 5;
 			this.lbl_xPos.Text = "X Pos: 0";
 			// 
-			// label1
-			// 
-			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(195, 0);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(45, 13);
-			this.label1.TabIndex = 0;
-			this.label1.Text = "Toolbox";
-			// 
 			// lbl_selectionDummy
 			// 
 			this.lbl_selectionDummy.AutoSize = true;
@@ -316,49 +446,70 @@
 			this.lbl_selectionDummy.Size = new System.Drawing.Size(0, 13);
 			this.lbl_selectionDummy.TabIndex = 19;
 			// 
-			// maskedTextBox1
+			// pnl_Drawing
 			// 
-			this.maskedTextBox1.Location = new System.Drawing.Point(81, 30);
-			this.maskedTextBox1.Name = "maskedTextBox1";
-			this.maskedTextBox1.Size = new System.Drawing.Size(33, 20);
-			this.maskedTextBox1.TabIndex = 4;
-			this.maskedTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			this.maskedTextBox1.Value = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
+			this.pnl_Drawing.Controls.Add(this.pnl_paintPanel);
+			this.pnl_Drawing.Controls.Add(this.btn_cancelButtonDraw);
+			this.pnl_Drawing.Location = new System.Drawing.Point(198, 142);
+			this.pnl_Drawing.Name = "pnl_Drawing";
+			this.pnl_Drawing.Size = new System.Drawing.Size(151, 203);
+			this.pnl_Drawing.TabIndex = 29;
+			// 
+			// pnl_paintPanel
+			// 
+			this.pnl_paintPanel.Dock = System.Windows.Forms.DockStyle.Top;
+			this.pnl_paintPanel.Location = new System.Drawing.Point(0, 0);
+			this.pnl_paintPanel.Name = "pnl_paintPanel";
+			this.pnl_paintPanel.Size = new System.Drawing.Size(151, 158);
+			this.pnl_paintPanel.TabIndex = 26;
+			// 
+			// btn_cancelButtonDraw
+			// 
+			this.btn_cancelButtonDraw.Location = new System.Drawing.Point(34, 164);
+			this.btn_cancelButtonDraw.Name = "btn_cancelButtonDraw";
+			this.btn_cancelButtonDraw.Size = new System.Drawing.Size(75, 23);
+			this.btn_cancelButtonDraw.TabIndex = 25;
+			this.btn_cancelButtonDraw.Text = "Cancel";
+			this.btn_cancelButtonDraw.UseVisualStyleBackColor = true;
+			this.btn_cancelButtonDraw.Click += new System.EventHandler(this.btn_cancelButtonDraw_Click);
+			// 
+			// animTimer
+			// 
+			this.animTimer.Interval = 24;
+			this.animTimer.Tick += new System.EventHandler(this.animTimer_Tick);
 			// 
 			// Toolbox
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(164, 356);
+			this.ClientSize = new System.Drawing.Size(163, 336);
 			this.ControlBox = false;
-			this.Controls.Add(this.panel1);
+			this.Controls.Add(this.pnl_mainPanel);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Name = "Toolbox";
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
 			this.Text = "Toolbox";
-			this.panel1.ResumeLayout(false);
-			this.panel1.PerformLayout();
-			this.panel2.ResumeLayout(false);
-			this.panel2.PerformLayout();
+			this.Load += new System.EventHandler(this.Toolbox_Load);
+			this.pnl_mainPanel.ResumeLayout(false);
+			this.pnl_mainPanel.PerformLayout();
+			this.pnl_mainTools.ResumeLayout(false);
+			this.pnl_addTools.ResumeLayout(false);
+			this.pnl_ctrlPanel.ResumeLayout(false);
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
 			this.tabPage1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.maskedTextBox1)).EndInit();
 			this.tabPage2.ResumeLayout(false);
 			this.tabPage2.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.maskedTextBox1)).EndInit();
+			this.pnl_Drawing.ResumeLayout(false);
 			this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel pnl_mainPanel;
+		private System.Windows.Forms.Panel pnl_ctrlPanel;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
@@ -366,17 +517,30 @@
         public System.Windows.Forms.Label lbl_jointLength;
         public System.Windows.Forms.Label lbl_selectedJoint;
         public System.Windows.Forms.Label lbl_yPos;
-        public System.Windows.Forms.Label lbl_xPos;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+		public System.Windows.Forms.Label lbl_xPos;
         private System.Windows.Forms.Label lbl_selectionDummy;
 		private System.Windows.Forms.Label lbl_frameCount;
 		private System.Windows.Forms.Label lbl_FPS;
 		public System.Windows.Forms.Button btn_playPause;
 		private NumericEditBox.NumericEditBox maskedTextBox1;
+		private System.Windows.Forms.Panel pnl_mainTools;
+		private System.Windows.Forms.Button btn_BGButton;
+		private System.Windows.Forms.Button btn_poserButton;
+		private System.Windows.Forms.Button btn_scaleButton;
+		private System.Windows.Forms.Button fPropButton;
+		private System.Windows.Forms.Button drawButton;
+		private System.Windows.Forms.Button btn_addButton;
+		private System.Windows.Forms.Panel pnl_addTools;
+		private System.Windows.Forms.Button btn_addCircle;
+		private System.Windows.Forms.Button btn_addPoly;
+		private System.Windows.Forms.Button btn_addRectangle;
+		private System.Windows.Forms.Button btn_addLine;
+		private System.Windows.Forms.Button btn_addCustomStick;
+		private System.Windows.Forms.Button btn_addStick;
+		private System.Windows.Forms.Timer animTimer;
+		private System.Windows.Forms.Button btn_cancelButton;
+		private System.Windows.Forms.Panel pnl_Drawing;
+		private System.Windows.Forms.Button btn_cancelButtonDraw;
+		private System.Windows.Forms.Panel pnl_paintPanel;
     }
 }

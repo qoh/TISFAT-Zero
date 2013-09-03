@@ -40,12 +40,13 @@ namespace TISFAT_ZERO
 		{
 			fig = figure;
 
-			firstKF = 3;
-			lastKF = 10;
+			//These are the default positions for keyframes.
+			firstKF = 0;
+			lastKF = 19;
+
 			keyFrames = new List<KeyFrame>();
-			keyFrames.Add(new StickFrame(3));
-			keyFrames.Add(new StickFrame(7));
-			keyFrames.Add(new StickFrame(10));
+			keyFrames.Add(new StickFrame(firstKF));
+			keyFrames.Add(new StickFrame(lastKF));
 
             theCanvas = aTheCanvas;
 

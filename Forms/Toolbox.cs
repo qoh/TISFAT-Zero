@@ -15,6 +15,9 @@ namespace TISFAT_ZERO
 		public static MainF mainForm;
 		public bool isPlaying = false;
 		public byte frameRate = 30;
+		public bool inMenu = false;
+
+		public Panel slideOutObject;
 
 		public Toolbox(MainF f)
 		{
@@ -27,6 +30,7 @@ namespace TISFAT_ZERO
 
 		}
 
+		#region Buttons
 		private void button1_MouseClick(object sender, MouseEventArgs e)
 		{
 			lbl_selectionDummy.Focus();
@@ -34,94 +38,106 @@ namespace TISFAT_ZERO
 
 		private void btn_playPause_Click(object sender, System.EventArgs e)
 		{
-			if(isPlaying)
+			if (isPlaying)
 				mainForm.tline.stopTimer();
 			else
 				mainForm.tline.startTimer(frameRate);
 			isPlaying = !isPlaying;
 			btn_playPause.Text = isPlaying ? "Pause" : "Play";
 		}
-	}
 
-	public class NumericTextBox : TextBox
-	{
-		bool allowSpace = false;
-
-		// Restricts the entry of characters to digits (including hex), the negative sign, 
-		// the decimal point, and editing keystrokes (backspace). 
-		protected override void OnKeyPress(KeyPressEventArgs e)
+		private void drawButton_MouseClick(object sender, MouseEventArgs e)
 		{
-			base.OnKeyPress(e);
+			lbl_selectionDummy.Focus();
+		}
 
-			NumberFormatInfo numberFormatInfo = System.Globalization.CultureInfo.CurrentCulture.NumberFormat;
-			string decimalSeparator = numberFormatInfo.NumberDecimalSeparator;
-			string groupSeparator = numberFormatInfo.NumberGroupSeparator;
-			string negativeSign = numberFormatInfo.NegativeSign;
+		private void addButton_Click(object sender, EventArgs e)
+		{
+			pnl_mainTools.Enabled = false;
+			slideOutObject = pnl_addTools;
+			animTimer.Start();
+		}
+		private void btn_cancelButton_Click(object sender, EventArgs e)
+		{
+			slideOutObject = pnl_addTools;
+			animTimer.Start();
+		}
 
-			// Workaround for groupSeparator equal to non-breaking space 
-			if (groupSeparator == ((char)160).ToString())
-			{
-				groupSeparator = " ";
-			}
+		private void drawButton_Click(object sender, EventArgs e)
+		{
+			lbl_selectionDummy.Focus();
+		}
 
-			string keyInput = e.KeyChar.ToString();
+		private void fPropButton_Click(object sender, EventArgs e)
+		{
+			lbl_selectionDummy.Focus();
+		}
 
-			if (char.IsDigit(e.KeyChar))
-			{
-				// Digits are OK
-			}
-			else if (keyInput.Equals(decimalSeparator) || keyInput.Equals(groupSeparator) ||
-			 keyInput.Equals(negativeSign))
-			{
-				// Decimal separator is OK
-			}
-			else if (e.KeyChar == '\b')
-			{
-				// Backspace key is OK
-			}
-			//    else if ((ModifierKeys & (Keys.Control | Keys.Alt)) != 0) 
-			//    { 
-			//     // Let the edit control handle control and alt key combinations 
-			//    } 
-			else if (this.allowSpace && e.KeyChar == ' ')
-			{
+		private void scaleButton_Click(object sender, EventArgs e)
+		{
+			lbl_selectionDummy.Focus();
+		}
 
+		private void poserButton_Click(object sender, EventArgs e)
+		{
+			lbl_selectionDummy.Focus();
+		}
+
+		private void BGButton_Click(object sender, EventArgs e)
+		{
+			lbl_selectionDummy.Focus();
+		}
+
+		private void drawButton_Click_1(object sender, EventArgs e)
+		{
+			pnl_mainTools.Enabled = false;
+			slideOutObject = pnl_Drawing;
+			animTimer.Start();
+		}
+		private void btn_cancelButtonDraw_Click(object sender, EventArgs e)
+		{
+			slideOutObject = pnl_Drawing;
+			animTimer.Start();
+		}
+		#endregion
+
+		private void animTimer_Tick(object sender, EventArgs e)
+		{
+			Point endPosA = new Point(6, 142);
+			Point endPosB = new Point(198, 142);
+
+			if (!inMenu)
+			{
+				if (!(slideOutObject.Location.Equals(endPosA)))
+				{
+					pnl_mainTools.Left -= 32;
+					slideOutObject.Left -= 32;
+				}
+				else
+				{
+					inMenu = true;
+					animTimer.Stop();
+				}
 			}
 			else
 			{
-				// Consume this invalid key and beep
-				e.Handled = true;
-				//    MessageBeep();
+				if (!(slideOutObject.Location.Equals(endPosB)))
+				{
+					pnl_mainTools.Left += 32;
+					slideOutObject.Left += 32;
+				}
+				else
+				{
+					inMenu = false;
+					pnl_mainTools.Enabled = true;
+					animTimer.Stop();
+				}
 			}
 		}
 
-		public int IntValue
+		private void Toolbox_Load(object sender, EventArgs e)
 		{
-			get
-			{
-				return Int32.Parse(this.Text);
-			}
-		}
-
-		public decimal DecimalValue
-		{
-			get
-			{
-				return Decimal.Parse(this.Text);
-			}
-		}
-
-		public bool AllowSpace
-		{
-			set
-			{
-				this.allowSpace = value;
-			}
-
-			get
-			{
-				return this.allowSpace;
-			}
+			Size = new Size(179, 375);
 		}
 	}
 }
