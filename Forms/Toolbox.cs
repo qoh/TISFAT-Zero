@@ -25,11 +25,6 @@ namespace TISFAT_ZERO
 			InitializeComponent();
 		}
 
-		private void panel3_Paint(object sender, PaintEventArgs e)
-		{
-
-		}
-
 		#region Buttons
 		private void button1_MouseClick(object sender, MouseEventArgs e)
 		{
@@ -129,6 +124,7 @@ namespace TISFAT_ZERO
 				else
 				{
 					inMenu = false;
+					slideOutObject.Enabled = true;
 					pnl_mainTools.Enabled = true;
 					animTimer.Stop();
 				}
@@ -138,6 +134,16 @@ namespace TISFAT_ZERO
 		private void Toolbox_Load(object sender, EventArgs e)
 		{
 			Size = new Size(179, 375);
+		}
+
+		private void btn_addStick_Click(object sender, EventArgs e)
+		{
+			mainForm.tline.addStickLayer("Stick Figure");
+			mainForm.tline.Refresh();
+
+			pnl_addTools.Enabled = false;
+			slideOutObject = pnl_addTools;
+			animTimer.Start();
 		}
 	}
 }

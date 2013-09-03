@@ -49,7 +49,6 @@
 			this.pnl_ctrlPanel = new System.Windows.Forms.Panel();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.maskedTextBox1 = new TISFAT_ZERO.NumericEditBox.NumericEditBox();
 			this.btn_playPause = new System.Windows.Forms.Button();
 			this.lbl_FPS = new System.Windows.Forms.Label();
 			this.lbl_frameCount = new System.Windows.Forms.Label();
@@ -64,15 +63,16 @@
 			this.pnl_paintPanel = new System.Windows.Forms.Panel();
 			this.btn_cancelButtonDraw = new System.Windows.Forms.Button();
 			this.animTimer = new System.Windows.Forms.Timer(this.components);
+			this.maskedTextBox1 = new TISFAT_ZERO.NumericEditBox.NumericEditBox();
 			this.pnl_mainPanel.SuspendLayout();
 			this.pnl_mainTools.SuspendLayout();
 			this.pnl_addTools.SuspendLayout();
 			this.pnl_ctrlPanel.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.maskedTextBox1)).BeginInit();
 			this.tabPage2.SuspendLayout();
 			this.pnl_Drawing.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.maskedTextBox1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// pnl_mainPanel
@@ -289,6 +289,7 @@
 			this.btn_addStick.TabIndex = 19;
 			this.btn_addStick.TabStop = false;
 			this.btn_addStick.UseVisualStyleBackColor = true;
+			this.btn_addStick.Click += new System.EventHandler(this.btn_addStick_Click);
 			// 
 			// pnl_ctrlPanel
 			// 
@@ -324,29 +325,6 @@
 			this.tabPage1.Size = new System.Drawing.Size(155, 114);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Control";
-			// 
-			// maskedTextBox1
-			// 
-			this.maskedTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.maskedTextBox1.Location = new System.Drawing.Point(81, 42);
-			this.maskedTextBox1.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.maskedTextBox1.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-			this.maskedTextBox1.Name = "maskedTextBox1";
-			this.maskedTextBox1.Size = new System.Drawing.Size(35, 23);
-			this.maskedTextBox1.TabIndex = 4;
-			this.maskedTextBox1.Value = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
 			// 
 			// btn_playPause
 			// 
@@ -389,7 +367,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(155, 114);
+			this.tabPage2.Size = new System.Drawing.Size(489, 114);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Debug";
 			// 
@@ -478,6 +456,29 @@
 			this.animTimer.Interval = 24;
 			this.animTimer.Tick += new System.EventHandler(this.animTimer_Tick);
 			// 
+			// maskedTextBox1
+			// 
+			this.maskedTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.maskedTextBox1.Location = new System.Drawing.Point(81, 42);
+			this.maskedTextBox1.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+			this.maskedTextBox1.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.maskedTextBox1.Name = "maskedTextBox1";
+			this.maskedTextBox1.Size = new System.Drawing.Size(35, 23);
+			this.maskedTextBox1.TabIndex = 4;
+			this.maskedTextBox1.Value = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
+			// 
 			// Toolbox
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -498,10 +499,10 @@
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
 			this.tabPage1.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.maskedTextBox1)).EndInit();
 			this.tabPage2.ResumeLayout(false);
 			this.tabPage2.PerformLayout();
 			this.pnl_Drawing.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.maskedTextBox1)).EndInit();
 			this.ResumeLayout(false);
 
         }
