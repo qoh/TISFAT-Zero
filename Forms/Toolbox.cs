@@ -150,5 +150,10 @@ namespace TISFAT_ZERO
 			slideOutObject = pnl_addTools;
 			animTimer.Start();
 		}
+
+		private void maskedTextBox1_ValueChanged(object sender, EventArgs e)
+		{
+			frameRate = (byte)maskedTextBox1.Value;
+		}
 	}
 }

@@ -63,7 +63,7 @@
 			this.pnl_paintPanel = new System.Windows.Forms.Panel();
 			this.btn_cancelButtonDraw = new System.Windows.Forms.Button();
 			this.animTimer = new System.Windows.Forms.Timer(this.components);
-			this.maskedTextBox1 = new TISFAT_ZERO.NumericEditBox.NumericEditBox();
+			this.maskedTextBox1 = new System.Windows.Forms.NumericUpDown();
 			this.pnl_mainPanel.SuspendLayout();
 			this.pnl_mainTools.SuspendLayout();
 			this.pnl_addTools.SuspendLayout();
@@ -367,7 +367,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(489, 114);
+			this.tabPage2.Size = new System.Drawing.Size(155, 114);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Debug";
 			// 
@@ -458,26 +458,15 @@
 			// 
 			// maskedTextBox1
 			// 
-			this.maskedTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.maskedTextBox1.Location = new System.Drawing.Point(81, 42);
+			this.maskedTextBox1.Location = new System.Drawing.Point(80, 44);
 			this.maskedTextBox1.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-			this.maskedTextBox1.Minimum = new decimal(new int[] {
-            1,
+            256,
             0,
             0,
             0});
 			this.maskedTextBox1.Name = "maskedTextBox1";
-			this.maskedTextBox1.Size = new System.Drawing.Size(35, 23);
+			this.maskedTextBox1.Size = new System.Drawing.Size(40, 20);
 			this.maskedTextBox1.TabIndex = 4;
-			this.maskedTextBox1.Value = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
 			// 
 			// Toolbox
 			// 
@@ -523,7 +512,6 @@
 		private System.Windows.Forms.Label lbl_frameCount;
 		private System.Windows.Forms.Label lbl_FPS;
 		public System.Windows.Forms.Button btn_playPause;
-		private NumericEditBox.NumericEditBox maskedTextBox1;
 		private System.Windows.Forms.Panel pnl_mainTools;
 		private System.Windows.Forms.Button btn_BGButton;
 		private System.Windows.Forms.Button btn_poserButton;
@@ -543,5 +531,6 @@
 		private System.Windows.Forms.Panel pnl_Drawing;
 		private System.Windows.Forms.Button btn_cancelButtonDraw;
 		private System.Windows.Forms.Panel pnl_paintPanel;
+		private System.Windows.Forms.NumericUpDown maskedTextBox1;
     }
 }

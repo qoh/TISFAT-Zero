@@ -103,7 +103,6 @@ namespace TISFAT_ZERO
                 {
                     StickFrame s = (StickFrame)keyFrames[start], e = (StickFrame)keyFrames[end];
                     float percent = (float)(pos - s.pos) / (e.pos - s.pos);
-                    theCanvas.tweenFig.isDrawn = true;
                     if (!theCanvas.drawTweenFigures)
                         theCanvas.drawTweenFigures = true;
 
