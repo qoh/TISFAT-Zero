@@ -7,16 +7,17 @@ namespace TISFAT_ZERO
     {
         //dummy class
 		public uint pos;
+		public byte type;
     }
 
     public class StickFrame : KeyFrame
     {
 		public StickJoint[] Joints = new StickJoint[12];
-        static readonly byte type = 1;
 
         public StickFrame(StickJoint[] ps, uint po)
         {
-			pos = po;
+			pos = po; type = 0;
+
             Joints[0] = new StickJoint("Neck", ps[0].location, 60, Color.Black, Color.Blue, 0, 0, true, Joints[1], false);
             Joints[1] = new StickJoint("Shoulder", ps[1].location, 12, Color.Black, Color.Yellow, 0, 0, false, Joints[0]);
             Joints[2] = new StickJoint("RElbow", ps[2].location, 12, Color.Black, Color.Red, 0, 0, false, Joints[1]);

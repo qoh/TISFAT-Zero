@@ -138,7 +138,12 @@ namespace TISFAT_ZERO
 
 		private void btn_addStick_Click(object sender, EventArgs e)
 		{
-			mainForm.tline.addStickLayer("Stick Figure");
+			int i = 1;
+			foreach(StickLayer k in Timeline.layers)
+			{
+				i++;
+			}
+			mainForm.tline.addStickLayer("Stick Figure " + i.ToString());
 			mainForm.tline.Refresh();
 
 			pnl_addTools.Enabled = false;

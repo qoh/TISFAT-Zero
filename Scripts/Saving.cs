@@ -14,8 +14,8 @@ namespace TISFAT_ZERO
 		//This class holds the various constants used in file saving/loading.
 		public static readonly byte[]
 			fileSig =		{ 0x54, 0x49, 0x53, 0x46, 0x41, 0x54, 0x2D, 0x30 }, //TISFAT-0 in hex
-			blockSig =		{ 0x00, 0x00, 0x29 },
-			endBSig =		{ 0x3B, 0x7E },
+			blockSig =		{ 0x46, 0x41 },
+			endBSig =		{ 0xe6, 0x21 }, //Yes I just did that
 			curVersion =	{ 0x00, 0x01, 0x00, 0x01 };
 
 		public static readonly string saveFileExt = ".tzs";
@@ -68,19 +68,51 @@ namespace TISFAT_ZERO
 		private static void writeLayerBlock(Layer l, uint layerid, MemoryStream stream)
 		{
 			List<byte> bytes = new List<byte>();
+
+			bytes.AddRange(tzf.blockSig);
+
 			bytes.AddRange(new byte[] { 0, 1 });
 			bytes.AddRange(BitConverter.GetBytes(layerid));
 			bytes.AddRange(BitConverter.GetBytes(l.type));
-			bytes.AddRange(BitConverter.GetBytes((uint)l.name.Length));
-			//bytes.AddRange(Encoding.);
 
+			byte[] name = Encoding.ASCII.GetBytes(l.name);
+			bytes.AddRange(BitConverter.GetBytes((uint)name.Length));
+			bytes.AddRange(name);
 
-			stream.Write(bytes.ToArray(), 0, 4);
+			bytes.AddRange(tzf.endBSig);
+
+			stream.Write(bytes.ToArray(), 0, bytes.Count);
+
+			foreach (KeyFrame k in l.keyFrames)
+				writeFrameBlock(k, stream);
 		}
-
+		
 		private static void writeFrameBlock(KeyFrame f, MemoryStream stream)
 		{
+			byte type = f.type;
+			List<byte> bytes0 = new List<byte>();
 
+			bytes0.AddRange(tzf.blockSig);
+			bytes0.Add(type);
+			bytes0.AddRange(BitConverter.GetBytes(f.pos));
+
+
+			//Each keyframe type has it's own saving algorithm. Implement them here.
+			switch (type)
+			{
+				case 0: //StickFrame
+
+					stream.Write(bytes0.ToArray(), 0, bytes0.Count);
+
+					writePositionsBlock(((StickFrame)f).Joints, stream);
+
+					break;
+
+				default:
+					return;
+			}
+
+			stream.Write(tzf.endBSig, 0, 2);
 		}
 
 		private static void writePositionsBlock(StickJoint[] j, MemoryStream stream)
