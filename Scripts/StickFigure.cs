@@ -565,7 +565,7 @@ namespace TISFAT_ZERO
 			}
 
 			return Joints[index];
-		} 
+		} //we need these two methods aswell.. just a moment
 		#endregion
 	}
 }

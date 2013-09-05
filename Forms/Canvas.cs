@@ -11,10 +11,16 @@ namespace TISFAT_ZERO
 		public static MainF mainForm;
 		public static Toolbox theToolbox;
 		public static Canvas theCanvas;
-		public static Graphics theCanvasGraphics;
+		public static Graphics theCanvasGraphics; //We need a list of objects to draw.
 
 		public static List<StickFigure> stickFigureList = new List<StickFigure>();
 		public List<StickFigure> tweenFigureList = new List<StickFigure>();
+
+		public static List<StickObject> figureList = new List<StickObject>();
+		public static List<StickObject> tweenFigs = new List<StickObject>();
+
+		//Now we need a method to add figures to these lists.
+
 		public static StickFigure activeFigure;
 		public static StickJoint selectedJoint = new StickJoint("null", new Point(0, 0), 0, Color.Transparent, Color.Transparent);
 		public bool draw;
@@ -116,7 +122,7 @@ namespace TISFAT_ZERO
 						theToolbox.lbl_jointLength.Text = "Joint Length: " + f.CalcLength(null).ToString();
 
 						selectedJoint = f;
-					}
+					} //continue...
 					catch
 					{
 						return;
@@ -151,7 +157,7 @@ namespace TISFAT_ZERO
 
 				draw = true;
 			}
-		}
+		} // You'll see..
 
 		//Deselect the joint, and stop redrawing the canvas.
 		private void Canvas_MouseUp(object sender, MouseEventArgs e)
@@ -169,7 +175,7 @@ namespace TISFAT_ZERO
 				}
 				mousemoved = false;
 				draw = false;
-			}
+			} 
 		} 
 		#endregion
 
@@ -232,37 +238,33 @@ namespace TISFAT_ZERO
 		#endregion
 
 		#region Figures
-		public static void addStickFigure(StickFigure figure)
+		public static void addFigure(StickObject figure)
 		{
-			for (int i = 0; i < stickFigureList.Count; i++)
+			figureList.Add(figure);
+		}
+
+		public static void addTweenFigure(StickObject figure)
+		{
+			tweenFigs.Add(figure);
+		}
+
+		public static void removeFigure(StickObject figure)
+		{
+			figureList.Remove(figure); //I just thought about that.. ;p
+		}
+
+		public static void removeTweenFigure(StickObject figure)
+		{
+			tweenFigs.Remove(figure);
+		}
+
+		public static void activateFigure(StickObject fig)
+		{
+			for (int i = 0; i < figureList.Count; i++)
 			{
-				stickFigureList[i].isActiveFigure = false;
+				figureList[i].isActiveFig = false;
 			}
-			stickFigureList.Add(figure);
-			figure.isActiveFigure = true;
-			theToolbox.lbl_stickFigures.Text = "StickFigure List: " + stickFigureList.Count / 2; // divided by 2 because each layer has a tween figure
-			theCanvas.Refresh();
-		}
-
-		public static void addTweenFigure(StickFigure figure)
-		{
-			theCanvas.tweenFigureList.Add(figure);
-			theCanvas.Refresh();
-		}
-
-		public static void removeStickFigure(StickFigure figure)
-		{
-			stickFigureList.Remove(figure);
-		}
-
-		public static void activateFigure(StickFigure fig)
-		{
-			foreach (StickFigure f in stickFigureList)
-			{
-				f.isActiveFigure = f == fig;
-			}
-
-			theCanvas.Refresh();
+			fig.isActiveFig = true;
 		}
 
 		public StickFigure createFigure()
