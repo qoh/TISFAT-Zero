@@ -61,6 +61,7 @@ namespace TISFAT_ZERO
 		{
 			bool render = false; int x = -1, start = -1, end = -1;
 
+
 			if (selectedFrame >= 0)
 			{
 				StickFrame frm = (StickFrame)keyFrames[selectedFrame];
@@ -81,7 +82,7 @@ namespace TISFAT_ZERO
                     if (!(tweenFig == null))
                     {
                         tweenFig.isDrawn = false;
-                        theCanvas.drawTweenFigures = false;
+						tweenFig.drawFigure = false;
                     }
 					break;
 				}
@@ -103,6 +104,8 @@ namespace TISFAT_ZERO
                 {
                     StickFrame s = (StickFrame)keyFrames[start], e = (StickFrame)keyFrames[end];
                     float percent = (float)(pos - s.pos) / (e.pos - s.pos);
+
+					tweenFig.isDrawn = true;
                     if (!theCanvas.drawTweenFigures)
                         theCanvas.drawTweenFigures = true;
 
@@ -115,10 +118,10 @@ namespace TISFAT_ZERO
                 else
                 {
                     tweenFig.isDrawn = false;
-                    theCanvas.drawTweenFigures = false;
                 }
 			}
 
+			fig.isDrawn = render;
 			fig.drawFigure = render;
 			fig.drawHandles = render & current;
 			fig.isActiveFigure = true;

@@ -35,9 +35,6 @@ namespace TISFAT_ZERO
 			theCanvas = this;
 			StickFigure.test = this;
 			theToolbox = t;
-            //theCanvasGraphics = this.CreateGraphics();
-            
-            //theCanvasGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
 			InitializeComponent();
 		}
@@ -53,11 +50,6 @@ namespace TISFAT_ZERO
             {
                 if (!(selectedJoint.name == "null"))
                 {
-                    //if (selectedJoint.jointname == "Head")
-                    //{
-                    //    return;
-                    //}
-
                     selectedJoint.SetPos(e.X, e.Y);
                     Refresh();
                 }
@@ -129,6 +121,7 @@ namespace TISFAT_ZERO
                     {
                         return;
                     }
+
                     draw = true;
                 }
                 else if (ModifierKeys == Keys.Control)
@@ -212,7 +205,8 @@ namespace TISFAT_ZERO
             {
                 for (int i = 0; i < tweenFigureList.Count; i++)
                 {
-                    tweenFigureList[i].Draw(false);
+					if(tweenFigureList[i].isDrawn)
+						tweenFigureList[i].Draw(false);
                 }
             }
         }

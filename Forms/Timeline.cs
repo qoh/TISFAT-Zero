@@ -133,8 +133,10 @@ namespace TISFAT_ZERO
 				
 				int count = (int)Math.Min(frames, last - first);
 
+				int max = Math.Max(last, count + first);
+
 				//Draw all the frames in the layer (I'll implement framesets later ok)
-				for (int b = first, kind = 0; b <= count + first; b++)
+				for (int b = first, kind = 0; b <= max; b++)
 				{
 					Color x = Color.White;
 					if (l.keyFrames[kind].pos == b + offset)
