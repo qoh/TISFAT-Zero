@@ -106,6 +106,7 @@ namespace TISFAT_ZERO
                     float percent = (float)(pos - s.pos) / (e.pos - s.pos);
 
 					tweenFig.isDrawn = true;
+
                     if (!theCanvas.drawTweenFigures)
                         theCanvas.drawTweenFigures = true;
 
