@@ -49,6 +49,7 @@
 			this.pnl_ctrlPanel = new System.Windows.Forms.Panel();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.maskedTextBox1 = new System.Windows.Forms.NumericUpDown();
 			this.btn_playPause = new System.Windows.Forms.Button();
 			this.lbl_FPS = new System.Windows.Forms.Label();
 			this.lbl_frameCount = new System.Windows.Forms.Label();
@@ -63,16 +64,15 @@
 			this.pnl_paintPanel = new System.Windows.Forms.Panel();
 			this.btn_cancelButtonDraw = new System.Windows.Forms.Button();
 			this.animTimer = new System.Windows.Forms.Timer(this.components);
-			this.maskedTextBox1 = new System.Windows.Forms.NumericUpDown();
 			this.pnl_mainPanel.SuspendLayout();
 			this.pnl_mainTools.SuspendLayout();
 			this.pnl_addTools.SuspendLayout();
 			this.pnl_ctrlPanel.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.maskedTextBox1)).BeginInit();
 			this.tabPage2.SuspendLayout();
 			this.pnl_Drawing.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.maskedTextBox1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// pnl_mainPanel
@@ -326,6 +326,18 @@
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Control";
 			// 
+			// maskedTextBox1
+			// 
+			this.maskedTextBox1.Location = new System.Drawing.Point(80, 44);
+			this.maskedTextBox1.Maximum = new decimal(new int[] {
+            256,
+            0,
+            0,
+            0});
+			this.maskedTextBox1.Name = "maskedTextBox1";
+			this.maskedTextBox1.Size = new System.Drawing.Size(40, 20);
+			this.maskedTextBox1.TabIndex = 4;
+			// 
 			// btn_playPause
 			// 
 			this.btn_playPause.Font = new System.Drawing.Font("Lucida Sans", 8.25F);
@@ -456,26 +468,15 @@
 			this.animTimer.Interval = 24;
 			this.animTimer.Tick += new System.EventHandler(this.animTimer_Tick);
 			// 
-			// maskedTextBox1
-			// 
-			this.maskedTextBox1.Location = new System.Drawing.Point(80, 44);
-			this.maskedTextBox1.Maximum = new decimal(new int[] {
-            256,
-            0,
-            0,
-            0});
-			this.maskedTextBox1.Name = "maskedTextBox1";
-			this.maskedTextBox1.Size = new System.Drawing.Size(40, 20);
-			this.maskedTextBox1.TabIndex = 4;
-			// 
 			// Toolbox
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.BackColor = System.Drawing.Color.White;
 			this.ClientSize = new System.Drawing.Size(163, 336);
 			this.ControlBox = false;
 			this.Controls.Add(this.pnl_mainPanel);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "Toolbox";
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
 			this.Text = "Toolbox";
@@ -488,10 +489,10 @@
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
 			this.tabPage1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.maskedTextBox1)).EndInit();
 			this.tabPage2.ResumeLayout(false);
 			this.tabPage2.PerformLayout();
 			this.pnl_Drawing.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.maskedTextBox1)).EndInit();
 			this.ResumeLayout(false);
 
         }

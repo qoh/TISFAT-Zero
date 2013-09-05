@@ -14,8 +14,6 @@ namespace TISFAT_ZERO
 		bool bChanged;
 		bool bOld;
 
-		private int lastScroll = 0, lastWidth = 650;
-		private int sX, sY;
 		public int layersCount = 5; 
 		#endregion
 
@@ -74,7 +72,7 @@ namespace TISFAT_ZERO
 		//Outline for loading files.
 		public void LoadFile(string strFileName)
 		{
-			int f, g, h, i, nFrameSetCount, nFramesCount, x, y, nWide, nHigh, nType, nActionCount, misc, nSkip;
+			/*int f, g, h, i, nFrameSetCount, nFramesCount, x, y, nWide, nHigh, nType, nActionCount, misc, nSkip;
 			Layer pLayer;
 			//SingleFrame pFrameSet
 			KeyFrame pFrame;
@@ -86,7 +84,7 @@ namespace TISFAT_ZERO
 			Bitmap bitty;
 			MemoryStream ms;
 
-			fs = new FileStream(strFileName, FileMode.Open);
+			fs = new FileStream(strFileName, FileMode.Open);*/
 
 		} 
 		#endregion
@@ -157,6 +155,11 @@ namespace TISFAT_ZERO
 		private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
 		{
 			lbl_selectionDummy.Focus();
+		}
+
+		private void savetestToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Saver.saveProject("test.tzf", Timeline.layers);
 		}
 	}
 }
