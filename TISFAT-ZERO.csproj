@@ -11,8 +11,7 @@
     <RootNamespace>TISFAT_ZERO</RootNamespace>
     <AssemblyName>TISFAT-ZERO</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -69,7 +68,7 @@
       <DependentUpon>MainF.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Preferences.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Preferences.Designer.cs">
       <DependentUpon>Preferences.cs</DependentUpon>
@@ -92,6 +91,9 @@
       <DependentUpon>User.settings</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Scripts\Controls.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Scripts\Frames.cs" />
     <Compile Include="Scripts\Functions.cs" />

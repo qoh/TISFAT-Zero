@@ -2,23 +2,10 @@
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using TISFAT_ZERO.Properties;
 
 namespace TISFAT_ZERO
 {
-    namespace NumericEditBox
-    {
-        /// <summary>
-        /// Summary description for Class1.
-        /// </summary>
-        public class NumericEditBox : System.Windows.Forms.NumericUpDown
-        {
-            public NumericEditBox()
-            {
-                Controls[0].Visible = false;
-            }
-        }
-    }
-
 	public partial class Preferences : Form
 	{
 		private string folderPath = Environment.SpecialFolder.ApplicationData + "\\TISFAT\\";
@@ -41,7 +28,6 @@ namespace TISFAT_ZERO
 
 		private void Preferences_Load(object sender, EventArgs e)
 		{
-            list_Menu.SelectedIndex = 0;
             if (Properties.User.Default.DefaultSavePath == "")
             {
                 txt_defaultSavePath.Text = Environment.SpecialFolder.MyDocuments + "\\TISFAT\\";
@@ -88,5 +74,24 @@ namespace TISFAT_ZERO
 
             this.Close();
         }
+
+		private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+		{
+
+		}
+	}
+
+	namespace NumericEditBox
+	{
+		/// <summary>
+		/// Summary description for Class1.
+		/// </summary>
+		public class NumericEditBox : System.Windows.Forms.NumericUpDown
+		{
+			public NumericEditBox()
+			{
+				Controls[0].Visible = false;
+			}
+		}
 	}
 }
