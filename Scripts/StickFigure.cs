@@ -153,7 +153,7 @@ namespace TISFAT_ZERO
 						dAngle = (dAngle - pJoint.AngleToParent);
 					}
 				}
-				else
+				else //stop lemme find out what the exception is
 				{
 					if (!(pStart.parent == null))
 					{
@@ -221,7 +221,7 @@ namespace TISFAT_ZERO
 		#region Properties
 
 		public List<StickJoint> Joints;
-		public bool isActiveFig, drawHandles, drawFig, isTweenFig;
+		public bool isActiveFig, drawFig, drawHandles, isTweenFig;
 		public bool isDrawn
 		{
 			get
@@ -242,6 +242,7 @@ namespace TISFAT_ZERO
 				}
 			}
 		}
+		public byte type;
 
 		#endregion Properties
 
@@ -297,227 +298,13 @@ namespace TISFAT_ZERO
 		public void setAsActiveFigure()
 		{
 		}
-	}
-	
 
-	public class StickFigure
-	{
-		#region Variables
-		public bool isActiveFigure;
-		public bool drawHandles = true;
-		public bool drawFigure = true;
-		public int int1 = -1, int2 = -1;
-		public bool isDrawn = false;
-		public bool isTweenFigure = false;
-
-		public StickJoint[] Joints = new StickJoint[12];
-		/*
-			* 0 = Head
-			* 1 = Neck
-			* 2 = Right Elbow
-			* 3 = Right Hand
-			* 4 = Left Elbow
-			* 5 = Left Hand
-			* 6 = Hip
-			* 7 = Left Knee
-			* 8 = Left Foot
-			* 9 = Right Knee
-			* 10 = Right Foot
-			*/
-
-		#endregion
-
-		public StickFigure(bool activate = true)
-		{
-			#region Define Joints/Position
-			Joints[0] = new StickJoint("Neck", new Point(222, 158), 60, Color.Black, Color.Blue, 0, 0, true, Joints[1], false);
-			
-			Joints[1] = new StickJoint("Shoulder", new Point(222, 155), 12, Color.Black, Color.Yellow, 0, 0, false, Joints[0]);
-			Joints[2] = new StickJoint("RElbow", new Point(238, 166), 12, Color.Black, Color.Red, 0, 0, false, Joints[1]);
-			Joints[3] = new StickJoint("RHand", new Point(246, 184), 12, Color.Black, Color.Red, 0, 0, false, Joints[2]);
-			Joints[4] = new StickJoint("LElbow", new Point(206, 167), 12, Color.Black, Color.Blue, 0, 0, false, Joints[1]);
-			Joints[5] = new StickJoint("LHand", new Point(199, 186), 12, Color.Black, Color.Blue, 0, 0, false, Joints[4]);
-			Joints[6] = new StickJoint("Hip", new Point(222, 195), 12, Color.Black, Color.Yellow, 0, 0, false, Joints[1]);
-			Joints[7] = new StickJoint("LKnee", new Point(211, 218), 12, Color.Black, Color.Blue, 0, 0, false, Joints[6]);
-			Joints[8] = new StickJoint("LFoot", new Point(202, 241), 12, Color.Black, Color.Blue, 0, 0, false, Joints[7]);
-			Joints[9] = new StickJoint("RKnee", new Point(234, 217), 12, Color.Black, Color.Red, 0, 0, false, Joints[6]);
-			Joints[10] = new StickJoint("RFoot", new Point(243, 240), 12, Color.Black, Color.Red, 0, 0, false, Joints[9]);
-			Joints[11] = new StickJoint("Head", new Point(222, 150), 13, Color.Black, Color.Yellow, 0, 1, true, Joints[0]);
-
-			for (int a = 0; a < 12; a++)
-				Joints[a].ParentFigure = this;
-
-			#endregion
-
-			#region Calculate joint Lengths/Add Children to Parents
-			for (int i = 0; i < Joints.Count(); i++)
-			{
-				if (Joints[i].parent != null)
-				{
-					Joints[i].CalcLength(null);
-				}
-			}
-
-			for (int i = 0; i < Joints.Count(); i++)
-			{
-				if (Joints[i].parent != null)
-				{
-					Joints[i].parent.children.Add(Joints[i]);
-				}
-			} 
-			#endregion
-
-			Canvas.addStickFigure(this);
-			this.drawFigure = activate;
-			this.drawHandles = activate;
-			if(activate)
-				this.activate();
-		}
-
-		public StickFigure(bool isTweenFigure, bool stuff)
-		{
-			#region Define Joints/Position
-			Joints[0] = new StickJoint("Neck", new Point(222, 158), 60, Color.Black, Color.Blue, 0, 0, true, Joints[1], false);
-
-			Joints[1] = new StickJoint("Shoulder", new Point(222, 155), 12, Color.Black, Color.Yellow, 0, 0, false, Joints[0]);
-			Joints[2] = new StickJoint("RElbow", new Point(238, 166), 12, Color.Black, Color.Red, 0, 0, false, Joints[1]);
-			Joints[3] = new StickJoint("RHand", new Point(246, 184), 12, Color.Black, Color.Red, 0, 0, false, Joints[2]);
-			Joints[4] = new StickJoint("LElbow", new Point(206, 167), 12, Color.Black, Color.Blue, 0, 0, false, Joints[1]);
-			Joints[5] = new StickJoint("LHand", new Point(199, 186), 12, Color.Black, Color.Blue, 0, 0, false, Joints[4]);
-			Joints[6] = new StickJoint("Hip", new Point(222, 195), 12, Color.Black, Color.Yellow, 0, 0, false, Joints[1]);
-			Joints[7] = new StickJoint("LKnee", new Point(211, 218), 12, Color.Black, Color.Blue, 0, 0, false, Joints[6]);
-			Joints[8] = new StickJoint("LFoot", new Point(202, 241), 12, Color.Black, Color.Blue, 0, 0, false, Joints[7]);
-			Joints[9] = new StickJoint("RKnee", new Point(234, 217), 12, Color.Black, Color.Red, 0, 0, false, Joints[6]);
-			Joints[10] = new StickJoint("RFoot", new Point(243, 240), 12, Color.Black, Color.Red, 0, 0, false, Joints[9]);
-			Joints[11] = new StickJoint("Head", new Point(222, 150), 13, Color.Black, Color.Yellow, 0, 1, true, Joints[0]);
-
-			for (int a = 0; a < 12; a++)
-				Joints[a].ParentFigure = this;
-
-			#endregion
-
-			#region Calculate joint Lengths/Add Children to Parents
-			for (int i = 0; i < Joints.Count(); i++)
-			{
-				if (Joints[i].parent != null)
-				{
-					Joints[i].CalcLength(null);
-				}
-			}
-
-			for (int i = 0; i < Joints.Count(); i++)
-			{
-				if (Joints[i].parent != null)
-				{
-					Joints[i].parent.children.Add(Joints[i]);
-				}
-			}
-			#endregion
-
-			Canvas.addTweenFigure(this);
-			this.drawHandles = false;
-		}
-
-		public void activate()
-		{
-			for (int i = 0; i < Canvas.stickFigureList.Count(); i++)
-			{
-				Canvas.stickFigureList[i].isActiveFigure = false;
-			}
-			Canvas.activateFigure(this);
-			isActiveFigure = true;
-		}
-
-		#region Figure Manipulation
-		public void onJointMoved()
-		{
-			if (int1 < 0)
-				return;
-
-			StickLayer currLayer = (StickLayer)Timeline.layers[int1];
-			((StickFrame)(currLayer.keyFrames[currLayer.selectedFrame])).Joints = this.Joints.ToArray();
-		}
-
-		public void flipArms()
-		{
-			Point rElbow = Joints[2].location;
-			Point rHand = Joints[3].location;
-			Point lElbow = Joints[4].location;
-			Point lHand = Joints[5].location;
-
-			Joints[2].location = lElbow;
-			Joints[3].location = lHand;
-			Joints[4].location = rElbow;
-			Joints[5].location = rHand;
-
-			Draw(true);
-		}
-
-		public void flipLegs()
-		{
-			Point lKnee = Joints[7].location;
-			Point lFoot = Joints[8].location;
-			Point rKnee = Joints[9].location;
-			Point rFoot = Joints[10].location;
-
-			Joints[7].location = rKnee;
-			Joints[8].location = rFoot;
-			Joints[9].location = lKnee;
-			Joints[10].location = lFoot;
-
-			Draw(true);
-		} 
-		#endregion
-
-		#region Graphics/Drawing
-		public void Draw(bool fromthingy)
-		{
-			if (fromthingy)
-			{
-				Canvas.theCanvas.Refresh();
-				return;
-			}
-			foreach (StickJoint i in Joints)
-			{
-				if (i.parent != null)
-				{
-					Canvas.drawGraphics(i.drawState, new Pen(i.color, i.thickness), new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
-				}
-			}
-		}
-
-		public void DrawHandles()
-		{
-			foreach (StickJoint i in Joints)
-			{
-				if (drawHandles)
-				{
-					if (!isActiveFigure)
-					{
-						Canvas.drawGraphics(2, new Pen(Color.DimGray, 1), new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
-						continue;
-					}
-
-					if (i.handleDrawn & isActiveFigure)
-					{
-						Canvas.drawGraphics(2, new Pen(i.handleColor, 1), new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
-					}
-					if (i.state == 1 | i.state == 3 | i.state == 4)
-					{
-						Canvas.drawGraphics(3, new Pen(Color.WhiteSmoke, 1), new Point(i.location.X - 1, i.location.Y - 1), 6, 6, new Point(0, 0));
-					}
-				}
-			}
-		}
-		#endregion
-
-		#region Point Selection
 		public int getPointAt(Point coords, int tolerance)
 		{
 			if (!(Joints.Count() > 0))
 				return -1;
 			List<StickJoint> resultIndex = new List<StickJoint>();
-			double minimum = 9000001; //ITS OVER 9000!!!!
+			double minimum = short.MaxValue; //ITS OVER 9000!!!!
 			int index = new int();
 
 			for (int i = 0; i < Joints.Count(); i++)
@@ -565,7 +352,185 @@ namespace TISFAT_ZERO
 			}
 
 			return Joints[index];
-		} //we need these two methods aswell.. just a moment
+		}
+	}
+	
+
+	public class StickFigure : StickObject
+	{
+		#region Variables
+		public bool isActiveFigure;
+		public bool drawFigure = true;
+		public int int1 = -1, int2 = -1;
+		public bool isDrawn = false;
+		public bool isTweenFigure = false;
+
+		/*
+			* 0 = Head
+			* 1 = Neck
+			* 2 = Right Elbow
+			* 3 = Right Hand
+			* 4 = Left Elbow
+			* 5 = Left Hand
+			* 6 = Hip
+			* 7 = Left Knee
+			* 8 = Left Foot
+			* 9 = Right Knee
+			* 10 = Right Foot
+			*/
+
+		#endregion
+
+		public StickFigure(bool activate = true)
+		{
+			#region Define Joints/Position
+
+			//Joints[1]
+			//Joints[0]
+
+			base.type = 1;
+			base.Joints = new List<StickJoint>(12);
+			Joints.Add(new StickJoint("Neck", new Point(222, 158), 12, Color.Black, Color.Blue, 0, 0, true, null, false));
+			Joints.Add(new StickJoint("Shoulder", new Point(222, 155), 12, Color.Black, Color.Yellow, 0, 0, false, null));
+			Joints[0].parent = Joints[1];
+			Joints[1].parent = Joints[0];
+			Joints.Add(new StickJoint("RElbow", new Point(238, 166), 12, Color.Black, Color.Red, 0, 0, false, Joints[1]));
+			Joints.Add(new StickJoint("RHand", new Point(246, 184), 12, Color.Black, Color.Red, 0, 0, false, Joints[2]));
+			Joints.Add(new StickJoint("LElbow", new Point(206, 167), 12, Color.Black, Color.Blue, 0, 0, false, Joints[1]));
+			Joints.Add(new StickJoint("LHand", new Point(199, 186), 12, Color.Black, Color.Blue, 0, 0, false, Joints[4]));
+			Joints.Add(new StickJoint("Hip", new Point(222, 195), 12, Color.Black, Color.Yellow, 0, 0, false, Joints[1]));
+			Joints.Add(new StickJoint("LKnee", new Point(211, 218), 12, Color.Black, Color.Blue, 0, 0, false, Joints[6]));
+			Joints.Add(new StickJoint("LFoot", new Point(202, 241), 12, Color.Black, Color.Blue, 0, 0, false, Joints[7]));
+			Joints.Add(new StickJoint("RKnee", new Point(234, 217), 12, Color.Black, Color.Red, 0, 0, false, Joints[6]));
+			Joints.Add(new StickJoint("RFoot", new Point(243, 240), 12, Color.Black, Color.Red, 0, 0, false, Joints[9]));
+			Joints.Add(new StickJoint("Head", new Point(222, 150), 13, Color.Black, Color.Yellow, 0, 1, true, Joints[0]));
+			
+			for (int a = 0; a < 12; a++)
+				Joints[a].ParentFigure = this;
+
+			#endregion
+
+			#region Calculate joint Lengths/Add Children to Parents
+			for (int i = 0; i < Joints.Count(); i++)
+			{
+				if (Joints[i].parent != null)
+				{
+					Joints[i].CalcLength(null);
+				}
+			}
+
+			for (int i = 0; i < Joints.Count(); i++)
+			{
+				if (Joints[i].parent != null)
+				{
+					Joints[i].parent.children.Add(Joints[i]);
+				}
+			} 
+			#endregion
+
+			Canvas.addFigure(this);
+			base.drawFig = activate;
+			this.drawHandles = activate;
+			this.isTweenFig = false;
+			if(activate)
+				this.activate();
+		}
+
+		public StickFigure(bool isTweenFigure, bool stuff)
+		{
+			#region Define Joints/Position
+			base.Joints = new List<StickJoint>(12);
+			Joints.Add(new StickJoint("Neck", new Point(222, 158), 12, Color.Black, Color.Blue, 0, 0, true, null, false));
+			Joints.Add(new StickJoint("Shoulder", new Point(222, 155), 12, Color.Black, Color.Yellow, 0, 0, false, null));
+			Joints[0].parent = Joints[1];
+			Joints[1].parent = Joints[0];
+			Joints.Add(new StickJoint("RElbow", new Point(238, 166), 12, Color.Black, Color.Red, 0, 0, false, Joints[1]));
+			Joints.Add(new StickJoint("RHand", new Point(246, 184), 12, Color.Black, Color.Red, 0, 0, false, Joints[2]));
+			Joints.Add(new StickJoint("LElbow", new Point(206, 167), 12, Color.Black, Color.Blue, 0, 0, false, Joints[1]));
+			Joints.Add(new StickJoint("LHand", new Point(199, 186), 12, Color.Black, Color.Blue, 0, 0, false, Joints[4]));
+			Joints.Add(new StickJoint("Hip", new Point(222, 195), 12, Color.Black, Color.Yellow, 0, 0, false, Joints[1]));
+			Joints.Add(new StickJoint("LKnee", new Point(211, 218), 12, Color.Black, Color.Blue, 0, 0, false, Joints[6]));
+			Joints.Add(new StickJoint("LFoot", new Point(202, 241), 12, Color.Black, Color.Blue, 0, 0, false, Joints[7]));
+			Joints.Add(new StickJoint("RKnee", new Point(234, 217), 12, Color.Black, Color.Red, 0, 0, false, Joints[6]));
+			Joints.Add(new StickJoint("RFoot", new Point(243, 240), 12, Color.Black, Color.Red, 0, 0, false, Joints[9]));
+			Joints.Add(new StickJoint("Head", new Point(222, 150), 13, Color.Black, Color.Yellow, 0, 1, true, Joints[0]));
+
+			for (int a = 0; a < 12; a++)
+				Joints[a].ParentFigure = this;
+
+			#endregion
+
+			#region Calculate joint Lengths/Add Children to Parents
+			for (int i = 0; i < Joints.Count(); i++)
+			{
+				if (Joints[i].parent != null)
+				{
+					Joints[i].CalcLength(null);
+				}
+			}
+
+			for (int i = 0; i < Joints.Count(); i++)
+			{
+				if (Joints[i].parent != null)
+				{
+					Joints[i].parent.children.Add(Joints[i]);
+				}
+			}
+			#endregion
+
+			Canvas.addTweenFigure(this);
+			this.drawHandles = false;
+		}
+
+		public void activate()
+		{
+			for (int i = 0; i < Canvas.stickFigureList.Count(); i++)
+			{
+				Canvas.stickFigureList[i].isActiveFigure = false;
+			}
+			Canvas.activateFigure(this);
+			isActiveFigure = true;
+		}
+
+		#region Figure Manipulation
+		public void onJointMoved()
+		{
+			if (int1 < 0)
+				return;
+
+			StickLayer currLayer = (StickLayer)Timeline.layers[int1];
+			((StickFrame)(currLayer.keyFrames[currLayer.selectedFrame])).Joints = this.Joints;
+		}
+
+		public void flipArms()
+		{
+			Point rElbow = Joints[2].location;
+			Point rHand = Joints[3].location;
+			Point lElbow = Joints[4].location;
+			Point lHand = Joints[5].location;
+
+			Joints[2].location = lElbow;
+			Joints[3].location = lHand;
+			Joints[4].location = rElbow;
+			Joints[5].location = rHand;
+
+			drawFigure(true);
+		}
+
+		public void flipLegs()
+		{
+			Point lKnee = Joints[7].location;
+			Point lFoot = Joints[8].location;
+			Point rKnee = Joints[9].location;
+			Point rFoot = Joints[10].location;
+
+			Joints[7].location = rKnee;
+			Joints[8].location = rFoot;
+			Joints[9].location = lKnee;
+			Joints[10].location = lFoot;
+
+			drawFigure(true);
+		} 
 		#endregion
 	}
 }

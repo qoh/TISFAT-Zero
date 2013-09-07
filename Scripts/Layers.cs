@@ -65,7 +65,7 @@ namespace TISFAT_ZERO
 			if (selectedFrame >= 0)
 			{
 				StickFrame frm = (StickFrame)keyFrames[selectedFrame];
-				for (int a = 0; a < frm.Joints.Length; a++)
+				for (int a = 0; a < frm.Joints.Count; a++)
 				{
 					frm.Joints[a].ParentFigure = null;
 				}
@@ -81,8 +81,7 @@ namespace TISFAT_ZERO
 					fig.Joints = ((StickFrame)keyFrames[a]).Joints;
                     if (!(tweenFig == null))
                     {
-                        tweenFig.isDrawn = false;
-						tweenFig.drawFigure = false;
+                        tweenFig.drawFig = false;
                     }
 					break;
 				}
@@ -105,7 +104,7 @@ namespace TISFAT_ZERO
                     StickFrame s = (StickFrame)keyFrames[start], e = (StickFrame)keyFrames[end];
                     float percent = (float)(pos - s.pos) / (e.pos - s.pos);
 
-					tweenFig.isDrawn = true;
+					tweenFig.drawFig = true;
 
                     if (!theCanvas.drawTweenFigures)
                         theCanvas.drawTweenFigures = true;
@@ -122,8 +121,7 @@ namespace TISFAT_ZERO
                 }
 			}
 
-			fig.isDrawn = render;
-			fig.drawFigure = render;
+			fig.drawFig = render;
 			fig.drawHandles = render & current;
 			fig.isActiveFigure = true;
 			selectedFrame = x;
@@ -131,7 +129,7 @@ namespace TISFAT_ZERO
 			if (selectedFrame >= 0)
 			{
 				StickFrame frm = (StickFrame)keyFrames[selectedFrame];
-				for (int a = 0; a < frm.Joints.Length; a++)
+				for (int a = 0; a < frm.Joints.Count; a++)
 				{
 					frm.Joints[a].ParentFigure = fig;
 				}

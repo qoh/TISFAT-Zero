@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 
 namespace TISFAT_ZERO
 {
@@ -21,7 +22,7 @@ namespace TISFAT_ZERO
 
 		//Now we need a method to add figures to these lists.
 
-		public static StickFigure activeFigure;
+		public static StickObject activeFigure;
 		public static StickJoint selectedJoint = new StickJoint("null", new Point(0, 0), 0, Color.Transparent, Color.Transparent);
 		public bool draw;
 		public bool drawTweenFigures = false;
@@ -39,7 +40,6 @@ namespace TISFAT_ZERO
 		{
 			mainForm = f;
 			theCanvas = this;
-			StickFigure.test = this;
 			theToolbox = t;
 
 			InitializeComponent();
@@ -59,11 +59,11 @@ namespace TISFAT_ZERO
 					selectedJoint.SetPos(e.X, e.Y);
 					Refresh();
 				}
-				foreach (StickFigure fig in stickFigureList)
+				foreach (StickObject fig in figureList)
 				{
 					if (!(fig == activeFigure))
 					{
-						fig.isActiveFigure = false;
+						fig.isActiveFig = false;
 					}
 				}
 			}
@@ -71,7 +71,7 @@ namespace TISFAT_ZERO
 			{
 				mousemoved = true;
 
-				for (int i = 0; i < activeFigure.Joints.Length; i++)
+				for (int i = 0; i < activeFigure.Joints.Count; i++)
 				{
 					activeFigure.Joints[i].location.X = fx[i] + (e.X - ox);
 					activeFigure.Joints[i].location.Y = fy[i] + (e.Y - oy);
@@ -80,15 +80,15 @@ namespace TISFAT_ZERO
 				Refresh();
 			}
 
-			for (int i = 0; i < stickFigureList.Count; i++)
+			for (int i = 0; i < figureList.Count; i++)
 			{
-				if (stickFigureList[i].getPointAt(new Point(e.X, e.Y), 4) != -1 && stickFigureList[i].drawHandles)
+				if (figureList[i].getPointAt(new Point(e.X, e.Y), 4) != -1 && figureList[i].drawHandles)
 				{
 					if (activeFigure != null)
-						activeFigure.isActiveFigure = false;
+						activeFigure.isActiveFig = false;
 
-					activeFigure = stickFigureList[i];
-					activeFigure.isActiveFigure = true;
+					activeFigure = figureList[i];
+					activeFigure.isActiveFig = true;
 
 					Refresh();
 					break;
@@ -115,18 +115,13 @@ namespace TISFAT_ZERO
 			{
 				if (!(ModifierKeys == Keys.Control))
 				{
-					try
-					{
-						StickJoint f = activeFigure.selectPoint(new Point(e.X, e.Y), 4);
-						theToolbox.lbl_selectedJoint.Text = "Selected Joint: " + f.name;
-						theToolbox.lbl_jointLength.Text = "Joint Length: " + f.CalcLength(null).ToString();
+					StickJoint f = null;
+					if(activeFigure != null)
+						f = activeFigure.selectPoint(new Point(e.X, e.Y), 4);
+					theToolbox.lbl_selectedJoint.Text = "Selected Joint: " + f.name;
+					theToolbox.lbl_jointLength.Text = "Joint Length: " + f.CalcLength(null).ToString();
 
-						selectedJoint = f;
-					} //continue...
-					catch
-					{
-						return;
-					}
+					selectedJoint = f;
 
 					draw = true;
 				}
@@ -134,7 +129,9 @@ namespace TISFAT_ZERO
 				{
 					try
 					{
-						StickJoint f = activeFigure.selectPoint(new Point(e.X, e.Y), 4);
+						StickJoint f = null;
+						if(activeFigure != null)
+							f = activeFigure.selectPoint(new Point(e.X, e.Y), 4);
 						f.state = (f.state == 1) ? f.state = 0 : f.state = 1;
 						Invalidate();
 						selectedJoint = f;
@@ -149,7 +146,7 @@ namespace TISFAT_ZERO
 			{
 				ox = e.X;
 				oy = e.Y;
-				for (int i = 0; i < activeFigure.Joints.Length; i++)
+				for (int i = 0; i < activeFigure.Joints.Count; i++)
 				{
 					fx[i] = activeFigure.Joints[i].location.X;
 					fy[i] = activeFigure.Joints[i].location.Y;
@@ -157,7 +154,7 @@ namespace TISFAT_ZERO
 
 				draw = true;
 			}
-		} // You'll see..
+		}
 
 		//Deselect the joint, and stop redrawing the canvas.
 		private void Canvas_MouseUp(object sender, MouseEventArgs e)
@@ -183,8 +180,14 @@ namespace TISFAT_ZERO
 		//This is called whenever the form is invalidated.
 		public void Canvas_Paint(object sender, PaintEventArgs e)
 		{
-            
-		} // We're also going to need to redefine a few things. Just wait
+			theCanvasGraphics = e.Graphics;
+
+			foreach (StickObject o in figureList)
+				o.drawFigure();
+
+			foreach (StickObject o in tweenFigs)
+				o.drawFigure();
+		}
 
 		/// <summary>
 		/// Draws the graphics.
@@ -199,7 +202,7 @@ namespace TISFAT_ZERO
 		{
 			if (type == 0) //Line
 			{
-				theCanvasGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+				theCanvasGraphics.SmoothingMode = SmoothingMode.AntiAlias;
 				pen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
 				pen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
 				theCanvasGraphics.DrawLine(pen, two, one);
@@ -207,32 +210,30 @@ namespace TISFAT_ZERO
 			}
 			else if (type == 1) //Circle
 			{
-				theCanvasGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+				
+				theCanvasGraphics.SmoothingMode = SmoothingMode.AntiAlias;
 				Brush brush = new SolidBrush(pen.Color);
 
 				theCanvasGraphics.DrawEllipse(pen, new Rectangle(one.X - width / 2, one.Y - height / 2, width, height));
 				pen.Dispose();
-
 			}
 			else if (type == 2) //Handle
 			{
-				theCanvasGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+				
+				theCanvasGraphics.SmoothingMode = SmoothingMode.HighSpeed;
 				Rectangle rect = new Rectangle(one.X, one.Y, 5, 5);
 				Brush brush = new SolidBrush(pen.Color);
 
 				theCanvasGraphics.FillRectangle(brush, Functions.Center(rect).X, Functions.Center(rect).Y, 5, 5);
 				pen.Dispose();
 			}
-
 			else if (type == 3) //Hollow Handle
 			{
-
-				theCanvasGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+				theCanvasGraphics.SmoothingMode = SmoothingMode.HighSpeed;
 				Rectangle rect = new Rectangle(one.X, one.Y, 5, 5);
 
 				theCanvasGraphics.DrawRectangle(pen, Functions.Center(rect).X, Functions.Center(rect).Y, 6, 6);
 				pen.Dispose();
-
 			}
 		} 
 		#endregion
@@ -250,7 +251,7 @@ namespace TISFAT_ZERO
 
 		public static void removeFigure(StickObject figure)
 		{
-			figureList.Remove(figure); //I just thought about that.. ;p
+			figureList.Remove(figure);
 		}
 
 		public static void removeTweenFigure(StickObject figure)
@@ -264,6 +265,7 @@ namespace TISFAT_ZERO
 			{
 				figureList[i].isActiveFig = false;
 			}
+
 			fig.isActiveFig = true;
 		}
 
@@ -278,12 +280,14 @@ namespace TISFAT_ZERO
 		#region Right Click Menu
 		private void flipArmsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			activeFigure.flipArms();
+			if (activeFigure.type == 1)
+				((StickFigure)activeFigure).flipArms();
 		}
 
 		private void flipLegsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			activeFigure.flipLegs();
+			if (activeFigure.type == 1)
+				((StickFigure)activeFigure).flipLegs();
 		} 
 		#endregion
 

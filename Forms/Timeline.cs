@@ -392,8 +392,8 @@ namespace TISFAT_ZERO
 				case "tst_insertKeyframeAtPose":
 					int p = cLayer.insertKeyFrame(selectedFrame);
 					StickFrame newFrame = (StickFrame)cLayer.keyFrames[p];
-					StickJoint[] jointz = cLayer.tweenFig.Joints;
-
+					List<StickJoint> jointz = cLayer.tweenFig.Joints;
+					
 					for (int a = 0; a < 12; a++)
 					{
 						newFrame.Joints[a].location = jointz[a].location;

@@ -111,7 +111,7 @@ namespace TISFAT_ZERO
 
 					stream.Write(bytes0.ToArray(), 0, bytes0.Count);
 
-					writePositionsBlock(((StickFrame)f).Joints, stream);
+					writePositionsBlock(((StickFrame)f).Joints.ToArray(), stream);
 					break;
 
 				default:

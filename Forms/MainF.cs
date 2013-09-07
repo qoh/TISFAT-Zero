@@ -99,17 +99,11 @@ namespace TISFAT_ZERO
 
 		private void splitContainer1_Panel1_Resize(object sender, EventArgs e)
 		{
-			//int height = layersCount * 16 + 1;
 			if (splitContainer1.Panel1.Height < 51)
 				splitContainer1.SplitterDistance = 51;
-			try
-			{
+
+			if(tline != null)
 				tline.Size = new Size(this.Width - 2 - (tline.Size.Height > splitContainer1.Panel1.Height ? 18 : 0), tline.Size.Height);
-			}
-			catch
-			{
-				return;
-			}
 		}
 
 		private void splitContainer1_Panel1_Scroll(object sender, ScrollEventArgs e)
@@ -120,6 +114,7 @@ namespace TISFAT_ZERO
 
 		private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
 		{
+			e.Graphics.Clear(Color.White);
 		}
 		#endregion
 
