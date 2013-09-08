@@ -278,7 +278,7 @@ namespace TISFAT_ZERO
 			{
 				if (drawHandles)
 				{
-					if (!isActiveFig)
+					if (!isActiveFig & i.handleDrawn)
 					{
 						Canvas.drawGraphics(2, new Pen(Color.DimGray, 1), new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
 						continue;

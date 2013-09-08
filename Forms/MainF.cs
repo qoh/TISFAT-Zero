@@ -152,7 +152,7 @@ namespace TISFAT_ZERO
 			lbl_selectionDummy.Focus();
 		}
 
-		private void savetestToolStripMenuItem_Click(object sender, EventArgs e)
+		private void saveAnimationToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			Saver.saveProject("test.tzf", Timeline.layers);
 		}

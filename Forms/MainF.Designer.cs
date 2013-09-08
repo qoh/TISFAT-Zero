@@ -47,6 +47,7 @@ namespace TISFAT_ZERO
 			this.exitTISFATToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.copyFramesetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.pasteFramesetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,7 +72,7 @@ namespace TISFAT_ZERO
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.lbl_selectionDummy = new System.Windows.Forms.Label();
 			this.framesPanel = new System.Windows.Forms.Panel();
-			this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.saveAnimationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnu_strip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -100,71 +101,71 @@ namespace TISFAT_ZERO
 			// 
 			this.newMovieToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("newMovieToolStripMenuItem.Image")));
 			this.newMovieToolStripMenuItem.Name = "newMovieToolStripMenuItem";
-			this.newMovieToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.newMovieToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
 			this.newMovieToolStripMenuItem.Text = "New Movie ...";
 			// 
 			// openMovieToolStripMenuItem
 			// 
 			this.openMovieToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("openMovieToolStripMenuItem.Image")));
 			this.openMovieToolStripMenuItem.Name = "openMovieToolStripMenuItem";
-			this.openMovieToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.openMovieToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
 			this.openMovieToolStripMenuItem.Text = "Open Movie ...";
 			// 
 			// saveMovieToolStripMenuItem
 			// 
 			this.saveMovieToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("saveMovieToolStripMenuItem.Image")));
 			this.saveMovieToolStripMenuItem.Name = "saveMovieToolStripMenuItem";
-			this.saveMovieToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.saveMovieToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
 			this.saveMovieToolStripMenuItem.Text = "Save Movie ...";
 			// 
 			// saveAsToolStripMenuItem
 			// 
 			this.saveAsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("saveAsToolStripMenuItem.Image")));
 			this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
 			this.saveAsToolStripMenuItem.Text = "Save As ...";
 			// 
 			// closeMovieToolStripMenuItem
 			// 
 			this.closeMovieToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("closeMovieToolStripMenuItem.Image")));
 			this.closeMovieToolStripMenuItem.Name = "closeMovieToolStripMenuItem";
-			this.closeMovieToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.closeMovieToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
 			this.closeMovieToolStripMenuItem.Text = "Close Movie ...";
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(148, 6);
 			// 
 			// exportToolStripMenuItem
 			// 
 			this.exportToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("exportToolStripMenuItem.Image")));
 			this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-			this.exportToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.exportToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
 			this.exportToolStripMenuItem.Text = "Export";
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(148, 6);
 			// 
 			// movieToolStripMenuItem
 			// 
 			this.movieToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("movieToolStripMenuItem.Image")));
 			this.movieToolStripMenuItem.Name = "movieToolStripMenuItem";
-			this.movieToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.movieToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
 			this.movieToolStripMenuItem.Text = "Movie";
 			// 
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator3.Size = new System.Drawing.Size(148, 6);
 			// 
 			// exitTISFATToolStripMenuItem
 			// 
 			this.exitTISFATToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("exitTISFATToolStripMenuItem.Image")));
 			this.exitTISFATToolStripMenuItem.Name = "exitTISFATToolStripMenuItem";
-			this.exitTISFATToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.exitTISFATToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
 			this.exitTISFATToolStripMenuItem.Text = "Exit TISFAT";
 			this.exitTISFATToolStripMenuItem.Click += new System.EventHandler(this.exitTISFATToolStripMenuItem_Click);
 			// 
@@ -189,6 +190,13 @@ namespace TISFAT_ZERO
 			this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
 			this.undoToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
 			this.undoToolStripMenuItem.Text = "Undo";
+			// 
+			// redoToolStripMenuItem
+			// 
+			this.redoToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("redoToolStripMenuItem.Image")));
+			this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
+			this.redoToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+			this.redoToolStripMenuItem.Text = "Redo";
 			// 
 			// toolStripSeparator4
 			// 
@@ -274,20 +282,20 @@ namespace TISFAT_ZERO
 			// 
 			this.layerToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("layerToolStripMenuItem1.Image")));
 			this.layerToolStripMenuItem1.Name = "layerToolStripMenuItem1";
-			this.layerToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+			this.layerToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
 			this.layerToolStripMenuItem1.Text = "Layer";
 			// 
 			// framesetToolStripMenuItem1
 			// 
 			this.framesetToolStripMenuItem1.Name = "framesetToolStripMenuItem1";
-			this.framesetToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+			this.framesetToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
 			this.framesetToolStripMenuItem1.Text = "Frameset";
 			// 
 			// keyframeToolStripMenuItem1
 			// 
 			this.keyframeToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("keyframeToolStripMenuItem1.Image")));
 			this.keyframeToolStripMenuItem1.Name = "keyframeToolStripMenuItem1";
-			this.keyframeToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+			this.keyframeToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
 			this.keyframeToolStripMenuItem1.Text = "Keyframe";
 			// 
 			// helpToolStripMenuItem
@@ -304,19 +312,19 @@ namespace TISFAT_ZERO
 			// 
 			this.helpToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("helpToolStripMenuItem1.Image")));
 			this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
-			this.helpToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+			this.helpToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
 			this.helpToolStripMenuItem1.Text = "Help";
 			// 
 			// toolStripSeparator5
 			// 
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
-			this.toolStripSeparator5.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator5.Size = new System.Drawing.Size(104, 6);
 			// 
 			// aboutToolStripMenuItem
 			// 
 			this.aboutToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aboutToolStripMenuItem.Image")));
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
 			this.aboutToolStripMenuItem.Text = "About";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
@@ -340,7 +348,8 @@ namespace TISFAT_ZERO
 			// debugToolStripMenuItem
 			// 
 			this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.drawStickToolStripMenuItem});
+            this.drawStickToolStripMenuItem,
+            this.saveAnimationToolStripMenuItem});
 			this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
 			this.debugToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
 			this.debugToolStripMenuItem.Text = "Debug";
@@ -394,12 +403,12 @@ namespace TISFAT_ZERO
 			this.framesPanel.Size = new System.Drawing.Size(1, 1);
 			this.framesPanel.TabIndex = 0;
 			// 
-			// redoToolStripMenuItem
+			// saveAnimationToolStripMenuItem
 			// 
-			this.redoToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("redoToolStripMenuItem.Image")));
-			this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
-			this.redoToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
-			this.redoToolStripMenuItem.Text = "Redo";
+			this.saveAnimationToolStripMenuItem.Name = "saveAnimationToolStripMenuItem";
+			this.saveAnimationToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+			this.saveAnimationToolStripMenuItem.Text = "Save Animation";
+			this.saveAnimationToolStripMenuItem.Click += new System.EventHandler(this.saveAnimationToolStripMenuItem_Click);
 			// 
 			// MainF
 			// 
@@ -467,6 +476,7 @@ namespace TISFAT_ZERO
 		private Panel framesPanel;
         private Label lbl_selectionDummy;
 		private ToolStripMenuItem redoToolStripMenuItem;
+		private ToolStripMenuItem saveAnimationToolStripMenuItem;
     }
 }
 

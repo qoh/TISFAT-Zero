@@ -376,7 +376,11 @@ namespace TISFAT_ZERO
 
 		private void cxt_Menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
 		{
+			if (selectedLayer < 0)
+				return;
+
 			string name = e.ClickedItem.Name;
+
 			StickLayer cLayer = ((StickLayer)layers[selectedLayer]);
 
 			switch (name)

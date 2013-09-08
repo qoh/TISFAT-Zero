@@ -115,9 +115,10 @@ namespace TISFAT_ZERO
 			{
 				if (!(ModifierKeys == Keys.Control))
 				{
+					if (activeFigure == null)
+						return;
 					StickJoint f = null;
-					if(activeFigure != null)
-						f = activeFigure.selectPoint(new Point(e.X, e.Y), 4);
+					f = activeFigure.selectPoint(new Point(e.X, e.Y), 4);
 					theToolbox.lbl_selectedJoint.Text = "Selected Joint: " + f.name;
 					theToolbox.lbl_jointLength.Text = "Joint Length: " + f.CalcLength(null).ToString();
 
@@ -144,6 +145,8 @@ namespace TISFAT_ZERO
 			}
 			if (e.Button == MouseButtons.Right & !(e.Button == MouseButtons.Left))
 			{
+				if (activeFigure == null)
+					return;
 				ox = e.X;
 				oy = e.Y;
 				for (int i = 0; i < activeFigure.Joints.Count; i++)
