@@ -21,8 +21,8 @@ namespace TISFAT_ZERO
 		//List of layers
 		public static List<Layer> layers;
 		public int layercount = 0;
-		public uint selectedFrame;
-		public int selectedLayer;
+		public static uint selectedFrame;
+		public static int selectedLayer;
 		public byte selectedType;
 		public KeyFrame selectedKeyFrame;
 

@@ -34,7 +34,7 @@ namespace TISFAT_ZERO
 		public bool fill = false;
 
 		public StickJoint parent;
-		public StickFigure ParentFigure;
+		public StickObject ParentFigure;
 		public List<StickJoint> children = new List<StickJoint>();
 
 		public bool selected;
@@ -352,6 +352,16 @@ namespace TISFAT_ZERO
 			}
 
 			return Joints[index];
+		}
+
+		public void onJointMoved()
+		{
+			Layer x = Timeline.layers[Timeline.selectedLayer];
+			if (x.type == 1)
+			{
+				StickLayer currLayer = (StickLayer)x;
+				((StickFrame)(currLayer.keyFrames[currLayer.selectedFrame])).Joints = this.Joints;
+			}
 		}
 	}
 	
