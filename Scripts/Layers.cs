@@ -252,4 +252,73 @@ namespace TISFAT_ZERO
 			return c;
 		}
 	}
+
+	public class RectLayer : Layer
+	{
+		public RectLayer(string Name, StickRect Line, Canvas _Canvas)
+		{
+			name = Name;
+			fig = Line;
+			theCanvas = _Canvas;
+			tweenFig = new StickRect(true);
+			type = 2;
+
+			firstKF = 0;
+			lastKF = 19;
+			type = 1;
+
+			keyFrames = new List<KeyFrame>();
+			keyFrames.Add(new RectFrame(firstKF));
+			keyFrames.Add(new RectFrame(lastKF));
+		}
+
+		public override int insertKeyFrame(uint pos)
+		{
+			//If inserting before the first, then make the new keyframe the first and re-arrange list
+			if (pos < firstKF)
+			{
+				firstKF = pos;
+				RectFrame x = new RectFrame(keyFrames[0].Joints, pos);
+
+				keyFrames.Insert(0, x);
+
+				return 0;
+			}
+			else if (pos > lastKF) //Do the same if it's more than the last
+			{
+				lastKF = pos;
+
+				RectFrame x = new RectFrame(keyFrames[keyFrames.Count - 1].Joints, pos);
+				x.pos = pos;
+
+				keyFrames.Add(x);
+
+				return keyFrames.Count - 1;
+			}
+
+			RectFrame n = null;
+			int c = 0;
+
+			//Look through the list for the nearest keyframe (as we want to retain all it's properties except for the position in the timeline)
+			for (int a = 0; a < keyFrames.Count; a++)
+			{
+				RectFrame k = (RectFrame)keyFrames[a];
+				if (pos < k.pos)
+				{
+					n = new RectFrame(keyFrames[c - 1].Joints, pos);
+					n.pos = pos;
+					break;
+				}
+				else if (pos > k.pos)
+					c++;
+				else if (pos == k.pos)
+					return -1;
+
+			}
+
+			keyFrames.Insert(c, n);
+
+			return c;
+		}
+	}
 }

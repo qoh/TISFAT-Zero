@@ -185,6 +185,17 @@ namespace TISFAT_ZERO
 			return n;
 		}
 
+		public RectLayer addRectLayer(string name)
+		{
+			StickRect x = theCanvas.createRect();
+
+			RectLayer n = new RectLayer(name, x, theCanvas);
+			layers.Add(n);
+
+			setFrame(n.firstKF);
+			return n;
+		}
+
 		public void setFrame(uint pos)
 		{
 			for (int a = 0; a < layers.Count; a++)

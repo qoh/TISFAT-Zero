@@ -170,5 +170,20 @@ namespace TISFAT_ZERO
 			slideOutObject = pnl_addTools;
 			animTimer.Start();
 		}
+
+		private void btn_addRectangle_Click(object sender, EventArgs e)
+		{
+			int i = 1;
+			foreach (Layer k in Timeline.layers)
+			{
+				i++;
+			}
+			mainForm.tline.addRectLayer("Rectangle " + i.ToString());
+			mainForm.tline.Refresh();
+
+			pnl_addTools.Enabled = false;
+			slideOutObject = pnl_addTools;
+			animTimer.Start();
+		}
 	}
 }

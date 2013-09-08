@@ -247,6 +247,7 @@
 			this.btn_addRectangle.TabIndex = 22;
 			this.btn_addRectangle.TabStop = false;
 			this.btn_addRectangle.UseVisualStyleBackColor = true;
+			this.btn_addRectangle.Click += new System.EventHandler(this.btn_addRectangle_Click);
 			// 
 			// btn_addLine
 			// 

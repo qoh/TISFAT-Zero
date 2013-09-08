@@ -284,6 +284,13 @@ namespace TISFAT_ZERO
 
 			return line;
 		}
+
+		public StickRect createRect()
+		{
+			StickRect rect = new StickRect(false);
+
+			return rect;
+		}
 		#endregion
 
 		#region Right Click Menu

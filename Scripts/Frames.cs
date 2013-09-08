@@ -80,16 +80,39 @@ namespace TISFAT_ZERO
 	{
 		public LineFrame(List<StickJoint> ps, uint po)
 		{
-			type = 1; pos = po;
+			type = 2; pos = po;
 			Joints.Add(new StickJoint("Rock", ps[0].location, 12, Color.Black, Color.Green, 0, 0, false, null));
 			Joints.Add(new StickJoint("Hard Place", ps[1].location, 12, Color.Black, Color.Yellow, 0, 0, false, Joints[0]));
 		}
 
 		public LineFrame(uint po)
 		{
-			type = 1; pos = po;
+			type = 2; pos = po;
 			Joints.Add(new StickJoint("Rock", new Point(30, 30), 12, Color.Black, Color.Green, 0, 0, false, null));
 			Joints.Add(new StickJoint("Hard Place", new Point(45, 30), 12, Color.Black, Color.Yellow, 0, 0, false, Joints[0]));
+		}
+	}
+
+	public class RectFrame : KeyFrame
+	{
+		public RectFrame(List<StickJoint> ps, uint po)
+		{
+			type = 3; pos = po;
+
+			Joints.Add(new StickJoint("CornerTL", ps[0].location, 12, Color.Black, Color.LimeGreen, 0, 0, false, null));
+			Joints.Add(new StickJoint("CornerLL", ps[1].location, 12, Color.Black, Color.Yellow, 0, 0, false, Joints[0]));
+			Joints.Add(new StickJoint("CornerLR", ps[2].location, 12, Color.Black, Color.Red, 0, 0, false, Joints[1]));
+			Joints.Add(new StickJoint("CornerTR", ps[3].location, 12, Color.Black, Color.Blue, 0, 0, false, Joints[2]));
+		}
+
+		public RectFrame(uint po)
+		{
+			type = 3; pos = po;
+
+			Joints.Add(new StickJoint("CornerTL", new Point(30, 30), 12, Color.Black, Color.LimeGreen, 0, 0, false, null));
+			Joints.Add(new StickJoint("CornerLL", new Point(30, 70), 12, Color.Black, Color.Yellow, 0, 0, false, Joints[0]));
+			Joints.Add(new StickJoint("CornerLR", new Point(150, 70), 12, Color.Black, Color.Red, 0, 0, false, Joints[1]));
+			Joints.Add(new StickJoint("CornerTR", new Point(150, 30), 12, Color.Black, Color.Blue, 0, 0, false, Joints[2]));
 		}
 	}
 }

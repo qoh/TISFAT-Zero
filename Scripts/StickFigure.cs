@@ -559,4 +559,23 @@ namespace TISFAT_ZERO
 				Canvas.addTweenFigure(this);
 		}
 	}
+
+	public class StickRect : StickObject
+	{
+		public StickRect(bool isTweenFigure = false)
+		{
+			type = 3;
+			Joints = new List<StickJoint>(4);
+
+			Joints.Add(new StickJoint("CornerTL", new Point(30, 30), 12, Color.Black, Color.LimeGreen, 0, 0, false, null));
+			Joints.Add(new StickJoint("CornerLL", new Point(30, 70), 12, Color.Black, Color.Yellow, 0, 0, false, Joints[0]));
+			Joints.Add(new StickJoint("CornerLR", new Point(150, 70), 12, Color.Black, Color.Red, 0, 0, false, Joints[1]));
+			Joints.Add(new StickJoint("CornerTR", new Point(150, 30), 12, Color.Black, Color.Blue, 0, 0, false, Joints[2]));
+
+			if (!isTweenFigure)
+				Canvas.addFigure(this);
+			else
+				Canvas.addTweenFigure(this);
+		}
+	}
 }
