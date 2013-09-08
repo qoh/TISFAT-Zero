@@ -261,6 +261,7 @@
 			this.btn_addLine.TabIndex = 21;
 			this.btn_addLine.TabStop = false;
 			this.btn_addLine.UseVisualStyleBackColor = true;
+			this.btn_addLine.Click += new System.EventHandler(this.btn_addLine_Click);
 			// 
 			// btn_addCustomStick
 			// 
@@ -330,13 +331,24 @@
 			// 
 			this.maskedTextBox1.Location = new System.Drawing.Point(80, 44);
 			this.maskedTextBox1.Maximum = new decimal(new int[] {
-            256,
+            120,
+            0,
+            0,
+            0});
+			this.maskedTextBox1.Minimum = new decimal(new int[] {
+            1,
             0,
             0,
             0});
 			this.maskedTextBox1.Name = "maskedTextBox1";
 			this.maskedTextBox1.Size = new System.Drawing.Size(40, 20);
 			this.maskedTextBox1.TabIndex = 4;
+			this.maskedTextBox1.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+			this.maskedTextBox1.ValueChanged += new System.EventHandler(this.maskedTextBox1_ValueChanged);
 			// 
 			// btn_playPause
 			// 

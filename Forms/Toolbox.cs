@@ -155,5 +155,20 @@ namespace TISFAT_ZERO
 		{
 			frameRate = (byte)maskedTextBox1.Value;
 		}
+
+		private void btn_addLine_Click(object sender, EventArgs e)
+		{
+			int i = 1;
+			foreach (Layer k in Timeline.layers)
+			{
+				i++;
+			}
+			mainForm.tline.addLineLayer("Line " + i.ToString());
+			mainForm.tline.Refresh();
+
+			pnl_addTools.Enabled = false;
+			slideOutObject = pnl_addTools;
+			animTimer.Start();
+		}
 	}
 }

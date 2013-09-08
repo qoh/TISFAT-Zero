@@ -166,9 +166,19 @@ namespace TISFAT_ZERO
 		public StickLayer addStickLayer(string name)
 		{
 			StickFigure x = theCanvas.createFigure();
-			x.int1 = layercount++;
 
 			StickLayer n = new StickLayer(name, x, theCanvas);
+			layers.Add(n);
+
+			setFrame(n.firstKF);
+			return n;
+		}
+
+		public LineLayer addLineLayer(string name)
+		{
+			StickLine x = theCanvas.createLine();
+
+			LineLayer n = new LineLayer(name, x, theCanvas);
 			layers.Add(n);
 
 			setFrame(n.firstKF);
@@ -179,10 +189,10 @@ namespace TISFAT_ZERO
 		{
 			for (int a = 0; a < layers.Count; a++)
 				if(a != selectedLayer)
-					((StickLayer)layers[a]).doDisplay(pos, false);
+					layers[a].doDisplay(pos, false);
 
 			if(selectedLayer != -1)
-				((StickLayer)layers[selectedLayer]).doDisplay(pos);
+				layers[selectedLayer].doDisplay(pos);
 
 			theCanvas.Refresh();
 		}
@@ -191,10 +201,10 @@ namespace TISFAT_ZERO
 		{
 			for (int a = 0; a < layers.Count; a++)
 				if (a != selectedLayer)
-					((StickLayer)layers[a]).doDisplay(selectedFrame, false);
+					layers[a].doDisplay(selectedFrame, false);
 
 			if (selectedLayer != -1)
-				((StickLayer)layers[selectedLayer]).doDisplay(selectedFrame);
+				layers[selectedLayer].doDisplay(selectedFrame);
 
 			theCanvas.Refresh();
 		}
@@ -228,7 +238,7 @@ namespace TISFAT_ZERO
 				return 5;
 			}
 
-			StickLayer selLayer = (StickLayer)layers[selectedLayer];
+			Layer selLayer = layers[selectedLayer];
 
 			if (selectedFrame == selLayer.firstKF)
 			{
@@ -347,7 +357,6 @@ namespace TISFAT_ZERO
 
 				tst_gotoFrame.Enabled = true;
 			}
-
 			else if (frameType == 4)
 			{
 				tst_insertKeyframe.Enabled = true;
@@ -376,12 +385,8 @@ namespace TISFAT_ZERO
 
 		private void cxt_Menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
 		{
-			if (selectedLayer < 0)
-				return;
-
 			string name = e.ClickedItem.Name;
-
-			StickLayer cLayer = ((StickLayer)layers[selectedLayer]);
+			Layer cLayer = layers[selectedLayer];
 
 			switch (name)
 			{
@@ -395,13 +400,12 @@ namespace TISFAT_ZERO
 				
 				case "tst_insertKeyframeAtPose":
 					int p = cLayer.insertKeyFrame(selectedFrame);
-					StickFrame newFrame = (StickFrame)cLayer.keyFrames[p];
+					KeyFrame newFrame = cLayer.keyFrames[p];
 					List<StickJoint> jointz = cLayer.tweenFig.Joints;
 					
 					for (int a = 0; a < 12; a++)
-					{
 						newFrame.Joints[a].location = jointz[a].location;
-					}
+
 					break;
 
 				default:
@@ -523,7 +527,7 @@ namespace TISFAT_ZERO
 			{
 				playTimer.Stop();
 				mainForm.theToolbox.btn_playPause.Text = "Play";
-				mainForm.theToolbox.isPlaying = false;
+				mainForm.theToolbox.isPlaying = isPlaying = false;
 			}
 
 		}
@@ -534,7 +538,7 @@ namespace TISFAT_ZERO
 			playTimer.Interval = mspertick;
 
 			selectedLayer = -1; //the -1 layer is the timeline 'layer'
-
+			isPlaying = true;
 			playTimer.Start();
 		}
 

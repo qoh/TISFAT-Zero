@@ -278,7 +278,7 @@ namespace TISFAT_ZERO
 			{
 				if (drawHandles)
 				{
-					if (!isActiveFig & i.handleDrawn)
+					if (!isActiveFig)
 					{
 						Canvas.drawGraphics(2, new Pen(Color.DimGray, 1), new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
 						continue;
@@ -354,13 +354,35 @@ namespace TISFAT_ZERO
 			return Joints[index];
 		}
 
+		public void activate()
+		{
+			for (int i = 0; i < Canvas.figureList.Count(); i++)
+			{
+				Canvas.figureList[i].isActiveFig = false;
+			}
+			Canvas.activateFigure(this);
+			isActiveFig = true;
+		}
+
 		public void onJointMoved()
 		{
 			Layer x = Timeline.layers[Timeline.selectedLayer];
-			if (x.type == 1)
+			int t = x.type;
+
+			switch(t)
 			{
-				StickLayer currLayer = (StickLayer)x;
-				((StickFrame)(currLayer.keyFrames[currLayer.selectedFrame])).Joints = this.Joints;
+				case 1:
+					Layer currLayer = x;
+					currLayer.keyFrames[currLayer.selectedFrame].Joints = this.Joints;
+					break;
+
+				case 2:
+					//stuff
+					break;
+
+				default:
+					//nothing
+					break;
 			}
 		}
 	}
@@ -369,11 +391,6 @@ namespace TISFAT_ZERO
 	public class StickFigure : StickObject
 	{
 		#region Variables
-		public bool isActiveFigure;
-		public bool drawFigure = true;
-		public int int1 = -1, int2 = -1;
-		public bool isDrawn = false;
-		public bool isTweenFigure = false;
 
 		/*
 			* 0 = Head
@@ -490,26 +507,8 @@ namespace TISFAT_ZERO
 			this.drawHandles = false;
 		}
 
-		public void activate()
-		{
-			for (int i = 0; i < Canvas.stickFigureList.Count(); i++)
-			{
-				Canvas.stickFigureList[i].isActiveFigure = false;
-			}
-			Canvas.activateFigure(this);
-			isActiveFigure = true;
-		}
-
 		#region Figure Manipulation
-		public void onJointMoved()
-		{
-			if (int1 < 0)
-				return;
-
-			StickLayer currLayer = (StickLayer)Timeline.layers[int1];
-			((StickFrame)(currLayer.keyFrames[currLayer.selectedFrame])).Joints = this.Joints;
-		}
-
+		//go aheadoo
 		public void flipArms()
 		{
 			Point rElbow = Joints[2].location;
@@ -540,5 +539,24 @@ namespace TISFAT_ZERO
 			drawFigure(true);
 		} 
 		#endregion
+	}
+
+	public class StickLine : StickObject
+	{
+		public StickLine(bool isTweenFigure = false)
+		{
+			type = 2;
+			Joints = new List<StickJoint>(2);
+
+			//Somewhere between a rock and a hardplace is a line. :)
+
+			Joints.Add(new StickJoint("Rock", new Point(30, 30), 12, Color.Black, Color.Green, 0, 0, false, null)); 
+			Joints.Add(new StickJoint("Hard Place", new Point(45, 30), 12, Color.Black, Color.Yellow, 0, 0, false, Joints[0]));
+
+			if (!isTweenFigure)
+				Canvas.addFigure(this);
+			else
+				Canvas.addTweenFigure(this);
+		}
 	}
 }

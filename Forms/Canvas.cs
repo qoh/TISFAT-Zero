@@ -14,9 +14,6 @@ namespace TISFAT_ZERO
 		public static Canvas theCanvas;
 		public static Graphics theCanvasGraphics; //We need a list of objects to draw.
 
-		public static List<StickFigure> stickFigureList = new List<StickFigure>();
-		public List<StickFigure> tweenFigureList = new List<StickFigure>();
-
 		public static List<StickObject> figureList = new List<StickObject>();
 		public static List<StickObject> tweenFigs = new List<StickObject>();
 
@@ -25,7 +22,6 @@ namespace TISFAT_ZERO
 		public static StickObject activeFigure;
 		public static StickJoint selectedJoint = new StickJoint("null", new Point(0, 0), 0, Color.Transparent, Color.Transparent);
 		public bool draw;
-		public bool drawTweenFigures = false;
 
 		public bool mousemoved;
 		private int ox;
@@ -108,7 +104,7 @@ namespace TISFAT_ZERO
 			}
 		}
 
-		//Debug stuff, and selection of joints. This also causes the canvas to be redrawn on mouse move.
+		//Debug stuff, and selection of joints. This also causes thde canvas to be redrawn on mouse move.
 		private void Canvas_MouseDown(object sender, MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
@@ -117,8 +113,10 @@ namespace TISFAT_ZERO
 				{
 					if (activeFigure == null)
 						return;
+
 					StickJoint f = null;
-					f = activeFigure.selectPoint(new Point(e.X, e.Y), 4);
+					if(activeFigure != null)
+						f = activeFigure.selectPoint(new Point(e.X, e.Y), 4);
 					theToolbox.lbl_selectedJoint.Text = "Selected Joint: " + f.name;
 					theToolbox.lbl_jointLength.Text = "Joint Length: " + f.CalcLength(null).ToString();
 
@@ -147,6 +145,7 @@ namespace TISFAT_ZERO
 			{
 				if (activeFigure == null)
 					return;
+
 				ox = e.X;
 				oy = e.Y;
 				for (int i = 0; i < activeFigure.Joints.Count; i++)
@@ -277,7 +276,14 @@ namespace TISFAT_ZERO
 			StickFigure figure = new StickFigure(false);
 
 			return figure;
-		} 
+		}
+
+		public StickLine createLine()
+		{
+			StickLine line = new StickLine(false);
+
+			return line;
+		}
 		#endregion
 
 		#region Right Click Menu
