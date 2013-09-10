@@ -47,7 +47,8 @@ namespace T0_StickEditor
 			this.Text = "Stick Editor";
 			this.Load += new System.EventHandler(this.Canvas_Load);
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
-			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseDown);
+			this.MouseEnter += new System.EventHandler(this.Canvas_MouseEnter);
+			this.MouseLeave += new System.EventHandler(this.Canvas_MouseLeave);
 			this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
 			this.ResumeLayout(false);
 

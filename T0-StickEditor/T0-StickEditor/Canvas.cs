@@ -17,7 +17,11 @@ namespace T0_StickEditor
 		public static Graphics theCanvasGraphics;
 
 		public int toolType = 0;
-		public bool draggingTool = false;
+
+
+		public bool draggingTool = false, mouseDown = false;
+		public Point mousePoint;
+		
 
 
 		public Canvas(Main f)
@@ -29,6 +33,11 @@ namespace T0_StickEditor
 		private void Canvas_Paint(object sender, PaintEventArgs e)
 		{
 			theCanvasGraphics = e.Graphics;
+			theCanvasGraphics.Clear(Color.White);
+			//Basically, for anything drawing related, you /have/ to have anything that does drawing to the canvas
+			//be called through this function.
+
+			drawGraphics(3, new Pen(Color.Green), mousePoint, 5, 5, mousePoint);
 		}
 
 		public static void drawGraphics(int type, Pen pen, Point one, int width, int height, Point two)
@@ -66,7 +75,7 @@ namespace T0_StickEditor
 			else if (type == 3) //Hollow Handle
 			{
 				theCanvasGraphics.SmoothingMode = SmoothingMode.HighSpeed;
-				Rectangle rect = new Rectangle(one.X, one.Y, 5, 5);
+				Rectangle rect = new Rectangle(one.X - 1, one.Y - 1, 5, 5);
 
 				theCanvasGraphics.DrawRectangle(pen, Functions.Center(rect).X, Functions.Center(rect).Y, 6, 6);
 				pen.Dispose();
@@ -75,22 +84,20 @@ namespace T0_StickEditor
 
 		private void Canvas_MouseMove(object sender, MouseEventArgs e)
 		{
-			//if (toolType == 0)
-			//{
-			//	drawGraphics(3, new Pen(Color.Green), e.Location, 5, 5, e.Location);
-			//	Refresh();
-			//}
+			mousePoint = e.Location;
+			Refresh();
 		}
 
 		private void Canvas_Load(object sender, EventArgs e)
 		{
-			theCanvasGraphics = this.CreateGraphics();
 		}
 
-		private void Canvas_MouseDown(object sender, MouseEventArgs e)
+		private void Canvas_MouseLeave(object sender, EventArgs e)
 		{
-			Refresh();
-			drawGraphics(3, new Pen(Color.Green, 1), new Point(e.Location.X, e.Location.Y), 5, 5, new Point(e.Location.X, e.Location.Y));
-		} 
+		}
+
+		private void Canvas_MouseEnter(object sender, EventArgs e)
+		{
+		}
 	}
 }
