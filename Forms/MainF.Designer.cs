@@ -73,6 +73,7 @@ namespace TISFAT_ZERO
 			this.lbl_selectionDummy = new System.Windows.Forms.Label();
 			this.framesPanel = new System.Windows.Forms.Panel();
 			this.dlg_saveFile = new System.Windows.Forms.SaveFileDialog();
+			this.dlg_openFile = new System.Windows.Forms.OpenFileDialog();
 			this.mnu_strip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -110,6 +111,7 @@ namespace TISFAT_ZERO
 			this.openMovieToolStripMenuItem.Name = "openMovieToolStripMenuItem";
 			this.openMovieToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.openMovieToolStripMenuItem.Text = "Open Movie ...";
+			this.openMovieToolStripMenuItem.Click += new System.EventHandler(this.openMovieToolStripMenuItem_Click);
 			// 
 			// saveMovieToolStripMenuItem
 			// 
@@ -409,6 +411,11 @@ namespace TISFAT_ZERO
 			this.dlg_saveFile.Title = "Open File..";
 			this.dlg_saveFile.FileOk += new System.ComponentModel.CancelEventHandler(this.dlg_saveFile_FileOk);
 			// 
+			// dlg_openFile
+			// 
+			this.dlg_openFile.Filter = "TISFAT:Zero Saves (*.tzs)|*.tzs";
+			this.dlg_openFile.FileOk += new System.ComponentModel.CancelEventHandler(this.dlg_openFile_FileOk);
+			// 
 			// MainF
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -476,6 +483,7 @@ namespace TISFAT_ZERO
         private Label lbl_selectionDummy;
 		private ToolStripMenuItem redoToolStripMenuItem;
 		private SaveFileDialog dlg_saveFile;
+		private OpenFileDialog dlg_openFile;
     }
 }
 

@@ -29,7 +29,7 @@ namespace TISFAT_ZERO
 			Toolbox t = new Toolbox(this);
 			t.TopLevel = false;
 			t.Parent = this.splitContainer1.Panel2;
-			this.splitContainer1.Panel2.Controls.Add(t);
+			splitContainer1.Panel2.Controls.Add(t);
 			t.Show();
 
 			Canvas f = new Canvas(this, t);
@@ -40,7 +40,7 @@ namespace TISFAT_ZERO
 			f.Parent = this.splitContainer1.Panel2;
 			f.StartPosition = FormStartPosition.Manual;
 			f.Location = new Point(175, 10);
-			this.splitContainer1.Panel2.Controls.Add(f);
+			splitContainer1.Panel2.Controls.Add(f);
 
 			tline = new Timeline(this, f);
 			tline.TopLevel = false;
@@ -48,11 +48,11 @@ namespace TISFAT_ZERO
 			tline.Size = new Size(this.splitContainer1.Width - 2, splitContainer1.Panel1.Height);
 			tline.StartPosition = FormStartPosition.Manual;
 			tline.Location = new Point(0, 0);
-			this.splitContainer1.Panel1.Controls.Add(tline);
+			splitContainer1.Panel1.Controls.Add(tline);
 
-			uint timelineLength = 1024;
+			int timelineLength = 1024;
 
-			this.framesPanel.Location = new Point((int)timelineLength * 9, 0);
+			framesPanel.Location = new Point(timelineLength * 9, 0);
 
 			tline.Show();
 
@@ -61,6 +61,31 @@ namespace TISFAT_ZERO
 			theToolbox = t;
 			theCanvas = f;
 		} 
+		
+
+		public void resetTimeline()
+		{
+			splitContainer1.Panel1.Controls.RemoveAt(0);
+			tline.Dispose();
+			splitContainer1.Panel2.Controls.Remove(theCanvas);
+			theCanvas.Dispose();
+
+			tline = new Timeline(this, theCanvas);
+			tline.TopLevel = false;
+			tline.Parent = this.splitContainer1.Panel1;
+			tline.Size = new Size(this.splitContainer1.Width - 2, splitContainer1.Panel1.Height);
+			tline.StartPosition = FormStartPosition.Manual;
+			tline.Location = new Point(0, 0);
+			splitContainer1.Panel1.Controls.Add(tline);
+			tline.Show();
+
+			Canvas f = new Canvas(this, theToolbox);
+			f.Size = Properties.User.Default.CanvasSize;
+			f.BackColor = Properties.User.Default.CanvasColor;
+			f.TopLevel = false;
+			splitContainer1.Panel2.Controls.Add(f);
+			f.Show();
+		}
 		#endregion
 
 		#region Functions
@@ -160,6 +185,16 @@ namespace TISFAT_ZERO
 		private void dlg_saveFile_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			Saver.saveProject(dlg_saveFile.FileName, Timeline.layers);
+		}
+
+		private void openMovieToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			dlg_openFile.ShowDialog();
+		}
+
+		private void dlg_openFile_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			Loader.loadProjectFile(dlg_openFile.FileName, theCanvas);
 		}
 	}
 }

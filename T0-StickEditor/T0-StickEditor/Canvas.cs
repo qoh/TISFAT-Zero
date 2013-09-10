@@ -89,6 +89,7 @@ namespace T0_StickEditor
 
 		private void Canvas_MouseDown(object sender, MouseEventArgs e)
 		{
+			Refresh();
 			drawGraphics(3, new Pen(Color.Green, 1), new Point(e.Location.X, e.Location.Y), 5, 5, new Point(e.Location.X, e.Location.Y));
 		} 
 	}

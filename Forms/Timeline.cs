@@ -15,12 +15,12 @@ namespace TISFAT_ZERO
 		//This is the set of points used for drawing the black outline of the timeline layer
 		private Point[] p1 = new Point[] { new Point(79, 0), new Point(79, 15), new Point(0, 15) };
 
-		public MainF mainForm;
+		public static MainF mainForm;
 		public Canvas theCanvas;
 
 		//List of layers
 		public static List<Layer> layers;
-		public int layercount = 0;
+		public static int layercount = 0;
 		public static uint selectedFrame;
 		public static int selectedLayer;
 		public byte selectedType;
@@ -581,6 +581,14 @@ namespace TISFAT_ZERO
 			}
 
 			return false;
+		}
+
+		//Only used by loading so far.
+		public static void resetEverything()
+		{
+			layers = new List<Layer>();
+			layercount = selectedLayer = 0; selectedFrame = 0;
+			mainForm.resetTimeline();
 		}
 	}
 }
