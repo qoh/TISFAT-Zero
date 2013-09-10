@@ -152,9 +152,14 @@ namespace TISFAT_ZERO
 			lbl_selectionDummy.Focus();
 		}
 
-		private void savetestToolStripMenuItem_Click(object sender, EventArgs e)
+		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			Saver.saveProject("test.tzf", Timeline.layers);
+			dlg_saveFile.ShowDialog();
+		}
+
+		private void dlg_saveFile_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			Saver.saveProject(dlg_saveFile.FileName, Timeline.layers);
 		}
 	}
 }

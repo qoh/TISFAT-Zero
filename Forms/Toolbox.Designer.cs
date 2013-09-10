@@ -211,6 +211,7 @@
 			this.btn_addCircle.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addCircle.BackgroundImage")));
 			this.btn_addCircle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 			this.btn_addCircle.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btn_addCircle.Enabled = false;
 			this.btn_addCircle.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.btn_addCircle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
 			this.btn_addCircle.Location = new System.Drawing.Point(77, 108);
@@ -225,6 +226,7 @@
 			this.btn_addPoly.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addPoly.BackgroundImage")));
 			this.btn_addPoly.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 			this.btn_addPoly.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btn_addPoly.Enabled = false;
 			this.btn_addPoly.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.btn_addPoly.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
 			this.btn_addPoly.Location = new System.Drawing.Point(1, 108);
@@ -239,6 +241,7 @@
 			this.btn_addRectangle.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addRectangle.BackgroundImage")));
 			this.btn_addRectangle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 			this.btn_addRectangle.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btn_addRectangle.Enabled = false;
 			this.btn_addRectangle.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.btn_addRectangle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
 			this.btn_addRectangle.Location = new System.Drawing.Point(77, 56);
@@ -269,6 +272,7 @@
 			this.btn_addCustomStick.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addCustomStick.BackgroundImage")));
 			this.btn_addCustomStick.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 			this.btn_addCustomStick.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btn_addCustomStick.Enabled = false;
 			this.btn_addCustomStick.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.btn_addCustomStick.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
 			this.btn_addCustomStick.Location = new System.Drawing.Point(77, 4);

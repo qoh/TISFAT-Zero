@@ -47,6 +47,7 @@ namespace TISFAT_ZERO
 			this.exitTISFATToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.copyFramesetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.pasteFramesetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,7 +72,7 @@ namespace TISFAT_ZERO
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.lbl_selectionDummy = new System.Windows.Forms.Label();
 			this.framesPanel = new System.Windows.Forms.Panel();
-			this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.dlg_saveFile = new System.Windows.Forms.SaveFileDialog();
 			this.mnu_strip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -123,6 +124,7 @@ namespace TISFAT_ZERO
 			this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
 			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.saveAsToolStripMenuItem.Text = "Save As ...";
+			this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
 			// 
 			// closeMovieToolStripMenuItem
 			// 
@@ -189,6 +191,13 @@ namespace TISFAT_ZERO
 			this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
 			this.undoToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
 			this.undoToolStripMenuItem.Text = "Undo";
+			// 
+			// redoToolStripMenuItem
+			// 
+			this.redoToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("redoToolStripMenuItem.Image")));
+			this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
+			this.redoToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+			this.redoToolStripMenuItem.Text = "Redo";
 			// 
 			// toolStripSeparator4
 			// 
@@ -274,20 +283,20 @@ namespace TISFAT_ZERO
 			// 
 			this.layerToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("layerToolStripMenuItem1.Image")));
 			this.layerToolStripMenuItem1.Name = "layerToolStripMenuItem1";
-			this.layerToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+			this.layerToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
 			this.layerToolStripMenuItem1.Text = "Layer";
 			// 
 			// framesetToolStripMenuItem1
 			// 
 			this.framesetToolStripMenuItem1.Name = "framesetToolStripMenuItem1";
-			this.framesetToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+			this.framesetToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
 			this.framesetToolStripMenuItem1.Text = "Frameset";
 			// 
 			// keyframeToolStripMenuItem1
 			// 
 			this.keyframeToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("keyframeToolStripMenuItem1.Image")));
 			this.keyframeToolStripMenuItem1.Name = "keyframeToolStripMenuItem1";
-			this.keyframeToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+			this.keyframeToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
 			this.keyframeToolStripMenuItem1.Text = "Keyframe";
 			// 
 			// helpToolStripMenuItem
@@ -304,19 +313,19 @@ namespace TISFAT_ZERO
 			// 
 			this.helpToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("helpToolStripMenuItem1.Image")));
 			this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
-			this.helpToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+			this.helpToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
 			this.helpToolStripMenuItem1.Text = "Help";
 			// 
 			// toolStripSeparator5
 			// 
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
-			this.toolStripSeparator5.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator5.Size = new System.Drawing.Size(104, 6);
 			// 
 			// aboutToolStripMenuItem
 			// 
 			this.aboutToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aboutToolStripMenuItem.Image")));
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
 			this.aboutToolStripMenuItem.Text = "About";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
@@ -394,12 +403,11 @@ namespace TISFAT_ZERO
 			this.framesPanel.Size = new System.Drawing.Size(1, 1);
 			this.framesPanel.TabIndex = 0;
 			// 
-			// redoToolStripMenuItem
+			// dlg_saveFile
 			// 
-			this.redoToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("redoToolStripMenuItem.Image")));
-			this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
-			this.redoToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
-			this.redoToolStripMenuItem.Text = "Redo";
+			this.dlg_saveFile.Filter = "TISFAT:Zero Saves (*.tzs)|*.tzs";
+			this.dlg_saveFile.Title = "Open File..";
+			this.dlg_saveFile.FileOk += new System.ComponentModel.CancelEventHandler(this.dlg_saveFile_FileOk);
 			// 
 			// MainF
 			// 
@@ -467,6 +475,7 @@ namespace TISFAT_ZERO
 		private Panel framesPanel;
         private Label lbl_selectionDummy;
 		private ToolStripMenuItem redoToolStripMenuItem;
+		private SaveFileDialog dlg_saveFile;
     }
 }
 
