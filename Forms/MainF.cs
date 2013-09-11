@@ -63,12 +63,24 @@ namespace TISFAT_ZERO
 		} 
 		
 
-		public void resetTimeline()
+		public void resetTimeline(bool loading)
 		{
 			splitContainer1.Panel1.Controls.RemoveAt(0);
 			tline.Dispose();
-			splitContainer1.Panel2.Controls.Remove(theCanvas);
+			splitContainer1.Panel2.Controls.RemoveAt(1); //after you remove the timeline then won't the canvas be entry 0?
 			theCanvas.Dispose();
+
+			Canvas.figureList.Clear();
+
+			Canvas f = new Canvas(this, theToolbox);
+			theCanvas = f;
+			f.Size = Properties.User.Default.CanvasSize;
+			f.BackColor = Properties.User.Default.CanvasColor;
+			f.TopLevel = false;
+			f.StartPosition = FormStartPosition.Manual;
+			f.Location = new Point(175, 10);
+			splitContainer1.Panel2.Controls.Add(f);
+			f.Show();
 
 			tline = new Timeline(this, theCanvas);
 			tline.TopLevel = false;
@@ -79,12 +91,14 @@ namespace TISFAT_ZERO
 			splitContainer1.Panel1.Controls.Add(tline);
 			tline.Show();
 
-			Canvas f = new Canvas(this, theToolbox);
-			f.Size = Properties.User.Default.CanvasSize;
-			f.BackColor = Properties.User.Default.CanvasColor;
-			f.TopLevel = false;
-			splitContainer1.Panel2.Controls.Add(f);
-			f.Show();
+			if(loading)
+				Canvas.figureList.Clear();
+		}
+
+		public void doneLoading()
+		{
+			tline.setFrame(0);
+			theCanvas.Refresh();
 		}
 		#endregion
 
@@ -195,6 +209,11 @@ namespace TISFAT_ZERO
 		private void dlg_openFile_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			Loader.loadProjectFile(dlg_openFile.FileName, theCanvas);
+		}
+
+		private void newMovieToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Timeline.resetEverything(false);
 		}
 	}
 }

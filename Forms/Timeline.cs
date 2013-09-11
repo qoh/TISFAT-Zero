@@ -217,6 +217,8 @@ namespace TISFAT_ZERO
 			if (selectedLayer != -1)
 				layers[selectedLayer].doDisplay(selectedFrame);
 
+			if (selectedLayer >= 0)
+				Canvas.activeFigure = layers[selectedLayer].fig;
 			theCanvas.Refresh();
 		}
 
@@ -584,11 +586,11 @@ namespace TISFAT_ZERO
 		}
 
 		//Only used by loading so far.
-		public static void resetEverything()
+		public static void resetEverything(bool reset)
 		{
 			layers = new List<Layer>();
 			layercount = selectedLayer = 0; selectedFrame = 0;
-			mainForm.resetTimeline();
+			mainForm.resetTimeline(reset);
 		}
 	}
 }

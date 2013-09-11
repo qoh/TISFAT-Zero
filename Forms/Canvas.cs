@@ -298,12 +298,14 @@ namespace TISFAT_ZERO
 		{
 			if (activeFigure.type == 1)
 				((StickFigure)activeFigure).flipArms();
+			Refresh();
 		}
 
 		private void flipLegsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (activeFigure.type == 1)
 				((StickFigure)activeFigure).flipLegs();
+			Refresh();
 		} 
 		#endregion
 

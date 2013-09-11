@@ -68,7 +68,6 @@ namespace TISFAT_ZERO
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnu_strip1 = new System.Windows.Forms.MenuStrip();
 			this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.drawStickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.lbl_selectionDummy = new System.Windows.Forms.Label();
 			this.framesPanel = new System.Windows.Forms.Panel();
@@ -104,6 +103,7 @@ namespace TISFAT_ZERO
 			this.newMovieToolStripMenuItem.Name = "newMovieToolStripMenuItem";
 			this.newMovieToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.newMovieToolStripMenuItem.Text = "New Movie ...";
+			this.newMovieToolStripMenuItem.Click += new System.EventHandler(this.newMovieToolStripMenuItem_Click);
 			// 
 			// openMovieToolStripMenuItem
 			// 
@@ -350,18 +350,9 @@ namespace TISFAT_ZERO
 			// 
 			// debugToolStripMenuItem
 			// 
-			this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.drawStickToolStripMenuItem});
 			this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
 			this.debugToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
 			this.debugToolStripMenuItem.Text = "Debug";
-			// 
-			// drawStickToolStripMenuItem
-			// 
-			this.drawStickToolStripMenuItem.Name = "drawStickToolStripMenuItem";
-			this.drawStickToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-			this.drawStickToolStripMenuItem.Text = "Add Stick Layer";
-			this.drawStickToolStripMenuItem.Click += new System.EventHandler(this.drawStickToolStripMenuItem_Click);
 			// 
 			// splitContainer1
 			// 
@@ -476,8 +467,7 @@ namespace TISFAT_ZERO
         private System.Windows.Forms.MenuStrip mnu_strip1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem drawStickToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
 		public System.Windows.Forms.SplitContainer splitContainer1;
 		private Panel framesPanel;
         private Label lbl_selectionDummy;

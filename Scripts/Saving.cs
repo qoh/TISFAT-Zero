@@ -85,7 +85,7 @@ namespace TISFAT_ZERO
 			bytes.AddRange(BitConverter.GetBytes((ushort)layerid));
 			bytes.AddRange(BitConverter.GetBytes(l.type));
 
-			byte[] name = Encoding.ASCII.GetBytes(l.name);
+			byte[] name = Encoding.UTF8.GetBytes(l.name);
 
 			bytes.AddRange(BitConverter.GetBytes((byte)(name.Length-1)));
 			//if the name is longer than 256 characters then that's just silly
@@ -158,12 +158,13 @@ namespace TISFAT_ZERO
 			//3. read in keyframes
 
 			//Clear everything in the timeline (prompts to come later)
-			Timeline.resetEverything();
+			Timeline.resetEverything(true);
 			
 			FileStream file = File.Open(path, FileMode.Open);
 			file.Position += 12;
 
 			long length = file.Length;
+			List<Layer> layers = new List<Layer>();
 			while (file.Position + 1 < length)
 			{
 				Block layer = readNextBlock(file); //i REALLY hope this works ;-;
@@ -176,13 +177,13 @@ namespace TISFAT_ZERO
 				if (layerType != 1)
 					throw new Exception("I STILL DONT KNOW WHAT TO DO WITH THIS HELP ME ;-;");
 
-				int nameLength = layer.data[3] + 1;
-				byte[] namebytes = new byte[nameLength];
-				nameLength += 4;
-				for(int a = 4; a < nameLength; a++)
-					namebytes[a-4] = layer.data[a];
+				int nameLength = layer.data[4] + 1;
+				byte[] namebytes = new byte[nameLength+1];
+				nameLength += 5;
+				for(int a = 5; a < nameLength +1; a++)
+					namebytes[a-5] = layer.data[a];
 
-				string name = ASCIIEncoding.ASCII.GetString(namebytes);
+				string name = Encoding.UTF8.GetString(namebytes);
 
 				StickLayer newLayer = new StickLayer(name, zeCanvas.createFigure(), zeCanvas);
 				List<KeyFrame> thingy = new List<KeyFrame>();
@@ -191,33 +192,41 @@ namespace TISFAT_ZERO
 				int dataLength = layer.data.Length;
 				MemoryStream ms = new MemoryStream();
 				ms.Write(layer.data, 0, dataLength);
+				ms.Position = 0;
 
 				while (ms.Position + 1 < dataLength)
 				{
 					Block fBlock = readNextBlock(ms);
+					if (fBlock.data == null)
+						break;
 					byte[] posbytes = new byte[4];
 					for(int a = 0; a < 4; a++)
-						posbytes[a] = fBlock.data[a + 2];
+						posbytes[a] = fBlock.data[a + 1];
 
-					byte[] newdata = new byte[fBlock.data.Length - 6];
-					fBlock.data.CopyTo(newdata, 6);
+					byte[] newdata = new byte[fBlock.data.Length - 5];
+					int len = fBlock.data.Length;
+					for (int a = 5; a < len; a++)
+						newdata[a-5] = fBlock.data[a];
 
 					//screw it im adding in checks later
 					StickFrame frm = new StickFrame(BitConverter.ToUInt32(posbytes, 0));
 
 					MemoryStream fs = new MemoryStream();
-					ms.Write(newdata, 0, newdata.Length);
+					fs.Write(newdata, 0, newdata.Length);
+					fs.Position = 0;
 
 					Block pblock = readNextBlock(fs);
 
 					for (int a = 0; a < 12; a++) //I dislike reading binary like this but it's kinda unavoidable.
-						frm.Joints[a].location = new Point((int)BitConverter.ToInt16(new byte[] { pblock.data[4 * (a + 1)], pblock.data[4 * (a + 1) + 1] },0), (int)BitConverter.ToInt16(new byte[] { pblock.data[4 * (a + 1) + 2], pblock.data[4 * (a + 1) + 3] }, 0));
-					newLayer.keyFrames.Add(frm);
+						frm.Joints[a].location = new Point((int)BitConverter.ToInt16(new byte[] { pblock.data[4 * a + 2], pblock.data[4 * a + 3] },0), (int)BitConverter.ToInt16(new byte[] { pblock.data[4 * (a + 1)], pblock.data[4 * (a + 1) + 1] }, 0));
+					thingy.Add(frm);
 				}
-
-				Timeline.layers.Add(newLayer);
-				Timeline.layercount++;
+				newLayer.keyFrames = thingy;
+				layers.Add(newLayer);
 			}
+			Timeline.layers = layers;
+			Timeline.layercount = layers.Count;
+			Timeline.mainForm.doneLoading();
 		}
 
 		private static Block readNextBlock(Stream file)
@@ -235,6 +244,8 @@ namespace TISFAT_ZERO
 				a3 = a4;
 				a4 = (byte)file.ReadByte();
 				x++;
+				if (x > file.Length)
+					return bl;
 			}
 
 			if(x > 0)
@@ -330,6 +341,7 @@ namespace TISFAT_ZERO
 					}
 					
 					bytes.AddRange(next2);
+					bl.data = bytes.ToArray();
 					c += 2;
 				}
 			}

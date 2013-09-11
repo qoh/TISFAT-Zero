@@ -520,8 +520,6 @@ namespace TISFAT_ZERO
 			Joints[3].location = lHand;
 			Joints[4].location = rElbow;
 			Joints[5].location = rHand;
-
-			drawFigure(true);
 		}
 
 		public void flipLegs()
@@ -535,8 +533,6 @@ namespace TISFAT_ZERO
 			Joints[8].location = rFoot;
 			Joints[9].location = lKnee;
 			Joints[10].location = lFoot;
-
-			drawFigure(true);
 		} 
 		#endregion
 	}
