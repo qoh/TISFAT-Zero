@@ -99,6 +99,8 @@
 			this.Controls.Add(this.pgr_totalProgress);
 			this.Controls.Add(this.lbl_DlTitle);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "Downloader";
 			this.Text = "Updating";
 			this.ResumeLayout(false);
