@@ -222,6 +222,8 @@ namespace TISFAT_ZERO
 
 		public List<StickJoint> Joints;
 		public bool isActiveFig, drawFig, drawHandles, isTweenFig;
+		public Color figColor = Color.Black;
+
 		public bool isDrawn
 		{
 			get
@@ -254,6 +256,20 @@ namespace TISFAT_ZERO
 				return;
 
 			drawJoints(fromCanvas);
+		}
+
+		public void drawWholeFigure(bool fromCanvas = true)
+		{
+			if (!fromCanvas)
+			{
+				Canvas.theCanvas.Refresh();
+				return;
+			}
+
+			if (!drawFig)
+				return;
+
+			drawJoints(fromCanvas);
 
 			if (!isTweenFig && drawHandles)
 				drawFigHandles();
@@ -272,8 +288,14 @@ namespace TISFAT_ZERO
 					Canvas.drawGraphics(i.drawState, new Pen(i.color, i.thickness), new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
 		}
 
-		private void drawFigHandles()
+		public void drawFigHandles(bool fromCanvas = true)
 		{
+			if (!fromCanvas)
+			{
+				Canvas.theCanvas.Refresh();
+				return;
+			}
+
 			foreach (StickJoint i in Joints)
 			{
 				if (drawHandles)
@@ -297,6 +319,15 @@ namespace TISFAT_ZERO
 
 		public void setAsActiveFigure()
 		{
+		}
+
+		public void setColor(Color color)
+		{
+			for (int i = 0; i < Joints.Count; i++)
+			{
+				Joints[i].color = color;
+			}
+			figColor = color;
 		}
 
 		public int getPointAt(Point coords, int tolerance)
@@ -553,6 +584,12 @@ namespace TISFAT_ZERO
 				Canvas.addFigure(this);
 			else
 				Canvas.addTweenFigure(this);
+		}
+
+		public void setThickness(int thickness)
+		{
+			Joints[0].thickness = thickness;
+			Joints[1].thickness = thickness;
 		}
 	}
 

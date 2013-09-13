@@ -189,6 +189,9 @@ namespace TISFAT_ZERO
 
 			foreach (StickObject o in tweenFigs)
 				o.drawFigure();
+
+			foreach (StickObject o in figureList)
+				o.drawFigHandles();
 		}
 
 		/// <summary>

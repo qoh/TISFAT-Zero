@@ -37,6 +37,7 @@ namespace TISFAT_ZERO
 				mainForm.tline.stopTimer();
 			else
 				mainForm.tline.startTimer(frameRate);
+
 			isPlaying = !isPlaying;
 			btn_playPause.Text = isPlaying ? "Pause" : "Play";
 		}
@@ -183,6 +184,60 @@ namespace TISFAT_ZERO
 
 			pnl_addTools.Enabled = false;
 			slideOutObject = pnl_addTools;
+			animTimer.Start();
+		}
+
+		private void pic_pnlLine_color_Click(object sender, EventArgs e)
+		{
+			dlg_Color.ShowDialog();
+			pic_pnlLine_color.BackColor = dlg_Color.Color;
+			Canvas.activeFigure.setColor(dlg_Color.Color);
+			Canvas.theCanvas.Refresh();
+		}
+
+		private void num_pnlLine_thickness_ValueChanged(object sender, EventArgs e)
+		{
+			StickLine line = (StickLine)Canvas.activeFigure;
+			if (!(num_pnlLine_thickness.Value == -1))
+			{
+				line.setThickness((int)num_pnlLine_thickness.Value);
+				mainForm.tline.theCanvas.Refresh();
+			}
+		}
+
+		private void pic_pnlStick_color_Click(object sender, EventArgs e)
+		{
+			dlg_Color.ShowDialog();
+			pic_pnlStick_color.BackColor = dlg_Color.Color;
+			Canvas.activeFigure.setColor(dlg_Color.Color);
+			Canvas.theCanvas.Refresh();
+		}
+
+		private void fPropButton_Click_1(object sender, EventArgs e)
+		{
+			if (Canvas.activeFigure.type == 1)
+			{
+				pnl_Properties_Stick.Visible = true;
+				pnl_Properties_Line.Visible = false;
+				pic_pnlStick_color.BackColor = Canvas.activeFigure.figColor;
+			}
+			else if (Canvas.activeFigure.type == 2)
+			{
+				pnl_Properties_Stick.Visible = false;
+				pnl_Properties_Line.Visible = true;
+				pic_pnlLine_color.BackColor = Canvas.activeFigure.figColor;
+				num_pnlLine_thickness.Value = Canvas.activeFigure.Joints[0].thickness;
+			}
+				
+
+			pnl_mainTools.Enabled = false;
+			slideOutObject = pnl_Properties;
+			animTimer.Start();
+		}
+
+		private void btn_pnlLine_Cancel_Click(object sender, EventArgs e)
+		{
+			slideOutObject = pnl_Properties;
 			animTimer.Start();
 		}
 	}

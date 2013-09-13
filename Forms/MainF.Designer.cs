@@ -73,6 +73,7 @@ namespace TISFAT_ZERO
 			this.framesPanel = new System.Windows.Forms.Panel();
 			this.dlg_saveFile = new System.Windows.Forms.SaveFileDialog();
 			this.dlg_openFile = new System.Windows.Forms.OpenFileDialog();
+			this.dlThingyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnu_strip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -285,20 +286,20 @@ namespace TISFAT_ZERO
 			// 
 			this.layerToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("layerToolStripMenuItem1.Image")));
 			this.layerToolStripMenuItem1.Name = "layerToolStripMenuItem1";
-			this.layerToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
+			this.layerToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
 			this.layerToolStripMenuItem1.Text = "Layer";
 			// 
 			// framesetToolStripMenuItem1
 			// 
 			this.framesetToolStripMenuItem1.Name = "framesetToolStripMenuItem1";
-			this.framesetToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
+			this.framesetToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
 			this.framesetToolStripMenuItem1.Text = "Frameset";
 			// 
 			// keyframeToolStripMenuItem1
 			// 
 			this.keyframeToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("keyframeToolStripMenuItem1.Image")));
 			this.keyframeToolStripMenuItem1.Name = "keyframeToolStripMenuItem1";
-			this.keyframeToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
+			this.keyframeToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
 			this.keyframeToolStripMenuItem1.Text = "Keyframe";
 			// 
 			// helpToolStripMenuItem
@@ -315,19 +316,19 @@ namespace TISFAT_ZERO
 			// 
 			this.helpToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("helpToolStripMenuItem1.Image")));
 			this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
-			this.helpToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
+			this.helpToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
 			this.helpToolStripMenuItem1.Text = "Help";
 			// 
 			// toolStripSeparator5
 			// 
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
-			this.toolStripSeparator5.Size = new System.Drawing.Size(104, 6);
+			this.toolStripSeparator5.Size = new System.Drawing.Size(149, 6);
 			// 
 			// aboutToolStripMenuItem
 			// 
 			this.aboutToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aboutToolStripMenuItem.Image")));
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.aboutToolStripMenuItem.Text = "About";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
@@ -350,6 +351,8 @@ namespace TISFAT_ZERO
 			// 
 			// debugToolStripMenuItem
 			// 
+			this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dlThingyToolStripMenuItem});
 			this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
 			this.debugToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
 			this.debugToolStripMenuItem.Text = "Debug";
@@ -406,6 +409,13 @@ namespace TISFAT_ZERO
 			// 
 			this.dlg_openFile.Filter = "TISFAT:Zero Saves (*.tzs)|*.tzs";
 			this.dlg_openFile.FileOk += new System.ComponentModel.CancelEventHandler(this.dlg_openFile_FileOk);
+			// 
+			// dlThingyToolStripMenuItem
+			// 
+			this.dlThingyToolStripMenuItem.Name = "dlThingyToolStripMenuItem";
+			this.dlThingyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.dlThingyToolStripMenuItem.Text = "dl thingy";
+			this.dlThingyToolStripMenuItem.Click += new System.EventHandler(this.dlThingyToolStripMenuItem_Click);
 			// 
 			// MainF
 			// 
@@ -474,6 +484,7 @@ namespace TISFAT_ZERO
 		private ToolStripMenuItem redoToolStripMenuItem;
 		private SaveFileDialog dlg_saveFile;
 		private OpenFileDialog dlg_openFile;
+		private ToolStripMenuItem dlThingyToolStripMenuItem;
     }
 }
 

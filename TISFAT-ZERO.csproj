@@ -61,6 +61,12 @@
     <Compile Include="Forms\Canvas.Designer.cs">
       <DependentUpon>Canvas.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Downloader.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Downloader.Designer.cs">
+      <DependentUpon>Downloader.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\MainF.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,6 +91,12 @@
     <Compile Include="Forms\Toolbox.Designer.cs">
       <DependentUpon>Toolbox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\UpdateNotification.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UpdateNotification.Designer.cs">
+      <DependentUpon>UpdateNotification.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\User.Designer.cs">
@@ -106,6 +118,9 @@
     <EmbeddedResource Include="Forms\Canvas.resx">
       <DependentUpon>Canvas.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Downloader.resx">
+      <DependentUpon>Downloader.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainF.resx">
       <DependentUpon>MainF.cs</DependentUpon>
     </EmbeddedResource>
@@ -117,6 +132,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Toolbox.resx">
       <DependentUpon>Toolbox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UpdateNotification.resx">
+      <DependentUpon>UpdateNotification.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

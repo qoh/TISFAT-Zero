@@ -215,5 +215,11 @@ namespace TISFAT_ZERO
 		{
 			Timeline.resetEverything(false);
 		}
+
+		private void dlThingyToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Downloader f = new Downloader();
+			f.ShowDialog();
+		}
 	}
 }

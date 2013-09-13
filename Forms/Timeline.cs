@@ -557,6 +557,7 @@ namespace TISFAT_ZERO
 
 		public void stopTimer()
 		{
+			isPlaying = false;
 			playTimer.Stop();
 		}
 
