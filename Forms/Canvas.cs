@@ -244,26 +244,46 @@ namespace TISFAT_ZERO
 		#endregion
 
 		#region Figures
+		/// <summary>
+		/// Adds the figure.
+		/// </summary>
+		/// <param name="figure">The figure.</param>
 		public static void addFigure(StickObject figure)
 		{
 			figureList.Add(figure);
 		}
 
+		/// <summary>
+		/// Adds the tween figure.
+		/// </summary>
+		/// <param name="figure">The figure.</param>
 		public static void addTweenFigure(StickObject figure)
 		{
 			tweenFigs.Add(figure);
 		}
 
+		/// <summary>
+		/// Removes the figure.
+		/// </summary>
+		/// <param name="figure">The figure.</param>
 		public static void removeFigure(StickObject figure)
 		{
 			figureList.Remove(figure);
 		}
 
+		/// <summary>
+		/// Removes the specified tween figure from the tween figures list.
+		/// </summary>
+		/// <param name="figure">The figure.</param>
 		public static void removeTweenFigure(StickObject figure)
 		{
 			tweenFigs.Remove(figure);
 		}
 
+		/// <summary>
+		/// Activates the figure.
+		/// </summary>
+		/// <param name="fig">The fig.</param>
 		public static void activateFigure(StickObject fig)
 		{
 			for (int i = 0; i < figureList.Count; i++)
@@ -272,27 +292,6 @@ namespace TISFAT_ZERO
 			}
 
 			fig.isActiveFig = true;
-		}
-
-		public StickFigure createFigure()
-		{
-			StickFigure figure = new StickFigure(false);
-
-			return figure;
-		}
-
-		public StickLine createLine()
-		{
-			StickLine line = new StickLine(false);
-
-			return line;
-		}
-
-		public StickRect createRect()
-		{
-			StickRect rect = new StickRect(false);
-
-			return rect;
 		}
 		#endregion
 

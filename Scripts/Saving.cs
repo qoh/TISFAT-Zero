@@ -185,7 +185,7 @@ namespace TISFAT_ZERO
 
 				string name = Encoding.UTF8.GetString(namebytes);
 
-				StickLayer newLayer = new StickLayer(name, zeCanvas.createFigure(), zeCanvas);
+				StickLayer newLayer = new StickLayer(name, new StickFigure(false), zeCanvas);
 				List<KeyFrame> thingy = new List<KeyFrame>();
 				
 				//For this I have to create a memorystream out of the layer data so that I can use readNextBlock on it to get the frame data

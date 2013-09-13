@@ -85,9 +85,11 @@
 			// 
 			// rtxt_changelog
 			// 
+			this.rtxt_changelog.BackColor = System.Drawing.Color.White;
 			this.rtxt_changelog.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.rtxt_changelog.Location = new System.Drawing.Point(16, 83);
 			this.rtxt_changelog.Name = "rtxt_changelog";
+			this.rtxt_changelog.ReadOnly = true;
 			this.rtxt_changelog.Size = new System.Drawing.Size(306, 124);
 			this.rtxt_changelog.TabIndex = 7;
 			this.rtxt_changelog.Text = "";

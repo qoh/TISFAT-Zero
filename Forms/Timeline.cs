@@ -163,9 +163,14 @@ namespace TISFAT_ZERO
 			blk.Dispose(); bblk.Dispose();
 		}
 
+		/// <summary>
+		/// Adds the stick layer.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <returns></returns>
 		public StickLayer addStickLayer(string name)
 		{
-			StickFigure x = theCanvas.createFigure();
+			StickFigure x = new StickFigure(false);
 
 			StickLayer n = new StickLayer(name, x, theCanvas);
 			layers.Add(n);
@@ -174,9 +179,14 @@ namespace TISFAT_ZERO
 			return n;
 		}
 
+		/// <summary>
+		/// Adds the line layer.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <returns></returns>
 		public LineLayer addLineLayer(string name)
 		{
-			StickLine x = theCanvas.createLine();
+			StickLine x = new StickLine(false);
 
 			LineLayer n = new LineLayer(name, x, theCanvas);
 			layers.Add(n);
@@ -185,9 +195,14 @@ namespace TISFAT_ZERO
 			return n;
 		}
 
+		/// <summary>
+		/// Adds the rect layer.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <returns></returns>
 		public RectLayer addRectLayer(string name)
 		{
-			StickRect x = theCanvas.createRect();
+			StickRect x = new StickRect(false);
 
 			RectLayer n = new RectLayer(name, x, theCanvas);
 			layers.Add(n);
@@ -196,6 +211,10 @@ namespace TISFAT_ZERO
 			return n;
 		}
 
+		/// <summary>
+		/// Sets the frame.
+		/// </summary>
+		/// <param name="pos">The position.</param>
 		public void setFrame(uint pos)
 		{
 			for (int a = 0; a < layers.Count; a++)
@@ -208,6 +227,9 @@ namespace TISFAT_ZERO
 			theCanvas.Refresh();
 		}
 
+		/// <summary>
+		/// Sets the frame.
+		/// </summary>
 		public void setFrame()
 		{
 			for (int a = 0; a < layers.Count; a++)
@@ -222,6 +244,11 @@ namespace TISFAT_ZERO
 			theCanvas.Refresh();
 		}
 
+		/// <summary>
+		/// Handles the MouseDown event of the Timeline control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
 		private void Timeline_MouseDown(object sender, MouseEventArgs e)
 		{
 			if(isPlaying)
@@ -244,6 +271,17 @@ namespace TISFAT_ZERO
 			}
 		}
 
+		/// <summary>
+		/// Returns the type of the selected frame.
+		/// </summary>
+		/// <returns>The type of the frame selected.
+		/// 0: No frame
+		/// 1: Middle Keyframe
+		/// 2: First Keyframe of Frameset
+		/// 3: Last Keyframe of Frameset
+		/// 4: Tween frame
+		/// 5: Timeline
+		/// </returns>
 		private byte selectedFrameType()
 		{
 			if (selectedLayer == -1)
@@ -276,7 +314,7 @@ namespace TISFAT_ZERO
 			selectedKeyFrame = null;
 			if (selectedFrame > selLayer.firstKF && selectedFrame < selLayer.lastKF)
 				return 4;
-
+			
 			// 0: blank
 			// 1: Keyframe
 			// 2: first keyframe
@@ -284,7 +322,6 @@ namespace TISFAT_ZERO
 			// 4: Tween frame
 			// 5: Timeline
 			return 0;
-
 		}
 
 		private void cxt_Menu_Opening(object sender, CancelEventArgs e)
@@ -545,6 +582,10 @@ namespace TISFAT_ZERO
 
 		}
 
+		/// <summary>
+		/// Starts the timer.
+		/// </summary>
+		/// <param name="fps">The FPS.</param>
 		public void startTimer(byte fps)
 		{
 			int mspertick = 1000 / fps;
@@ -561,7 +602,11 @@ namespace TISFAT_ZERO
 			playTimer.Stop();
 		}
 
-		//Determines whether or not there are any active stick figures on a given frame.
+		/// <summary>
+		/// Determines whether or not any of the layers at a given point in the timeline contain a frame.
+		/// </summary>
+		/// <param name="pos">The position to check.</param>
+		/// <returns>Returns whether or not the given position has frames.</returns>
 		private bool hasFrames(uint pos)
 		{
 			//Check if it's within the keyset of any layer.
@@ -575,6 +620,10 @@ namespace TISFAT_ZERO
 			return false;
 		}
 
+		/// <summary>
+		/// Determines whether or not any of the layers at the selected point on the timeline has a frame.
+		/// </summary>
+		/// <returns>Returns whether or not the selected position has frames.</returns>
 		private bool hasFrames()
 		{
 			foreach (StickLayer k in layers)
@@ -587,11 +636,15 @@ namespace TISFAT_ZERO
 		}
 
 		//Only used by loading so far.
-		public static void resetEverything(bool reset)
+		/// <summary>
+		/// Resets the everything.
+		/// </summary>
+		/// <param name="keepDefault">if set to <c>true</c> [reset].</param>
+		public static void resetEverything(bool keepDefault)
 		{
 			layers = new List<Layer>();
 			layercount = selectedLayer = 0; selectedFrame = 0;
-			mainForm.resetTimeline(reset);
+			mainForm.resetTimeline(keepDefault);
 		}
 	}
 }
