@@ -32,6 +32,11 @@ namespace TISFAT_ZERO
 		#endregion
 
 		//Instantiate the class
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Canvas"/> class.
+		/// </summary>
+		/// <param name="f">The main form object</param>
+		/// <param name="t">The toolbox object</param>
 		public Canvas(MainF f, Toolbox t)
 		{
 			mainForm = f;
@@ -43,18 +48,29 @@ namespace TISFAT_ZERO
 
 		#region Mouse Events
 		//Debug stuff, and dragging joints.
+		/// <summary>
+		/// Handles the MouseMove event of the Canvas control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
 		private void Canvas_MouseMove(object sender, MouseEventArgs e)
 		{
+			//Set the cursor position in the toolbox
 			theToolbox.lbl_xPos.Text = "X Pos: " + e.X.ToString();
 			theToolbox.lbl_yPos.Text = "Y Pos: " + e.Y.ToString();
 
+			//If the canvas is to be drawn, and the user isn't holding down the right mouse button
+			//This is mostly so that you won't be dragging the entire figure at the same time
+			//That you're dragging a joint
 			if (draw & !(e.Button == MouseButtons.Right))
 			{
+				//To prevent exceptions being thrown.
 				if (!(selectedJoint.name == "null"))
 				{
 					selectedJoint.SetPos(e.X, e.Y);
 					Refresh();
 				}
+				//This prevents any other figures from becoming active as you are dragging a joint.
 				foreach (StickObject fig in figureList)
 				{
 					if (!(fig == activeFigure))
@@ -65,17 +81,24 @@ namespace TISFAT_ZERO
 			}
 			else if (draw & e.Button == MouseButtons.Right)
 			{
+				//This prevents the context menu from popping up after you release the right
+				//mouse button when you're dragging a figure.
 				mousemoved = true;
 
+				//This basically keeps the distance from the cursor and the figure constant
+				//as the user drags it around.
 				for (int i = 0; i < activeFigure.Joints.Count; i++)
 				{
 					activeFigure.Joints[i].location.X = fx[i] + (e.X - ox);
 					activeFigure.Joints[i].location.Y = fy[i] + (e.Y - oy);
 				}
 
+				//Refresh the canvas or the user won't see any difference.
 				Refresh();
 			}
 
+			//This is what sets the active figure to whatever figure owns the joint that you
+			//moused over.
 			for (int i = 0; i < figureList.Count; i++)
 			{
 				if (figureList[i].getPointAt(new Point(e.X, e.Y), 4) != -1 && figureList[i].drawHandles)
@@ -91,6 +114,8 @@ namespace TISFAT_ZERO
 				}
 			}
 
+			//If the active figure exists (isn't null), and we aren't supposed to redraw, then..
+			//This is what sets the cursor to the hand when you mouse over a joint.
 			if (!(activeFigure == null) & !draw)
 			{
 				if (activeFigure.getPointAt(new Point(e.X, e.Y), 4) != -1)
@@ -105,23 +130,38 @@ namespace TISFAT_ZERO
 		}
 
 		//Debug stuff, and selection of joints. This also causes thde canvas to be redrawn on mouse move.
+		/// <summary>
+		/// Handles the MouseDown event of the Canvas control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
 		private void Canvas_MouseDown(object sender, MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
+				//If the user isn't holding down the 'ctrl' key..
 				if (!(ModifierKeys == Keys.Control))
 				{
+					//This prevents a null reference exception when a user left clicks
+					//without an activeFigure being set yet.
 					if (activeFigure == null)
 						return;
 
-					StickJoint f = null;
-					if(activeFigure != null)
-						f = activeFigure.selectPoint(new Point(e.X, e.Y), 4);
+					StickJoint f;
+
+					//Selects the point at the location that the user clicked, with a
+					//tolerance of about 4 pixels.
+					f = activeFigure.selectPoint(new Point(e.X, e.Y), 4);
+
+					//This sets the labels in the debug menu.
 					theToolbox.lbl_selectedJoint.Text = "Selected Joint: " + f.name;
 					theToolbox.lbl_jointLength.Text = "Joint Length: " + f.CalcLength(null).ToString();
 
+					//Sets the selectedJoint variable to the joint that we just selected.
 					selectedJoint = f;
 
+					//This tells the form that the mouse button is being held down, and
+					//that we should redraw the form when it's moved.
 					draw = true;
 				}
 				else if (ModifierKeys == Keys.Control)
@@ -159,6 +199,11 @@ namespace TISFAT_ZERO
 		}
 
 		//Deselect the joint, and stop redrawing the canvas.
+		/// <summary>
+		/// Handles the MouseUp event of the Canvas control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
 		private void Canvas_MouseUp(object sender, MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
@@ -197,12 +242,12 @@ namespace TISFAT_ZERO
 		/// <summary>
 		/// Draws the graphics.
 		/// </summary>
-		/// <param name="type">1 = Line, 1 = Circle, 2 = Handle, 3 = Hollow Handle</param>
-		/// <param name="pen">Pen Color</param>
-		/// <param name="one">Point one</param>
+		/// <param name="type">What we're drawing. 1 = Line, 1 = Circle, 2 = Handle, 3 = Hollow Handle</param>
+		/// <param name="pen">The <see cref="Color">color</see> of what we're drawing.</param>
+		/// <param name="one">The origin point.</param>
 		/// <param name="width">The width.</param>
 		/// <param name="height">The height.</param>
-		/// <param name="two">Point two. (only used in line type)</param>
+		/// <param name="two">The end point. (only used in line type)</param>
 		public static void drawGraphics(int type, Pen pen, Point one, int width, int height, Point two)
 		{
 			if (type == 0) //Line

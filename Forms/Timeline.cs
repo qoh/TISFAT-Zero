@@ -29,6 +29,11 @@ namespace TISFAT_ZERO
 		private bool mouseDown = false, isPlaying = false;
 		#endregion
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Timeline"/> class.
+		/// </summary>
+		/// <param name="m">The main form object.</param>
+		/// <param name="canvas">The canvas object.</param>
 		public Timeline(MainF m, Canvas canvas)
 		{
 			InitializeComponent(); 
@@ -44,6 +49,11 @@ namespace TISFAT_ZERO
 			setFrame();
 		}
 
+		/// <summary>
+		/// Handles the Paint event of the Timeline control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="PaintEventArgs"/> instance containing the event data.</param>
 		private void Timeline_Paint(object sender, PaintEventArgs e)
 		{
 			#region Timeline Rendering
@@ -270,7 +280,7 @@ namespace TISFAT_ZERO
 				Refresh();
 			}
 		}
-
+		
 		/// <summary>
 		/// Returns the type of the selected frame.
 		/// </summary>
@@ -284,13 +294,16 @@ namespace TISFAT_ZERO
 		/// </returns>
 		private byte selectedFrameType()
 		{
+			// The -1 layer is reserved for the Timeline.
+			// If the user has selected the timeline, the selected layer will be -1.
 			if (selectedLayer == -1)
-			{
 				return 5;
-			}
 
+			//Get the currently selected layer (so that we can check it's frames)
 			Layer selLayer = layers[selectedLayer];
 
+			//Check if the frame is on the first or last keyframe position
+			// (Will have to be changed when framesets are implemented)
 			if (selectedFrame == selLayer.firstKF)
 			{
 				selectedKeyFrame = selLayer.keyFrames[0];
@@ -302,38 +315,49 @@ namespace TISFAT_ZERO
 				return 3;
 			}
             
+			//Check each individual keyframe in the layer and see if the positions match
+			//I'm going to revise this into a binary search later for efficiency.
 			foreach (KeyFrame x in selLayer.keyFrames)
 			{
-				if (((StickFrame)x).pos == selectedFrame)
+				if (x.pos == selectedFrame)
 				{
 					selectedKeyFrame = x;
 					return 1;
 				}
 			}
 
+			//Now that all other possibilities are eliminated, it isn't a keyframe.
+			//So because of this, we set the selected key frame to null.
 			selectedKeyFrame = null;
+
+			//This basically checks if the position is between the first and last keyframe positions.
+			//This will also have to be changed when framesets are implemented.
 			if (selectedFrame > selLayer.firstKF && selectedFrame < selLayer.lastKF)
 				return 4;
-			
-			// 0: blank
-			// 1: Keyframe
-			// 2: first keyframe
-			// 3: last keyframe
-			// 4: Tween frame
-			// 5: Timeline
+
+			//Since it's failed all other tests, there is no frame at that spot.
 			return 0;
 		}
 
+		/// <summary>
+		/// Handles the Opening event of the timeline right click menu.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="CancelEventArgs"/> instance containing the event data.</param>
 		private void cxt_Menu_Opening(object sender, CancelEventArgs e)
 		{
+			//To be honest I don't even know if this is necessary, but I put it in just in case.
+			//If the timeline is playing, then don't allow the right click menu.
 			if(isPlaying)
 			{
 				e.Cancel = true;
 				return;
 			}
 
+			//Get the selected keyframe type
 			int frameType = selectedFrameType();
 
+			//massive facking if statements, which I will later condense to save space
 			if (frameType == 0)
 			{
 				tst_insertKeyframe.Enabled = false;
@@ -433,13 +457,21 @@ namespace TISFAT_ZERO
 			}
 		}
 
+		/// <summary>
+		/// Handler for when an item in the timeline ricght click menu is clicked.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="ToolStripItemClickedEventArgs"/> instance containing the event data.</param>
 		private void cxt_Menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
 		{
+			//Get the name of the clicked item and the currently selected layer
 			string name = e.ClickedItem.Name;
 			Layer cLayer = layers[selectedLayer];
 
+			//Decide what to do based on the clicked menu item was.
 			switch (name)
 			{
+					//Layer methods handle this part.
 				case "tst_insertKeyframe":
 					cLayer.insertKeyFrame(selectedFrame);
 					break;
@@ -448,12 +480,14 @@ namespace TISFAT_ZERO
 					cLayer.removeKeyFrame(selectedFrame);
 					break;
 				
+					//Insert a keyframe like before and then copy the positions of the
+					//current tween fig into the new keyframe.
 				case "tst_insertKeyframeAtPose":
 					int p = cLayer.insertKeyFrame(selectedFrame);
 					KeyFrame newFrame = cLayer.keyFrames[p];
 					List<StickJoint> jointz = cLayer.tweenFig.Joints;
 					
-					for (int a = 0; a < 12; a++)
+					for (int a = 0; a < jointz.Count; a++)
 						newFrame.Joints[a].location = jointz[a].location;
 
 					break;
@@ -463,10 +497,16 @@ namespace TISFAT_ZERO
 					
 			}
 
+			//After that, refresh the timeline and the canvas.
 			Refresh();
 			setFrame();
 		}
 
+		/// <summary>
+		/// Handles the MouseMove event of the Timeline control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="MouseEventArgs" /> instance containing the event data.</param>
 		private void Timeline_MouseMove(object sender, MouseEventArgs e)
 		{
 			//Don't do anything if we're playing back an animation or we don't have the mouse down.
@@ -474,12 +514,16 @@ namespace TISFAT_ZERO
 				return;
 
 			int x = e.X;
-			if (x < 80)
-				x = 80; //holdplz
 
-
+			//Do the selected frame calculation twice, once in both int and uint.
 			uint newSelected = (uint)(x - 80) / 9 + (uint)mainForm.splitContainer1.Panel1.HorizontalScroll.Value / 9;
+			int check = (x - 80) / 9 + mainForm.splitContainer1.Panel1.HorizontalScroll.Value / 9;
 
+			//If the int calculation is below zero, then set the selected value to 0 (as we don't want anything going negative)
+			if (check < 0)
+				newSelected = 0;
+
+			//If the timeline is selected, simply update the selected frame and refresh everything.
 			if (selectedLayer == -1)
 			{
 				selectedFrame = newSelected;
@@ -488,17 +532,26 @@ namespace TISFAT_ZERO
 				return;
 			}
 
+			//Get the difference in the selected frame before and after the mouse move update.
 			int diff = (int)newSelected - (int)selectedFrame;
 
-			if (selectedFrame - newSelected == 0 || selectedType == 0)
+			//This function basically handles anything having to do with dragging things on the timeline.
+
+			//Everything on from here relies on the mouse having moved at least 1 frame, so if it hasn't or there is
+			//no keyframe selected, then we can just stop here.
+			if (diff == 0 || selectedType == 0)
 				return;
 
-			StickLayer l = (StickLayer)layers[selectedLayer];
+			//Get the currently selected layer (Note to self: make this into a property of the timeline for easy access)
+			Layer l = layers[selectedLayer];
+
+			//And get the list of keyframes from the layer.
 			List<KeyFrame> kfs = l.keyFrames;
 
+			//Behaviour for dragging keyframes
 			if (selectedType > 0 && selectedType < 4)
 			{
-				int indOf = l.keyFrames.IndexOf(selectedKeyFrame);
+				// Note to Self: Remove constraints on dradding keyframes. Penis
 
 				//This code makes sure that the selected frame doesn't go over/under the positions of it's neighbouring frames
 				if (selectedKeyFrame.pos == l.lastKF)
@@ -513,6 +566,9 @@ namespace TISFAT_ZERO
 				}
 				else
 				{
+					//Get the index off the keyframe inside the frames list (quite helpful)
+					int indOf = l.keyFrames.IndexOf(selectedKeyFrame);
+
 					uint backPos = kfs[indOf - 1].pos, frontPos = kfs[indOf + 1].pos;
 
 					newSelected = Math.Max(Math.Min(newSelected, frontPos - 1), backPos + 1);
@@ -544,7 +600,7 @@ namespace TISFAT_ZERO
 					l.lastKF += d;
 
 					for (int a = 0; a < l.keyFrames.Count; a++)
-						((StickFrame)l.keyFrames[a]).pos += d;
+						l.keyFrames[a].pos += d;
 				}
 				else
 				{
@@ -553,18 +609,28 @@ namespace TISFAT_ZERO
 					l.lastKF -= d;
 
 					for (int a = 0; a < l.keyFrames.Count; a++)
-						((StickFrame)l.keyFrames[a]).pos -= d;
+						l.keyFrames[a].pos -= d;
 				}
 				selectedFrame = newSelected;
 				Refresh();
 			}
 		}
 
+		/// <summary>
+		/// Handles the MouseUp event of the Timeline control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
 		private void Timeline_MouseUp(object sender, MouseEventArgs e)
 		{
 			mouseDown = false;
 		}
 
+		/// <summary>
+		/// Handles the Tick event of the playTimer control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void playTimer_Tick(object sender, EventArgs e)
 		{
 			if (hasFrames(selectedFrame + 1))
@@ -596,6 +662,9 @@ namespace TISFAT_ZERO
 			playTimer.Start();
 		}
 
+		/// <summary>
+		/// Stops the timer.
+		/// </summary>
 		public void stopTimer()
 		{
 			isPlaying = false;
