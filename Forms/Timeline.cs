@@ -412,8 +412,8 @@ namespace TISFAT_ZERO
 				tst_insertKeyframe.Enabled = false;
 				tst_insertKeyframeAtPose.Enabled = false;
 				tst_removeKeyframe.Enabled = false;
-				tst_setPosePrvKfrm.Enabled = true;
-				tst_setPoseNxtKfrm.Enabled = true;
+				tst_setPosePrvKfrm.Enabled = frameType == 3;
+				tst_setPoseNxtKfrm.Enabled = frameType == 2;
 				tst_onionSkinning.Enabled = true;
 
 				tst_insertFrameset.Enabled = false;
@@ -492,6 +492,22 @@ namespace TISFAT_ZERO
 
 					break;
 
+				case "tst_setPosePrvKfrm":
+					int pos = cLayer.keyFrames.IndexOf(selectedKeyFrame);
+
+					for (int a = 0; a < cLayer.keyFrames[pos].Joints.Count; a++)
+						cLayer.keyFrames[pos].Joints[a].location = new Point(cLayer.keyFrames[pos - 1].Joints[a].location.X, cLayer.keyFrames[pos - 1].Joints[a].location.Y);
+
+					break;
+
+				case "tst_setPoseNxtKfrm":
+					pos = cLayer.keyFrames.IndexOf(selectedKeyFrame);
+
+					for (int a = 0; a < cLayer.keyFrames[pos].Joints.Count; a++)
+						cLayer.keyFrames[pos].Joints[a].location = new Point(cLayer.keyFrames[pos + 1].Joints[a].location.X, cLayer.keyFrames[pos + 1].Joints[a].location.Y);
+
+					break;
+
 				default:
 					return;
 					
@@ -517,7 +533,7 @@ namespace TISFAT_ZERO
 
 			//Do the selected frame calculation twice, once in both int and uint.
 			uint newSelected = (uint)(x - 80) / 9 + (uint)mainForm.splitContainer1.Panel1.HorizontalScroll.Value / 9;
-			int check = (x - 80) / 9 + mainForm.splitContainer1.Panel1.HorizontalScroll.Value / 9;
+			decimal check = (decimal)(x - 80) / 9 + mainForm.splitContainer1.Panel1.HorizontalScroll.Value / 9;
 
 			//If the int calculation is below zero, then set the selected value to 0 (as we don't want anything going negative)
 			if (check < 0)
