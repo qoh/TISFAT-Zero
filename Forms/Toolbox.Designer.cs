@@ -31,6 +31,19 @@
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Toolbox));
 			this.pnl_mainPanel = new System.Windows.Forms.Panel();
+			this.pnl_Properties = new System.Windows.Forms.Panel();
+			this.pnl_Properties_Stick = new System.Windows.Forms.Panel();
+			this.lbl_pnlStick_Transparency = new System.Windows.Forms.Label();
+			this.num_alpha = new System.Windows.Forms.NumericUpDown();
+			this.tkb_alpha = new System.Windows.Forms.TrackBar();
+			this.pic_pnlStick_color = new System.Windows.Forms.PictureBox();
+			this.lbl_pnlStick_figureColor = new System.Windows.Forms.Label();
+			this.pnl_Properties_Line = new System.Windows.Forms.Panel();
+			this.lbl_pnlLine_Color = new System.Windows.Forms.Label();
+			this.pic_pnlLine_color = new System.Windows.Forms.PictureBox();
+			this.num_pnlLine_thickness = new System.Windows.Forms.NumericUpDown();
+			this.lbl_pnlLine_thickness = new System.Windows.Forms.Label();
+			this.btn_pnlLine_Cancel = new System.Windows.Forms.Button();
 			this.pnl_mainTools = new System.Windows.Forms.Panel();
 			this.btn_BGButton = new System.Windows.Forms.Button();
 			this.btn_poserButton = new System.Windows.Forms.Button();
@@ -64,18 +77,16 @@
 			this.pnl_paintPanel = new System.Windows.Forms.Panel();
 			this.btn_cancelButtonDraw = new System.Windows.Forms.Button();
 			this.animTimer = new System.Windows.Forms.Timer(this.components);
-			this.pnl_Properties = new System.Windows.Forms.Panel();
-			this.pnl_Properties_Line = new System.Windows.Forms.Panel();
-			this.btn_pnlLine_Cancel = new System.Windows.Forms.Button();
-			this.lbl_pnlLine_thickness = new System.Windows.Forms.Label();
-			this.num_pnlLine_thickness = new System.Windows.Forms.NumericUpDown();
-			this.pic_pnlLine_color = new System.Windows.Forms.PictureBox();
-			this.lbl_pnlLine_Color = new System.Windows.Forms.Label();
 			this.dlg_Color = new System.Windows.Forms.ColorDialog();
-			this.pnl_Properties_Stick = new System.Windows.Forms.Panel();
-			this.lbl_pnlStick_figureColor = new System.Windows.Forms.Label();
-			this.pic_pnlStick_color = new System.Windows.Forms.PictureBox();
 			this.pnl_mainPanel.SuspendLayout();
+			this.pnl_Properties.SuspendLayout();
+			this.pnl_Properties_Stick.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_alpha)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.tkb_alpha)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_pnlStick_color)).BeginInit();
+			this.pnl_Properties_Line.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pic_pnlLine_color)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.num_pnlLine_thickness)).BeginInit();
 			this.pnl_mainTools.SuspendLayout();
 			this.pnl_addTools.SuspendLayout();
 			this.pnl_ctrlPanel.SuspendLayout();
@@ -84,12 +95,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.maskedTextBox1)).BeginInit();
 			this.tabPage2.SuspendLayout();
 			this.pnl_Drawing.SuspendLayout();
-			this.pnl_Properties.SuspendLayout();
-			this.pnl_Properties_Line.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.num_pnlLine_thickness)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pic_pnlLine_color)).BeginInit();
-			this.pnl_Properties_Stick.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pic_pnlStick_color)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// pnl_mainPanel
@@ -106,6 +111,138 @@
 			this.pnl_mainPanel.Name = "pnl_mainPanel";
 			this.pnl_mainPanel.Size = new System.Drawing.Size(766, 336);
 			this.pnl_mainPanel.TabIndex = 2;
+			// 
+			// pnl_Properties
+			// 
+			this.pnl_Properties.AutoScroll = true;
+			this.pnl_Properties.Controls.Add(this.pnl_Properties_Stick);
+			this.pnl_Properties.Controls.Add(this.pnl_Properties_Line);
+			this.pnl_Properties.Controls.Add(this.btn_pnlLine_Cancel);
+			this.pnl_Properties.Location = new System.Drawing.Point(198, 142);
+			this.pnl_Properties.Name = "pnl_Properties";
+			this.pnl_Properties.Size = new System.Drawing.Size(151, 203);
+			this.pnl_Properties.TabIndex = 30;
+			// 
+			// pnl_Properties_Stick
+			// 
+			this.pnl_Properties_Stick.Controls.Add(this.lbl_pnlStick_Transparency);
+			this.pnl_Properties_Stick.Controls.Add(this.num_alpha);
+			this.pnl_Properties_Stick.Controls.Add(this.tkb_alpha);
+			this.pnl_Properties_Stick.Controls.Add(this.pic_pnlStick_color);
+			this.pnl_Properties_Stick.Controls.Add(this.lbl_pnlStick_figureColor);
+			this.pnl_Properties_Stick.Dock = System.Windows.Forms.DockStyle.Top;
+			this.pnl_Properties_Stick.Location = new System.Drawing.Point(0, 158);
+			this.pnl_Properties_Stick.Name = "pnl_Properties_Stick";
+			this.pnl_Properties_Stick.Size = new System.Drawing.Size(134, 158);
+			this.pnl_Properties_Stick.TabIndex = 31;
+			// 
+			// lbl_pnlStick_Transparency
+			// 
+			this.lbl_pnlStick_Transparency.AutoSize = true;
+			this.lbl_pnlStick_Transparency.Location = new System.Drawing.Point(30, 59);
+			this.lbl_pnlStick_Transparency.Name = "lbl_pnlStick_Transparency";
+			this.lbl_pnlStick_Transparency.Size = new System.Drawing.Size(75, 13);
+			this.lbl_pnlStick_Transparency.TabIndex = 4;
+			this.lbl_pnlStick_Transparency.Text = "Transparency:";
+			// 
+			// num_alpha
+			// 
+			this.num_alpha.Location = new System.Drawing.Point(45, 113);
+			this.num_alpha.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+			this.num_alpha.Name = "num_alpha";
+			this.num_alpha.Size = new System.Drawing.Size(45, 20);
+			this.num_alpha.TabIndex = 3;
+			this.num_alpha.ValueChanged += new System.EventHandler(this.num_alpha_ValueChanged);
+			// 
+			// tkb_alpha
+			// 
+			this.tkb_alpha.Location = new System.Drawing.Point(15, 76);
+			this.tkb_alpha.Maximum = 255;
+			this.tkb_alpha.Name = "tkb_alpha";
+			this.tkb_alpha.Size = new System.Drawing.Size(104, 45);
+			this.tkb_alpha.TabIndex = 2;
+			this.tkb_alpha.Scroll += new System.EventHandler(this.tkb_alpha_Scroll);
+			// 
+			// pic_pnlStick_color
+			// 
+			this.pic_pnlStick_color.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_pnlStick_color.Location = new System.Drawing.Point(93, 19);
+			this.pic_pnlStick_color.Name = "pic_pnlStick_color";
+			this.pic_pnlStick_color.Size = new System.Drawing.Size(25, 25);
+			this.pic_pnlStick_color.TabIndex = 1;
+			this.pic_pnlStick_color.TabStop = false;
+			this.pic_pnlStick_color.Click += new System.EventHandler(this.pic_pnlStick_color_Click);
+			// 
+			// lbl_pnlStick_figureColor
+			// 
+			this.lbl_pnlStick_figureColor.AutoSize = true;
+			this.lbl_pnlStick_figureColor.Location = new System.Drawing.Point(18, 25);
+			this.lbl_pnlStick_figureColor.Name = "lbl_pnlStick_figureColor";
+			this.lbl_pnlStick_figureColor.Size = new System.Drawing.Size(66, 13);
+			this.lbl_pnlStick_figureColor.TabIndex = 0;
+			this.lbl_pnlStick_figureColor.Text = "Figure Color:";
+			// 
+			// pnl_Properties_Line
+			// 
+			this.pnl_Properties_Line.Controls.Add(this.lbl_pnlLine_Color);
+			this.pnl_Properties_Line.Controls.Add(this.pic_pnlLine_color);
+			this.pnl_Properties_Line.Controls.Add(this.num_pnlLine_thickness);
+			this.pnl_Properties_Line.Controls.Add(this.lbl_pnlLine_thickness);
+			this.pnl_Properties_Line.Dock = System.Windows.Forms.DockStyle.Top;
+			this.pnl_Properties_Line.Location = new System.Drawing.Point(0, 0);
+			this.pnl_Properties_Line.Name = "pnl_Properties_Line";
+			this.pnl_Properties_Line.Size = new System.Drawing.Size(134, 158);
+			this.pnl_Properties_Line.TabIndex = 26;
+			// 
+			// lbl_pnlLine_Color
+			// 
+			this.lbl_pnlLine_Color.AutoSize = true;
+			this.lbl_pnlLine_Color.Location = new System.Drawing.Point(41, 85);
+			this.lbl_pnlLine_Color.Name = "lbl_pnlLine_Color";
+			this.lbl_pnlLine_Color.Size = new System.Drawing.Size(37, 13);
+			this.lbl_pnlLine_Color.TabIndex = 3;
+			this.lbl_pnlLine_Color.Text = "Color: ";
+			// 
+			// pic_pnlLine_color
+			// 
+			this.pic_pnlLine_color.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_pnlLine_color.Location = new System.Drawing.Point(85, 80);
+			this.pic_pnlLine_color.Name = "pic_pnlLine_color";
+			this.pic_pnlLine_color.Size = new System.Drawing.Size(25, 25);
+			this.pic_pnlLine_color.TabIndex = 2;
+			this.pic_pnlLine_color.TabStop = false;
+			this.pic_pnlLine_color.Click += new System.EventHandler(this.pic_pnlLine_color_Click);
+			// 
+			// num_pnlLine_thickness
+			// 
+			this.num_pnlLine_thickness.Location = new System.Drawing.Point(83, 54);
+			this.num_pnlLine_thickness.Name = "num_pnlLine_thickness";
+			this.num_pnlLine_thickness.Size = new System.Drawing.Size(45, 20);
+			this.num_pnlLine_thickness.TabIndex = 1;
+			this.num_pnlLine_thickness.ValueChanged += new System.EventHandler(this.num_pnlLine_thickness_ValueChanged);
+			// 
+			// lbl_pnlLine_thickness
+			// 
+			this.lbl_pnlLine_thickness.AutoSize = true;
+			this.lbl_pnlLine_thickness.Location = new System.Drawing.Point(22, 56);
+			this.lbl_pnlLine_thickness.Name = "lbl_pnlLine_thickness";
+			this.lbl_pnlLine_thickness.Size = new System.Drawing.Size(62, 13);
+			this.lbl_pnlLine_thickness.TabIndex = 0;
+			this.lbl_pnlLine_thickness.Text = "Thickness: ";
+			// 
+			// btn_pnlLine_Cancel
+			// 
+			this.btn_pnlLine_Cancel.Location = new System.Drawing.Point(34, 164);
+			this.btn_pnlLine_Cancel.Name = "btn_pnlLine_Cancel";
+			this.btn_pnlLine_Cancel.Size = new System.Drawing.Size(75, 23);
+			this.btn_pnlLine_Cancel.TabIndex = 25;
+			this.btn_pnlLine_Cancel.Text = "Cancel";
+			this.btn_pnlLine_Cancel.UseVisualStyleBackColor = true;
+			this.btn_pnlLine_Cancel.Click += new System.EventHandler(this.btn_pnlLine_Cancel_Click);
 			// 
 			// pnl_mainTools
 			// 
@@ -415,7 +552,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(155, 114);
+			this.tabPage2.Size = new System.Drawing.Size(758, 114);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Debug";
 			// 
@@ -504,103 +641,6 @@
 			this.animTimer.Interval = 24;
 			this.animTimer.Tick += new System.EventHandler(this.animTimer_Tick);
 			// 
-			// pnl_Properties
-			// 
-			this.pnl_Properties.Controls.Add(this.pnl_Properties_Stick);
-			this.pnl_Properties.Controls.Add(this.pnl_Properties_Line);
-			this.pnl_Properties.Controls.Add(this.btn_pnlLine_Cancel);
-			this.pnl_Properties.Location = new System.Drawing.Point(198, 142);
-			this.pnl_Properties.Name = "pnl_Properties";
-			this.pnl_Properties.Size = new System.Drawing.Size(151, 203);
-			this.pnl_Properties.TabIndex = 30;
-			// 
-			// pnl_Properties_Line
-			// 
-			this.pnl_Properties_Line.Controls.Add(this.lbl_pnlLine_Color);
-			this.pnl_Properties_Line.Controls.Add(this.pic_pnlLine_color);
-			this.pnl_Properties_Line.Controls.Add(this.num_pnlLine_thickness);
-			this.pnl_Properties_Line.Controls.Add(this.lbl_pnlLine_thickness);
-			this.pnl_Properties_Line.Dock = System.Windows.Forms.DockStyle.Top;
-			this.pnl_Properties_Line.Location = new System.Drawing.Point(0, 0);
-			this.pnl_Properties_Line.Name = "pnl_Properties_Line";
-			this.pnl_Properties_Line.Size = new System.Drawing.Size(151, 158);
-			this.pnl_Properties_Line.TabIndex = 26;
-			// 
-			// btn_pnlLine_Cancel
-			// 
-			this.btn_pnlLine_Cancel.Location = new System.Drawing.Point(34, 164);
-			this.btn_pnlLine_Cancel.Name = "btn_pnlLine_Cancel";
-			this.btn_pnlLine_Cancel.Size = new System.Drawing.Size(75, 23);
-			this.btn_pnlLine_Cancel.TabIndex = 25;
-			this.btn_pnlLine_Cancel.Text = "Cancel";
-			this.btn_pnlLine_Cancel.UseVisualStyleBackColor = true;
-			this.btn_pnlLine_Cancel.Click += new System.EventHandler(this.btn_pnlLine_Cancel_Click);
-			// 
-			// lbl_pnlLine_thickness
-			// 
-			this.lbl_pnlLine_thickness.AutoSize = true;
-			this.lbl_pnlLine_thickness.Location = new System.Drawing.Point(22, 56);
-			this.lbl_pnlLine_thickness.Name = "lbl_pnlLine_thickness";
-			this.lbl_pnlLine_thickness.Size = new System.Drawing.Size(62, 13);
-			this.lbl_pnlLine_thickness.TabIndex = 0;
-			this.lbl_pnlLine_thickness.Text = "Thickness: ";
-			// 
-			// num_pnlLine_thickness
-			// 
-			this.num_pnlLine_thickness.Location = new System.Drawing.Point(83, 54);
-			this.num_pnlLine_thickness.Name = "num_pnlLine_thickness";
-			this.num_pnlLine_thickness.Size = new System.Drawing.Size(45, 20);
-			this.num_pnlLine_thickness.TabIndex = 1;
-			this.num_pnlLine_thickness.ValueChanged += new System.EventHandler(this.num_pnlLine_thickness_ValueChanged);
-			// 
-			// pic_pnlLine_color
-			// 
-			this.pic_pnlLine_color.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pic_pnlLine_color.Location = new System.Drawing.Point(85, 80);
-			this.pic_pnlLine_color.Name = "pic_pnlLine_color";
-			this.pic_pnlLine_color.Size = new System.Drawing.Size(25, 25);
-			this.pic_pnlLine_color.TabIndex = 2;
-			this.pic_pnlLine_color.TabStop = false;
-			this.pic_pnlLine_color.Click += new System.EventHandler(this.pic_pnlLine_color_Click);
-			// 
-			// lbl_pnlLine_Color
-			// 
-			this.lbl_pnlLine_Color.AutoSize = true;
-			this.lbl_pnlLine_Color.Location = new System.Drawing.Point(41, 85);
-			this.lbl_pnlLine_Color.Name = "lbl_pnlLine_Color";
-			this.lbl_pnlLine_Color.Size = new System.Drawing.Size(37, 13);
-			this.lbl_pnlLine_Color.TabIndex = 3;
-			this.lbl_pnlLine_Color.Text = "Color: ";
-			// 
-			// pnl_Properties_Stick
-			// 
-			this.pnl_Properties_Stick.Controls.Add(this.pic_pnlStick_color);
-			this.pnl_Properties_Stick.Controls.Add(this.lbl_pnlStick_figureColor);
-			this.pnl_Properties_Stick.Dock = System.Windows.Forms.DockStyle.Top;
-			this.pnl_Properties_Stick.Location = new System.Drawing.Point(0, 158);
-			this.pnl_Properties_Stick.Name = "pnl_Properties_Stick";
-			this.pnl_Properties_Stick.Size = new System.Drawing.Size(151, 158);
-			this.pnl_Properties_Stick.TabIndex = 31;
-			// 
-			// lbl_pnlStick_figureColor
-			// 
-			this.lbl_pnlStick_figureColor.AutoSize = true;
-			this.lbl_pnlStick_figureColor.Location = new System.Drawing.Point(25, 73);
-			this.lbl_pnlStick_figureColor.Name = "lbl_pnlStick_figureColor";
-			this.lbl_pnlStick_figureColor.Size = new System.Drawing.Size(66, 13);
-			this.lbl_pnlStick_figureColor.TabIndex = 0;
-			this.lbl_pnlStick_figureColor.Text = "Figure Color:";
-			// 
-			// pic_pnlStick_color
-			// 
-			this.pic_pnlStick_color.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pic_pnlStick_color.Location = new System.Drawing.Point(100, 67);
-			this.pic_pnlStick_color.Name = "pic_pnlStick_color";
-			this.pic_pnlStick_color.Size = new System.Drawing.Size(25, 25);
-			this.pic_pnlStick_color.TabIndex = 1;
-			this.pic_pnlStick_color.TabStop = false;
-			this.pic_pnlStick_color.Click += new System.EventHandler(this.pic_pnlStick_color_Click);
-			// 
 			// Toolbox
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -616,6 +656,16 @@
 			this.Load += new System.EventHandler(this.Toolbox_Load);
 			this.pnl_mainPanel.ResumeLayout(false);
 			this.pnl_mainPanel.PerformLayout();
+			this.pnl_Properties.ResumeLayout(false);
+			this.pnl_Properties_Stick.ResumeLayout(false);
+			this.pnl_Properties_Stick.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_alpha)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.tkb_alpha)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_pnlStick_color)).EndInit();
+			this.pnl_Properties_Line.ResumeLayout(false);
+			this.pnl_Properties_Line.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pic_pnlLine_color)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.num_pnlLine_thickness)).EndInit();
 			this.pnl_mainTools.ResumeLayout(false);
 			this.pnl_addTools.ResumeLayout(false);
 			this.pnl_ctrlPanel.ResumeLayout(false);
@@ -626,14 +676,6 @@
 			this.tabPage2.ResumeLayout(false);
 			this.tabPage2.PerformLayout();
 			this.pnl_Drawing.ResumeLayout(false);
-			this.pnl_Properties.ResumeLayout(false);
-			this.pnl_Properties_Line.ResumeLayout(false);
-			this.pnl_Properties_Line.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.num_pnlLine_thickness)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pic_pnlLine_color)).EndInit();
-			this.pnl_Properties_Stick.ResumeLayout(false);
-			this.pnl_Properties_Stick.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pic_pnlStick_color)).EndInit();
 			this.ResumeLayout(false);
 
         }
@@ -685,5 +727,8 @@
 		private System.Windows.Forms.Panel pnl_Properties_Stick;
 		private System.Windows.Forms.Label lbl_pnlStick_figureColor;
 		private System.Windows.Forms.PictureBox pic_pnlStick_color;
+		private System.Windows.Forms.TrackBar tkb_alpha;
+		private System.Windows.Forms.NumericUpDown num_alpha;
+		private System.Windows.Forms.Label lbl_pnlStick_Transparency;
     }
 }

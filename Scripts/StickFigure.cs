@@ -64,6 +64,21 @@ namespace TISFAT_ZERO
 			handleDrawn = newHandleDrawn;
 		}
 
+		public StickJoint(StickJoint obj, StickJoint newParent)
+		{
+			name = obj.name;
+			location = obj.location;
+			thickness = obj.thickness;
+			color = obj.color;
+			handleColor = obj.handleColor;
+			defaultHandleColor = obj.defaultHandleColor;
+			state = obj.state;
+			drawState = obj.drawState;
+			fill = obj.fill;
+			parent = newParent;
+			handleDrawn = obj.handleDrawn;
+		}
+
 		public double CalcLength(StickJoint start)
 		{
 			if (start == null)
@@ -108,14 +123,38 @@ namespace TISFAT_ZERO
 		public void Tween(StickJoint pStart, StickJoint pEnd, Single sPercent)
 		{
 			//StickJoint pNew;
-			//byte[] r = new byte[3];
-			//byte[] g = new byte[3];
-			//byte[] b = new byte[3];
+			int[] r = new int[3];
+			int[] g = new int[3];
+			int[] b = new int[3];
+			int[] a = new int[3];
 
 			location.X = (int)Math.Round(pStart.location.X + ((pEnd.location.X - pStart.location.X) * sPercent));
 			location.Y = (int)Math.Round(pStart.location.Y + ((pEnd.location.Y - pStart.location.Y) * sPercent));
-			length = (int)Math.Round(pStart.length + ((pEnd.length - pStart.length) * sPercent));
 
+			length = (int)Math.Round(pStart.length + ((pEnd.length - pStart.length) * sPercent));
+			thickness = (int)Math.Round(pStart.thickness + ((pEnd.thickness - pStart.thickness) * sPercent));
+
+
+
+			r[0] = pStart.color.R;
+			g[0] = pStart.color.G;
+			b[0] = pStart.color.B;
+			a[0] = pStart.color.A;
+
+			r[1] = pEnd.color.R;
+			g[1] = pEnd.color.G;
+			b[1] = pEnd.color.B;
+			a[1] = pEnd.color.A;
+
+			r[2] = r[0] + (int)Math.Round(sPercent * (r[1] - r[0]));
+			g[2] = g[0] + (int)Math.Round(sPercent * (g[1] - g[0]));
+			b[2] = b[0] + (int)Math.Round(sPercent * (b[1] - b[0]));
+			a[2] = a[0] + (int)Math.Round(sPercent * (a[1] - b[0]));
+
+			if (a[2] > 255)
+				a[2] = 255;
+
+			color = Color.FromArgb(a[2], r[2], g[2], b[2]);
 		}
 		#endregion
 

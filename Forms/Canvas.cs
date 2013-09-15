@@ -8,6 +8,7 @@ namespace TISFAT_ZERO
 {
 	public partial class Canvas : Form
 	{
+
 		#region Variables
 		public static MainF mainForm;
 		public static Toolbox theToolbox;

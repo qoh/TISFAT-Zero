@@ -220,6 +220,8 @@ namespace TISFAT_ZERO
 				pnl_Properties_Stick.Visible = true;
 				pnl_Properties_Line.Visible = false;
 				pic_pnlStick_color.BackColor = Canvas.activeFigure.figColor;
+				tkb_alpha.Value = Canvas.activeFigure.figColor.A;
+				num_alpha.Value = Canvas.activeFigure.figColor.A;
 			}
 			else if (Canvas.activeFigure.type == 2)
 			{
@@ -239,6 +241,39 @@ namespace TISFAT_ZERO
 		{
 			slideOutObject = pnl_Properties;
 			animTimer.Start();
+		}
+
+		private void tkb_alpha_Scroll(object sender, EventArgs e)
+		{
+			num_alpha.Value = tkb_alpha.Value;
+			setFigureAlpha(tkb_alpha.Value);
+		}
+
+		private void num_alpha_ValueChanged(object sender, EventArgs e)
+		{
+			tkb_alpha.Value = (int)num_alpha.Value;
+			setFigureAlpha((int)num_alpha.Value);
+		}
+
+		private void setFigureAlpha(int value)
+		{
+			 if (mainForm.tline.selectedKeyFrame == null)
+				 return;
+
+			int[] argb = new int[4];
+
+			argb[0] = value;
+			argb[1] = Canvas.activeFigure.figColor.R;
+			argb[2] = Canvas.activeFigure.figColor.G;
+			argb[3] = Canvas.activeFigure.figColor.B;
+
+			List<StickJoint> sf = ((StickFrame)mainForm.tline.selectedKeyFrame).Joints;
+
+			foreach(StickJoint a in sf)
+				a.color = Color.FromArgb(argb[0], argb[1], argb[2], argb[3]);
+
+			Canvas.activeFigure.setColor(Color.FromArgb(argb[0], argb[1], argb[2], argb[3]));
+			Canvas.theCanvas.Refresh();
 		}
 	}
 }
