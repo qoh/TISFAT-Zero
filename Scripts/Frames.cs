@@ -3,13 +3,19 @@ using System.Drawing;
 
 namespace TISFAT_ZERO
 {
+	//The base keyframe class that all other frame types are derived from.
     public abstract class KeyFrame
     {
+		//Just the basics, a colour, position, type, and a list of joints.
+		//This really helps so we don't need to have a bunch of silly casts.
+		public Color figColor = Color.Black;
 		public uint pos;
 		public byte type;
 		public List<StickJoint> Joints = new List<StickJoint>();
     }
 
+	//This point on really just defines a bunch of different types of keyframes. The only real purpose for having different types
+	//is having the joint-set set in properly by default on creation.
     public class StickFrame : KeyFrame
     {
         public StickFrame(List<StickJoint> ps, uint po)
@@ -37,6 +43,9 @@ namespace TISFAT_ZERO
             for (int i = 0; i < Joints.Count; i++)
                 if (Joints[i].parent != null)
                     Joints[i].parent.children.Add(Joints[i]);
+
+			if(ps[0].ParentFigure != null)
+				figColor = ps[0].ParentFigure.figColor;
         }
 
         public StickFrame(StickFrame old)

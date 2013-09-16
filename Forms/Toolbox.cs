@@ -140,7 +140,7 @@ namespace TISFAT_ZERO
 		private void btn_addStick_Click(object sender, EventArgs e)
 		{
 			int i = 1;
-			foreach(StickLayer k in Timeline.layers)
+			foreach (StickLayer k in Timeline.layers)
 			{
 				i++;
 			}
@@ -210,31 +210,35 @@ namespace TISFAT_ZERO
 			dlg_Color.ShowDialog();
 			pic_pnlStick_color.BackColor = dlg_Color.Color;
 			Canvas.activeFigure.setColor(dlg_Color.Color);
+			((StickFrame)mainForm.tline.selectedKeyFrame).figColor = dlg_Color.Color;
 			Canvas.theCanvas.Refresh();
 		}
 
 		private void fPropButton_Click_1(object sender, EventArgs e)
 		{
-			if (Canvas.activeFigure.type == 1)
+			if (mainForm.tline.selectedKeyFrame != null)
 			{
-				pnl_Properties_Stick.Visible = true;
-				pnl_Properties_Line.Visible = false;
-				pic_pnlStick_color.BackColor = Canvas.activeFigure.figColor;
-				tkb_alpha.Value = Canvas.activeFigure.figColor.A;
-				num_alpha.Value = Canvas.activeFigure.figColor.A;
-			}
-			else if (Canvas.activeFigure.type == 2)
-			{
-				pnl_Properties_Stick.Visible = false;
-				pnl_Properties_Line.Visible = true;
-				pic_pnlLine_color.BackColor = Canvas.activeFigure.figColor;
-				num_pnlLine_thickness.Value = Canvas.activeFigure.Joints[0].thickness;
-			}
-				
+				if (Canvas.activeFigure.type == 1)
+				{
+					pnl_Properties_Stick.Visible = true;
+					pnl_Properties_Line.Visible = false;
+					pic_pnlStick_color.BackColor = ((StickFrame)mainForm.tline.selectedKeyFrame).figColor;
+					tkb_alpha.Value = ((StickFrame)mainForm.tline.selectedKeyFrame).figColor.A;
+					num_alpha.Value = ((StickFrame)mainForm.tline.selectedKeyFrame).figColor.A;
+				}
+				else if (Canvas.activeFigure.type == 2)
+				{
+					pnl_Properties_Stick.Visible = false;
+					pnl_Properties_Line.Visible = true;
+					pic_pnlLine_color.BackColor = Canvas.activeFigure.figColor;
+					num_pnlLine_thickness.Value = Canvas.activeFigure.Joints[0].thickness;
+				}
 
-			pnl_mainTools.Enabled = false;
-			slideOutObject = pnl_Properties;
-			animTimer.Start();
+
+				pnl_mainTools.Enabled = false;
+				slideOutObject = pnl_Properties;
+				animTimer.Start();
+			}
 		}
 
 		private void btn_pnlLine_Cancel_Click(object sender, EventArgs e)
@@ -257,8 +261,8 @@ namespace TISFAT_ZERO
 
 		private void setFigureAlpha(int value)
 		{
-			 if (mainForm.tline.selectedKeyFrame == null)
-				 return;
+			if (mainForm.tline.selectedKeyFrame == null)
+				return;
 
 			int[] argb = new int[4];
 
@@ -269,11 +273,21 @@ namespace TISFAT_ZERO
 
 			List<StickJoint> sf = ((StickFrame)mainForm.tline.selectedKeyFrame).Joints;
 
-			foreach(StickJoint a in sf)
+			foreach (StickJoint a in sf)
 				a.color = Color.FromArgb(argb[0], argb[1], argb[2], argb[3]);
+
+			((StickFrame)mainForm.tline.selectedKeyFrame).figColor = Color.FromArgb(argb[0], argb[1], argb[2], argb[3]);
 
 			Canvas.activeFigure.setColor(Color.FromArgb(argb[0], argb[1], argb[2], argb[3]));
 			Canvas.theCanvas.Refresh();
+		}
+
+		public void setColor(Color thecolor)
+		{
+			pic_pnlLine_color.BackColor = thecolor;
+			pic_pnlStick_color.BackColor = thecolor;
+
+			tkb_alpha.Value = thecolor.A;
 		}
 	}
 }

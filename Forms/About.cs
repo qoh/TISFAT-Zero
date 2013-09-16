@@ -20,15 +20,21 @@ namespace TISFAT_ZERO
         {
             if (listBox1.SelectedIndex == 0)
             {
-                pnl_About.BringToFront();
+				pnl_About.Visible = true;
+				pnl_Developers.Visible = false;
+				pnl_Thanks.Visible = false;
             }
             else if (listBox1.SelectedIndex == 1)
             {
-                pnl_Developers.BringToFront();
+				pnl_About.Visible = false;
+				pnl_Developers.Visible = true;
+				pnl_Thanks.Visible = false;
             }
             else if (listBox1.SelectedIndex == 2)
             {
-                pnl_Thanks.BringToFront();
+				pnl_About.Visible = false;
+				pnl_Developers.Visible = false;
+				pnl_Thanks.Visible = true;
             }
         }
 

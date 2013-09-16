@@ -79,6 +79,12 @@
     <Compile Include="Forms\Preferences.Designer.cs">
       <DependentUpon>Preferences.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\RenameLayer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RenameLayer.Designer.cs">
+      <DependentUpon>RenameLayer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Timeline.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,6 +132,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Preferences.resx">
       <DependentUpon>Preferences.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RenameLayer.resx">
+      <DependentUpon>RenameLayer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Timeline.resx">
       <DependentUpon>Timeline.cs</DependentUpon>
