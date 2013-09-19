@@ -9,7 +9,7 @@ namespace TISFAT_ZERO
 		//Just the basics, a colour, position, type, and a list of joints.
 		//This really helps so we don't need to have a bunch of silly casts.
 		public Color figColor = Color.Black;
-		public uint pos;
+		public int pos;
 		public byte type;
 		public List<StickJoint> Joints = new List<StickJoint>();
     }
@@ -18,7 +18,7 @@ namespace TISFAT_ZERO
 	//is having the joint-set set in properly by default on creation.
     public class StickFrame : KeyFrame
     {
-        public StickFrame(List<StickJoint> ps, uint po)
+        public StickFrame(List<StickJoint> ps, int po)
         {
 			pos = po; type = 0;
 
@@ -55,7 +55,7 @@ namespace TISFAT_ZERO
 			type = 0;
 		}
 
-		public StickFrame(uint po)
+		public StickFrame(int po)
 		{
 			Joints.Add(new StickJoint("Neck", new Point(222, 158), 12, Color.Black, Color.Blue, 0, 0, true, null, false));
 			Joints.Add(new StickJoint("Shoulder", new Point(222, 155), 12, Color.Black, Color.Yellow, 0, 0, false, null));
@@ -86,14 +86,14 @@ namespace TISFAT_ZERO
 
 	public class LineFrame : KeyFrame
 	{
-		public LineFrame(List<StickJoint> ps, uint po)
+		public LineFrame(List<StickJoint> ps, int po)
 		{
 			type = 2; pos = po;
 			Joints.Add(new StickJoint(ps[0], null));
 			Joints.Add(new StickJoint(ps[1], Joints[0]));
 		}
 
-		public LineFrame(uint po)
+		public LineFrame(int po)
 		{
 			type = 2; pos = po;
 			Joints.Add(new StickJoint("Rock", new Point(30, 30), 12, Color.Black, Color.Green, 0, 0, false, null));
@@ -103,7 +103,7 @@ namespace TISFAT_ZERO
 
 	public class RectFrame : KeyFrame
 	{
-		public RectFrame(List<StickJoint> ps, uint po)
+		public RectFrame(List<StickJoint> ps, int po)
 		{
 			type = 3; pos = po;
 
@@ -113,7 +113,7 @@ namespace TISFAT_ZERO
 			Joints.Add(new StickJoint(ps[3], Joints[2]));
 		}
 
-		public RectFrame(uint po)
+		public RectFrame(int po)
 		{
 			type = 3; pos = po;
 

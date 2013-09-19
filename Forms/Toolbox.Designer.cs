@@ -78,6 +78,9 @@
 			this.btn_cancelButtonDraw = new System.Windows.Forms.Button();
 			this.animTimer = new System.Windows.Forms.Timer(this.components);
 			this.dlg_Color = new System.Windows.Forms.ColorDialog();
+			this.tkb_pnlLine_Transparency = new System.Windows.Forms.TrackBar();
+			this.lbl_pnlLine_Transparency = new System.Windows.Forms.Label();
+			this.num_pnlLine_Transparency = new System.Windows.Forms.NumericUpDown();
 			this.pnl_mainPanel.SuspendLayout();
 			this.pnl_Properties.SuspendLayout();
 			this.pnl_Properties_Stick.SuspendLayout();
@@ -95,15 +98,17 @@
 			((System.ComponentModel.ISupportInitialize)(this.maskedTextBox1)).BeginInit();
 			this.tabPage2.SuspendLayout();
 			this.pnl_Drawing.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.tkb_pnlLine_Transparency)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.num_pnlLine_Transparency)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// pnl_mainPanel
 			// 
-			this.pnl_mainPanel.Controls.Add(this.pnl_Properties);
 			this.pnl_mainPanel.Controls.Add(this.pnl_mainTools);
-			this.pnl_mainPanel.Controls.Add(this.pnl_addTools);
 			this.pnl_mainPanel.Controls.Add(this.pnl_ctrlPanel);
 			this.pnl_mainPanel.Controls.Add(this.lbl_selectionDummy);
+			this.pnl_mainPanel.Controls.Add(this.pnl_Properties);
+			this.pnl_mainPanel.Controls.Add(this.pnl_addTools);
 			this.pnl_mainPanel.Controls.Add(this.pnl_Drawing);
 			this.pnl_mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnl_mainPanel.Location = new System.Drawing.Point(0, 0);
@@ -188,6 +193,9 @@
 			// 
 			// pnl_Properties_Line
 			// 
+			this.pnl_Properties_Line.Controls.Add(this.lbl_pnlLine_Transparency);
+			this.pnl_Properties_Line.Controls.Add(this.num_pnlLine_Transparency);
+			this.pnl_Properties_Line.Controls.Add(this.tkb_pnlLine_Transparency);
 			this.pnl_Properties_Line.Controls.Add(this.lbl_pnlLine_Color);
 			this.pnl_Properties_Line.Controls.Add(this.pic_pnlLine_color);
 			this.pnl_Properties_Line.Controls.Add(this.num_pnlLine_thickness);
@@ -201,7 +209,7 @@
 			// lbl_pnlLine_Color
 			// 
 			this.lbl_pnlLine_Color.AutoSize = true;
-			this.lbl_pnlLine_Color.Location = new System.Drawing.Point(41, 85);
+			this.lbl_pnlLine_Color.Location = new System.Drawing.Point(33, 48);
 			this.lbl_pnlLine_Color.Name = "lbl_pnlLine_Color";
 			this.lbl_pnlLine_Color.Size = new System.Drawing.Size(37, 13);
 			this.lbl_pnlLine_Color.TabIndex = 3;
@@ -210,7 +218,7 @@
 			// pic_pnlLine_color
 			// 
 			this.pic_pnlLine_color.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pic_pnlLine_color.Location = new System.Drawing.Point(85, 80);
+			this.pic_pnlLine_color.Location = new System.Drawing.Point(77, 43);
 			this.pic_pnlLine_color.Name = "pic_pnlLine_color";
 			this.pic_pnlLine_color.Size = new System.Drawing.Size(25, 25);
 			this.pic_pnlLine_color.TabIndex = 2;
@@ -219,7 +227,7 @@
 			// 
 			// num_pnlLine_thickness
 			// 
-			this.num_pnlLine_thickness.Location = new System.Drawing.Point(83, 54);
+			this.num_pnlLine_thickness.Location = new System.Drawing.Point(75, 17);
 			this.num_pnlLine_thickness.Name = "num_pnlLine_thickness";
 			this.num_pnlLine_thickness.Size = new System.Drawing.Size(45, 20);
 			this.num_pnlLine_thickness.TabIndex = 1;
@@ -228,7 +236,7 @@
 			// lbl_pnlLine_thickness
 			// 
 			this.lbl_pnlLine_thickness.AutoSize = true;
-			this.lbl_pnlLine_thickness.Location = new System.Drawing.Point(22, 56);
+			this.lbl_pnlLine_thickness.Location = new System.Drawing.Point(14, 19);
 			this.lbl_pnlLine_thickness.Name = "lbl_pnlLine_thickness";
 			this.lbl_pnlLine_thickness.Size = new System.Drawing.Size(62, 13);
 			this.lbl_pnlLine_thickness.TabIndex = 0;
@@ -641,6 +649,36 @@
 			this.animTimer.Interval = 24;
 			this.animTimer.Tick += new System.EventHandler(this.animTimer_Tick);
 			// 
+			// tkb_pnlLine_Transparency
+			// 
+			this.tkb_pnlLine_Transparency.Location = new System.Drawing.Point(15, 87);
+			this.tkb_pnlLine_Transparency.Maximum = 255;
+			this.tkb_pnlLine_Transparency.Name = "tkb_pnlLine_Transparency";
+			this.tkb_pnlLine_Transparency.Size = new System.Drawing.Size(104, 45);
+			this.tkb_pnlLine_Transparency.TabIndex = 4;
+			// 
+			// lbl_pnlLine_Transparency
+			// 
+			this.lbl_pnlLine_Transparency.AutoSize = true;
+			this.lbl_pnlLine_Transparency.Location = new System.Drawing.Point(30, 71);
+			this.lbl_pnlLine_Transparency.Name = "lbl_pnlLine_Transparency";
+			this.lbl_pnlLine_Transparency.Size = new System.Drawing.Size(75, 13);
+			this.lbl_pnlLine_Transparency.TabIndex = 5;
+			this.lbl_pnlLine_Transparency.Text = "Transparency:";
+			// 
+			// num_pnlLine_Transparency
+			// 
+			this.num_pnlLine_Transparency.Location = new System.Drawing.Point(45, 121);
+			this.num_pnlLine_Transparency.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+			this.num_pnlLine_Transparency.Name = "num_pnlLine_Transparency";
+			this.num_pnlLine_Transparency.Size = new System.Drawing.Size(45, 20);
+			this.num_pnlLine_Transparency.TabIndex = 3;
+			this.num_pnlLine_Transparency.ValueChanged += new System.EventHandler(this.num_alpha_ValueChanged);
+			// 
 			// Toolbox
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -676,6 +714,8 @@
 			this.tabPage2.ResumeLayout(false);
 			this.tabPage2.PerformLayout();
 			this.pnl_Drawing.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.tkb_pnlLine_Transparency)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.num_pnlLine_Transparency)).EndInit();
 			this.ResumeLayout(false);
 
         }
@@ -730,5 +770,8 @@
 		private System.Windows.Forms.TrackBar tkb_alpha;
 		private System.Windows.Forms.NumericUpDown num_alpha;
 		private System.Windows.Forms.Label lbl_pnlStick_Transparency;
+		private System.Windows.Forms.Label lbl_pnlLine_Transparency;
+		private System.Windows.Forms.NumericUpDown num_pnlLine_Transparency;
+		private System.Windows.Forms.TrackBar tkb_pnlLine_Transparency;
     }
 }

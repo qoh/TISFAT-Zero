@@ -210,21 +210,21 @@ namespace TISFAT_ZERO
 			dlg_Color.ShowDialog();
 			pic_pnlStick_color.BackColor = dlg_Color.Color;
 			Canvas.activeFigure.setColor(dlg_Color.Color);
-			((StickFrame)mainForm.tline.selectedKeyFrame).figColor = dlg_Color.Color;
+			((StickFrame)mainForm.tline.frm_selected).figColor = dlg_Color.Color;
 			Canvas.theCanvas.Refresh();
 		}
 
 		private void fPropButton_Click_1(object sender, EventArgs e)
 		{
-			if (mainForm.tline.selectedKeyFrame != null)
+			if (mainForm.tline.frm_selected != null)
 			{
 				if (Canvas.activeFigure.type == 1)
 				{
 					pnl_Properties_Stick.Visible = true;
 					pnl_Properties_Line.Visible = false;
-					pic_pnlStick_color.BackColor = ((StickFrame)mainForm.tline.selectedKeyFrame).figColor;
-					tkb_alpha.Value = ((StickFrame)mainForm.tline.selectedKeyFrame).figColor.A;
-					num_alpha.Value = ((StickFrame)mainForm.tline.selectedKeyFrame).figColor.A;
+					pic_pnlStick_color.BackColor = ((StickFrame)mainForm.tline.frm_selected).figColor;
+					tkb_alpha.Value = ((StickFrame)mainForm.tline.frm_selected).figColor.A;
+					num_alpha.Value = ((StickFrame)mainForm.tline.frm_selected).figColor.A;
 				}
 				else if (Canvas.activeFigure.type == 2)
 				{
@@ -261,7 +261,7 @@ namespace TISFAT_ZERO
 
 		private void setFigureAlpha(int value)
 		{
-			if (mainForm.tline.selectedKeyFrame == null)
+			if (mainForm.tline.frm_selected == null)
 				return;
 
 			int[] argb = new int[4];
@@ -271,12 +271,12 @@ namespace TISFAT_ZERO
 			argb[2] = Canvas.activeFigure.figColor.G;
 			argb[3] = Canvas.activeFigure.figColor.B;
 
-			List<StickJoint> sf = ((StickFrame)mainForm.tline.selectedKeyFrame).Joints;
+			List<StickJoint> sf = ((StickFrame)mainForm.tline.frm_selected).Joints;
 
 			foreach (StickJoint a in sf)
 				a.color = Color.FromArgb(argb[0], argb[1], argb[2], argb[3]);
 
-			((StickFrame)mainForm.tline.selectedKeyFrame).figColor = Color.FromArgb(argb[0], argb[1], argb[2], argb[3]);
+			((StickFrame)mainForm.tline.frm_selected).figColor = Color.FromArgb(argb[0], argb[1], argb[2], argb[3]);
 
 			Canvas.activeFigure.setColor(Color.FromArgb(argb[0], argb[1], argb[2], argb[3]));
 			Canvas.theCanvas.Refresh();

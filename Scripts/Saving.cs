@@ -209,7 +209,7 @@ namespace TISFAT_ZERO
 						newdata[a-5] = fBlock.data[a];
 
 					//screw it im adding in checks later
-					StickFrame frm = new StickFrame(BitConverter.ToUInt32(posbytes, 0));
+					StickFrame frm = new StickFrame(BitConverter.ToInt32(posbytes, 0));
 
 					MemoryStream fs = new MemoryStream();
 					fs.Write(newdata, 0, newdata.Length);
@@ -225,7 +225,7 @@ namespace TISFAT_ZERO
 				layers.Add(newLayer);
 			}
 			Timeline.layers = layers;
-			Timeline.layercount = layers.Count;
+			Timeline.layer_cnt = layers.Count;
 			Timeline.mainForm.doneLoading();
 		}
 

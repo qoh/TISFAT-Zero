@@ -21,11 +21,11 @@ namespace TISFAT_ZERO
 
 		//List of layers
 		public static List<Layer> layers;
-		public static int layercount = 0;
-		public static uint selectedFrame;
-		public static int selectedLayer;
-		public byte selectedType;
-		public KeyFrame selectedKeyFrame;
+		public static int layer_cnt = 0;
+		public static int layer_sel, frm_selPos, frm_selInd;
+
+		public byte frm_selType;
+		public KeyFrame frm_selected;
 
 		private bool mouseDown = false, isPlaying = false;
 		#endregion
@@ -42,10 +42,12 @@ namespace TISFAT_ZERO
 			theCanvas = canvas;
 
 			layers = new List<Layer>();
-			for (int a = 0; a < 1; a++)
-				addStickLayer("Stick Figure " + (a + 1));
-			selectedFrame = 0;
-			selectedLayer = 0;
+
+			addStickLayer("Stick Figure 1");
+
+			frm_selPos = 0;
+			layer_sel = 0;
+
 			this.Refresh();
 			setFrame();
 		}
@@ -65,7 +67,7 @@ namespace TISFAT_ZERO
 			g.Clear(Color.FromArgb(220, 220, 220));
 
 			//Create a black pen
-			Pen blk = new Pen(Color.FromArgb(140, 140, 140)), bblk = new Pen(Color.Black);
+			Pen gray = new Pen(Color.FromArgb(140, 140, 140)), blk = new Pen(Color.Black);
 
 			//Calculate how many frames need to be drawn and what the offset is
 			int frames = (mainForm.Width - 80) / 9;
@@ -77,17 +79,17 @@ namespace TISFAT_ZERO
 
 			//draw the timeline layer
 			g.FillRectangle(new SolidBrush(Color.CornflowerBlue), new Rectangle(0, 0, 79, layers.Count * 16 + 15));
-			g.DrawLines(bblk, p1);
+			g.DrawLines(blk, p1);
 			g.DrawString("T I M E L I N E", fo, new SolidBrush(Color.Black), 1, 1.5f);
 
 			//Draw each layer
 			for (int a = 1; a - 1 < layers.Count; a++)
 			{
-				g.DrawLines(bblk, new Point[] { new Point(79, 16 * a - 1), new Point(79, 16 * a + 15), new Point(0, 16 * a + 15) });
+				g.DrawLines(blk, new Point[] { new Point(79, 16 * a - 1), new Point(79, 16 * a + 15), new Point(0, 16 * a + 15) });
 				g.DrawString(layers[a - 1].name, fo, new SolidBrush(Color.Black), 1, 16 * a + 0.4f);
 			}
 
-			g.FillRectangle(new SolidBrush(Color.FromArgb(200, 200, 200)), new Rectangle(80, 16 * selectedLayer + 16, Width, 16));
+			g.FillRectangle(new SolidBrush(Color.FromArgb(200, 200, 200)), new Rectangle(80, 16 * layer_sel + 16, Width, 16));
 
 			//Draw the timeline frames
 			for (int a = offset; a - offset < frames; a++)
@@ -102,12 +104,12 @@ namespace TISFAT_ZERO
 				if ((a + 1) % 100 == 0)
 				{
 					x = Color.FromArgb(255, 200, 255);
-					if (a == selectedFrame && selectedLayer == -1)
+					if (a == frm_selPos && layer_sel == -1)
 						x = Color.Cyan;
 				}
 
 				//If the frame is not a special colour, don't fill it in (as it's already filled in with that colour)
-				if ((a + 1) % 10 == 0 || (a == selectedFrame && selectedLayer == -1))
+				if ((a + 1) % 10 == 0 || (a == frm_selPos && layer_sel == -1))
 					g.FillRectangle(new SolidBrush(x), xx, 0, 8, 16 * layers.Count + 15);
 
 				//Write in the number
@@ -116,15 +118,15 @@ namespace TISFAT_ZERO
 
 			Height = layers.Count * 16 + 16;
 
-			int sFrameLoc = ((int)selectedFrame - offset) * 9 + 80;
+			int sFrameLoc = ((int)frm_selPos - offset) * 9 + 80;
 
 			//Draw all the frame outlines
 			for (int a = 0, b = 88; a < frames; a++, b = 88 + 9 * a)
-				g.DrawLine(blk, new Point(b, 0), new Point(b, Height));
+				g.DrawLine(gray, new Point(b, 0), new Point(b, Height));
 
 			//This one has <= instead of < so that the line on the bottom of the last layer gets drawn
 			for (int a = 0, b = 15; a <= layers.Count; a++, b = 16 * a + 15)
-				g.DrawLine(blk, new Point(80, b), new Point(frames * 9 + 80, b));
+				g.DrawLine(gray, new Point(80, b), new Point(frames * 9 + 80, b));
 
 			#endregion Timeline Rendering
 
@@ -139,11 +141,11 @@ namespace TISFAT_ZERO
 				int y = a * 16 + 16;
 
 				//Get the positions of the first and last keyframe
-				int first = (int)l.firstKF - offset;
-				int last = (int)l.lastKF - offset;
+				int first = l.firstKF - offset;
+				int last = l.lastKF - offset;
 
 
-				int count = (int)Math.Min(frames, last - first);
+				int count = Math.Min(frames, last - first);
 
 				int max = Math.Max(last, count + first);
 
@@ -157,22 +159,22 @@ namespace TISFAT_ZERO
 						x = Color.Gold;
 					}
 
-					if (b < 0 || (selectedLayer == -1 && b + offset == selectedFrame))
+					if (b < 0 || (layer_sel == -1 && b + offset == frm_selPos))
 						continue;
 
 					g.FillRectangle(new SolidBrush(x), b * 9 + 80, y, 8, 15);
 				}
 			}
 
-			if (selectedFrame >= offset && selectedFrame - offset < frames && selectedLayer != -1)
+			if (frm_selPos >= offset && frm_selPos - offset < frames && layer_sel != -1)
 			{
-				g.FillRectangle(new SolidBrush(Color.Red), sFrameLoc, selectedLayer * 16 + 16, 8, 15);
+				g.FillRectangle(new SolidBrush(Color.Red), sFrameLoc, layer_sel * 16 + 16, 8, 15);
 			}
 
 			#endregion Layer Rendering
 
 			//Dispose of the pens (because apparently this is necessary)
-			blk.Dispose(); bblk.Dispose();
+			gray.Dispose(); blk.Dispose();
 		}
 
 		/// <summary>
@@ -227,14 +229,17 @@ namespace TISFAT_ZERO
 		/// Sets the frame.
 		/// </summary>
 		/// <param name="pos">The position.</param>
-		public void setFrame(uint pos)
+		public void setFrame(int pos)
 		{
 			for (int a = 0; a < layers.Count; a++)
-				if (a != selectedLayer)
+				if (a != layer_sel)
 					layers[a].doDisplay(pos, false);
 
-			if (selectedLayer != -1)
-				layers[selectedLayer].doDisplay(pos);
+			if (layer_sel != -1)
+			{
+				layers[layer_sel].doDisplay(pos);
+				Canvas.activeFigure = layers[layer_sel].fig;
+			}
 
 			theCanvas.Refresh();
 		}
@@ -245,17 +250,19 @@ namespace TISFAT_ZERO
 		public void setFrame()
 		{
 			for (int a = 0; a < layers.Count; a++)
-				if (a != selectedLayer)
-					layers[a].doDisplay(selectedFrame, false);
+				if (a != layer_sel)
+					layers[a].doDisplay(frm_selPos, false);
 
-			if (selectedLayer != -1)
-				layers[selectedLayer].doDisplay(selectedFrame);
+			if (layer_sel != -1)
+			{
+				layers[layer_sel].doDisplay(frm_selPos);
+				Canvas.activeFigure = layers[layer_sel].fig;
+			}
 
-			if (selectedLayer >= 0)
-				Canvas.activeFigure = layers[selectedLayer].fig;
 			theCanvas.Refresh();
-			if(selectedKeyFrame != null)
-				mainForm.theToolbox.setColor(selectedKeyFrame.figColor);
+
+			if(frm_selected != null)
+				mainForm.theToolbox.setColor(frm_selected.figColor);
 		}
 
 		/// <summary>
@@ -271,18 +278,20 @@ namespace TISFAT_ZERO
 			int x = e.X, y = e.Y;
 			if (x > 80)
 			{
-				selectedFrame = (uint)(x - 80) / 9 + (uint)mainForm.splitContainer1.Panel1.HorizontalScroll.Value / 9;
+				frm_selPos = (x - 80) / 9 + mainForm.splitContainer1.Panel1.HorizontalScroll.Value / 9;
+
 				if (y < 16)
-					selectedLayer = -1;
+					layer_sel = -1;
 				else if (y < layers.Count() * 16 + 16)
-					selectedLayer = (y - 16) / 16;
+					layer_sel = (y - 16) / 16;
 
 				setFrame();
-				selectedType = selectedFrameType();
+				frm_selType = selectedFrameType();
+
 				if (e.Button == MouseButtons.Left)
 					mouseDown = true;
-				if (selectedKeyFrame != null)
-					mainForm.theToolbox.setColor(selectedKeyFrame.figColor);
+				if (frm_selected != null)
+					mainForm.theToolbox.setColor(frm_selected.figColor);
 
 				Refresh();
 			}
@@ -313,22 +322,22 @@ namespace TISFAT_ZERO
 		{
 			// The -1 layer is reserved for the Timeline.
 			// If the user has selected the timeline, the selected layer will be -1.
-			if (selectedLayer == -1)
+			if (layer_sel == -1)
 				return 5;
 
 			//Get the currently selected layer (so that we can check it's frames)
-			Layer selLayer = layers[selectedLayer];
+			Layer selLayer = layers[layer_sel];
 
 			//Check if the frame is on the first or last keyframe position
 			// (Will have to be changed when framesets are implemented)
-			if (selectedFrame == selLayer.firstKF)
+			if (frm_selPos == selLayer.firstKF)
 			{
-				selectedKeyFrame = selLayer.keyFrames[0];
+				frm_selected = selLayer.keyFrames[0];
 				return 2;
 			}
-			else if (selectedFrame == selLayer.lastKF)
+			else if (frm_selPos == selLayer.lastKF)
 			{
-				selectedKeyFrame = selLayer.keyFrames[selLayer.keyFrames.Count - 1];
+				frm_selected = selLayer.keyFrames[selLayer.keyFrames.Count - 1];
 				return 3;
 			}
 
@@ -336,20 +345,20 @@ namespace TISFAT_ZERO
 			//I'm going to revise this into a binary search later for efficiency.
 			foreach (KeyFrame x in selLayer.keyFrames)
 			{
-				if (x.pos == selectedFrame)
+				if (x.pos == frm_selPos)
 				{
-					selectedKeyFrame = x;
+					frm_selected = x;
 					return 1;
 				}
 			}
 
 			//Now that all other possibilities are eliminated, it isn't a keyframe.
 			//So because of this, we set the selected key frame to null.
-			selectedKeyFrame = null;
+			frm_selected = null;
 
 			//This basically checks if the position is between the first and last keyframe positions.
 			//This will also have to be changed when framesets are implemented.
-			if (selectedFrame > selLayer.firstKF && selectedFrame < selLayer.lastKF)
+			if (frm_selPos > selLayer.firstKF && frm_selPos < selLayer.lastKF)
 				return 4;
 
 			//Since it's failed all other tests, there is no frame at that spot.
@@ -374,7 +383,6 @@ namespace TISFAT_ZERO
 			//Get the selected keyframe type
 			int frameType = selectedFrameType();
 
-			//massive facking if statements, which I will later condense to save space
 			tst_insertKeyframe.Enabled = frameType == 4;
 			tst_insertKeyframeAtPose.Enabled = frameType == 4;
 			tst_removeKeyframe.Enabled = frameType == 1;
@@ -407,25 +415,25 @@ namespace TISFAT_ZERO
 		{
 			//Get the name of the clicked item and the currently selected layer
 			string name = e.ClickedItem.Name;
-			Layer cLayer = layers[selectedLayer];
+			Layer cLayer = layers[layer_sel];
 
 			//Decide what to do based on the clicked menu item was.
 			switch (name)
 			{
 				//Layer methods handle this part.
 				case "tst_insertKeyframe":
-					cLayer.insertKeyFrame(selectedFrame);
+					cLayer.insertKeyFrame(frm_selPos);
 					selectedFrameType();
 					break;
 
 				case "tst_removeKeyframe":
-					cLayer.removeKeyFrame(selectedFrame);
+					cLayer.removeKeyFrame(frm_selPos);
 					break;
 
 				//Insert a keyframe like before and then copy the positions of the
 				//current tween fig into the new keyframe.
 				case "tst_insertKeyframeAtPose":
-					int p = cLayer.insertKeyFrame(selectedFrame);
+					int p = cLayer.insertKeyFrame(frm_selPos);
 					KeyFrame newFrame = cLayer.keyFrames[p];
 					List<StickJoint> jointz = cLayer.tweenFig.Joints;
 
@@ -435,7 +443,7 @@ namespace TISFAT_ZERO
 					break;
 
 				case "tst_setPosePrvKfrm":
-					int pos = cLayer.keyFrames.IndexOf(selectedKeyFrame);
+					int pos = cLayer.keyFrames.IndexOf(frm_selected);
 
 					for (int a = 0; a < cLayer.keyFrames[pos].Joints.Count; a++)
 						cLayer.keyFrames[pos].Joints[a].location = new Point(cLayer.keyFrames[pos - 1].Joints[a].location.X, cLayer.keyFrames[pos - 1].Joints[a].location.Y);
@@ -443,7 +451,7 @@ namespace TISFAT_ZERO
 					break;
 
 				case "tst_setPoseNxtKfrm":
-					pos = cLayer.keyFrames.IndexOf(selectedKeyFrame);
+					pos = cLayer.keyFrames.IndexOf(frm_selected);
 
 					for (int a = 0; a < cLayer.keyFrames[pos].Joints.Count; a++)
 						cLayer.keyFrames[pos].Joints[a].location = new Point(cLayer.keyFrames[pos + 1].Joints[a].location.X, cLayer.keyFrames[pos + 1].Joints[a].location.Y);
@@ -474,50 +482,49 @@ namespace TISFAT_ZERO
 			int x = e.X;
 
 			//Do the selected frame calculation twice, once in both int and uint.
-			uint newSelected = (uint)(x - 80) / 9 + (uint)mainForm.splitContainer1.Panel1.HorizontalScroll.Value / 9;
-			decimal check = (decimal)(x - 80) / 9 + mainForm.splitContainer1.Panel1.HorizontalScroll.Value / 9;
+			int newSelected = (x - 80) / 9 + mainForm.splitContainer1.Panel1.HorizontalScroll.Value / 9;
 
 			//If the int calculation is below zero, then set the selected value to 0 (as we don't want anything going negative)
-			if (check < 0)
+			if (newSelected < 0)
 				newSelected = 0;
 
 			//If the timeline is selected, simply update the selected frame and refresh everything.
-			if (selectedLayer == -1)
+			if (layer_sel == -1)
 			{
-				selectedFrame = newSelected;
+				frm_selPos = newSelected;
 				setFrame();
 				Refresh();
 				return;
 			}
 
 			//Get the difference in the selected frame before and after the mouse move update.
-			int diff = (int)newSelected - (int)selectedFrame;
+			int diff = newSelected - frm_selPos;
 
 			//This function basically handles anything having to do with dragging things on the timeline.
 
 			//Everything on from here relies on the mouse having moved at least 1 frame, so if it hasn't or there is
 			//no keyframe selected, then we can just stop here.
-			if (diff == 0 || selectedType == 0)
+			if (diff == 0 || frm_selType == 0)
 				return;
 
 			//Get the currently selected layer (Note to self: make this into a property of the timeline for easy access)
-			Layer l = layers[selectedLayer];
+			Layer l = layers[layer_sel];
 
 			//And get the list of keyframes from the layer.
 			List<KeyFrame> kfs = l.keyFrames;
 
 			//Behaviour for dragging keyframes
-			if (selectedType > 0 && selectedType < 4)
+			if (frm_selType > 0 && frm_selType < 4)
 			{
 				// Note to Self: Remove constraints on dradding keyframes. Penis
 
 				//This code makes sure that the selected frame doesn't go over/under the positions of it's neighbouring frames
-				if (selectedKeyFrame.pos == l.lastKF)
+				if (frm_selected.pos == l.lastKF)
 				{
 					newSelected = Math.Max(newSelected, kfs[kfs.Count - 2].pos + 1);
 					l.lastKF = newSelected;
 				}
-				else if (selectedKeyFrame.pos == l.firstKF)
+				else if (frm_selected.pos == l.firstKF)
 				{
 					newSelected = Math.Min(newSelected, kfs[1].pos - 1);
 					l.firstKF = newSelected;
@@ -525,26 +532,26 @@ namespace TISFAT_ZERO
 				else
 				{
 					//Get the index off the keyframe inside the frames list (quite helpful)
-					int indOf = l.keyFrames.IndexOf(selectedKeyFrame);
+					int indOf = l.keyFrames.IndexOf(frm_selected);
 
-					uint backPos = kfs[indOf - 1].pos, frontPos = kfs[indOf + 1].pos;
+					int backPos = kfs[indOf - 1].pos, frontPos = kfs[indOf + 1].pos;
 
 					newSelected = Math.Max(Math.Min(newSelected, frontPos - 1), backPos + 1);
 				}
 
-				selectedKeyFrame.pos = newSelected;
-				selectedFrame = newSelected;
+				frm_selected.pos = newSelected;
+				frm_selPos = newSelected;
 				Refresh();
 				return;
 			}
-			else if (selectedType == 4)
+			else if (frm_selType == 4)
 			{
 				if (diff < 0 && l.firstKF == 0)
 					return;
 
 				if (diff < 0 && l.firstKF < -1 * diff)
 				{
-					diff = -1 * (int)l.firstKF; //To make sure you can't make things go negative
+					diff = -1 * l.firstKF; //To make sure you can't make things go negative
 				}
 
 				if (diff == 0)
@@ -553,7 +560,7 @@ namespace TISFAT_ZERO
 				}
 				else if (diff > 0)
 				{
-					uint d = (uint)diff;
+					int d = diff;
 					l.firstKF += d;
 					l.lastKF += d;
 
@@ -562,14 +569,14 @@ namespace TISFAT_ZERO
 				}
 				else
 				{
-					uint d = (uint)(-1 * diff);
+					int d = -1 * diff;
 					l.firstKF -= d;
 					l.lastKF -= d;
 
 					for (int a = 0; a < l.keyFrames.Count; a++)
 						l.keyFrames[a].pos -= d;
 				}
-				selectedFrame = newSelected;
+				frm_selPos = newSelected;
 				Refresh();
 			}
 		}
@@ -591,9 +598,9 @@ namespace TISFAT_ZERO
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void playTimer_Tick(object sender, EventArgs e)
 		{
-			if (hasFrames(selectedFrame + 1))
+			if (hasFrames(frm_selPos + 1))
 			{
-				selectedFrame++;
+				frm_selPos++;
 				setFrame();
 				Refresh();
 			}
@@ -615,7 +622,7 @@ namespace TISFAT_ZERO
 			int mspertick = 1000 / fps;
 			playTimer.Interval = mspertick;
 
-			selectedLayer = -1; //the -1 layer is the timeline 'layer'
+			layer_sel = -1; //the -1 layer is the timeline 'layer'
 			isPlaying = true;
 			playTimer.Start();
 		}
@@ -634,7 +641,7 @@ namespace TISFAT_ZERO
 		/// </summary>
 		/// <param name="pos">The position to check.</param>
 		/// <returns>Returns whether or not the given position has frames.</returns>
-		private bool hasFrames(uint pos)
+		private bool hasFrames(int pos)
 		{
 			//Check if it's within the keyset of any layer.
 			//If it's within even one, then there is an active figure and it will return true.
@@ -655,7 +662,7 @@ namespace TISFAT_ZERO
 		{
 			foreach (StickLayer k in layers)
 			{
-				if (selectedFrame <= k.lastKF && selectedFrame >= k.firstKF)
+				if (frm_selPos <= k.lastKF && frm_selPos >= k.firstKF)
 					return true;
 			}
 
@@ -670,7 +677,7 @@ namespace TISFAT_ZERO
 		public static void resetEverything(bool keepDefault)
 		{
 			layers = new List<Layer>();
-			layercount = selectedLayer = 0; selectedFrame = 0;
+			layer_cnt = layer_sel = 0; frm_selPos = 0;
 			mainForm.resetTimeline(keepDefault);
 		}
 	}

@@ -436,7 +436,7 @@ namespace TISFAT_ZERO
 
 		public void onJointMoved()
 		{
-			Layer x = Timeline.layers[Timeline.selectedLayer];
+			Layer x = Timeline.layers[Timeline.layer_sel];
 			int t = x.type;
 
 			switch(t)

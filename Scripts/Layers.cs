@@ -8,7 +8,7 @@ namespace TISFAT_ZERO
     public abstract class Layer
     {
 		//Define variables
-		public uint firstKF, lastKF;
+		public int firstKF, lastKF;
 		public int selectedFrame = -1;
         public List<KeyFrame> keyFrames;
 		public string name;
@@ -16,11 +16,11 @@ namespace TISFAT_ZERO
 		public StickObject fig, tweenFig;
 		protected Canvas theCanvas;
 
-		public bool removeKeyFrame(uint pos)
+		public bool removeKeyFrame(int pos)
 		{
 			if (pos == firstKF || pos == lastKF)
 				return false;
-
+			
 			foreach (KeyFrame k in keyFrames)
 				if (pos == k.pos)
 				{
@@ -31,9 +31,9 @@ namespace TISFAT_ZERO
 			return false;
 		}
 		
-		public void doDisplay(uint pos, bool current = true)
+		public void doDisplay(int pos, bool current = true)
 		{
-			bool render = false; int x = -1, start = -1, end = -1;
+			bool render = false; int x = -1;
 			if (keyFrames == null)
 				return;
 
@@ -47,28 +47,35 @@ namespace TISFAT_ZERO
 			}
 
 
-			for (int a = 0; a < keyFrames.Count; a++)
-			{
-				if (pos == keyFrames[a].pos)
-				{
-					x = a;
-					render = true;
-					fig.Joints = keyFrames[a].Joints;
-					if (!(tweenFig == null))
-					{
-						tweenFig.drawFig = false;
-					}
-					break;
-				}
-				if (pos < keyFrames[a].pos)
-				{
-					end = a;
-					break;
-				}
-				else if (pos > keyFrames[a].pos)
-					start = a;
-			}
+			//Binary search for the frame that has the specified position
+			//Binary searches only work on sorted lists, and since the keyframes are always sorted based on position, this works nicely.
+			int end = keyFrames.Count, start = 0;
 
+			while (end >= start)
+			{
+				int imid = (end + start) >> 1; //equivilent to / 2
+
+				int npos = keyFrames[imid].pos;
+
+				if (npos < pos)
+				{
+					start = imid + 1;
+				}
+				else if (npos > pos)
+					end = imid - 1;
+				else
+				{
+					x = imid;
+					render = true;
+					fig.Joints = keyFrames[x].Joints;
+					if (!(tweenFig == null))
+						tweenFig.drawFig = false;
+
+					if (current)
+						Timeline.frm_selInd = x;
+					break;
+				}
+			}
 
 			if (!render)
 			{
@@ -106,7 +113,7 @@ namespace TISFAT_ZERO
 			}
 		}
 
-		public abstract int insertKeyFrame(uint pos);
+		public abstract int insertKeyFrame(int pos);
     }
 
 	public class StickLayer : Layer
@@ -132,7 +139,7 @@ namespace TISFAT_ZERO
 		}
 
 		//Insert a keyframe at position pos in the timeline
-		public override int insertKeyFrame(uint pos)
+		public override int insertKeyFrame(int pos)
 		{
 			//If inserting before the first, then make the new keyframe the first and re-arrange list
 			if (pos < firstKF)
@@ -203,7 +210,7 @@ namespace TISFAT_ZERO
 			keyFrames.Add(new LineFrame(lastKF));
 		}
 
-		public override int insertKeyFrame(uint pos)
+		public override int insertKeyFrame(int pos)
 		{
 			//If inserting before the first, then make the new keyframe the first and re-arrange list
 			if (pos < firstKF)
@@ -272,7 +279,7 @@ namespace TISFAT_ZERO
 			keyFrames.Add(new RectFrame(lastKF));
 		}
 
-		public override int insertKeyFrame(uint pos)
+		public override int insertKeyFrame(int pos)
 		{
 			//If inserting before the first, then make the new keyframe the first and re-arrange list
 			if (pos < firstKF)
