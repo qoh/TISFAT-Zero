@@ -192,7 +192,7 @@ namespace TISFAT_ZERO
 						dAngle = (dAngle - pJoint.AngleToParent);
 					}
 				}
-				else //stop lemme find out what the exception is
+				else
 				{
 					if (!(pStart.parent == null))
 					{
@@ -207,6 +207,7 @@ namespace TISFAT_ZERO
 				pJoint.SetPosAbs(Math.Round(pStart.location.X + cx), Math.Round(pStart.location.Y + cy));
 				Recalc(pJoint);
 			}
+
 			this.ParentFigure.onJointMoved();
 		}
 
@@ -244,6 +245,7 @@ namespace TISFAT_ZERO
 						pThis.AngleToParent = 360 - (dAngle - dParentAngle);
 					}
 				}
+
 				pThis = pParent;
 				pParent = pParent.parent;
 			}

@@ -52,6 +52,190 @@ namespace TISFAT_ZERO
 			setFrame();
 		}
 
+		#region Helper Methods
+
+		/// <summary>
+		/// Determines whether or not any of the layers at a given point in the timeline contain a frame.
+		/// </summary>
+		/// <param name="pos">The position to check.</param>
+		/// <returns>Returns whether or not the given position has frames.</returns>
+		private bool hasFrames(int pos)
+		{
+			//Check if it's within the keyset of any layer.
+			//If it's within even one, then there is an active figure and it will return true.
+			foreach (StickLayer k in layers)
+			{
+				if (pos <= k.lastKF && pos >= k.firstKF)
+					return true;
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		/// Determines whether or not any of the layers at the selected point on the timeline has a frame.
+		/// </summary>
+		/// <returns>Returns whether or not the selected position has frames.</returns>
+		private bool hasFrames()
+		{
+			foreach (StickLayer k in layers)
+			{
+				if (frm_selPos <= k.lastKF && frm_selPos >= k.firstKF)
+					return true;
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		/// Sets the slected frame and updates all layers.
+		/// </summary>
+		/// <param name="pos">The position.</param>
+		public void setFrame(int pos)
+		{
+			if(pos != frm_selPos)
+				frm_selPos = pos;
+
+			for (int a = 0; a < layers.Count; a++)
+				if (a != layer_sel)
+					layers[a].doDisplay(pos, false);
+
+			if (layer_sel != -1)
+			{
+				layers[layer_sel].doDisplay(pos);
+				Canvas.activeFigure = layers[layer_sel].fig;
+			}
+
+			if (frm_selected != null)
+				mainForm.theToolbox.setColor(frm_selected.figColor);
+
+			theCanvas.Refresh();
+		}
+
+		/// <summary>
+		/// Updates all the layers based on the currently selected frame.
+		/// </summary>
+		public void setFrame()
+		{
+			if (frm_selPos != null)
+				setFrame(frm_selPos);
+		}
+
+		/// <summary>
+		/// Returns the type of the selected frame.
+		/// </summary>
+		/// <returns>The type of the frame selected.
+		/// 0: No frame
+		/// 1: Middle Keyframe
+		/// 2: First Keyframe of Frameset
+		/// 3: Last Keyframe of Frameset
+		/// 4: Tween frame
+		/// 5: Timeline
+		/// </returns>
+		private byte selectedFrameType()
+		{
+			// The -1 layer is reserved for the Timeline.
+			// If the user has selected the timeline, the selected layer will be -1.
+			if (layer_sel == -1)
+				return 5;
+
+			//Get the currently selected layer (so that we can check it's frames)
+			Layer selLayer = layers[layer_sel];
+
+			//Check if the frame is on the first or last keyframe position
+			// (Will have to be changed when framesets are implemented)
+			if (frm_selPos == selLayer.firstKF)
+			{
+				frm_selected = selLayer.keyFrames[0];
+				return 2;
+			}
+			else if (frm_selPos == selLayer.lastKF)
+			{
+				frm_selected = selLayer.keyFrames[selLayer.keyFrames.Count - 1];
+				return 3;
+			}
+
+			//If the selected frame index has already been set (by the doDisplay method calls by setFrame) then it's a middle keyframe.
+			if (frm_selInd != -1)
+			{
+				frm_selected = selLayer.keyFrames[frm_selInd];
+				return 1;
+			}
+
+			//Now that all other possibilities are eliminated, it isn't a keyframe.
+			//So because of this, we set the selected key frame to null.
+			frm_selected = null;
+
+			//This basically checks if the position is between the first and last keyframe positions.
+			//This will also have to be changed when framesets are implemented.
+			if (frm_selPos > selLayer.firstKF && frm_selPos < selLayer.lastKF)
+				return 4;
+
+			//Since it's failed all other tests, there is no frame at that spot.
+			return 0;
+		}
+
+		/// <summary>
+		/// Adds a stick figure layer to the project.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <returns></returns>
+		public StickLayer addStickLayer(string name)
+		{
+			StickFigure x = new StickFigure(false);
+
+			StickLayer n = new StickLayer(name, x, theCanvas);
+			layers.Add(n);
+
+			setFrame(n.firstKF);
+			return n;
+		}
+
+		/// <summary>
+		/// Adds a stick line layer to the project.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <returns></returns>
+		public LineLayer addLineLayer(string name)
+		{
+			StickLine x = new StickLine(false);
+
+			LineLayer n = new LineLayer(name, x, theCanvas);
+			layers.Add(n);
+
+			setFrame(n.firstKF);
+			return n;
+		}
+
+		/// <summary>
+		/// Adds a rectangle to the current project.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <returns></returns>
+		public RectLayer addRectLayer(string name)
+		{
+			StickRect x = new StickRect(false);
+
+			RectLayer n = new RectLayer(name, x, theCanvas);
+			layers.Add(n);
+
+			setFrame(n.firstKF);
+			return n;
+		}
+
+		/// <summary>
+		/// Resets the everything.
+		/// </summary>
+		/// <param name="keepDefaultLayer">if set to <c>true</c>, keep the default stick layer upon resetting..</param>
+		public static void resetEverything(bool keepDefaultLayer)
+		{
+			layers = new List<Layer>();
+			layer_cnt = layer_sel = 0; frm_selPos = 0;
+			mainForm.resetTimeline(keepDefaultLayer);
+		}
+
+		#endregion Helper Methods
+
 		/// <summary>
 		/// Handles the Paint event of the Timeline control.
 		/// </summary>
@@ -177,93 +361,7 @@ namespace TISFAT_ZERO
 			gray.Dispose(); blk.Dispose();
 		}
 
-		/// <summary>
-		/// Adds the stick layer.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public StickLayer addStickLayer(string name)
-		{
-			StickFigure x = new StickFigure(false);
-
-			StickLayer n = new StickLayer(name, x, theCanvas);
-			layers.Add(n);
-
-			setFrame(n.firstKF);
-			return n;
-		}
-
-		/// <summary>
-		/// Adds the line layer.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public LineLayer addLineLayer(string name)
-		{
-			StickLine x = new StickLine(false);
-
-			LineLayer n = new LineLayer(name, x, theCanvas);
-			layers.Add(n);
-
-			setFrame(n.firstKF);
-			return n;
-		}
-
-		/// <summary>
-		/// Adds the rect layer.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public RectLayer addRectLayer(string name)
-		{
-			StickRect x = new StickRect(false);
-
-			RectLayer n = new RectLayer(name, x, theCanvas);
-			layers.Add(n);
-
-			setFrame(n.firstKF);
-			return n;
-		}
-
-		/// <summary>
-		/// Sets the frame.
-		/// </summary>
-		/// <param name="pos">The position.</param>
-		public void setFrame(int pos)
-		{
-			for (int a = 0; a < layers.Count; a++)
-				if (a != layer_sel)
-					layers[a].doDisplay(pos, false);
-
-			if (layer_sel != -1)
-			{
-				layers[layer_sel].doDisplay(pos);
-				Canvas.activeFigure = layers[layer_sel].fig;
-			}
-
-			theCanvas.Refresh();
-		}
-
-		/// <summary>
-		/// Sets the frame.
-		/// </summary>
-		public void setFrame()
-		{
-			for (int a = 0; a < layers.Count; a++)
-				if (a != layer_sel)
-					layers[a].doDisplay(frm_selPos, false);
-
-			if (layer_sel != -1)
-			{
-				layers[layer_sel].doDisplay(frm_selPos);
-				Canvas.activeFigure = layers[layer_sel].fig;
-			}
-
-			theCanvas.Refresh();
-
-			if(frm_selected != null)
-				mainForm.theToolbox.setColor(frm_selected.figColor);
-		}
+		#region Callback Events
 
 		/// <summary>
 		/// Handles the MouseDown event of the Timeline control.
@@ -276,6 +374,7 @@ namespace TISFAT_ZERO
 				return;
 
 			int x = e.X, y = e.Y;
+
 			if (x > 80)
 			{
 				frm_selPos = (x - 80) / 9 + mainForm.splitContainer1.Panel1.HorizontalScroll.Value / 9;
@@ -303,169 +402,8 @@ namespace TISFAT_ZERO
 					f.ShowDialog();
 					Refresh();
 				}
-				
-			}
-		}
-
-		/// <summary>
-		/// Returns the type of the selected frame.
-		/// </summary>
-		/// <returns>The type of the frame selected.
-		/// 0: No frame
-		/// 1: Middle Keyframe
-		/// 2: First Keyframe of Frameset
-		/// 3: Last Keyframe of Frameset
-		/// 4: Tween frame
-		/// 5: Timeline
-		/// </returns>
-		private byte selectedFrameType()
-		{
-			// The -1 layer is reserved for the Timeline.
-			// If the user has selected the timeline, the selected layer will be -1.
-			if (layer_sel == -1)
-				return 5;
-
-			//Get the currently selected layer (so that we can check it's frames)
-			Layer selLayer = layers[layer_sel];
-
-			//Check if the frame is on the first or last keyframe position
-			// (Will have to be changed when framesets are implemented)
-			if (frm_selPos == selLayer.firstKF)
-			{
-				frm_selected = selLayer.keyFrames[0];
-				return 2;
-			}
-			else if (frm_selPos == selLayer.lastKF)
-			{
-				frm_selected = selLayer.keyFrames[selLayer.keyFrames.Count - 1];
-				return 3;
-			}
-
-			//Check each individual keyframe in the layer and see if the positions match
-			//I'm going to revise this into a binary search later for efficiency.
-			foreach (KeyFrame x in selLayer.keyFrames)
-			{
-				if (x.pos == frm_selPos)
-				{
-					frm_selected = x;
-					return 1;
-				}
-			}
-
-			//Now that all other possibilities are eliminated, it isn't a keyframe.
-			//So because of this, we set the selected key frame to null.
-			frm_selected = null;
-
-			//This basically checks if the position is between the first and last keyframe positions.
-			//This will also have to be changed when framesets are implemented.
-			if (frm_selPos > selLayer.firstKF && frm_selPos < selLayer.lastKF)
-				return 4;
-
-			//Since it's failed all other tests, there is no frame at that spot.
-			return 0;
-		}
-
-		/// <summary>
-		/// Handles the Opening event of the timeline right click menu.
-		/// </summary>
-		/// <param name="sender">The source of the event.</param>
-		/// <param name="e">The <see cref="CancelEventArgs"/> instance containing the event data.</param>
-		private void cxt_Menu_Opening(object sender, CancelEventArgs e)
-		{
-			//To be honest I don't even know if this is necessary, but I put it in just in case.
-			//If the timeline is playing, then don't allow the right click menu.
-			if (isPlaying)
-			{
-				e.Cancel = true;
-				return;
-			}
-
-			//Get the selected keyframe type
-			int frameType = selectedFrameType();
-
-			tst_insertKeyframe.Enabled = frameType == 4;
-			tst_insertKeyframeAtPose.Enabled = frameType == 4;
-			tst_removeKeyframe.Enabled = frameType == 1;
-			tst_setPosePrvKfrm.Enabled = frameType == 3;
-			tst_setPoseNxtKfrm.Enabled = frameType == 2;
-			tst_onionSkinning.Enabled = frameType != 0 | frameType != 4;
-
-			tst_insertFrameset.Enabled = frameType == 0;
-			tst_removeFrameset.Enabled = frameType != 0;
-
-			tst_moveLayerUp.Enabled = true;
-			tst_moveLayerDown.Enabled = true;
-			tst_insertLayer.Enabled = true;
-			tst_removeLayer.Enabled = true;
-
-			tst_keyFrameAction.Enabled = frameType != 0 | frameType != 4;
-
-			tst_hideLayer.Enabled = true;
-			tst_showLayer.Enabled = true;
-
-			tst_gotoFrame.Enabled = true;
-		}
-
-		/// <summary>
-		/// Handler for when an item in the timeline ricght click menu is clicked.
-		/// </summary>
-		/// <param name="sender">The source of the event.</param>
-		/// <param name="e">The <see cref="ToolStripItemClickedEventArgs"/> instance containing the event data.</param>
-		private void cxt_Menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-		{
-			//Get the name of the clicked item and the currently selected layer
-			string name = e.ClickedItem.Name;
-			Layer cLayer = layers[layer_sel];
-
-			//Decide what to do based on the clicked menu item was.
-			switch (name)
-			{
-				//Layer methods handle this part.
-				case "tst_insertKeyframe":
-					cLayer.insertKeyFrame(frm_selPos);
-					selectedFrameType();
-					break;
-
-				case "tst_removeKeyframe":
-					cLayer.removeKeyFrame(frm_selPos);
-					break;
-
-				//Insert a keyframe like before and then copy the positions of the
-				//current tween fig into the new keyframe.
-				case "tst_insertKeyframeAtPose":
-					int p = cLayer.insertKeyFrame(frm_selPos);
-					KeyFrame newFrame = cLayer.keyFrames[p];
-					List<StickJoint> jointz = cLayer.tweenFig.Joints;
-
-					for (int a = 0; a < jointz.Count; a++)
-						newFrame.Joints[a].location = jointz[a].location;
-
-					break;
-
-				case "tst_setPosePrvKfrm":
-					int pos = cLayer.keyFrames.IndexOf(frm_selected);
-
-					for (int a = 0; a < cLayer.keyFrames[pos].Joints.Count; a++)
-						cLayer.keyFrames[pos].Joints[a].location = new Point(cLayer.keyFrames[pos - 1].Joints[a].location.X, cLayer.keyFrames[pos - 1].Joints[a].location.Y);
-
-					break;
-
-				case "tst_setPoseNxtKfrm":
-					pos = cLayer.keyFrames.IndexOf(frm_selected);
-
-					for (int a = 0; a < cLayer.keyFrames[pos].Joints.Count; a++)
-						cLayer.keyFrames[pos].Joints[a].location = new Point(cLayer.keyFrames[pos + 1].Joints[a].location.X, cLayer.keyFrames[pos + 1].Joints[a].location.Y);
-
-					break;
-
-				default:
-					return;
 
 			}
-
-			//After that, refresh the timeline and the canvas.
-			Refresh();
-			setFrame();
 		}
 
 		/// <summary>
@@ -592,6 +530,109 @@ namespace TISFAT_ZERO
 		}
 
 		/// <summary>
+		/// Handles the Opening event of the timeline right click menu.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="CancelEventArgs"/> instance containing the event data.</param>
+		private void cxt_Menu_Opening(object sender, CancelEventArgs e)
+		{
+			//To be honest I don't even know if this is necessary, but I put it in just in case.
+			//If the timeline is playing, then don't allow the right click menu.
+			if (isPlaying)
+			{
+				e.Cancel = true;
+				return;
+			}
+
+			//Get the selected keyframe type
+			int frameType = selectedFrameType();
+
+			tst_insertKeyframe.Enabled = frameType == 4;
+			tst_insertKeyframeAtPose.Enabled = frameType == 4;
+			tst_removeKeyframe.Enabled = frameType == 1;
+			tst_setPosePrvKfrm.Enabled = frameType == 3;
+			tst_setPoseNxtKfrm.Enabled = frameType == 2;
+			tst_onionSkinning.Enabled = frameType != 0 | frameType != 4;
+
+			tst_insertFrameset.Enabled = frameType == 0;
+			tst_removeFrameset.Enabled = frameType != 0;
+
+			tst_moveLayerUp.Enabled = true;
+			tst_moveLayerDown.Enabled = true;
+			tst_insertLayer.Enabled = true;
+			tst_removeLayer.Enabled = true;
+
+			tst_keyFrameAction.Enabled = frameType != 0 | frameType != 4;
+
+			tst_hideLayer.Enabled = true;
+			tst_showLayer.Enabled = true;
+
+			tst_gotoFrame.Enabled = true;
+		}
+
+		/// <summary>
+		/// Handler for when an item in the timeline ricght click menu is clicked.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="ToolStripItemClickedEventArgs"/> instance containing the event data.</param>
+		private void cxt_Menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+		{
+			//Get the name of the clicked item and the currently selected layer
+			string name = e.ClickedItem.Name;
+			Layer cLayer = layers[layer_sel];
+
+			//Decide what to do based on the clicked menu item was.
+			switch (name)
+			{
+				//Layer methods handle this part.
+				case "tst_insertKeyframe":
+					cLayer.insertKeyFrame(frm_selPos);
+					selectedFrameType();
+					break;
+
+				case "tst_removeKeyframe":
+					cLayer.removeKeyFrame(frm_selPos);
+					break;
+
+				//Insert a keyframe like before and then copy the positions of the
+				//current tween fig into the new keyframe.
+				case "tst_insertKeyframeAtPose":
+					int p = cLayer.insertKeyFrame(frm_selPos);
+					KeyFrame newFrame = cLayer.keyFrames[p];
+					List<StickJoint> jointz = cLayer.tweenFig.Joints;
+
+					for (int a = 0; a < jointz.Count; a++)
+						newFrame.Joints[a].location = jointz[a].location;
+
+					break;
+
+				case "tst_setPosePrvKfrm":
+					int pos = cLayer.keyFrames.IndexOf(frm_selected);
+
+					for (int a = 0; a < cLayer.keyFrames[pos].Joints.Count; a++)
+						cLayer.keyFrames[pos].Joints[a].location = new Point(cLayer.keyFrames[pos - 1].Joints[a].location.X, cLayer.keyFrames[pos - 1].Joints[a].location.Y);
+
+					break;
+
+				case "tst_setPoseNxtKfrm":
+					pos = cLayer.keyFrames.IndexOf(frm_selected);
+
+					for (int a = 0; a < cLayer.keyFrames[pos].Joints.Count; a++)
+						cLayer.keyFrames[pos].Joints[a].location = new Point(cLayer.keyFrames[pos + 1].Joints[a].location.X, cLayer.keyFrames[pos + 1].Joints[a].location.Y);
+
+					break;
+
+				default:
+					return;
+
+			}
+
+			//After that, refresh the timeline and the canvas.
+			Refresh();
+			setFrame();
+		}
+
+		/// <summary>
 		/// Handles the Tick event of the playTimer control.
 		/// </summary>
 		/// <param name="sender">The source of the event.</param>
@@ -612,6 +653,10 @@ namespace TISFAT_ZERO
 			}
 
 		}
+
+		#endregion Callback Events
+
+		#region Timer methods
 
 		/// <summary>
 		/// Starts the timer.
@@ -636,49 +681,7 @@ namespace TISFAT_ZERO
 			playTimer.Stop();
 		}
 
-		/// <summary>
-		/// Determines whether or not any of the layers at a given point in the timeline contain a frame.
-		/// </summary>
-		/// <param name="pos">The position to check.</param>
-		/// <returns>Returns whether or not the given position has frames.</returns>
-		private bool hasFrames(int pos)
-		{
-			//Check if it's within the keyset of any layer.
-			//If it's within even one, then there is an active figure and it will return true.
-			foreach (StickLayer k in layers)
-			{
-				if (pos <= k.lastKF && pos >= k.firstKF)
-					return true;
-			}
+		#endregion Timer Methods
 
-			return false;
-		}
-
-		/// <summary>
-		/// Determines whether or not any of the layers at the selected point on the timeline has a frame.
-		/// </summary>
-		/// <returns>Returns whether or not the selected position has frames.</returns>
-		private bool hasFrames()
-		{
-			foreach (StickLayer k in layers)
-			{
-				if (frm_selPos <= k.lastKF && frm_selPos >= k.firstKF)
-					return true;
-			}
-
-			return false;
-		}
-
-		//Only used by loading so far.
-		/// <summary>
-		/// Resets the everything.
-		/// </summary>
-		/// <param name="keepDefault">if set to <c>true</c> [reset].</param>
-		public static void resetEverything(bool keepDefault)
-		{
-			layers = new List<Layer>();
-			layer_cnt = layer_sel = 0; frm_selPos = 0;
-			mainForm.resetTimeline(keepDefault);
-		}
 	}
 }
