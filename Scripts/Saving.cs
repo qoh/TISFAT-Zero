@@ -15,9 +15,7 @@ namespace TISFAT_ZERO
 		//This class holds the various constants used in file saving/loading.
 		public static readonly byte[]
 			fileSig =		{ 0x54, 0x49, 0x53, 0x46, 0x41, 0x54, 0x2D, 0x30 }, //TISFAT-0 in hex
-			blockSig =		{ 0x46, 0x41, 0x46, 0x41 },
-			endBSig =		{ 0xe6, 0x21, 0x21, 0xe6 }, //4 bytes because reasons
-			curVersion =	{ 0x00, 0x01, 0x00, 0x01 };
+			curVersion =	{ 0x00, 0x02, 0x00, 0x00 };
 
 		public static readonly string saveFileExt = ".tzs";
 	}
@@ -26,6 +24,13 @@ namespace TISFAT_ZERO
 	{
 		public ushort type;
 		public byte[] data;
+
+		//00: layer
+		//01: end layer
+		//02: keyframe
+		//03: end keyframe
+		//04: keyframe properties
+		//05: int list
 	}
 
 	class Saver
@@ -45,7 +50,7 @@ namespace TISFAT_ZERO
 				uint y = 0;
 				foreach (Layer x in Layers)
 				{
-					writeLayerBlock(x, y++, memst);
+					writeLayerBlock(x, memst);
 				}
 			}
 			catch (Exception ex)
@@ -72,68 +77,83 @@ namespace TISFAT_ZERO
 			return true;
 		}
 
-		private static void writeLayerBlock(Layer l, uint layerid, Stream stream)
+		private static void writeLayerBlock(Layer l, Stream stream)
 		{
 			if (l.type != 1)
 				return;
 
 			List<byte> bytes = new List<byte>();
 
-			bytes.AddRange(tzf.blockSig);
-
 			bytes.AddRange(new byte[] { 0, 0 });
-			bytes.AddRange(BitConverter.GetBytes((ushort)layerid));
-			bytes.AddRange(BitConverter.GetBytes(l.type));
+
+			bytes.Add(l.type);
 
 			byte[] name = Encoding.UTF8.GetBytes(l.name);
 
-			bytes.AddRange(BitConverter.GetBytes((byte)(name.Length-1)));
+			bytes.Add((byte)(name.Length-1));
 			//if the name is longer than 256 characters then that's just silly
 			//(the - 1 lets it be 256 characters instead of just 255, by replacing 1 with 0, 2 with 1 and so forth)
 			bytes.AddRange(name);
+
+			bytes.InsertRange(0, BitConverter.GetBytes(bytes.Count));
 
 			stream.Write(bytes.ToArray(), 0, bytes.Count);
 
 			foreach (KeyFrame k in l.keyFrames)
 				writeFrameBlock(k, stream);
 
-			stream.Write(tzf.endBSig, 0, 4);
+			List<byte> b2 = new List<byte>();
+			b2.AddRange(BitConverter.GetBytes((int)3));
+			b2.AddRange(BitConverter.GetBytes((ushort)1));
+			b2.Add(0);
+
+			stream.Write(b2.ToArray(), 0, 7);
 		}
 		
 		private static void writeFrameBlock(KeyFrame f, Stream stream)
 		{
 			byte type = f.type;
-			List<byte> bytes0 = new List<byte>();
+			List<byte> bytes = new List<byte>();
 
-			bytes0.AddRange(tzf.blockSig);
-			bytes0.AddRange(new byte[] { 0, 1 });
-			bytes0.Add(type);
-			bytes0.AddRange(BitConverter.GetBytes(f.pos));
+			bytes.AddRange(new byte[] { 0, 2 });
 
+			bytes.AddRange(BitConverter.GetBytes(f.pos));
+			bytes.InsertRange(0, BitConverter.GetBytes(bytes.Count));
 
-			//Each keyframe type has it's own saving algorithm. Implement them here.
-			switch (type)
-			{
-				case 0: //StickFrame
+			stream.Write(bytes.ToArray(), 0, bytes.Count);
 
-					stream.Write(bytes0.ToArray(), 0, bytes0.Count);
+			writeKeyFramePropertiesBlock(f, stream);
 
-					writePositionsBlock(f.Joints.ToArray(), stream);
-					break;
+			writePositionsBlock(f.Joints.ToArray(), stream);
 
-				default:
-					
-					return;
-			}
+			List<byte> b2 = new List<byte>();
+			b2.AddRange(BitConverter.GetBytes((int)3));
+			b2.AddRange(BitConverter.GetBytes((ushort)3));
+			b2.Add(0);
 
-			stream.Write(tzf.endBSig, 0, 4);
+			stream.Write(b2.ToArray(), 0, 7);
+		}
+
+		private static void writeKeyFramePropertiesBlock(KeyFrame k, Stream s)
+		{
+			List<byte> bytes = new List<byte>();
+
+			bytes.AddRange(new byte[] { 0, 4 });
+			bytes.AddRange(BitConverter.GetBytes(true)); //This true is a placeholder for the (to come) IsAllOneColour bool in the keyframe class.
+			bytes.AddRange(BitConverter.GetBytes(k.figColor.R));
+			bytes.AddRange(BitConverter.GetBytes(k.figColor.G));
+			bytes.AddRange(BitConverter.GetBytes(k.figColor.B));
+
+			bytes.InsertRange(0, BitConverter.GetBytes(bytes.Count));
+
+			s.Write(bytes.ToArray(), 0, bytes.Count);
 		}
 
 		private static void writePositionsBlock(StickJoint[] j, Stream stream)
 		{
 			List<byte> bytes = new List<byte>();
-			bytes.AddRange(tzf.blockSig);
-			bytes.AddRange(new byte[] { 0, 2 });
+
+			bytes.AddRange(new byte[] { 0, 5 });
 
 			bytes.AddRange(BitConverter.GetBytes((ushort)j.Length));
 
@@ -144,8 +164,9 @@ namespace TISFAT_ZERO
 				bytes.AddRange(BitConverter.GetBytes((short)s.location.Y));
 			}
 
+			bytes.InsertRange(0, BitConverter.GetBytes(bytes.Count));
+
 			stream.Write(bytes.ToArray(), 0, bytes.Count);
-			stream.Write(tzf.endBSig, 0, 4);
 		}
 	}
 
@@ -168,27 +189,40 @@ namespace TISFAT_ZERO
 			while (file.Position + 1 < length)
 			{
 				Block layer = readNextBlock(file); //i REALLY hope this works ;-;
-				
+
 				if (layer.type != 0)
-					throw new Exception("OKAY I UH I DIDNT EXPECT THIS ;-;");
+					continue;
 
-				byte layerType = layer.data[2];
+				byte layerType = layer.data[0];
 
-				if (layerType != 1)
-					throw new Exception("I STILL DONT KNOW WHAT TO DO WITH THIS HELP ME ;-;");
+				int nameLength = layer.data[1] + 1;
+				byte[] namebytes = new byte[nameLength];
 
-				int nameLength = layer.data[4] + 1;
-				byte[] namebytes = new byte[nameLength+1];
-				nameLength += 5;
-				for(int a = 5; a < nameLength +1; a++)
-					namebytes[a-5] = layer.data[a];
+				for(int a = 2; a < nameLength + 2; a++)
+					namebytes[a-2] = layer.data[a];
 
 				string name = Encoding.UTF8.GetString(namebytes);
 
 				StickLayer newLayer = new StickLayer(name, new StickFigure(false), zeCanvas);
 				List<KeyFrame> thingy = new List<KeyFrame>();
-				
-				//For this I have to create a memorystream out of the layer data so that I can use readNextBlock on it to get the frame data
+
+				for (Block tmpBlk = readNextBlock(file); tmpBlk.type != 1; tmpBlk = readNextBlock(file))
+				{
+					//Make sure we're reading in a frame
+					if (tmpBlk.type != 2)
+					{
+						continue;
+					}
+
+					KeyFrame f;
+
+					if (layerType == 1)
+						f = new StickFrame(0);
+
+					byte[] posbytes = new byte[4];
+				}
+
+				/*
 				int dataLength = layer.data.Length;
 				MemoryStream ms = new MemoryStream();
 				ms.Write(layer.data, 0, dataLength);
@@ -222,7 +256,7 @@ namespace TISFAT_ZERO
 					thingy.Add(frm);
 				}
 				newLayer.keyFrames = thingy;
-				layers.Add(newLayer);
+				layers.Add(newLayer);*/
 			}
 			Timeline.layers = layers;
 			Timeline.layer_cnt = layers.Count;
@@ -233,119 +267,24 @@ namespace TISFAT_ZERO
 		{
 			Block bl = new Block();
 
-			//Find the next occurance of the block start sig
-			byte a1 = (byte)file.ReadByte(), a2 = (byte)file.ReadByte(), a3 = (byte)file.ReadByte(), a4 = (byte)file.ReadByte();
-			uint x = 0;
+			byte[] countbytes = new byte[4];
+			ReadWholeArray(file, countbytes);
 
-			while(!ByteArrayCompare(new byte[]{a1, a2, a3, a4}, tzf.blockSig))
+			int count = BitConverter.ToInt32(countbytes, 0);
+
+			if (count < 3)
 			{
-				a1 = a2;
-				a2 = a3;
-				a3 = a4;
-				a4 = (byte)file.ReadByte();
-				x++;
-				if (x > file.Length)
-					return bl;
+				throw new Exception("Invalid block data length: must be > 2");
 			}
 
-			if(x > 0)
-			{
-				//Log somewhere about how many unused bytes there were
-			}
+			byte[] typebytes = new byte[2], data = new byte[count - 2];
 
-			//Now make a new byte list to contain all the data.
-			List<byte> bytes = new List<byte>();
+			ReadWholeArray(file, typebytes);
+			ReadWholeArray(file, data);
 
-			byte[] type = new byte[2];
+			bl.type = BitConverter.ToUInt16(typebytes, 0);
+			bl.data = data;
 
-			ReadWholeArray(file, type);
-			bl.type = (ushort)BitConverter.ToInt16(type, 0); //ushort = 2 bytes = size of type
-			ushort btype = bl.type;
-
-			byte depth = 1;
-
-			try
-			{
-				byte[] first4 = new byte[4];
-
-				ReadWholeArray(file, first4);
-				bytes.AddRange(first4);
-			}
-			catch
-			{
-				bl.type = ushort.MaxValue;
-				return bl;
-			}
-
-			//Because I'm too damn lazy to implement reading every single type of block, I have successfully reading the block being dependant on
-			//a certain combination of 4 bytes not appearing anywhere that isn't the end of a block. I know this is a bad way of doing it but whatever.
-			//It's easiest. Sue me :P
-			if (!ByteArrayCompare(tzf.endBSig, bytes.ToArray()))
-			{
-				//There's no way to instantly skip to the next instance of a byte array in a file, and reading it byte by byte is really slow.
-				//So I read in chunks of 2. I'll probably make this number bigger later.
-				byte[] next2 = new byte[2];
-				int c = 2;
-				for(;file.Position + 1 < file.Length;) //Infinite loop technically...
-				{
-					try
-					{
-						ReadWholeArray(file, next2);
-					}
-					catch
-					{
-						try
-						{
-							next2 = new byte[1];
-							ReadWholeArray(file, next2);
-						}
-						catch(Exception ex)
-						{
-							if (!ex.Message.Contains("of stream"))
-							{
-								bl.type = ushort.MaxValue;
-								return bl;
-							}
-						}
-					}
-					byte[] tmp1 = new byte[] { bytes[c - 1], bytes[c], bytes[c + 1], next2[0] };
-					byte[] tmp2 = new byte[] { bytes[c], bytes[c + 1], next2[0], next2[1] };
-					if (ByteArrayCompare(tzf.endBSig, tmp1))
-					{
-						depth--;
-
-						if (depth == 0)
-						{
-							file.Position--;
-							for (int y = 0; y < 3; y++)
-								bytes.RemoveAt(bytes.Count - 1);
-							bl.data = bytes.ToArray();
-							return bl;
-						}
-					}
-					else if (ByteArrayCompare(tzf.endBSig, tmp2))
-					{
-						depth--;
-
-						if (depth == 0)
-						{
-							bytes.RemoveAt(bytes.Count - 1);
-							bytes.RemoveAt(bytes.Count - 1);
-							bl.data = bytes.ToArray();
-							return bl;
-						}
-					}
-					else if (ByteArrayCompare(tzf.blockSig, tmp1) || ByteArrayCompare(tzf.blockSig, tmp2))
-					{
-						depth++;
-					}
-					
-					bytes.AddRange(next2);
-					bl.data = bytes.ToArray();
-					c += 2;
-				}
-			}
-			bl.data = bytes.ToArray();
 			return bl;
 		}
 

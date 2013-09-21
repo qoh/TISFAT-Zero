@@ -46,8 +46,6 @@ namespace TISFAT_ZERO
 				}
 			}
 
-			
-
 			//Binary search for the frame that has the specified position
 			//Binary searches only work on sorted lists, and since the keyframes are always sorted based on position, this works nicely.
 			int end = keyFrames.Count, start = 0, npos = -1;
@@ -214,7 +212,6 @@ namespace TISFAT_ZERO
 
 			firstKF = 0;
 			lastKF = 19;
-			type = 1;
 
 			keyFrames = new List<KeyFrame>();
 			keyFrames.Add(new LineFrame(firstKF));
@@ -279,11 +276,10 @@ namespace TISFAT_ZERO
 			fig = Line;
 			theCanvas = _Canvas;
 			tweenFig = new StickRect(true);
-			type = 2;
+			type = 3;
 
 			firstKF = 0;
 			lastKF = 19;
-			type = 1;
 
 			keyFrames = new List<KeyFrame>();
 			keyFrames.Add(new RectFrame(firstKF));
