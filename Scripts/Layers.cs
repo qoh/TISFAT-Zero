@@ -33,7 +33,7 @@ namespace TISFAT_ZERO
 		
 		public void doDisplay(int pos, bool current = true)
 		{
-			bool render = false; int x = -1;
+			bool render = false; int imid = -1;
 			if (keyFrames == null)
 				return;
 
@@ -46,16 +46,25 @@ namespace TISFAT_ZERO
 				}
 			}
 
+			
 
 			//Binary search for the frame that has the specified position
 			//Binary searches only work on sorted lists, and since the keyframes are always sorted based on position, this works nicely.
-			int end = keyFrames.Count, start = 0;
+			int end = keyFrames.Count, start = 0, npos = -1;
 
 			while (end >= start)
 			{
-				int imid = (end + start) >> 1; //equivilent to / 2
+				imid = (end + start) >> 1; //equivilent to / 2
 
-				int npos = keyFrames[imid].pos;
+				try
+				{
+					npos = keyFrames[imid].pos;
+				}
+				catch
+				{
+					selectedFrame = -1;
+					break;
+				}
 
 				if (npos < pos)
 				{
@@ -65,14 +74,11 @@ namespace TISFAT_ZERO
 					end = imid - 1;
 				else
 				{
-					x = imid;
 					render = true;
-					fig.Joints = keyFrames[x].Joints;
+					fig.Joints = keyFrames[imid].Joints;
 					if (!(tweenFig == null))
 						tweenFig.drawFig = false;
 
-					if (current)
-						Timeline.frm_selInd = x;
 					break;
 				}
 			}
@@ -101,7 +107,12 @@ namespace TISFAT_ZERO
 			fig.drawFig = render;
 			fig.drawHandles = render & current;
 			fig.isActiveFig = true;
-			selectedFrame = x;
+			selectedFrame = render ? imid : -1;
+
+			if (current)
+			{
+				Timeline.frm_selInd = selectedFrame;
+			}
 
 			if (selectedFrame >= 0)
 			{

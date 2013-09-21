@@ -14,7 +14,8 @@ namespace TISFAT_ZERO
 
 		#region Variables
 		//This is the set of points used for drawing the black outline of the timeline layer
-		private Point[] p1 = new Point[] { new Point(79, 0), new Point(79, 15), new Point(0, 15) };
+		private readonly Point[] p1 = new Point[] { new Point(79, 0), new Point(79, 15), new Point(0, 15) };
+		private readonly Color layerColour = Color.FromArgb(70, 120, 255), tenthframe = Color.FromArgb(40, 230, 255);
 
 		public static MainF mainForm;
 		public Canvas theCanvas;
@@ -63,7 +64,7 @@ namespace TISFAT_ZERO
 		{
 			//Check if it's within the keyset of any layer.
 			//If it's within even one, then there is an active figure and it will return true.
-			foreach (StickLayer k in layers)
+			foreach (Layer k in layers)
 			{
 				if (pos <= k.lastKF && pos >= k.firstKF)
 					return true;
@@ -187,6 +188,8 @@ namespace TISFAT_ZERO
 			StickLayer n = new StickLayer(name, x, theCanvas);
 			layers.Add(n);
 
+			layer_cnt++;
+
 			setFrame(n.firstKF);
 			return n;
 		}
@@ -203,6 +206,8 @@ namespace TISFAT_ZERO
 			LineLayer n = new LineLayer(name, x, theCanvas);
 			layers.Add(n);
 
+			layer_cnt++;
+
 			setFrame(n.firstKF);
 			return n;
 		}
@@ -218,6 +223,8 @@ namespace TISFAT_ZERO
 
 			RectLayer n = new RectLayer(name, x, theCanvas);
 			layers.Add(n);
+
+			layer_cnt++;
 
 			setFrame(n.firstKF);
 			return n;
@@ -262,7 +269,7 @@ namespace TISFAT_ZERO
 			Font fo = SystemFonts.DefaultFont;
 
 			//draw the timeline layer
-			g.FillRectangle(new SolidBrush(Color.CornflowerBlue), new Rectangle(0, 0, 79, layers.Count * 16 + 15));
+			g.FillRectangle(new SolidBrush(Color.FromArgb(70, 120, 255)), new Rectangle(0, 0, 79, layers.Count * 16 + 15));
 			g.DrawLines(blk, p1);
 			g.DrawString("T I M E L I N E", fo, new SolidBrush(Color.Black), 1, 1.5f);
 
@@ -282,18 +289,16 @@ namespace TISFAT_ZERO
 				int xx = (a - offset) * 9 + 80;
 
 				//Default to cyan colour (10th frame colour)
-				Color x = Color.Cyan;
+				Color x = tenthframe;
 
 				//If frame number is divisble by 100, set colour to red
 				if ((a + 1) % 100 == 0)
 				{
 					x = Color.FromArgb(255, 200, 255);
-					if (a == frm_selPos && layer_sel == -1)
-						x = Color.Cyan;
 				}
 
 				//If the frame is not a special colour, don't fill it in (as it's already filled in with that colour)
-				if ((a + 1) % 10 == 0 || (a == frm_selPos && layer_sel == -1))
+				if ((a + 1) % 10 == 0)
 					g.FillRectangle(new SolidBrush(x), xx, 0, 8, 16 * layers.Count + 15);
 
 				//Write in the number
@@ -343,16 +348,27 @@ namespace TISFAT_ZERO
 						x = Color.Gold;
 					}
 
-					if (b < 0 || (layer_sel == -1 && b + offset == frm_selPos))
+					if (b < 0)
 						continue;
 
 					g.FillRectangle(new SolidBrush(x), b * 9 + 80, y, 8, 15);
 				}
 			}
 
-			if (frm_selPos >= offset && frm_selPos - offset < frames && layer_sel != -1)
+			if (frm_selPos >= offset && frm_selPos - offset < frames)
 			{
-				g.FillRectangle(new SolidBrush(Color.Red), sFrameLoc, layer_sel * 16 + 16, 8, 15);
+				if (layer_sel != -1)
+					g.FillRectangle(new SolidBrush(Color.Red), sFrameLoc, layer_sel * 16 + 16, 8, 15);
+				else
+				{
+					int x9 = frm_selPos * 9 + 79;
+					Pen pn = new Pen(new SolidBrush(Color.Red));
+					g.DrawLines(pn, new Point[] { new Point(x9, 0), new Point(x9 + 9, 0), new Point(x9 + 9, 15), new Point(x9, 15), new Point(x9, 1) });
+					g.DrawLines(pn, new Point[] { new Point(x9+1, 1), new Point(x9 + 8, 1), new Point(x9 + 8, 14), new Point(x9 + 1, 14), new Point(x9 + 1, 1) });
+					g.DrawLine(pn, new Point(x9 + 4, 16), new Point(x9 + 4, layer_cnt * 16 + 32));
+					g.DrawLine(pn, new Point(x9 + 5, 16), new Point(x9 + 5, layer_cnt * 16 + 32));
+					pn.Dispose();
+				}
 			}
 
 			#endregion Layer Rendering
@@ -469,10 +485,7 @@ namespace TISFAT_ZERO
 				}
 				else
 				{
-					//Get the index off the keyframe inside the frames list (quite helpful)
-					int indOf = l.keyFrames.IndexOf(frm_selected);
-
-					int backPos = kfs[indOf - 1].pos, frontPos = kfs[indOf + 1].pos;
+					int backPos = kfs[frm_selInd - 1].pos, frontPos = kfs[frm_selInd + 1].pos;
 
 					newSelected = Math.Max(Math.Min(newSelected, frontPos - 1), backPos + 1);
 				}
@@ -496,24 +509,15 @@ namespace TISFAT_ZERO
 				{
 					return;
 				}
-				else if (diff > 0)
-				{
-					int d = diff;
-					l.firstKF += d;
-					l.lastKF += d;
-
-					for (int a = 0; a < l.keyFrames.Count; a++)
-						l.keyFrames[a].pos += d;
-				}
 				else
 				{
-					int d = -1 * diff;
-					l.firstKF -= d;
-					l.lastKF -= d;
+					l.firstKF += diff;
+					l.lastKF += diff;
 
 					for (int a = 0; a < l.keyFrames.Count; a++)
-						l.keyFrames[a].pos -= d;
+						l.keyFrames[a].pos += diff;
 				}
+
 				frm_selPos = newSelected;
 				Refresh();
 			}
