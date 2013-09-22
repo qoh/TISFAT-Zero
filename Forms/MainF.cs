@@ -168,12 +168,6 @@ namespace TISFAT_ZERO
 			f.ShowDialog();
 		}
 
-		private void drawStickToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			tline.addStickLayer("LAYER NAME");
-			tline.Refresh();
-		}
-
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			About f = new About();
@@ -183,6 +177,21 @@ namespace TISFAT_ZERO
 		private void exitTISFATToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			this.Close();
+		}
+
+		private void removeLayerCallback(object sender, EventArgs e)
+		{
+			Layer toRemove = Timeline.layers[Timeline.layer_sel];
+
+			Canvas.figureList.Remove(toRemove.fig);
+			Canvas.tweenFigs.Remove(toRemove.tweenFig);
+
+			Timeline.layers.RemoveAt(Timeline.layer_sel);
+			Timeline.layer_cnt--;
+			if (Timeline.layer_sel == Timeline.layer_cnt)
+				Timeline.layer_sel--;
+
+			tline.Refresh();
 		}
 		#endregion
 

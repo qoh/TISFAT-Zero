@@ -7,6 +7,7 @@ namespace TISFAT_ZERO
 {
 	public class StickJoint
 	{
+
 		#region Variables
 		//Defining Public Varaibles
 		public string name;
@@ -149,7 +150,7 @@ namespace TISFAT_ZERO
 			r[2] = r[0] + (int)Math.Round(sPercent * (r[1] - r[0]));
 			g[2] = g[0] + (int)Math.Round(sPercent * (g[1] - g[0]));
 			b[2] = b[0] + (int)Math.Round(sPercent * (b[1] - b[0]));
-			a[2] = a[0] + (int)Math.Round(sPercent * (a[1] - b[0]));
+			a[2] = a[0] + (int)Math.Round(sPercent * (a[1] - a[0]));
 
 			if (a[2] > 255)
 				a[2] = 255;
@@ -255,10 +256,12 @@ namespace TISFAT_ZERO
 			this.ParentFigure.onJointMoved();
 		} 
 		#endregion
+
 	}
 
 	public abstract class StickObject
 	{
+
 		#region Properties
 
 		public List<StickJoint> Joints;
@@ -459,9 +462,9 @@ namespace TISFAT_ZERO
 		}
 	}
 	
-
 	public class StickFigure : StickObject
 	{
+
 		#region Variables
 
 		/*
@@ -607,6 +610,7 @@ namespace TISFAT_ZERO
 			Joints[10].location = lFoot;
 		} 
 		#endregion
+
 	}
 
 	public class StickLine : StickObject
@@ -616,7 +620,8 @@ namespace TISFAT_ZERO
 			type = 2;
 			Joints = new List<StickJoint>(2);
 
-			//Somewhere between a rock and a hardplace is a line. :)
+			//Somewhere between a rock and a hardplace is a line. :) -Evar678
+			//I don't get it. -Ipquarx
 
 			Joints.Add(new StickJoint("Rock", new Point(30, 30), 12, Color.Black, Color.Green, 0, 0, false, null)); 
 			Joints.Add(new StickJoint("Hard Place", new Point(45, 30), 12, Color.Black, Color.Yellow, 0, 0, false, Joints[0]));

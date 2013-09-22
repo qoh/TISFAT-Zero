@@ -13,6 +13,7 @@ namespace TISFAT_ZERO
 	{
 
 		#region Variables
+
 		//This is the set of points used for drawing the black outline of the timeline layer
 		private readonly Point[] p1 = new Point[] { new Point(79, 0), new Point(79, 15), new Point(0, 15) };
 		private readonly Color layerColour = Color.FromArgb(70, 120, 255), tenthframe = Color.FromArgb(40, 230, 255);
@@ -29,6 +30,8 @@ namespace TISFAT_ZERO
 		public KeyFrame frm_selected;
 
 		private bool mouseDown = false, isPlaying = false;
+
+		private List<string> layers_dispNames = new List<string>();
 		#endregion
 
 		/// <summary>
@@ -230,14 +233,23 @@ namespace TISFAT_ZERO
 		}
 
 		/// <summary>
-		/// Resets the everything.
+		/// Resets the timeline as if you restarted the program.
 		/// </summary>
-		/// <param name="keepDefaultLayer">if set to <c>true</c>, keep the default stick layer upon resetting..</param>
+		/// <param name="keepDefaultLayer">if set to <c>true</c>, keep the default stick layer upon resetting.</param>
 		public static void resetEverything(bool keepDefaultLayer)
 		{
 			layers = new List<Layer>();
 			layer_cnt = layer_sel = 0; frm_selPos = 0;
 			mainForm.resetTimeline(keepDefaultLayer);
+		}
+
+
+		/// <summary>
+		/// Sets the layer display names, which accounts for overflow. (In which case it will make sure ... are the last 3 displayed characters)
+		/// </summary>
+		private void getLayerDisplayNames()
+		{
+			//layers_dispNames
 		}
 
 		#endregion Helper Methods
@@ -265,18 +277,18 @@ namespace TISFAT_ZERO
 			int offset = scroll / 9;
 
 			//Grab the font we need to use to draw strings
-			Font fo = SystemFonts.DefaultFont;
+			Font fo = DefaultFont;
 
 			//draw the timeline layer
 			g.FillRectangle(new SolidBrush(Color.FromArgb(70, 120, 255)), new Rectangle(0, 0, 79, layers.Count * 16 + 15));
 			g.DrawLines(blk, p1);
-			g.DrawString("T I M E L I N E", fo, new SolidBrush(Color.Black), 1, 1.5f);
+			TextRenderer.DrawText(g, "T I M E L I N E", fo, new Point(1, 1), Color.Black);
 
 			//Draw each layer
 			for (int a = 1; a - 1 < layers.Count; a++)
 			{
 				g.DrawLines(blk, new Point[] { new Point(79, 16 * a - 1), new Point(79, 16 * a + 15), new Point(0, 16 * a + 15) });
-				g.DrawString(layers[a - 1].name, fo, new SolidBrush(Color.Black), 1, 16 * a + 0.4f);
+				TextRenderer.DrawText(g, layers[a - 1].name, fo, new Point(1, 16 * a + 1), Color.Black);
 			}
 
 			g.FillRectangle(new SolidBrush(Color.FromArgb(200, 200, 200)), new Rectangle(80, 16 * layer_sel + 16, Width, 16));
@@ -301,7 +313,7 @@ namespace TISFAT_ZERO
 					g.FillRectangle(new SolidBrush(x), xx, 0, 8, 16 * layers.Count + 15);
 
 				//Write in the number
-				g.DrawString(((a + 1) % 10).ToString(), fo, Brushes.Black, new PointF(xx - 1, 1));
+				TextRenderer.DrawText(g, "" + ((a + 1) % 10), fo, new Point(xx - 2, 1), Color.Black);
 			}
 
 			Height = layers.Count * 16 + 16;
@@ -360,7 +372,7 @@ namespace TISFAT_ZERO
 					g.FillRectangle(new SolidBrush(Color.Red), sFrameLoc, layer_sel * 16 + 16, 8, 15);
 				else
 				{
-					int x9 = frm_selPos * 9 + 79;
+					int x9 = frm_selPos * 9 + 79 - offset * 9;
 					Pen pn = new Pen(new SolidBrush(Color.Red));
 					g.DrawLines(pn, new Point[] { new Point(x9, 0), new Point(x9 + 9, 0), new Point(x9 + 9, 15), new Point(x9, 15), new Point(x9, 1) });
 					g.DrawLines(pn, new Point[] { new Point(x9+1, 1), new Point(x9 + 8, 1), new Point(x9 + 8, 14), new Point(x9 + 1, 14), new Point(x9 + 1, 1) });
@@ -553,8 +565,8 @@ namespace TISFAT_ZERO
 			tst_insertKeyframe.Enabled = frameType == 4;
 			tst_insertKeyframeAtPose.Enabled = frameType == 4;
 			tst_removeKeyframe.Enabled = frameType == 1;
-			tst_setPosePrvKfrm.Enabled = frameType == 3;
-			tst_setPoseNxtKfrm.Enabled = frameType == 2;
+			tst_setPosePrvKfrm.Enabled = frameType == 1 || frameType == 3;
+			tst_setPosePrvKfrm.Enabled = frameType == 1 || frameType == 2;
 			tst_onionSkinning.Enabled = frameType != 0 | frameType != 4;
 
 			tst_insertFrameset.Enabled = frameType == 0;
@@ -563,7 +575,7 @@ namespace TISFAT_ZERO
 			tst_moveLayerUp.Enabled = true;
 			tst_moveLayerDown.Enabled = true;
 			tst_insertLayer.Enabled = true;
-			tst_removeLayer.Enabled = true;
+			tst_removeLayer.Enabled = layer_cnt > 1;
 
 			tst_keyFrameAction.Enabled = frameType != 0 | frameType != 4;
 
@@ -622,6 +634,23 @@ namespace TISFAT_ZERO
 
 					for (int a = 0; a < cLayer.keyFrames[pos].Joints.Count; a++)
 						cLayer.keyFrames[pos].Joints[a].location = new Point(cLayer.keyFrames[pos + 1].Joints[a].location.X, cLayer.keyFrames[pos + 1].Joints[a].location.Y);
+
+					break;
+
+				case "tst_removeLayer":
+					Layer toRemove = layers[layer_sel];
+
+					Canvas.figureList.Remove(toRemove.fig);
+					Canvas.tweenFigs.Remove(toRemove.tweenFig);
+
+					layers.RemoveAt(Timeline.layer_sel);
+					layer_cnt--;
+
+					//Prevent having a non-existant layer selected after deleting
+					if (layer_sel == layer_cnt)
+						layer_sel--;
+
+					Refresh();
 
 					break;
 

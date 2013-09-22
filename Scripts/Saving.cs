@@ -78,9 +78,6 @@ namespace TISFAT_ZERO
 
 		private static void writeLayerBlock(Layer l, Stream stream)
 		{
-			if (l.type != 1)
-				return;
-
 			List<byte> bytes = new List<byte>();
 
 			bytes.AddRange(new byte[] { 0, 0 });
@@ -98,8 +95,8 @@ namespace TISFAT_ZERO
 
 			stream.Write(bytes.ToArray(), 0, bytes.Count);
 
-			foreach (KeyFrame k in l.keyFrames)
-				writeFrameBlock(k, stream);
+			for(int x = 0; x < l.keyFrames.Count; x++)
+				writeFrameBlock(l.keyFrames[x], stream);
 
 			List<byte> b2 = new List<byte>();
 			b2.AddRange(BitConverter.GetBytes((int)3));
@@ -114,7 +111,7 @@ namespace TISFAT_ZERO
 			byte type = f.type;
 			List<byte> bytes = new List<byte>();
 
-			bytes.AddRange(new byte[] { 0, 2 });
+			bytes.AddRange(BitConverter.GetBytes((ushort)2));
 
 			bytes.AddRange(BitConverter.GetBytes(f.pos));
 			bytes.InsertRange(0, BitConverter.GetBytes(bytes.Count));
@@ -137,11 +134,14 @@ namespace TISFAT_ZERO
 		{
 			List<byte> bytes = new List<byte>();
 
-			bytes.AddRange(new byte[] { 0, 4 });
+			bytes.AddRange(BitConverter.GetBytes((ushort)4));
 			bytes.AddRange(BitConverter.GetBytes(true)); //This true is a placeholder for the (to come) IsAllOneColour bool in the keyframe class.
+			bytes.Add((byte)k.figColor.A);
 			bytes.Add((byte)k.figColor.R);
 			bytes.Add((byte)k.figColor.G);
 			bytes.Add((byte)k.figColor.B);
+			if (k.type == 2)
+				bytes.Add((byte)k.Joints[0].thickness);
 
 			bytes.InsertRange(0, BitConverter.GetBytes(bytes.Count));
 
@@ -152,7 +152,7 @@ namespace TISFAT_ZERO
 		{
 			List<byte> bytes = new List<byte>();
 
-			bytes.AddRange(new byte[] { 0, 5 });
+			bytes.AddRange(BitConverter.GetBytes((ushort)5));
 
 			bytes.AddRange(BitConverter.GetBytes((ushort)j.Length));
 
@@ -218,7 +218,7 @@ namespace TISFAT_ZERO
 
 				for (Block tmpBlk = readNextBlock(file); tmpBlk.type != 1; tmpBlk = readNextBlock(file))
 				{
-					//Make sure we're reading in a frame
+
 					if (tmpBlk.type != 2)
 						continue;
 
@@ -262,20 +262,23 @@ namespace TISFAT_ZERO
 					if (propBlock.type == 4)
 					{
 						//Obtain the colour that's stored in the properties block
-						figColor = Color.FromArgb(propBlock.data[1], propBlock.data[2], propBlock.data[3]);
+						figColor = Color.FromArgb(propBlock.data[1], propBlock.data[2], propBlock.data[3], propBlock.data[4]);
 
 						//Obtain the joints positions block
 						posblk = readNextBlock(file); //Oh readNextBlock method, how you make my life simpler so
 					}
-
+					
 					try
 					{
 						for (int a = 0; a < f.Joints.Count; a++)
 						{
 							int x = 4 * a;
 							f.Joints[a].color = figColor;
-							f.Joints[a].location = new Point(BitConverter.ToInt16(new byte[] { posblk.data[x], posblk.data[x + 1] }, 0),
-																BitConverter.ToInt16(new byte[] { posblk.data[x + 2], posblk.data[x + 3] }, 0));
+							f.Joints[a].location = new Point(BitConverter.ToInt16(new byte[] { posblk.data[x + 2], posblk.data[x + 3] }, 0),
+																BitConverter.ToInt16(new byte[] { posblk.data[x + 4], posblk.data[x + 5] }, 0));
+
+							if (layerType == 2)
+								f.Joints[a].thickness = propBlock.data[5];
 						}
 					}
 					catch
@@ -283,12 +286,9 @@ namespace TISFAT_ZERO
 						//Do nothing. The loader should try to continue loading if it encounters any sort of error here.
 					}
 
-					newLayer.keyFrames.Add(f);
-
-					for (Block x = readNextBlock(file); x.type != 3; x = readNextBlock(file)) ;
-
+					thingy.Add(f);
 				}
-
+				newLayer.keyFrames = thingy;
 				layers.Add(newLayer);
 			}
 			Timeline.layers = layers;

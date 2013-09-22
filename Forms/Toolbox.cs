@@ -140,7 +140,7 @@ namespace TISFAT_ZERO
 		private void btn_addStick_Click(object sender, EventArgs e)
 		{
 			int i = 1;
-			foreach (StickLayer k in Timeline.layers)
+			foreach (Layer k in Timeline.layers)
 			{
 				i++;
 			}
