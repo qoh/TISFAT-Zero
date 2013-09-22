@@ -5,12 +5,12 @@ using System.Drawing;
 
 namespace TISFAT_ZERO
 {
-    public abstract class Layer
-    {
+	public abstract class Layer
+	{
 		//Define variables
 		public int firstKF, lastKF;
 		public int selectedFrame = -1;
-        public List<KeyFrame> keyFrames;
+		public List<KeyFrame> keyFrames;
 		public string name;
 		public byte type;
 		public StickObject fig, tweenFig;
@@ -123,7 +123,7 @@ namespace TISFAT_ZERO
 		}
 
 		public abstract int insertKeyFrame(int pos);
-    }
+	}
 
 	public class StickLayer : Layer
 	{
@@ -140,9 +140,9 @@ namespace TISFAT_ZERO
 			keyFrames.Add(new StickFrame(firstKF));
 			keyFrames.Add(new StickFrame(lastKF));
 
-            theCanvas = aTheCanvas;
+			theCanvas = aTheCanvas;
 
-            tweenFig = new StickFigure(true, true);
+			tweenFig = new StickFigure(true, true);
 
 			name = nom; //nomnomnom
 		}
@@ -178,17 +178,17 @@ namespace TISFAT_ZERO
 			//Look through the list for the nearest keyframe (as we want to retain all it's properties except for the position in the timeline)
 			for(int a = 0; a < keyFrames.Count; a++)
 			{
-                StickFrame k = (StickFrame)keyFrames[a];
+				StickFrame k = (StickFrame)keyFrames[a];
 				if (pos < k.pos)
-                {
-                    n = new StickFrame(((StickFrame)keyFrames[c - 1]).Joints, pos);
-                    n.pos = pos;
-                    break;
+				{
+					n = new StickFrame(((StickFrame)keyFrames[c - 1]).Joints, pos);
+					n.pos = pos;
+					break;
 				}
-                else if(pos > k.pos)
-                {
-                    c++;
-                }
+				else if(pos > k.pos)
+				{
+					c++;
+				}
 				else if (pos == k.pos) // We can't insert a frame in the same spot as another!
 					return -1;
 

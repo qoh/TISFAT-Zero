@@ -9,39 +9,39 @@ using System.Windows.Forms;
 
 namespace TISFAT_ZERO
 {
-    public partial class About : Form
-    {
-        public About()
-        {
-            InitializeComponent();
-        }
+	public partial class About : Form
+	{
+		public About()
+		{
+			InitializeComponent();
+		}
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (listBox1.SelectedIndex == 0)
-            {
+		private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (listBox1.SelectedIndex == 0)
+			{
 				pnl_About.Visible = true;
 				pnl_Developers.Visible = false;
 				pnl_Thanks.Visible = false;
-            }
-            else if (listBox1.SelectedIndex == 1)
-            {
+			}
+			else if (listBox1.SelectedIndex == 1)
+			{
 				pnl_About.Visible = false;
 				pnl_Developers.Visible = true;
 				pnl_Thanks.Visible = false;
-            }
-            else if (listBox1.SelectedIndex == 2)
-            {
+			}
+			else if (listBox1.SelectedIndex == 2)
+			{
 				pnl_About.Visible = false;
 				pnl_Developers.Visible = false;
 				pnl_Thanks.Visible = true;
-            }
-        }
+			}
+		}
 
-        private void About_Load(object sender, EventArgs e)
-        {
-            pnl_About.BringToFront();
-            listBox1.SelectedIndex = 0;
-        }
-    }
+		private void About_Load(object sender, EventArgs e)
+		{
+			pnl_About.BringToFront();
+			listBox1.SelectedIndex = 0;
+		}
+	}
 }

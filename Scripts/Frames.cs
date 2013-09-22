@@ -4,22 +4,22 @@ using System.Drawing;
 namespace TISFAT_ZERO
 {
 	//The base keyframe class that all other frame types are derived from.
-    public abstract class KeyFrame
-    {
+	public abstract class KeyFrame
+	{
 		//Just the basics, a colour, position, type, and a list of joints.
 		//This really helps so we don't need to have a bunch of silly casts.
 		public Color figColor = Color.Black;
 		public int pos;
 		public byte type;
 		public List<StickJoint> Joints = new List<StickJoint>();
-    }
+	}
 
 	//This point on really just defines a bunch of different types of keyframes. The only real purpose for having different types
 	//is having the joint-set set in properly by default on creation.
-    public class StickFrame : KeyFrame
-    {
-        public StickFrame(List<StickJoint> ps, int po)
-        {
+	public class StickFrame : KeyFrame
+	{
+		public StickFrame(List<StickJoint> ps, int po)
+		{
 			pos = po; type = 0;
 
 			Joints.Add(new StickJoint(ps[0], null));
@@ -36,19 +36,19 @@ namespace TISFAT_ZERO
 			Joints.Add(new StickJoint(ps[10], Joints[9]));
 			Joints.Add(new StickJoint(ps[11], Joints[0]));
 
-            for (int i = 0; i < Joints.Count; i++)
-                if (Joints[i].parent != null)
-                    Joints[i].CalcLength(null);
+			for (int i = 0; i < Joints.Count; i++)
+				if (Joints[i].parent != null)
+					Joints[i].CalcLength(null);
 
-            for (int i = 0; i < Joints.Count; i++)
-                if (Joints[i].parent != null)
-                    Joints[i].parent.children.Add(Joints[i]);
+			for (int i = 0; i < Joints.Count; i++)
+				if (Joints[i].parent != null)
+					Joints[i].parent.children.Add(Joints[i]);
 
 			if(ps[0].ParentFigure != null)
 				figColor = ps[0].ParentFigure.figColor;
-        }
+		}
 
-        public StickFrame(StickFrame old)
+		public StickFrame(StickFrame old)
 		{
 			pos = old.pos;
 			Joints = old.Joints;
@@ -82,7 +82,7 @@ namespace TISFAT_ZERO
 			pos = po;
 			type = 0;
 		}
-    }
+	}
 
 	public class LineFrame : KeyFrame
 	{

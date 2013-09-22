@@ -47,7 +47,6 @@ namespace TISFAT_ZERO
 			//Save all the layers to the memory stream
 			try
 			{
-				uint y = 0;
 				foreach (Layer x in Layers)
 				{
 					writeLayerBlock(x, memst);
@@ -140,9 +139,9 @@ namespace TISFAT_ZERO
 
 			bytes.AddRange(new byte[] { 0, 4 });
 			bytes.AddRange(BitConverter.GetBytes(true)); //This true is a placeholder for the (to come) IsAllOneColour bool in the keyframe class.
-			bytes.AddRange(BitConverter.GetBytes(k.figColor.R));
-			bytes.AddRange(BitConverter.GetBytes(k.figColor.G));
-			bytes.AddRange(BitConverter.GetBytes(k.figColor.B));
+			bytes.Add((byte)k.figColor.R);
+			bytes.Add((byte)k.figColor.G);
+			bytes.Add((byte)k.figColor.B);
 
 			bytes.InsertRange(0, BitConverter.GetBytes(bytes.Count));
 
@@ -186,11 +185,12 @@ namespace TISFAT_ZERO
 
 			long length = file.Length;
 			List<Layer> layers = new List<Layer>();
+
 			while (file.Position + 1 < length)
 			{
-				Block layer = readNextBlock(file); //i REALLY hope this works ;-;
+				Block layer = readNextBlock(file);
 
-				if (layer.type != 0)
+				if (layer.type != 0) //If it isn't the actual layer type, then skip.
 					continue;
 
 				byte layerType = layer.data[0];
@@ -203,60 +203,93 @@ namespace TISFAT_ZERO
 
 				string name = Encoding.UTF8.GetString(namebytes);
 
-				StickLayer newLayer = new StickLayer(name, new StickFigure(false), zeCanvas);
+				Layer newLayer;
+				
+				if(layerType == 1)
+					newLayer = new StickLayer(name, new StickFigure(false), zeCanvas);
+				else if(layerType == 2)
+					newLayer = new LineLayer(name, new StickLine(false), zeCanvas);
+				else if(layerType == 3)
+					newLayer = new RectLayer(name, new StickRect(false), zeCanvas);
+				else
+					continue; //Only 1, 2, and 3 have been coded so far, so only load those types.
+
 				List<KeyFrame> thingy = new List<KeyFrame>();
 
 				for (Block tmpBlk = readNextBlock(file); tmpBlk.type != 1; tmpBlk = readNextBlock(file))
 				{
 					//Make sure we're reading in a frame
 					if (tmpBlk.type != 2)
-					{
 						continue;
-					}
 
 					KeyFrame f;
 
 					if (layerType == 1)
 						f = new StickFrame(0);
+					else if (layerType == 2)
+						f = new LineFrame(0);
+					else if (layerType == 3)
+						f = new RectFrame(0);
+					else
+						continue; //Nothing past layer type 3 has even begun imlementation, so if we encounter any just skip.
 
+					//Copy the data from the keyframe data to get the position of the keyframe
 					byte[] posbytes = new byte[4];
+					for (int a = 0; a < 4; a++)
+						posbytes[a] = tmpBlk.data[a];
+
+					int kPos = BitConverter.ToInt32(posbytes, 0);
+
+					f.pos = kPos;
+
+					//Read the next block, which contains the other properties of the keyframe, like the colour of the joints.
+					Block propBlock = readNextBlock(file);
+
+					try
+					{
+						//We can also just skip the keyframe properties totally in case we're loading an older file format.
+						while(propBlock.type != 4 && propBlock.type != 5)
+							propBlock = readNextBlock(file);
+					}
+					catch
+					{
+						throw new Exception("Loading failed. Reason: Unable to load keyframe properties.");
+					}
+
+					Block posblk = propBlock;
+					Color figColor = Color.Black;
+
+					if (propBlock.type == 4)
+					{
+						//Obtain the colour that's stored in the properties block
+						figColor = Color.FromArgb(propBlock.data[1], propBlock.data[2], propBlock.data[3]);
+
+						//Obtain the joints positions block
+						posblk = readNextBlock(file); //Oh readNextBlock method, how you make my life simpler so
+					}
+
+					try
+					{
+						for (int a = 0; a < f.Joints.Count; a++)
+						{
+							int x = 4 * a;
+							f.Joints[a].color = figColor;
+							f.Joints[a].location = new Point(BitConverter.ToInt16(new byte[] { posblk.data[x], posblk.data[x + 1] }, 0),
+																BitConverter.ToInt16(new byte[] { posblk.data[x + 2], posblk.data[x + 3] }, 0));
+						}
+					}
+					catch
+					{
+						//Do nothing. The loader should try to continue loading if it encounters any sort of error here.
+					}
+
+					newLayer.keyFrames.Add(f);
+
+					for (Block x = readNextBlock(file); x.type != 3; x = readNextBlock(file)) ;
+
 				}
 
-				/*
-				int dataLength = layer.data.Length;
-				MemoryStream ms = new MemoryStream();
-				ms.Write(layer.data, 0, dataLength);
-				ms.Position = 0;
-
-				while (ms.Position + 1 < dataLength)
-				{
-					Block fBlock = readNextBlock(ms);
-					if (fBlock.data == null)
-						break;
-					byte[] posbytes = new byte[4];
-					for(int a = 0; a < 4; a++)
-						posbytes[a] = fBlock.data[a + 1];
-
-					byte[] newdata = new byte[fBlock.data.Length - 5];
-					int len = fBlock.data.Length;
-					for (int a = 5; a < len; a++)
-						newdata[a-5] = fBlock.data[a];
-
-					//screw it im adding in checks later
-					StickFrame frm = new StickFrame(BitConverter.ToInt32(posbytes, 0));
-
-					MemoryStream fs = new MemoryStream();
-					fs.Write(newdata, 0, newdata.Length);
-					fs.Position = 0;
-
-					Block pblock = readNextBlock(fs);
-
-					for (int a = 0; a < 12; a++) //I dislike reading binary like this but it's kinda unavoidable.
-						frm.Joints[a].location = new Point((int)BitConverter.ToInt16(new byte[] { pblock.data[4 * a + 2], pblock.data[4 * a + 3] },0), (int)BitConverter.ToInt16(new byte[] { pblock.data[4 * (a + 1)], pblock.data[4 * (a + 1) + 1] }, 0));
-					thingy.Add(frm);
-				}
-				newLayer.keyFrames = thingy;
-				layers.Add(newLayer);*/
+				layers.Add(newLayer);
 			}
 			Timeline.layers = layers;
 			Timeline.layer_cnt = layers.Count;

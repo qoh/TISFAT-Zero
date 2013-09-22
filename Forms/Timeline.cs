@@ -118,8 +118,7 @@ namespace TISFAT_ZERO
 		/// </summary>
 		public void setFrame()
 		{
-			if (frm_selPos != null)
-				setFrame(frm_selPos);
+			setFrame(frm_selPos);
 		}
 
 		/// <summary>

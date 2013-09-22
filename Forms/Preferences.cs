@@ -18,62 +18,62 @@ namespace TISFAT_ZERO
 		}
 
 		/* -Conf.Prop-
-		 * Default Save Location
-		 * Default Canvas Size X,Y
-		 *
-		 *
-		 */
+			* Default Save Location
+			* Default Canvas Size X,Y
+			*
+			*
+			*/
 
 		//TODO: Fix all this crap.
 
 		private void Preferences_Load(object sender, EventArgs e)
 		{
-            if (Properties.User.Default.DefaultSavePath == "")
-            {
-                txt_defaultSavePath.Text = Environment.SpecialFolder.MyDocuments + "\\TISFAT\\";
-                Properties.User.Default.DefaultSavePath = txt_defaultSavePath.Text;
-                Properties.User.Default.Save();
-            }
+			if (Properties.User.Default.DefaultSavePath == "")
+			{
+				txt_defaultSavePath.Text = Environment.SpecialFolder.MyDocuments + "\\TISFAT\\";
+				Properties.User.Default.DefaultSavePath = txt_defaultSavePath.Text;
+				Properties.User.Default.Save();
+			}
 
-            txt_defaultSavePath.Text = Properties.User.Default.DefaultSavePath;
-            pic_colorBox.BackColor = Properties.User.Default.CanvasColor;
-            lbl_backgroundColorPic.Text = Properties.User.Default.CanvasColor.Name;
+			txt_defaultSavePath.Text = Properties.User.Default.DefaultSavePath;
+			pic_colorBox.BackColor = Properties.User.Default.CanvasColor;
+			lbl_backgroundColorPic.Text = Properties.User.Default.CanvasColor.Name;
 
-            num_Width.Value = Properties.User.Default.CanvasSize.Width;
-            num_Height.Value = Properties.User.Default.CanvasSize.Height;
-        }
+			num_Width.Value = Properties.User.Default.CanvasSize.Width;
+			num_Height.Value = Properties.User.Default.CanvasSize.Height;
+		}
 
-        private void pnl_colorButtonHitbox_MouseClick(object sender, MouseEventArgs e)
-        {
-            dlg_colorDialog.ShowDialog();
-            pic_colorBox.BackColor = dlg_colorDialog.Color;
-            lbl_backgroundColorPic.Text = dlg_colorDialog.Color.Name;
-        }
+		private void pnl_colorButtonHitbox_MouseClick(object sender, MouseEventArgs e)
+		{
+			dlg_colorDialog.ShowDialog();
+			pic_colorBox.BackColor = dlg_colorDialog.Color;
+			lbl_backgroundColorPic.Text = dlg_colorDialog.Color.Name;
+		}
 
-        private void pnl_colorButtonHitbox_MouseClick(object sender, EventArgs e)
-        {
-            dlg_colorDialog.ShowDialog();
-            pic_colorBox.BackColor = dlg_colorDialog.Color;
-            lbl_backgroundColorPic.Text = dlg_colorDialog.Color.Name;
-        }
+		private void pnl_colorButtonHitbox_MouseClick(object sender, EventArgs e)
+		{
+			dlg_colorDialog.ShowDialog();
+			pic_colorBox.BackColor = dlg_colorDialog.Color;
+			lbl_backgroundColorPic.Text = dlg_colorDialog.Color.Name;
+		}
 
-        private void btn_defSavPathBrowse_Click(object sender, EventArgs e)
-        {
-            dlg_folderBrowser.ShowDialog();
-            if(!(dlg_folderBrowser.SelectedPath == ""))
-                txt_defaultSavePath.Text = dlg_folderBrowser.SelectedPath;
-        }
+		private void btn_defSavPathBrowse_Click(object sender, EventArgs e)
+		{
+			dlg_folderBrowser.ShowDialog();
+			if(!(dlg_folderBrowser.SelectedPath == ""))
+				txt_defaultSavePath.Text = dlg_folderBrowser.SelectedPath;
+		}
 
-        private void btn_submitButton_Click(object sender, EventArgs e)
-        {
-            Properties.User.Default.DefaultSavePath = txt_defaultSavePath.Text;
-            Properties.User.Default.CanvasColor = pic_colorBox.BackColor;
+		private void btn_submitButton_Click(object sender, EventArgs e)
+		{
+			Properties.User.Default.DefaultSavePath = txt_defaultSavePath.Text;
+			Properties.User.Default.CanvasColor = pic_colorBox.BackColor;
 
-            Properties.User.Default.CanvasSize = new System.Drawing.Size((int)num_Width.Value, (int)num_Height.Value);
-            Properties.User.Default.Save();
+			Properties.User.Default.CanvasSize = new System.Drawing.Size((int)num_Width.Value, (int)num_Height.Value);
+			Properties.User.Default.Save();
 
-            this.Close();
-        }
+			this.Close();
+		}
 
 		private void listView1_SelectedIndexChanged(object sender, EventArgs e)
 		{
