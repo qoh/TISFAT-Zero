@@ -11,21 +11,6 @@ namespace TISFAT_ZERO
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-		//This here is what prevents flicker in the canvas (not needed maybe?)
-		//IF THERE IS STILL FLICKER, REENABLING THIS SHOULD BE THE LAST DITCH EFFORT
-        /*
-        protected override CreateParams CreateParams
-		{
-			get
-			{
-				CreateParams cp = base.CreateParams;
-				cp.ExStyle |= 0x02000000;  // Turn on WS_EX_COMPOSITED
-				return cp;
-			}
-		}
-        */
-
-
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>

@@ -171,11 +171,11 @@ namespace TISFAT_ZERO
 			if (pStart == null)
 				return;
 
-			int xDiff, yDiff, f;
+			int xDiff, yDiff, f, g = 0;
 			double dAngle, dRads, cx, cy;
 			StickJoint pJoint;
 
-			for (f = 0; f < pStart.children.Count(); f++)
+			for (f = 0; f < pStart.children.Count() && g < 100; f++, g++)
 			{
 				pJoint = pStart.children[f];
 
@@ -214,7 +214,7 @@ namespace TISFAT_ZERO
 
 		public void SetPos(int vx, int vy)
 		{
-			int xDiff, yDiff;
+			int xDiff, yDiff, g = 0;
 			StickJoint pParent, pThis;
 			double dAngle, dRads, dParentAngle, cx, cy;
 			bool bContinue;
@@ -224,8 +224,9 @@ namespace TISFAT_ZERO
 			pThis = this;
 			pParent = parent;
 			bContinue = true;
-			while (pParent != null)
+			while (pParent != null && g < 100)
 			{
+				g++;
 				if ((pParent.state != 0) & !(pParent.selected))
 					bContinue = false;
 				if (bContinue)
@@ -442,23 +443,36 @@ namespace TISFAT_ZERO
 		public void onJointMoved()
 		{
 			Layer x = Timeline.layers[Timeline.layer_sel];
-			int t = x.type;
+			x.keyFrames[x.selectedFrame].Joints = this.Joints;
+		}
 
-			switch(t)
+		//Base as in it has no parent... I know the comparison is iffy at best. Just deal with it.
+		public void setAsBase(StickJoint centre)
+		{
+			if (centre.parent == null)
+				return;
+
+			sunIter(centre.parent, centre);
+
+			centre.parent = null;
+
+			for (int i = 0; i < Joints.Count(); i++)
 			{
-				case 1:
-					Layer currLayer = x;
-					currLayer.keyFrames[currLayer.selectedFrame].Joints = this.Joints;
-					break;
-
-				case 2:
-					//stuff
-					break;
-
-				default:
-					//nothing
-					break;
+				if (Joints[i].parent != null)
+				{
+					Joints[i].CalcLength(null);
+				}
 			}
+		}
+
+		private void sunIter(StickJoint next, StickJoint prev)
+		{
+			if (next.parent != null)
+				sunIter(next.parent, next);
+
+			next.children.Remove(prev);
+			next.parent = prev;
+			prev.children.Add(next);
 		}
 	}
 	
@@ -553,7 +567,7 @@ namespace TISFAT_ZERO
 			Joints.Add(new StickJoint("LFoot", new Point(202, 241), 12, Color.Black, Color.Blue, 0, 0, false, Joints[7]));
 			Joints.Add(new StickJoint("RKnee", new Point(234, 217), 12, Color.Black, Color.Red, 0, 0, false, Joints[6]));
 			Joints.Add(new StickJoint("RFoot", new Point(243, 240), 12, Color.Black, Color.Red, 0, 0, false, Joints[9]));
-			Joints.Add(new StickJoint("Head", new Point(222, 150), 13, Color.Black, Color.Yellow, 0, 1, true, Joints[0]));
+			Joints.Add(new StickJoint("Head", new Point(222, 147), 13, Color.Black, Color.Yellow, 0, 1, true, Joints[0]));
 
 			for (int a = 0; a < 12; a++)
 				Joints[a].ParentFigure = this;

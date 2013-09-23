@@ -286,21 +286,21 @@ namespace TISFAT_ZERO
 			// 
 			this.layerToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("layerToolStripMenuItem1.Image")));
 			this.layerToolStripMenuItem1.Name = "layerToolStripMenuItem1";
-			this.layerToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+			this.layerToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
 			this.layerToolStripMenuItem1.Text = "Layer";
 			this.layerToolStripMenuItem1.Click += new System.EventHandler(this.removeLayerCallback);
 			// 
 			// framesetToolStripMenuItem1
 			// 
 			this.framesetToolStripMenuItem1.Name = "framesetToolStripMenuItem1";
-			this.framesetToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+			this.framesetToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
 			this.framesetToolStripMenuItem1.Text = "Frameset";
 			// 
 			// keyframeToolStripMenuItem1
 			// 
 			this.keyframeToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("keyframeToolStripMenuItem1.Image")));
 			this.keyframeToolStripMenuItem1.Name = "keyframeToolStripMenuItem1";
-			this.keyframeToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+			this.keyframeToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
 			this.keyframeToolStripMenuItem1.Text = "Keyframe";
 			// 
 			// helpToolStripMenuItem
@@ -425,6 +425,7 @@ namespace TISFAT_ZERO
 			this.ClientSize = new System.Drawing.Size(738, 518);
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.mnu_strip1);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.mnu_strip1;
 			this.MaximumSize = new System.Drawing.Size(2000, 2000);
 			this.MinimumSize = new System.Drawing.Size(650, 450);

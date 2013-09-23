@@ -24,7 +24,7 @@ namespace TISFAT_ZERO
 		public static StickJoint selectedJoint = new StickJoint("null", new Point(0, 0), 0, Color.Transparent, Color.Transparent);
 		public bool draw;
 
-		public bool mousemoved;
+		public bool mousemoved, hasLockedJoint = false;
 		private int ox;
 		private int oy;
 
@@ -154,6 +154,9 @@ namespace TISFAT_ZERO
 					//tolerance of about 4 pixels.
 					f = activeFigure.selectPoint(new Point(e.X, e.Y), 4);
 
+					if(!hasLockedJoint)
+						activeFigure.setAsBase(activeFigure.Joints[(activeFigure.Joints.IndexOf(f) + 1) % activeFigure.Joints.Count]);
+
 					//This sets the labels in the debug menu.
 					theToolbox.lbl_selectedJoint.Text = "Selected Joint: " + f.name;
 					theToolbox.lbl_jointLength.Text = "Joint Length: " + f.CalcLength(null).ToString();
@@ -170,11 +173,15 @@ namespace TISFAT_ZERO
 					try
 					{
 						StickJoint f = null;
-						if(activeFigure != null)
+						if (activeFigure != null)
+						{
 							f = activeFigure.selectPoint(new Point(e.X, e.Y), 4);
-						f.state = (f.state == 1) ? f.state = 0 : f.state = 1;
-						Invalidate();
-						selectedJoint = f;
+							f.state = (f.state == 1) ? f.state = 0 : f.state = 1;
+							hasLockedJoint = !hasLockedJoint;
+							Invalidate();
+							selectedJoint = f;
+							activeFigure.setAsBase(f);
+						}
 					}
 					catch
 					{

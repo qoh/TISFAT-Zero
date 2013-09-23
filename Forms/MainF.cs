@@ -39,7 +39,7 @@ namespace TISFAT_ZERO
 			f.TopLevel = false;
 			f.Parent = this.splitContainer1.Panel2;
 			f.StartPosition = FormStartPosition.Manual;
-			f.Location = new Point(175, 10);
+			f.Location = new Point(200, 10);
 			splitContainer1.Panel2.Controls.Add(f);
 
 			tline = new Timeline(this, f);
@@ -67,7 +67,7 @@ namespace TISFAT_ZERO
 		{
 			splitContainer1.Panel1.Controls.RemoveAt(0);
 			tline.Dispose();
-			splitContainer1.Panel2.Controls.RemoveAt(1); //after you remove the timeline then won't the canvas be entry 0?
+			splitContainer1.Panel2.Controls.RemoveAt(1);
 			theCanvas.Dispose();
 
 			Canvas.figureList.Clear();
@@ -78,7 +78,7 @@ namespace TISFAT_ZERO
 			f.BackColor = Properties.User.Default.CanvasColor;
 			f.TopLevel = false;
 			f.StartPosition = FormStartPosition.Manual;
-			f.Location = new Point(175, 10);
+			f.Location = new Point(200, 10);
 			splitContainer1.Panel2.Controls.Add(f);
 			f.Show();
 
@@ -217,7 +217,7 @@ namespace TISFAT_ZERO
 
 		private void dlg_openFile_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			Loader.loadProjectFile(dlg_openFile.FileName, theCanvas);
+			Loader.loadProjectFile(dlg_openFile.FileName);
 		}
 
 		private void newMovieToolStripMenuItem_Click(object sender, EventArgs e)

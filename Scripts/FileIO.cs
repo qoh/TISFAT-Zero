@@ -15,7 +15,7 @@ namespace TISFAT_ZERO
 		//This class holds the various constants used in file saving/loading.
 		public static readonly byte[]
 			fileSig =		{ 0x54, 0x49, 0x53, 0x46, 0x41, 0x54, 0x2D, 0x30 }, //TISFAT-0 in hex
-			curVersion =	{ 0x00, 0x02, 0x00, 0x00 };
+			curVersion =	{ 0x00, 0x02, 0x01, 0x0A };
 
 		public static readonly string saveFileExt = ".tzs";
 	}
@@ -31,6 +31,7 @@ namespace TISFAT_ZERO
 		//03: end keyframe
 		//04: keyframe properties
 		//05: int list
+		//06: Properties
 	}
 
 	class Saver
@@ -43,6 +44,8 @@ namespace TISFAT_ZERO
 			//Write the file signature and current version
 			memst.Write(tzf.fileSig, 0, tzf.fileSig.Length);
 			memst.Write(tzf.curVersion, 0, tzf.curVersion.Length);
+
+			writePreferencesBlock(memst);
 
 			//Save all the layers to the memory stream
 			try
@@ -76,6 +79,27 @@ namespace TISFAT_ZERO
 			return true;
 		}
 
+		private static void writePreferencesBlock(Stream s)
+		{
+			List<byte> bytes = new List<byte>();
+
+			bytes.AddRange(BitConverter.GetBytes((ushort)6));
+
+			Size canSize = Properties.User.Default.CanvasSize;
+			bytes.AddRange(BitConverter.GetBytes((ushort)canSize.Width));
+			bytes.AddRange(BitConverter.GetBytes((ushort)canSize.Height));
+
+			Color canColr = Properties.User.Default.CanvasColor;
+
+			bytes.Add((byte)canColr.R);
+			bytes.Add((byte)canColr.G);
+			bytes.Add((byte)canColr.B);
+
+			bytes.InsertRange(0, BitConverter.GetBytes(bytes.Count));
+
+			s.Write(bytes.ToArray(), 0, bytes.Count);
+		}
+
 		private static void writeLayerBlock(Layer l, Stream stream)
 		{
 			List<byte> bytes = new List<byte>();
@@ -87,8 +111,8 @@ namespace TISFAT_ZERO
 			byte[] name = Encoding.UTF8.GetBytes(l.name);
 
 			bytes.Add((byte)(name.Length-1));
-			//if the name is longer than 256 characters then that's just silly
-			//(the - 1 lets it be 256 characters instead of just 255, by replacing 1 with 0, 2 with 1 and so forth)
+			//(the - 1 allows 256 characters instead of just 255, by replacing 1 with 0, 2 with 1 and so forth)
+
 			bytes.AddRange(name);
 
 			bytes.InsertRange(0, BitConverter.GetBytes(bytes.Count));
@@ -171,7 +195,7 @@ namespace TISFAT_ZERO
 
 	class Loader
 	{
-		public static void loadProjectFile(string path, Canvas zeCanvas)
+		public static void loadProjectFile(string path)
 		{
 			//1. discard first 12 bytes
 			//2. get layer info
@@ -179,29 +203,73 @@ namespace TISFAT_ZERO
 
 			//Clear everything in the timeline (prompts to come later)
 			Timeline.resetEverything(true);
-			
-			FileStream file = File.Open(path, FileMode.Open);
+
+			Canvas zeCanvas = Canvas.theCanvas;
+
+			FileStream file;
+			try
+			{
+				file = File.Open(path, FileMode.Open);
+			}
+			catch
+			{
+				throw new Exception("Failed to load project file. Reason: Unable to open file.");
+			}
+
 			file.Position += 12;
 
 			long length = file.Length;
 			List<Layer> layers = new List<Layer>();
 
+			Block layer = new Block();
+			layer.type = ushort.MaxValue;
+
+			try
+			{
+				while(layer.type != 6 && layer.type != 0)
+					layer = readNextBlock(file);
+
+				if (layer.type == 6)
+				{
+					try
+					{
+						ushort width = BitConverter.ToUInt16(layer.data, 0);
+						ushort height = BitConverter.ToUInt16(layer.data, 2);
+						Color canColor = Color.FromArgb(layer.data[4], layer.data[5], layer.data[6]);
+
+						zeCanvas.Size = new Size(width, height);
+						zeCanvas.BackColor = canColor;
+					}
+					catch
+					{
+						//Do nothing. The parser should attempt to load the rest of the file even if the preferences aren't valid.
+					}
+
+					try
+					{
+						layer = readNextBlock(file);
+					}
+					catch
+					{
+						throw new Exception("Failed to load project file. Reason: Unable to read from file.");
+					}
+				}
+			}
+			catch
+			{
+				throw new Exception("Failed to load project file. Reason: No Layer or Preferences block found.");
+			}
+
 			while (file.Position + 1 < length)
 			{
-				Block layer = readNextBlock(file);
-
 				if (layer.type != 0) //If it isn't the actual layer type, then skip.
 					continue;
 
 				byte layerType = layer.data[0];
 
 				int nameLength = layer.data[1] + 1;
-				byte[] namebytes = new byte[nameLength];
 
-				for(int a = 2; a < nameLength + 2; a++)
-					namebytes[a-2] = layer.data[a];
-
-				string name = Encoding.UTF8.GetString(namebytes);
+				string name = Encoding.UTF8.GetString(layer.data, 2, nameLength);
 
 				Layer newLayer;
 				
@@ -233,12 +301,7 @@ namespace TISFAT_ZERO
 					else
 						continue; //Nothing past layer type 3 has even begun imlementation, so if we encounter any just skip.
 
-					//Copy the data from the keyframe data to get the position of the keyframe
-					byte[] posbytes = new byte[4];
-					for (int a = 0; a < 4; a++)
-						posbytes[a] = tmpBlk.data[a];
-
-					int kPos = BitConverter.ToInt32(posbytes, 0);
+					int kPos = BitConverter.ToInt32(tmpBlk.data, 0);
 
 					f.pos = kPos;
 
@@ -272,10 +335,10 @@ namespace TISFAT_ZERO
 					{
 						for (int a = 0; a < f.Joints.Count; a++)
 						{
-							int x = 4 * a;
+							int x = 4 * a + 2;
 							f.Joints[a].color = figColor;
-							f.Joints[a].location = new Point(BitConverter.ToInt16(new byte[] { posblk.data[x + 2], posblk.data[x + 3] }, 0),
-																BitConverter.ToInt16(new byte[] { posblk.data[x + 4], posblk.data[x + 5] }, 0));
+							f.Joints[a].location = new Point(BitConverter.ToInt16(posblk.data, x),
+															BitConverter.ToInt16(posblk.data, x + 2));
 
 							if (layerType == 2)
 								f.Joints[a].thickness = propBlock.data[5];
@@ -290,6 +353,7 @@ namespace TISFAT_ZERO
 				}
 				newLayer.keyFrames = thingy;
 				layers.Add(newLayer);
+
 			}
 			Timeline.layers = layers;
 			Timeline.layer_cnt = layers.Count;
