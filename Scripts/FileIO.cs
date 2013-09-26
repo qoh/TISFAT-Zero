@@ -244,15 +244,6 @@ namespace TISFAT_ZERO
 					{
 						//Do nothing. The parser should attempt to load the rest of the file even if the preferences aren't valid.
 					}
-
-					try
-					{
-						layer = readNextBlock(file);
-					}
-					catch
-					{
-						throw new Exception("Failed to load project file. Reason: Unable to read from file.");
-					}
 				}
 			}
 			catch
@@ -262,6 +253,15 @@ namespace TISFAT_ZERO
 
 			while (file.Position + 1 < length)
 			{
+                try
+                {
+                    layer = readNextBlock(file);
+                }
+                catch
+                {
+                    throw new Exception("Failed to load project file. Reason: Unable to read from file.");
+                }
+
 				if (layer.type != 0) //If it isn't the actual layer type, then skip.
 					continue;
 
@@ -299,7 +299,7 @@ namespace TISFAT_ZERO
 					else if (layerType == 3)
 						f = new RectFrame(0);
 					else
-						continue; //Nothing past layer type 3 has even begun imlementation, so if we encounter any just skip.
+						continue; //Nothing past layer type 3 has even begun implementation, so if we encounter any just skip.
 
 					int kPos = BitConverter.ToInt32(tmpBlk.data, 0);
 
@@ -352,8 +352,9 @@ namespace TISFAT_ZERO
 					thingy.Add(f);
 				}
 				newLayer.keyFrames = thingy;
+                newLayer.firstKF = newLayer.keyFrames[0].pos;
+                newLayer.lastKF = newLayer.keyFrames[newLayer.keyFrames.Count - 1].pos;
 				layers.Add(newLayer);
-
 			}
 			Timeline.layers = layers;
 			Timeline.layer_cnt = layers.Count;
