@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenTK.Graphics.OpenGL;
 
 namespace TISFAT_ZERO
 {
@@ -328,9 +329,21 @@ namespace TISFAT_ZERO
 				return;
 			}
 
-			foreach (StickJoint i in Joints)
-				if (i.parent != null)
-					Canvas.drawGraphics(i.drawState, new Pen(i.color, i.thickness), new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
+            GL.Clear(ClearBufferMask.StencilBufferBit);
+            GL.Enable(EnableCap.StencilTest);
+            GL.StencilMask(0xFFFFFF);
+            GL.StencilFunc(StencilFunction.Equal, 0, 0xFFFFFF);
+            GL.StencilOp(StencilOp.Keep, StencilOp.Keep, StencilOp.Incr);
+
+            foreach (StickJoint i in Joints)
+            {
+                if (i.parent != null)
+                {
+                    Canvas.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
+                }
+            }
+
+            GL.Disable(EnableCap.StencilTest);
 		}
 
 		public void drawFigHandles(bool fromCanvas = true)
@@ -347,15 +360,15 @@ namespace TISFAT_ZERO
 				{
 					if (!isActiveFig)
 					{
-						Canvas.drawGraphics(2, new Pen(Color.DimGray, 1), new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
+						Canvas.drawGraphics(2, Color.DimGray, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
 						continue;
 					}
 
 					if (i.handleDrawn & isActiveFig)
-						Canvas.drawGraphics(2, new Pen(i.handleColor, 1), new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
+						Canvas.drawGraphics(2, i.handleColor, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
 
 					if (i.state == 1 | i.state == 3 | i.state == 4)
-						Canvas.drawGraphics(3, new Pen(Color.WhiteSmoke, 1), new Point(i.location.X - 1, i.location.Y - 1), 6, 6, new Point(0, 0));
+						Canvas.drawGraphics(3, Color.WhiteSmoke, new Point(i.location.X - 1, i.location.Y - 1), 6, 6, new Point(0, 0));
 				}
 			}
 		}

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using OpenTK.Graphics.OpenGL;
+using System.Diagnostics;
 
 namespace TISFAT_ZERO
 {
@@ -14,6 +16,9 @@ namespace TISFAT_ZERO
 		public static Toolbox theToolbox;
 		public static Canvas theCanvas;
 		public static Graphics theCanvasGraphics; //We need a list of objects to draw.
+        public static bool GLLoaded = false; //we can't touch GL until its fully loaded, this is a guard variable
+        public static int GL_WIDTH;
+        public static int GL_HEIGHT;
 
 		public static List<StickObject> figureList = new List<StickObject>();
 		public static List<StickObject> tweenFigs = new List<StickObject>();
@@ -48,6 +53,7 @@ namespace TISFAT_ZERO
 		}
 
 		#region Mouse Events
+        //Note: These events are hooked with the GLControl and not the canvas
 		//Debug stuff, and dragging joints.
 		/// <summary>
 		/// Handles the MouseMove event of the Canvas control.
@@ -130,7 +136,7 @@ namespace TISFAT_ZERO
 			}
 		}
 
-		//Debug stuff, and selection of joints. This also causes thde canvas to be redrawn on mouse move.
+		//Debug stuff, and selection of joints. This also causes the canvas to be redrawn on mouse move.
 		/// <summary>
 		/// Handles the MouseDown event of the Canvas control.
 		/// </summary>
@@ -178,7 +184,7 @@ namespace TISFAT_ZERO
 							f = activeFigure.selectPoint(new Point(e.X, e.Y), 4);
 							f.state = (f.state == 1) ? f.state = 0 : f.state = 1;
 							hasLockedJoint = !hasLockedJoint;
-							Invalidate();
+							GL_GRAPHICS.Invalidate();
 							selectedJoint = f;
 							activeFigure.setAsBase(f);
 						}
@@ -232,68 +238,90 @@ namespace TISFAT_ZERO
 		#endregion
 
 		#region Graphics
-		//This is called whenever the form is invalidated.
-		public void Canvas_Paint(object sender, PaintEventArgs e)
-		{
-			theCanvasGraphics = e.Graphics;
-
-			foreach (StickObject o in figureList)
-				o.drawFigure();
-
-			foreach (StickObject o in tweenFigs)
-				o.drawFigure();
-
-			foreach (StickObject o in figureList)
-				o.drawFigHandles();
-		}
 
 		/// <summary>
 		/// Draws the graphics.
 		/// </summary>
 		/// <param name="type">What we're drawing. 1 = Line, 1 = Circle, 2 = Handle, 3 = Hollow Handle</param>
-		/// <param name="pen">The <see cref="Color">color</see> of what we're drawing.</param>
+		/// <param name="color">The <see cref="Color">color</see> of what we're drawing.</param>
 		/// <param name="one">The origin point.</param>
 		/// <param name="width">The width.</param>
 		/// <param name="height">The height.</param>
 		/// <param name="two">The end point. (only used in line type)</param>
-		public static void drawGraphics(int type, Pen pen, Point one, int width, int height, Point two)
+		public static void drawGraphics(int type, Color color, Point one, int width, int height, Point two)
 		{
+            if (!GLLoaded)
+            {
+                return;
+            }
+            //Invert the y so OpenGL can draw it right-side up
+            one.Y = GL_HEIGHT - one.Y;
+            two.Y = GL_HEIGHT - two.Y;
+
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+
 			if (type == 0) //Line
 			{
-				theCanvasGraphics.SmoothingMode = SmoothingMode.AntiAlias;
-				pen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-				pen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
-				theCanvasGraphics.DrawLine(pen, two, one);
-				pen.Dispose();
+                GL.LineWidth(width);
+
+                GL.Begin(BeginMode.Lines);
+
+                GL.Color4(color);
+                GL.Vertex2(one.X, one.Y);
+                GL.Vertex2(two.X, two.Y);
+
+                GL.End();
+
+                DrawCircle(one.X, one.Y, width / 2);
+                DrawCircle(two.X, two.Y, width / 2);
 			}
 			else if (type == 1) //Circle
 			{
-				
-				theCanvasGraphics.SmoothingMode = SmoothingMode.AntiAlias;
-				Brush brush = new SolidBrush(pen.Color);
-
-				theCanvasGraphics.DrawEllipse(pen, new Rectangle(one.X - width / 2, one.Y - height / 2, width, height));
-				pen.Dispose();
+                GL.Color4(color);
+                DrawCircle(one.X, one.Y, width);
 			}
 			else if (type == 2) //Handle
 			{
-				
-				theCanvasGraphics.SmoothingMode = SmoothingMode.HighSpeed;
-				Rectangle rect = new Rectangle(one.X, one.Y, 5, 5);
-				Brush brush = new SolidBrush(pen.Color);
+                GL.Color4(color);
+                GL.Begin(BeginMode.Quads);
 
-				theCanvasGraphics.FillRectangle(brush, Functions.Center(rect).X, Functions.Center(rect).Y, 5, 5);
-				pen.Dispose();
+                GL.Vertex2(one.X - 2.5, one.Y - 2.5);
+                GL.Vertex2(one.X + 2.5, one.Y - 2.5);
+                GL.Vertex2(one.X + 2.5, one.Y + 2.5);
+                GL.Vertex2(one.X - 2.5, one.Y + 2.5);
+
+                GL.End();
 			}
 			else if (type == 3) //Hollow Handle
 			{
-				theCanvasGraphics.SmoothingMode = SmoothingMode.HighSpeed;
-				Rectangle rect = new Rectangle(one.X, one.Y, 5, 5);
+                GL.Color4(color);
+                GL.Begin(BeginMode.LineLoop);
 
-				theCanvasGraphics.DrawRectangle(pen, Functions.Center(rect).X, Functions.Center(rect).Y, 6, 6);
-				pen.Dispose();
+                GL.Vertex2(one.X - 2.5, one.Y - 2.5);
+                GL.Vertex2(one.X + 2.5, one.Y - 2.5);
+                GL.Vertex2(one.X + 2.5, one.Y + 2.5);
+                GL.Vertex2(one.X - 2.5, one.Y + 2.5);
+
+                GL.End();
 			}
+            GL.Disable(EnableCap.Blend);
 		} 
+
+        private static void DrawCircle(float cx, float cy, float r) 
+        {
+	        GL.Begin(BeginMode.TriangleFan);
+            GL.Vertex2(cx, cy);
+            float delta = 1.5f / (float)Math.Sqrt(r);
+
+	        for(float t = 0; t < 6.29; t += delta)
+	        { 
+		        GL.Vertex2(cx + Math.Sin(t) * r, cy + Math.Cos(t) * r);
+	        }
+            GL.Vertex2(cx, cy + r);
+	        GL.End(); 
+        }
+
 		#endregion
 
 		#region Figures
@@ -366,7 +394,53 @@ namespace TISFAT_ZERO
 
 		private void Canvas_Load(object sender, EventArgs e)
 		{
+            //GLControl's load event is never fired, so we have to piggyback off the canvas's load function instead
+            GLLoaded = true;
+
+            //If you are going to be resizing the canvas later or changing the background color,
+            //make sure to re-do these so the GLControl will work properly
+            GL_HEIGHT = GL_GRAPHICS.Height;
+            GL_WIDTH = GL_GRAPHICS.Width;
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadIdentity();
+            GL.Viewport(0, 0, GL_WIDTH, GL_HEIGHT);
+            GL.Ortho(0, GL_WIDTH, 0, GL_HEIGHT, -1, 1);
+            GL.ClearColor(Color.White);
+
+            //Idle is a great loop for rendering
+            Application.Idle += GL_GRAPHICS_OnRender;
 		}
 
+        private void GL_GRAPHICS_OnRender(object sender, EventArgs e)
+        {
+            if(!GLLoaded)
+            {
+                return;
+            }
+
+            //Todo: make a better rendering loop
+            GL_GRAPHICS.Invalidate();
+        }
+
+        private void GL_GRAPHICS_Paint(object sender, PaintEventArgs e)
+        {
+            if (!GLLoaded)
+            {
+                return;
+            }
+
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+
+            foreach (StickObject o in figureList)
+                o.drawFigure();
+
+            foreach (StickObject o in tweenFigs)
+                o.drawFigure();
+
+            foreach (StickObject o in figureList)
+                o.drawFigHandles();
+
+            GL_GRAPHICS.SwapBuffers();
+        }
 	}
 }
