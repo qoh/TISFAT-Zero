@@ -254,6 +254,7 @@ namespace TISFAT_ZERO
             {
                 return;
             }
+
             //Invert the y so OpenGL can draw it right-side up
             one.Y = GL_HEIGHT - one.Y;
             two.Y = GL_HEIGHT - two.Y;
@@ -263,7 +264,7 @@ namespace TISFAT_ZERO
 
 			if (type == 0) //Line
 			{
-                GL.LineWidth(width);
+                GL.LineWidth(10.0f);
 
                 GL.Begin(BeginMode.Lines);
 
@@ -312,7 +313,11 @@ namespace TISFAT_ZERO
         {
 	        GL.Begin(BeginMode.TriangleFan);
             GL.Vertex2(cx, cy);
-            float delta = 1.5f / (float)Math.Sqrt(r);
+
+			//This number (1.5625) controls how many points on the circle are drawn.
+			//The smaller this number is, the better quality the circle gets. This number (and the formula)
+			//have been carefully chosen to give a good balance between quality and speed.
+            float delta = 1.5625f / (float)Math.Sqrt(r);
 
 	        for(float t = 0; t < 6.29; t += delta)
 	        { 
@@ -406,7 +411,7 @@ namespace TISFAT_ZERO
             GL.Viewport(0, 0, GL_WIDTH, GL_HEIGHT);
             GL.Ortho(0, GL_WIDTH, 0, GL_HEIGHT, -1, 1);
             GL.ClearColor(Color.White);
-
+			
             //Idle is a great loop for rendering
             Application.Idle += GL_GRAPHICS_OnRender;
 		}
@@ -431,8 +436,8 @@ namespace TISFAT_ZERO
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
-            foreach (StickObject o in figureList)
-                o.drawFigure();
+			foreach (StickObject o in figureList)
+				o.drawFigure();
 
             foreach (StickObject o in tweenFigs)
                 o.drawFigure();

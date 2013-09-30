@@ -50,34 +50,41 @@ namespace TISFAT_ZERO
 			//Binary searches only work on sorted lists, and since the keyframes are always sorted based on position, this works nicely.
 			int end = keyFrames.Count, start = 0, npos = -1;
 
-			while (end >= start)
+			if (pos > lastKF || pos < firstKF)
 			{
-				imid = (end + start) >> 1; //equivilent to / 2
+				tweenFig.isDrawn = false;
+			}
+			else
+			{
+				while (end >= start)
+				{
+					imid = (end + start) >> 1; //equivilent to / 2
 
-				try
-				{
-					npos = keyFrames[imid].pos;
-				}
-				catch
-				{
-					selectedFrame = -1;
-					break;
-				}
+					try
+					{
+						npos = keyFrames[imid].pos;
+					}
+					catch
+					{
+						selectedFrame = -1;
+						break;
+					}
 
-				if (npos < pos)
-				{
-					start = imid + 1;
-				}
-				else if (npos > pos)
-					end = imid - 1;
-				else
-				{
-					render = true;
-					fig.Joints = keyFrames[imid].Joints;
-					if (!(tweenFig == null))
-						tweenFig.drawFig = false;
+					if (npos < pos)
+					{
+						start = imid + 1;
+					}
+					else if (npos > pos)
+						end = imid - 1;
+					else
+					{
+						render = true;
+						fig.Joints = keyFrames[imid].Joints;
+						if (!(tweenFig == null))
+							tweenFig.drawFig = false;
 
-					break;
+						break;
+					}
 				}
 			}
 
