@@ -329,11 +329,30 @@ namespace TISFAT_ZERO
 				return;
 			}
 
-            GL.Clear(ClearBufferMask.StencilBufferBit);
-            GL.Enable(EnableCap.StencilTest);
-            GL.StencilMask(0xFFFFFF);
-            GL.StencilFunc(StencilFunction.Equal, 0, 0xFFFFFF);
-            GL.StencilOp(StencilOp.Keep, StencilOp.Keep, StencilOp.Incr);
+            bool useStencil = false;
+            //there's probably a better way instead of looping to determine if any parts have transparency...
+            foreach (StickJoint i in Joints)
+            {
+                if (i.parent != null)
+                {
+                    if (i.color.A != 255)
+                    {
+                        useStencil = true;
+                        break;
+                    }
+                }
+            }
+
+            GL.Disable(EnableCap.StencilTest);
+
+            if (useStencil)
+            {
+                GL.Clear(ClearBufferMask.StencilBufferBit);
+                GL.Enable(EnableCap.StencilTest);
+                GL.StencilMask(0xFFFFFF);
+                GL.StencilFunc(StencilFunction.Equal, 0, 0xFFFFFF);
+                GL.StencilOp(StencilOp.Keep, StencilOp.Keep, StencilOp.Incr);
+            }
 
             foreach (StickJoint i in Joints)
             {

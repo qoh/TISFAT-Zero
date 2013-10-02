@@ -264,13 +264,38 @@ namespace TISFAT_ZERO
 
 			if (type == 0) //Line
 			{
-                GL.LineWidth(10.0f);
-
-                GL.Begin(BeginMode.Lines);
-
+                //since some opengl cards don't support line widths past 1.0, we need to draw quads
                 GL.Color4(color);
-                GL.Vertex2(one.X, one.Y);
-                GL.Vertex2(two.X, two.Y);
+
+                //step 1: spam floats
+                float x1 = one.X;
+                float x2 = two.X;
+                float y1 = one.Y;
+                float y2 = two.Y;
+
+                //step 2: get slope/delta
+                float vecX = x1 - x2;
+                float vecY = y1 - y2;
+
+                //step 3: calculate distance
+                float dist = (float)Math.Sqrt(Math.Pow((x2 - x1), 2) + Math.Pow((y2 - y1), 2));
+
+                //step 4: normalize
+                float norm1X = (vecX / dist);
+                float norm1Y = (vecY / dist);
+
+                GL.Begin(BeginMode.Quads);
+
+                //step 5: get the perpindicular line to norm1, and scale it based on our width
+                float normX = norm1Y * width / 2;
+                float normY = -norm1X * width / 2;
+
+                //step 6: draw the quad from the points using the normal as the offset
+                GL.Vertex2((one.X - normX), (one.Y - normY));
+                GL.Vertex2((one.X + normX), (one.Y + normY));
+
+                GL.Vertex2((two.X + normX), (two.Y + normY));
+                GL.Vertex2((two.X - normX), (two.Y - normY));
 
                 GL.End();
 
@@ -284,6 +309,9 @@ namespace TISFAT_ZERO
 			}
 			else if (type == 2) //Handle
 			{
+                //Evar doesn't like antialiased handles :c
+                GL.Disable(EnableCap.Multisample);
+
                 GL.Color4(color);
                 GL.Begin(BeginMode.Quads);
 
@@ -293,9 +321,13 @@ namespace TISFAT_ZERO
                 GL.Vertex2(one.X - 2.5, one.Y + 2.5);
 
                 GL.End();
+
+                GL.Enable(EnableCap.Multisample);
 			}
 			else if (type == 3) //Hollow Handle
 			{
+                GL.Disable(EnableCap.Multisample);
+
                 GL.Color4(color);
                 GL.Begin(BeginMode.LineLoop);
 
@@ -305,25 +337,36 @@ namespace TISFAT_ZERO
                 GL.Vertex2(one.X - 2.5, one.Y + 2.5);
 
                 GL.End();
+
+                GL.Enable(EnableCap.Multisample);
 			}
             GL.Disable(EnableCap.Blend);
 		} 
 
         private static void DrawCircle(float cx, float cy, float r) 
         {
+            int num_segments = (int)(6.5f * (int)Math.Sqrt(r));
+
+	        float theta = 2 * 3.1415926f / num_segments; 
+	        float c = (float)Math.Cos(theta);
+	        float s = (float)Math.Sin(theta);
+	        float t;
+
+	        float x = r;
+	        float y = 0; 
+    
 	        GL.Begin(BeginMode.TriangleFan);
             GL.Vertex2(cx, cy);
 
-			//This number (1.5625) controls how many points on the circle are drawn.
-			//The smaller this number is, the better quality the circle gets. This number (and the formula)
-			//have been carefully chosen to give a good balance between quality and speed.
-            float delta = 1.5625f / (float)Math.Sqrt(r);
-
-	        for(float t = 0; t < 6.29; t += delta)
+	        for(int ii = 0; ii < num_segments; ii++) 
 	        { 
-		        GL.Vertex2(cx + Math.Sin(t) * r, cy + Math.Cos(t) * r);
+		        GL.Vertex2(x + cx, y + cy);
+        
+		        t = x;
+		        x = c * x - s * y;
+		        y = s * t + c * y;
 	        }
-            GL.Vertex2(cx, cy + r);
+            GL.Vertex2(cx + r, cy);
 	        GL.End(); 
         }
 
@@ -411,6 +454,9 @@ namespace TISFAT_ZERO
             GL.Viewport(0, 0, GL_WIDTH, GL_HEIGHT);
             GL.Ortho(0, GL_WIDTH, 0, GL_HEIGHT, -1, 1);
             GL.ClearColor(Color.White);
+
+            //Since we are 2d, we don't need the depth test
+            GL.Disable(EnableCap.DepthTest);
 			
             //Idle is a great loop for rendering
             Application.Idle += GL_GRAPHICS_OnRender;
@@ -434,7 +480,7 @@ namespace TISFAT_ZERO
                 return;
             }
 
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.StencilBufferBit);
 
 			foreach (StickObject o in figureList)
 				o.drawFigure();
