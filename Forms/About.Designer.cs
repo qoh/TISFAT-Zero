@@ -31,10 +31,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(About));
             this.panel1 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.pnl_About = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
             this.pnl_Developers = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
+            this.pnl_About = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
             this.pnl_Thanks = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
@@ -45,8 +45,8 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.pnl_About.SuspendLayout();
             this.pnl_Developers.SuspendLayout();
+            this.pnl_About.SuspendLayout();
             this.pnl_Thanks.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,25 +87,6 @@
             this.splitContainer1.SplitterDistance = 240;
             this.splitContainer1.TabIndex = 2;
             // 
-            // pnl_About
-            // 
-            this.pnl_About.Controls.Add(this.label2);
-            this.pnl_About.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnl_About.Location = new System.Drawing.Point(1, 1);
-            this.pnl_About.Name = "pnl_About";
-            this.pnl_About.Size = new System.Drawing.Size(236, 173);
-            this.pnl_About.TabIndex = 0;
-            // 
-            // label2
-            // 
-            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Location = new System.Drawing.Point(0, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(236, 173);
-            this.label2.TabIndex = 0;
-            this.label2.Text = resources.GetString("label2.Text");
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // pnl_Developers
             // 
             this.pnl_Developers.AutoScroll = true;
@@ -125,6 +106,25 @@
             this.label4.TabIndex = 0;
             this.label4.Text = resources.GetString("label4.Text");
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // pnl_About
+            // 
+            this.pnl_About.Controls.Add(this.label2);
+            this.pnl_About.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnl_About.Location = new System.Drawing.Point(1, 1);
+            this.pnl_About.Name = "pnl_About";
+            this.pnl_About.Size = new System.Drawing.Size(236, 173);
+            this.pnl_About.TabIndex = 0;
+            // 
+            // label2
+            // 
+            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label2.Location = new System.Drawing.Point(0, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(236, 173);
+            this.label2.TabIndex = 0;
+            this.label2.Text = resources.GetString("label2.Text");
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pnl_Thanks
             // 
@@ -202,8 +202,8 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.pnl_About.ResumeLayout(false);
             this.pnl_Developers.ResumeLayout(false);
+            this.pnl_About.ResumeLayout(false);
             this.pnl_Thanks.ResumeLayout(false);
             this.ResumeLayout(false);
 
