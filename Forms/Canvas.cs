@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics;
 using System.Diagnostics;
 
 namespace TISFAT_ZERO
@@ -347,29 +348,24 @@ namespace TISFAT_ZERO
         {
             int num_segments = 5 * (int)Math.Sqrt(r);
 
-			float theta = 6.2831852f / num_segments;
-			float tangetial_factor = (float)Math.Tan(theta);//calculate the tangential factor 
+			float theta = 6.28271f / num_segments;
+			float tangetial_factor = (float)Math.Tan(theta);
 
-			float radial_factor = (float)Math.Cos(theta);//calculate the radial factor
-	        float t;
+			float radial_factor = (float)Math.Cos(theta);
 
-	        float x = r;
 	        float y = 0; 
     
 	        GL.Begin(BeginMode.TriangleFan);
-            //GL.Vertex2(cx, cy);
 
 	        for(int ii = 0; ii < num_segments; ii++) 
 	        { 
-		        GL.Vertex2(x + cx, y + cy);
+		        GL.Vertex2(r + cx, y + cy);
 
-				float ty = x;
+				float ty = r;
 
-				x = (x + -y * tangetial_factor) * radial_factor;
+				r = (r + -y * tangetial_factor) * radial_factor;
 				y = (y + ty * tangetial_factor) * radial_factor;
 	        }
-
-            //GL.Vertex2(cx + r, cy);
 
 	        GL.End();
         }
@@ -446,6 +442,20 @@ namespace TISFAT_ZERO
 
 		private void Canvas_Load(object sender, EventArgs e)
 		{
+			/*var aa_modes = new List<int>();
+			int aa = 0;
+			do
+			{
+				var mode = new GraphicsMode(32, 0, 0, aa);
+				if (!aa_modes.Contains(mode.Samples))
+					aa_modes.Add(aa);
+				aa += 2;
+			} while (aa <= 32);*/
+
+			//GL_GRAPHICS = new OpenTK.GLControl(new GraphicsMode(32, 0, 1, aa_modes[aa_modes.Count - 1]), 3, 0, GraphicsContextFlags.Default);
+			
+			
+			//GL_GRAPHICS.MakeCurrent();
             //GLControl's load event is never fired, so we have to piggyback off the canvas's load function instead
             GLLoaded = true;
 
@@ -463,7 +473,8 @@ namespace TISFAT_ZERO
             GL.Disable(EnableCap.DepthTest);
 			
             //Idle is a great loop for rendering
-            Application.Idle += GL_GRAPHICS_OnRender;
+            //Application.Idle += GL_GRAPHICS_OnRender;
+			
 		}
 
         private void GL_GRAPHICS_OnRender(object sender, EventArgs e)

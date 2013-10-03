@@ -696,7 +696,7 @@ namespace TISFAT_ZERO
 		/// <param name="fps">The FPS.</param>
 		public void startTimer(byte fps)
 		{
-			int mspertick = 1000 / fps;
+			int mspertick = 16;
 			playTimer.Interval = mspertick;
 
 			layer_sel = -1; //the -1 layer is the timeline 'layer'

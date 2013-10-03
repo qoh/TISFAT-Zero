@@ -152,7 +152,7 @@ namespace TISFAT_ZERO
             // 
             // GL_GRAPHICS
             // 
-            this.GL_GRAPHICS = new OpenTK.GLControl(new OpenTK.Graphics.GraphicsMode(32, 0, 1, 8), 3, 0, OpenTK.Graphics.GraphicsContextFlags.Default);
+            this.GL_GRAPHICS = new OpenTK.GLControl(new OpenTK.Graphics.GraphicsMode(32, 0, 1, 16), 3, 0, OpenTK.Graphics.GraphicsContextFlags.Default);
             this.GL_GRAPHICS.BackColor = System.Drawing.Color.Black;
             this.GL_GRAPHICS.Location = new System.Drawing.Point(0, -1);
             this.GL_GRAPHICS.Name = "GL_GRAPHICS";

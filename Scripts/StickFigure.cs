@@ -360,6 +360,10 @@ namespace TISFAT_ZERO
                 {
                     Canvas.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
                 }
+				else if (i.drawState != 0)
+				{
+					Canvas.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
+				}
             }
 
             GL.Disable(EnableCap.StencilTest);
@@ -599,7 +603,7 @@ namespace TISFAT_ZERO
 			Joints.Add(new StickJoint("LFoot", new Point(202, 241), 12, Color.Black, Color.Blue, 0, 0, false, Joints[7]));
 			Joints.Add(new StickJoint("RKnee", new Point(234, 217), 12, Color.Black, Color.Red, 0, 0, false, Joints[6]));
 			Joints.Add(new StickJoint("RFoot", new Point(243, 240), 12, Color.Black, Color.Red, 0, 0, false, Joints[9]));
-			Joints.Add(new StickJoint("Head", new Point(222, 147), 13, Color.Black, Color.Yellow, 0, 1, true, Joints[0]));
+			Joints.Add(new StickJoint("Head", new Point(222, 155), 13, Color.Black, Color.Yellow, 0, 1, true, Joints[0]));
 
 			for (int a = 0; a < 12; a++)
 				Joints[a].ParentFigure = this;
