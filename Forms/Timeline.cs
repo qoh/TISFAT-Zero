@@ -53,7 +53,6 @@ namespace TISFAT_ZERO
 			layer_sel = 0;
 
 			this.Refresh();
-			setFrame();
 		}
 
 		#region Helper Methods
@@ -421,16 +420,6 @@ namespace TISFAT_ZERO
 
 				Refresh();
 			}
-			else
-			{
-				if (y < layers.Count() * 16 + 16)
-				{
-					RenameLayer f = new RenameLayer((y - 16) / 16);
-					f.ShowDialog();
-					Refresh();
-				}
-
-			}
 		}
 
 		/// <summary>
@@ -542,6 +531,19 @@ namespace TISFAT_ZERO
 		private void Timeline_MouseUp(object sender, MouseEventArgs e)
 		{
 			mouseDown = false;
+            int x = e.X, y = e.Y;
+
+            if (x > 80)
+                return;
+            else
+            {
+                if (y < layers.Count() * 16 + 16)
+                {
+                    RenameLayer f = new RenameLayer((y - 16) / 16);
+                    f.ShowDialog();
+                    Refresh();
+                }
+            }
 		}
 
 		/// <summary>
@@ -696,7 +698,7 @@ namespace TISFAT_ZERO
 		/// <param name="fps">The FPS.</param>
 		public void startTimer(byte fps)
 		{
-			int mspertick = 16;
+            int mspertick = 1000 / fps;
 			playTimer.Interval = mspertick;
 
 			layer_sel = -1; //the -1 layer is the timeline 'layer'

@@ -36,6 +36,8 @@ namespace TISFAT_ZERO
 
 		private int[] fx = new int[12];
 		private int[] fy = new int[12];
+
+        public OpenTK.GLControl glGraphics;
 		#endregion
 
 		//Instantiate the class
@@ -471,11 +473,19 @@ namespace TISFAT_ZERO
 
             //Since we are 2d, we don't need the depth test
             GL.Disable(EnableCap.DepthTest);
+
+            glGraphics = GL_GRAPHICS;
 			
             //Idle is a great loop for rendering
             //Application.Idle += GL_GRAPHICS_OnRender;
 			
 		}
+
+        public void setBackgroundColor(Color c)
+        {
+            GL.ClearColor(c);
+            GL_GRAPHICS.Invalidate();
+        }
 
         private void GL_GRAPHICS_OnRender(object sender, EventArgs e)
         {
@@ -497,14 +507,23 @@ namespace TISFAT_ZERO
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.StencilBufferBit);
 
-			foreach (StickObject o in figureList)
-				o.drawFigure();
+            for (int i = figureList.Count; i > 0; i--)
+                figureList[i-1].drawFigure();
 
-            foreach (StickObject o in tweenFigs)
-                o.drawFigure();
+            for (int i = tweenFigs.Count; i > 0; i--)
+                tweenFigs[i-1].drawFigure();
 
-            foreach (StickObject o in figureList)
-                o.drawFigHandles();
+            for (int i = figureList.Count; i > 0; i--)
+                figureList[i-1].drawFigHandles();
+
+            //foreach (StickObject o in figureList)
+            //    o.drawFigure();
+
+            //foreach (StickObject o in tweenFigs)
+            //    o.drawFigure();
+
+            //foreach (StickObject o in figureList)
+            //    o.drawFigHandles();
 
             GL_GRAPHICS.SwapBuffers();
         }
