@@ -345,29 +345,33 @@ namespace TISFAT_ZERO
 
         private static void DrawCircle(float cx, float cy, float r) 
         {
-            int num_segments = (int)(6.5f * (int)Math.Sqrt(r));
+            int num_segments = 5 * (int)Math.Sqrt(r);
 
-	        float theta = 2 * 3.1415926f / num_segments; 
-	        float c = (float)Math.Cos(theta);
-	        float s = (float)Math.Sin(theta);
+			float theta = 6.2831852f / num_segments;
+			float tangetial_factor = (float)Math.Tan(theta);//calculate the tangential factor 
+
+			float radial_factor = (float)Math.Cos(theta);//calculate the radial factor
 	        float t;
 
 	        float x = r;
 	        float y = 0; 
     
 	        GL.Begin(BeginMode.TriangleFan);
-            GL.Vertex2(cx, cy);
+            //GL.Vertex2(cx, cy);
 
 	        for(int ii = 0; ii < num_segments; ii++) 
 	        { 
 		        GL.Vertex2(x + cx, y + cy);
-        
-		        t = x;
-		        x = c * x - s * y;
-		        y = s * t + c * y;
+
+				float ty = x;
+
+				x = (x + -y * tangetial_factor) * radial_factor;
+				y = (y + ty * tangetial_factor) * radial_factor;
 	        }
-            GL.Vertex2(cx + r, cy);
-	        GL.End(); 
+
+            //GL.Vertex2(cx + r, cy);
+
+	        GL.End();
         }
 
 		#endregion
