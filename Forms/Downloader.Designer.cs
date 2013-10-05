@@ -38,14 +38,13 @@
 			// lbl_DlTitle
 			// 
 			this.lbl_DlTitle.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.lbl_DlTitle.AutoSize = true;
 			this.lbl_DlTitle.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lbl_DlTitle.Location = new System.Drawing.Point(136, 9);
+			this.lbl_DlTitle.Location = new System.Drawing.Point(12, 9);
 			this.lbl_DlTitle.Name = "lbl_DlTitle";
-			this.lbl_DlTitle.Size = new System.Drawing.Size(137, 20);
+			this.lbl_DlTitle.Size = new System.Drawing.Size(385, 20);
 			this.lbl_DlTitle.TabIndex = 0;
 			this.lbl_DlTitle.Tag = "";
-			this.lbl_DlTitle.Text = "Now Downloading:";
+			this.lbl_DlTitle.Text = "Now Downloading: ";
 			this.lbl_DlTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// pgr_totalProgress
@@ -103,6 +102,7 @@
 			this.MinimizeBox = false;
 			this.Name = "Downloader";
 			this.Text = "Updating";
+			this.Load += new System.EventHandler(this.Downloader_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

@@ -6,6 +6,8 @@ namespace TISFAT_ZERO
 {
     static class Program
     {
+		public static readonly string Version = "1.1.0.0";
+
         [STAThread]
         static void Main()
         {
