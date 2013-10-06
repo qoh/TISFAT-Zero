@@ -31,6 +31,7 @@ namespace TISFAT_ZERO
         private bool mouseDown;
         private bool mouseHot;
         private bool obeyIK = false;
+        private bool drawHandles = true;
 
         private int toolType = 1;
 
@@ -113,13 +114,14 @@ namespace TISFAT_ZERO
             if (!(figure == null))
             {
                 figure.drawFigure(1, true);
-                figure.drawFigHandles(1, true);
+                if(drawHandles)
+                    figure.drawFigHandles(1, true);
             }
 
-            if (!(selectedJoint == null))
+            if (!(selectedJoint == null) && drawHandles)
             {
-                drawGraphics(2, Color.Red, selectedJoint.location, 4, 4, new Point(selectedJoint.location.X + 7, selectedJoint.location.Y + 7));
-                drawGraphics(3, Color.White, selectedJoint.location, 5, 5, new Point(selectedJoint.location.X + 7, selectedJoint.location.Y + 7));
+                drawGraphics(2, Color.FromArgb(105, Color.SkyBlue), selectedJoint.location, 4, 4, new Point(selectedJoint.location.X + 7, selectedJoint.location.Y + 7));
+                drawGraphics(3, Color.Red, selectedJoint.location, 5, 5, new Point(selectedJoint.location.X + 7, selectedJoint.location.Y + 7));
             }
 
             if (toolType == 1)
@@ -334,14 +336,24 @@ namespace TISFAT_ZERO
 
         private void pic_handleColor_Click(object sender, EventArgs e)
         {
+            if (selectedJoint == null)
+                return;
+
             dlg_Color.ShowDialog();
             pic_handleColor.BackColor = dlg_Color.Color;
+
+            selectedJoint.defaultHandleColor = dlg_Color.Color;
+            selectedJoint.handleColor = dlg_Color.Color;
         }
 
         private void pic_lineColor_Click(object sender, EventArgs e)
         {
+            if (selectedJoint == null)
+                return;
+
             dlg_Color.ShowDialog();
             pic_lineColor.BackColor = dlg_Color.Color;
+            selectedJoint.color = dlg_Color.Color;
         }
 
         private void GL_GRAPHICS_MouseDown(object sender, MouseEventArgs e)
@@ -349,11 +361,14 @@ namespace TISFAT_ZERO
             if (toolType == 1)
             {
                 activeJoint = figure.selectPoint(e.Location, 4);
-                selectedJoint = activeJoint;
+
+                if(!(activeJoint == null))
+                    selectedJoint = activeJoint;
 
                 pointClicked = e.Location;
                 mouseDown = e.Button == MouseButtons.Left;
                 glGraphics.Invalidate();
+                updateToolboxInfo();
             }
         }
 
@@ -368,12 +383,46 @@ namespace TISFAT_ZERO
 
         private void updateToolboxInfo()
         {
+            if (selectedJoint == null)
+                return;
 
+            pic_handleColor.BackColor = selectedJoint.handleColor;
+            pic_lineColor.BackColor = selectedJoint.color;
+
+            num_handleAlpha.Value = selectedJoint.handleColor.A;
+            num_lineAlpha.Value = selectedJoint.color.A;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             obeyIK = checkBox1.Checked;
+        }
+
+        private void num_handleAlpha_ValueChanged(object sender, EventArgs e)
+        {
+            if (selectedJoint == null)
+                return;
+
+            selectedJoint.defaultHandleColor = Color.FromArgb((int)num_handleAlpha.Value, selectedJoint.defaultHandleColor);
+            selectedJoint.handleColor = Color.FromArgb((int)num_handleAlpha.Value, selectedJoint.handleColor);
+        }
+
+        private void num_lineAlpha_ValueChanged(object sender, EventArgs e)
+        {
+            if (selectedJoint == null)
+                return;
+            selectedJoint.color = Color.FromArgb((int)num_lineAlpha.Value, selectedJoint.color);
+        }
+
+        private void exitStickEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            drawHandles = checkBox2.Checked;
+            glGraphics.Invalidate();
         }
     }
 }
