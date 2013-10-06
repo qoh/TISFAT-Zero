@@ -59,6 +59,8 @@ namespace TISFAT_ZERO
 
             glGraphics = GL_GRAPHICS;
 
+            glGraphics.MakeCurrent();
+
             com_lineType.SelectedIndex = 0;
 
             theSticked = this;
@@ -69,7 +71,7 @@ namespace TISFAT_ZERO
             figure.isActiveFig = true;
 
             figure.Joints.Add(new StickJoint("Base Joint 1", new Point(glGraphics.Width / 2, glGraphics.Height / 2), 12, Color.Black, Color.Yellow, 0, 0, false, null, true));
-            figure.Joints.Add(new StickJoint("Base Joint 2", new Point(glGraphics.Width / 2, glGraphics.Height / 2 - 20), 12, Color.Black, Color.Yellow, 0, 0, false, null, true));
+            figure.Joints.Add(new StickJoint("Base Joint 2", new Point(glGraphics.Width / 2, glGraphics.Height / 2 - 20), 12, Color.Black, Color.Blue, 0, 0, false, null, true));
             figure.Joints[1].parent = figure.Joints[0];
 
             recalcFigureJoints();
@@ -77,12 +79,12 @@ namespace TISFAT_ZERO
 
         private void recalcFigureJoints()
         {
-            //Clear all children from joints.
-            for (int i = 0; i < figure.Joints.Count; i++)
-            {
-                for (int j = 0; j < figure.Joints[i].children.Count; j++)
-                    figure.Joints[i].children[j] = null;
-            }
+            ////Clear all children from joints.
+            //for (int i = 0; i < figure.Joints.Count; i++)
+            //{
+            //    for (int j = 0; j < figure.Joints[i].children.Count; j++)
+            //        figure.Joints[i].children[j] = null;
+            //}
 
             for (int i = 0; i < figure.Joints.Count(); i++)
             {
@@ -112,11 +114,7 @@ namespace TISFAT_ZERO
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.StencilBufferBit);
 
             if (!(figure == null))
-            {
                 figure.drawFigure(1, true);
-                if(drawHandles)
-                    figure.drawFigHandles(1, true);
-            }
 
             if (!(selectedJoint == null) && drawHandles)
             {
@@ -124,13 +122,36 @@ namespace TISFAT_ZERO
                 drawGraphics(3, Color.Red, selectedJoint.location, 5, 5, new Point(selectedJoint.location.X + 7, selectedJoint.location.Y + 7));
             }
 
-            if (toolType == 1)
+            if (toolType == 0)
             {
+                if (figure.selectPoint(mouseLoc, 4) != null)
+                {
+                    drawGraphics(2, Color.Blue, figure.selectPoint(mouseLoc, 4).location, 1, 1, figure.selectPoint(mouseLoc, 4).location);
+                    this.Cursor = Cursors.Hand;
+                }
+                else
+                    this.Cursor = Cursors.Default;
+
                 if (!mouseDown && !mouseHot)
                     drawGraphics(3, Color.Green, mouseLoc, 1, 1, mouseLoc);
                 else if (!mouseHot)
                     drawGraphics(4, Color.SkyBlue, pointClicked, 1, 1, mouseLoc);
             }
+
+            if (toolType == 2)
+            {
+                if (!(selectedJoint == null))
+                {
+                    drawGraphics(0, Color.FromArgb(100, selectedJoint.color), selectedJoint.location, (int)num_brushThickness.Value, (int)num_brushThickness.Value, mouseLoc);
+                }
+
+                if (!mouseDown && !mouseHot)
+                    drawGraphics(3, Color.Green, mouseLoc, 1, 1, mouseLoc);
+            }
+
+            if(!(figure == null))
+                if (drawHandles)
+                    figure.drawFigHandles(1, true);
 
             GL_GRAPHICS.SwapBuffers();
         }
@@ -197,7 +218,6 @@ namespace TISFAT_ZERO
             }
             else if (type == 2) //Handle
             {
-                //Evar doesn't like antialiased handles :c
                 GL.Disable(EnableCap.Multisample);
 
                 GL.Color4(color);
@@ -354,10 +374,22 @@ namespace TISFAT_ZERO
             dlg_Color.ShowDialog();
             pic_lineColor.BackColor = dlg_Color.Color;
             selectedJoint.color = dlg_Color.Color;
+
+            glGraphics.Invalidate();
         }
 
         private void GL_GRAPHICS_MouseDown(object sender, MouseEventArgs e)
         {
+            if (toolType == 0)
+            {
+                selectedJoint = figure.selectPoint(e.Location, 4);
+                pointClicked = e.Location;
+                mouseDown = e.Button == MouseButtons.Left;
+
+                glGraphics.Invalidate();
+                updateToolboxInfo();
+            }
+
             if (toolType == 1)
             {
                 activeJoint = figure.selectPoint(e.Location, 4);
@@ -367,6 +399,20 @@ namespace TISFAT_ZERO
 
                 pointClicked = e.Location;
                 mouseDown = e.Button == MouseButtons.Left;
+                glGraphics.Invalidate();
+                updateToolboxInfo();
+            }
+
+            if (toolType == 2)
+            {
+                if (selectedJoint == null)
+                    return;
+
+                StickJoint j = new StickJoint("New Joint", e.Location, (int)num_brushThickness.Value, selectedJoint.color, selectedJoint.handleColor, 0, 0, false, selectedJoint, true);
+                figure.Joints.Add(j);
+
+                recalcFigureJoints();
+                selectedJoint = j;
                 glGraphics.Invalidate();
                 updateToolboxInfo();
             }
@@ -391,11 +437,15 @@ namespace TISFAT_ZERO
 
             num_handleAlpha.Value = selectedJoint.handleColor.A;
             num_lineAlpha.Value = selectedJoint.color.A;
+            num_lineThickness.Value = selectedJoint.thickness;
+
+            chk_handleVisible.Checked = selectedJoint.handleDrawn;
+            chk_lineVisible.Checked = selectedJoint.visible;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            obeyIK = checkBox1.Checked;
+            obeyIK = chk_obeyIK.Checked;
         }
 
         private void num_handleAlpha_ValueChanged(object sender, EventArgs e)
@@ -421,7 +471,40 @@ namespace TISFAT_ZERO
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-            drawHandles = checkBox2.Checked;
+            drawHandles = chk_drawHandles.Checked;
+            glGraphics.Invalidate();
+        }
+
+        private void btn_toolPointer_Click(object sender, EventArgs e)
+        {
+            toolType = 0;
+            glGraphics.Invalidate();
+        }
+
+        private void btn_toolMove_Click(object sender, EventArgs e)
+        {
+            toolType = 1;
+            glGraphics.Invalidate();
+        }
+
+        private void btn_toolAdd_Click(object sender, EventArgs e)
+        {
+            toolType = 2;
+            glGraphics.Invalidate();
+        }
+
+        private void btn_toolRemove_Click(object sender, EventArgs e)
+        {
+            toolType = 3;
+            glGraphics.Invalidate();
+        }
+
+        private void num_lineThickness_ValueChanged(object sender, EventArgs e)
+        {
+            if (selectedJoint == null)
+                return;
+
+            selectedJoint.thickness = (int)num_lineThickness.Value;
             glGraphics.Invalidate();
         }
     }

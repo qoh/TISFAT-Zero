@@ -31,10 +31,8 @@
             this.GL_GRAPHICS = new OpenTK.GLControl();
             this.pnl_toolBox = new System.Windows.Forms.Panel();
             this.pnl_Stats = new System.Windows.Forms.Panel();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.lbl_Handles = new System.Windows.Forms.Label();
-            this.lbl_Segments = new System.Windows.Forms.Label();
+            this.chk_drawHandles = new System.Windows.Forms.CheckBox();
+            this.chk_obeyIK = new System.Windows.Forms.CheckBox();
             this.pnl_toolboxMain = new System.Windows.Forms.Panel();
             this.pnl_toolPanel = new System.Windows.Forms.Panel();
             this.lbl_toolBox = new System.Windows.Forms.Label();
@@ -67,9 +65,22 @@
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.originalTisfatFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitStickEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btn_toolPointer = new System.Windows.Forms.Button();
+            this.btn_toolAdd = new System.Windows.Forms.Button();
+            this.btn_toolRemove = new System.Windows.Forms.Button();
+            this.btn_toolMove = new System.Windows.Forms.Button();
+            this.lbl_brushProps = new System.Windows.Forms.Label();
+            this.pnl_brushProps = new System.Windows.Forms.Panel();
+            this.lbl_brushThickness = new System.Windows.Forms.Label();
+            this.num_brushThickness = new System.Windows.Forms.NumericUpDown();
+            this.chk_handleVisible = new System.Windows.Forms.CheckBox();
+            this.chk_lineVisible = new System.Windows.Forms.CheckBox();
+            this.lbl_lineThickness = new System.Windows.Forms.Label();
+            this.num_lineThickness = new System.Windows.Forms.NumericUpDown();
             this.pnl_toolBox.SuspendLayout();
             this.pnl_Stats.SuspendLayout();
             this.pnl_toolboxMain.SuspendLayout();
+            this.pnl_toolPanel.SuspendLayout();
             this.pnl_lineProps.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.num_lineAlpha)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pic_lineColor)).BeginInit();
@@ -77,6 +88,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.num_handleAlpha)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pic_handleColor)).BeginInit();
             this.mnu_Main.SuspendLayout();
+            this.pnl_brushProps.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_brushThickness)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_lineThickness)).BeginInit();
             this.SuspendLayout();
             // 
             // GL_GRAPHICS
@@ -110,58 +124,40 @@
             // pnl_Stats
             // 
             this.pnl_Stats.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.pnl_Stats.Controls.Add(this.checkBox2);
-            this.pnl_Stats.Controls.Add(this.checkBox1);
-            this.pnl_Stats.Controls.Add(this.lbl_Handles);
-            this.pnl_Stats.Controls.Add(this.lbl_Segments);
+            this.pnl_Stats.Controls.Add(this.pnl_brushProps);
+            this.pnl_Stats.Controls.Add(this.lbl_brushProps);
+            this.pnl_Stats.Controls.Add(this.chk_drawHandles);
+            this.pnl_Stats.Controls.Add(this.chk_obeyIK);
             this.pnl_Stats.Location = new System.Drawing.Point(0, -1);
             this.pnl_Stats.Name = "pnl_Stats";
             this.pnl_Stats.Size = new System.Drawing.Size(173, 85);
             this.pnl_Stats.TabIndex = 1;
             // 
-            // checkBox2
+            // chk_drawHandles
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Checked = true;
-            this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox2.Location = new System.Drawing.Point(68, 65);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.checkBox2.Size = new System.Drawing.Size(93, 17);
-            this.checkBox2.TabIndex = 4;
-            this.checkBox2.Text = "Draw Handles";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            this.chk_drawHandles.AutoSize = true;
+            this.chk_drawHandles.Checked = true;
+            this.chk_drawHandles.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chk_drawHandles.Location = new System.Drawing.Point(68, 65);
+            this.chk_drawHandles.Name = "chk_drawHandles";
+            this.chk_drawHandles.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chk_drawHandles.Size = new System.Drawing.Size(93, 17);
+            this.chk_drawHandles.TabIndex = 4;
+            this.chk_drawHandles.Text = "Draw Handles";
+            this.chk_drawHandles.UseVisualStyleBackColor = true;
+            this.chk_drawHandles.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
-            // checkBox1
+            // chk_obeyIK
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(1, 65);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.checkBox1.Size = new System.Drawing.Size(64, 17);
-            this.checkBox1.TabIndex = 3;
-            this.checkBox1.Text = "Obey IK";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            // 
-            // lbl_Handles
-            // 
-            this.lbl_Handles.AutoSize = true;
-            this.lbl_Handles.Location = new System.Drawing.Point(93, 9);
-            this.lbl_Handles.Name = "lbl_Handles";
-            this.lbl_Handles.Size = new System.Drawing.Size(52, 13);
-            this.lbl_Handles.TabIndex = 1;
-            this.lbl_Handles.Text = "Handles: ";
-            // 
-            // lbl_Segments
-            // 
-            this.lbl_Segments.AutoSize = true;
-            this.lbl_Segments.Location = new System.Drawing.Point(6, 9);
-            this.lbl_Segments.Name = "lbl_Segments";
-            this.lbl_Segments.Size = new System.Drawing.Size(57, 13);
-            this.lbl_Segments.TabIndex = 0;
-            this.lbl_Segments.Text = "Segments:";
+            this.chk_obeyIK.AutoSize = true;
+            this.chk_obeyIK.Location = new System.Drawing.Point(1, 65);
+            this.chk_obeyIK.Name = "chk_obeyIK";
+            this.chk_obeyIK.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chk_obeyIK.Size = new System.Drawing.Size(64, 17);
+            this.chk_obeyIK.TabIndex = 3;
+            this.chk_obeyIK.Text = "Obey IK";
+            this.chk_obeyIK.UseVisualStyleBackColor = true;
+            this.chk_obeyIK.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // pnl_toolboxMain
             // 
@@ -185,6 +181,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnl_toolPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnl_toolPanel.Controls.Add(this.btn_toolRemove);
+            this.pnl_toolPanel.Controls.Add(this.btn_toolAdd);
+            this.pnl_toolPanel.Controls.Add(this.btn_toolMove);
+            this.pnl_toolPanel.Controls.Add(this.btn_toolPointer);
             this.pnl_toolPanel.Location = new System.Drawing.Point(0, 271);
             this.pnl_toolPanel.Name = "pnl_toolPanel";
             this.pnl_toolPanel.Size = new System.Drawing.Size(173, 153);
@@ -201,7 +201,11 @@
             // 
             // pnl_lineProps
             // 
+            this.pnl_lineProps.AutoScroll = true;
             this.pnl_lineProps.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnl_lineProps.Controls.Add(this.num_lineThickness);
+            this.pnl_lineProps.Controls.Add(this.lbl_lineThickness);
+            this.pnl_lineProps.Controls.Add(this.chk_lineVisible);
             this.pnl_lineProps.Controls.Add(this.btn_remBitmap);
             this.pnl_lineProps.Controls.Add(this.btn_addBitmap);
             this.pnl_lineProps.Controls.Add(this.com_lineBitmap);
@@ -219,7 +223,7 @@
             // 
             // btn_remBitmap
             // 
-            this.btn_remBitmap.Location = new System.Drawing.Point(103, 102);
+            this.btn_remBitmap.Location = new System.Drawing.Point(93, 102);
             this.btn_remBitmap.Name = "btn_remBitmap";
             this.btn_remBitmap.Size = new System.Drawing.Size(56, 23);
             this.btn_remBitmap.TabIndex = 9;
@@ -228,7 +232,7 @@
             // 
             // btn_addBitmap
             // 
-            this.btn_addBitmap.Location = new System.Drawing.Point(45, 102);
+            this.btn_addBitmap.Location = new System.Drawing.Point(35, 102);
             this.btn_addBitmap.Name = "btn_addBitmap";
             this.btn_addBitmap.Size = new System.Drawing.Size(56, 23);
             this.btn_addBitmap.TabIndex = 9;
@@ -239,15 +243,15 @@
             // 
             this.com_lineBitmap.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.com_lineBitmap.FormattingEnabled = true;
-            this.com_lineBitmap.Location = new System.Drawing.Point(42, 75);
+            this.com_lineBitmap.Location = new System.Drawing.Point(39, 75);
             this.com_lineBitmap.Name = "com_lineBitmap";
-            this.com_lineBitmap.Size = new System.Drawing.Size(121, 21);
+            this.com_lineBitmap.Size = new System.Drawing.Size(114, 21);
             this.com_lineBitmap.TabIndex = 8;
             // 
             // lbl_lineBitmap
             // 
             this.lbl_lineBitmap.AutoSize = true;
-            this.lbl_lineBitmap.Location = new System.Drawing.Point(3, 79);
+            this.lbl_lineBitmap.Location = new System.Drawing.Point(0, 79);
             this.lbl_lineBitmap.Name = "lbl_lineBitmap";
             this.lbl_lineBitmap.Size = new System.Drawing.Size(42, 13);
             this.lbl_lineBitmap.TabIndex = 7;
@@ -261,15 +265,15 @@
             "Line",
             "Rectangle",
             "Circle"});
-            this.com_lineType.Location = new System.Drawing.Point(43, 46);
+            this.com_lineType.Location = new System.Drawing.Point(39, 46);
             this.com_lineType.Name = "com_lineType";
-            this.com_lineType.Size = new System.Drawing.Size(121, 21);
+            this.com_lineType.Size = new System.Drawing.Size(115, 21);
             this.com_lineType.TabIndex = 6;
             // 
             // lbl_lineType
             // 
             this.lbl_lineType.AutoSize = true;
-            this.lbl_lineType.Location = new System.Drawing.Point(6, 49);
+            this.lbl_lineType.Location = new System.Drawing.Point(2, 49);
             this.lbl_lineType.Name = "lbl_lineType";
             this.lbl_lineType.Size = new System.Drawing.Size(34, 13);
             this.lbl_lineType.TabIndex = 5;
@@ -277,7 +281,7 @@
             // 
             // num_lineAlpha
             // 
-            this.num_lineAlpha.Location = new System.Drawing.Point(122, 14);
+            this.num_lineAlpha.Location = new System.Drawing.Point(112, 14);
             this.num_lineAlpha.Maximum = new decimal(new int[] {
             255,
             0,
@@ -296,7 +300,7 @@
             // lbl_lineAlpha
             // 
             this.lbl_lineAlpha.AutoSize = true;
-            this.lbl_lineAlpha.Location = new System.Drawing.Point(79, 16);
+            this.lbl_lineAlpha.Location = new System.Drawing.Point(69, 16);
             this.lbl_lineAlpha.Name = "lbl_lineAlpha";
             this.lbl_lineAlpha.Size = new System.Drawing.Size(37, 13);
             this.lbl_lineAlpha.TabIndex = 4;
@@ -306,7 +310,7 @@
             // 
             this.pic_lineColor.BackColor = System.Drawing.Color.Black;
             this.pic_lineColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pic_lineColor.Location = new System.Drawing.Point(45, 10);
+            this.pic_lineColor.Location = new System.Drawing.Point(44, 10);
             this.pic_lineColor.Name = "pic_lineColor";
             this.pic_lineColor.Size = new System.Drawing.Size(25, 25);
             this.pic_lineColor.TabIndex = 3;
@@ -316,7 +320,7 @@
             // lbl_lineColor
             // 
             this.lbl_lineColor.AutoSize = true;
-            this.lbl_lineColor.Location = new System.Drawing.Point(5, 16);
+            this.lbl_lineColor.Location = new System.Drawing.Point(4, 16);
             this.lbl_lineColor.Name = "lbl_lineColor";
             this.lbl_lineColor.Size = new System.Drawing.Size(37, 13);
             this.lbl_lineColor.TabIndex = 2;
@@ -334,6 +338,7 @@
             // pnl_handleProps
             // 
             this.pnl_handleProps.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnl_handleProps.Controls.Add(this.chk_handleVisible);
             this.pnl_handleProps.Controls.Add(this.num_handleAlpha);
             this.pnl_handleProps.Controls.Add(this.lbl_handleAlpha);
             this.pnl_handleProps.Controls.Add(this.pic_handleColor);
@@ -345,7 +350,7 @@
             // 
             // num_handleAlpha
             // 
-            this.num_handleAlpha.Location = new System.Drawing.Point(124, 28);
+            this.num_handleAlpha.Location = new System.Drawing.Point(124, 15);
             this.num_handleAlpha.Maximum = new decimal(new int[] {
             255,
             0,
@@ -364,7 +369,7 @@
             // lbl_handleAlpha
             // 
             this.lbl_handleAlpha.AutoSize = true;
-            this.lbl_handleAlpha.Location = new System.Drawing.Point(81, 30);
+            this.lbl_handleAlpha.Location = new System.Drawing.Point(81, 17);
             this.lbl_handleAlpha.Name = "lbl_handleAlpha";
             this.lbl_handleAlpha.Size = new System.Drawing.Size(37, 13);
             this.lbl_handleAlpha.TabIndex = 2;
@@ -374,7 +379,7 @@
             // 
             this.pic_handleColor.BackColor = System.Drawing.Color.Black;
             this.pic_handleColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pic_handleColor.Location = new System.Drawing.Point(47, 24);
+            this.pic_handleColor.Location = new System.Drawing.Point(47, 11);
             this.pic_handleColor.Name = "pic_handleColor";
             this.pic_handleColor.Size = new System.Drawing.Size(25, 25);
             this.pic_handleColor.TabIndex = 1;
@@ -384,7 +389,7 @@
             // lbl_handleColor
             // 
             this.lbl_handleColor.AutoSize = true;
-            this.lbl_handleColor.Location = new System.Drawing.Point(7, 30);
+            this.lbl_handleColor.Location = new System.Drawing.Point(7, 17);
             this.lbl_handleColor.Name = "lbl_handleColor";
             this.lbl_handleColor.Size = new System.Drawing.Size(37, 13);
             this.lbl_handleColor.TabIndex = 0;
@@ -473,6 +478,132 @@
             this.exitStickEditorToolStripMenuItem.Text = "Exit Stick Editor";
             this.exitStickEditorToolStripMenuItem.Click += new System.EventHandler(this.exitStickEditorToolStripMenuItem_Click);
             // 
+            // btn_toolPointer
+            // 
+            this.btn_toolPointer.Location = new System.Drawing.Point(5, 6);
+            this.btn_toolPointer.Name = "btn_toolPointer";
+            this.btn_toolPointer.Size = new System.Drawing.Size(75, 62);
+            this.btn_toolPointer.TabIndex = 0;
+            this.btn_toolPointer.Text = "Pointer";
+            this.btn_toolPointer.UseVisualStyleBackColor = true;
+            this.btn_toolPointer.Click += new System.EventHandler(this.btn_toolPointer_Click);
+            // 
+            // btn_toolAdd
+            // 
+            this.btn_toolAdd.Location = new System.Drawing.Point(91, 6);
+            this.btn_toolAdd.Name = "btn_toolAdd";
+            this.btn_toolAdd.Size = new System.Drawing.Size(75, 62);
+            this.btn_toolAdd.TabIndex = 1;
+            this.btn_toolAdd.Text = "Add Joint";
+            this.btn_toolAdd.UseVisualStyleBackColor = true;
+            this.btn_toolAdd.Click += new System.EventHandler(this.btn_toolAdd_Click);
+            // 
+            // btn_toolRemove
+            // 
+            this.btn_toolRemove.Location = new System.Drawing.Point(91, 81);
+            this.btn_toolRemove.Name = "btn_toolRemove";
+            this.btn_toolRemove.Size = new System.Drawing.Size(75, 62);
+            this.btn_toolRemove.TabIndex = 2;
+            this.btn_toolRemove.Text = "Remove Joint";
+            this.btn_toolRemove.UseVisualStyleBackColor = true;
+            this.btn_toolRemove.Click += new System.EventHandler(this.btn_toolRemove_Click);
+            // 
+            // btn_toolMove
+            // 
+            this.btn_toolMove.Location = new System.Drawing.Point(5, 81);
+            this.btn_toolMove.Name = "btn_toolMove";
+            this.btn_toolMove.Size = new System.Drawing.Size(75, 62);
+            this.btn_toolMove.TabIndex = 0;
+            this.btn_toolMove.Text = "Move Joint";
+            this.btn_toolMove.UseVisualStyleBackColor = true;
+            this.btn_toolMove.Click += new System.EventHandler(this.btn_toolMove_Click);
+            // 
+            // lbl_brushProps
+            // 
+            this.lbl_brushProps.AutoSize = true;
+            this.lbl_brushProps.Location = new System.Drawing.Point(0, 2);
+            this.lbl_brushProps.Name = "lbl_brushProps";
+            this.lbl_brushProps.Size = new System.Drawing.Size(87, 13);
+            this.lbl_brushProps.TabIndex = 5;
+            this.lbl_brushProps.Text = "Brush Properties:";
+            // 
+            // pnl_brushProps
+            // 
+            this.pnl_brushProps.Controls.Add(this.num_brushThickness);
+            this.pnl_brushProps.Controls.Add(this.lbl_brushThickness);
+            this.pnl_brushProps.Location = new System.Drawing.Point(-1, 17);
+            this.pnl_brushProps.Name = "pnl_brushProps";
+            this.pnl_brushProps.Size = new System.Drawing.Size(174, 42);
+            this.pnl_brushProps.TabIndex = 6;
+            // 
+            // lbl_brushThickness
+            // 
+            this.lbl_brushThickness.AutoSize = true;
+            this.lbl_brushThickness.Location = new System.Drawing.Point(34, 13);
+            this.lbl_brushThickness.Name = "lbl_brushThickness";
+            this.lbl_brushThickness.Size = new System.Drawing.Size(59, 13);
+            this.lbl_brushThickness.TabIndex = 0;
+            this.lbl_brushThickness.Text = "Thickness:";
+            // 
+            // num_brushThickness
+            // 
+            this.num_brushThickness.Location = new System.Drawing.Point(94, 11);
+            this.num_brushThickness.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.num_brushThickness.Name = "num_brushThickness";
+            this.num_brushThickness.Size = new System.Drawing.Size(46, 20);
+            this.num_brushThickness.TabIndex = 1;
+            this.num_brushThickness.Value = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            // 
+            // chk_handleVisible
+            // 
+            this.chk_handleVisible.AutoSize = true;
+            this.chk_handleVisible.Location = new System.Drawing.Point(57, 43);
+            this.chk_handleVisible.Name = "chk_handleVisible";
+            this.chk_handleVisible.Size = new System.Drawing.Size(56, 17);
+            this.chk_handleVisible.TabIndex = 4;
+            this.chk_handleVisible.Text = "Visible";
+            this.chk_handleVisible.UseVisualStyleBackColor = true;
+            // 
+            // chk_lineVisible
+            // 
+            this.chk_lineVisible.AutoSize = true;
+            this.chk_lineVisible.Location = new System.Drawing.Point(49, 159);
+            this.chk_lineVisible.Name = "chk_lineVisible";
+            this.chk_lineVisible.Size = new System.Drawing.Size(56, 17);
+            this.chk_lineVisible.TabIndex = 10;
+            this.chk_lineVisible.Text = "Visible";
+            this.chk_lineVisible.UseVisualStyleBackColor = true;
+            // 
+            // lbl_lineThickness
+            // 
+            this.lbl_lineThickness.AutoSize = true;
+            this.lbl_lineThickness.Location = new System.Drawing.Point(26, 136);
+            this.lbl_lineThickness.Name = "lbl_lineThickness";
+            this.lbl_lineThickness.Size = new System.Drawing.Size(59, 13);
+            this.lbl_lineThickness.TabIndex = 11;
+            this.lbl_lineThickness.Text = "Thickness:";
+            // 
+            // num_lineThickness
+            // 
+            this.num_lineThickness.Location = new System.Drawing.Point(86, 134);
+            this.num_lineThickness.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.num_lineThickness.Name = "num_lineThickness";
+            this.num_lineThickness.Size = new System.Drawing.Size(43, 20);
+            this.num_lineThickness.TabIndex = 12;
+            this.num_lineThickness.ValueChanged += new System.EventHandler(this.num_lineThickness_ValueChanged);
+            // 
             // Sticked
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -491,6 +622,7 @@
             this.pnl_Stats.PerformLayout();
             this.pnl_toolboxMain.ResumeLayout(false);
             this.pnl_toolboxMain.PerformLayout();
+            this.pnl_toolPanel.ResumeLayout(false);
             this.pnl_lineProps.ResumeLayout(false);
             this.pnl_lineProps.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.num_lineAlpha)).EndInit();
@@ -501,6 +633,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.pic_handleColor)).EndInit();
             this.mnu_Main.ResumeLayout(false);
             this.mnu_Main.PerformLayout();
+            this.pnl_brushProps.ResumeLayout(false);
+            this.pnl_brushProps.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_brushThickness)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_lineThickness)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -529,10 +665,8 @@
         private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem originalTisfatFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitStickEditorToolStripMenuItem;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.Label lbl_Handles;
-        private System.Windows.Forms.Label lbl_Segments;
+        private System.Windows.Forms.CheckBox chk_drawHandles;
+        private System.Windows.Forms.CheckBox chk_obeyIK;
         private System.Windows.Forms.Panel pnl_toolPanel;
         private System.Windows.Forms.Label lbl_toolBox;
         private System.Windows.Forms.Panel pnl_lineProps;
@@ -547,6 +681,18 @@
         private System.Windows.Forms.PictureBox pic_lineColor;
         private System.Windows.Forms.Label lbl_lineColor;
         private System.Windows.Forms.Label lbl_lineProps;
+        private System.Windows.Forms.Button btn_toolRemove;
+        private System.Windows.Forms.Button btn_toolAdd;
+        private System.Windows.Forms.Button btn_toolPointer;
+        private System.Windows.Forms.Button btn_toolMove;
+        private System.Windows.Forms.Panel pnl_brushProps;
+        private System.Windows.Forms.NumericUpDown num_brushThickness;
+        private System.Windows.Forms.Label lbl_brushThickness;
+        private System.Windows.Forms.Label lbl_brushProps;
+        private System.Windows.Forms.CheckBox chk_handleVisible;
+        private System.Windows.Forms.NumericUpDown num_lineThickness;
+        private System.Windows.Forms.Label lbl_lineThickness;
+        private System.Windows.Forms.CheckBox chk_lineVisible;
 
     }
 }
