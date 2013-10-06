@@ -230,5 +230,11 @@ namespace TISFAT_ZERO
 			Downloader f = new Downloader();
 			f.ShowDialog();
 		}
+
+        private void stickEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Sticked f = new Sticked();
+            f.Show();
+        }
 	}
 }

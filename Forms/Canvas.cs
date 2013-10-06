@@ -75,7 +75,7 @@ namespace TISFAT_ZERO
 			if (draw & !(e.Button == MouseButtons.Right))
 			{
 				//To prevent exceptions being thrown.
-				if (!(selectedJoint.name == "null"))
+				if (!(selectedJoint == null))
 				{
 					selectedJoint.SetPos(e.X, e.Y);
 					Refresh();
@@ -167,8 +167,11 @@ namespace TISFAT_ZERO
 						activeFigure.setAsBase(activeFigure.Joints[(activeFigure.Joints.IndexOf(f) + 1) % activeFigure.Joints.Count]);
 
 					//This sets the labels in the debug menu.
-					theToolbox.lbl_selectedJoint.Text = "Selected Joint: " + f.name;
-					theToolbox.lbl_jointLength.Text = "Joint Length: " + f.CalcLength(null).ToString();
+                    if (selectedJoint == null)
+                    {
+                        theToolbox.lbl_selectedJoint.Text = "Selected Joint: " + f.name;
+                        theToolbox.lbl_jointLength.Text = "Joint Length: " + f.CalcLength(null).ToString();
+                    }
 
 					//Sets the selectedJoint variable to the joint that we just selected.
 					selectedJoint = f;

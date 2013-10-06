@@ -304,6 +304,14 @@ namespace TISFAT_ZERO
 			drawJoints(fromCanvas);
 		}
 
+        public void drawFigure(int x, bool fromCanvas = true)
+        {
+            if (!drawFig)
+                return;
+
+            drawJoints(1, fromCanvas);
+        }
+
 		public void drawWholeFigure(bool fromCanvas = true)
 		{
 			if (!fromCanvas)
@@ -369,6 +377,54 @@ namespace TISFAT_ZERO
             GL.Disable(EnableCap.StencilTest);
 		}
 
+        private void drawJoints(int x, bool fromCanvas = true)
+        {
+            if (!fromCanvas)
+            {
+                Sticked.theSticked.Refresh();
+                return;
+            }
+
+            bool useStencil = false;
+            //there's probably a better way instead of looping to determine if any parts have transparency...
+            foreach (StickJoint i in Joints)
+            {
+                if (i.parent != null)
+                {
+                    if (i.color.A != 255)
+                    {
+                        useStencil = true;
+                        break;
+                    }
+                }
+            }
+
+            GL.Disable(EnableCap.StencilTest);
+
+            if (useStencil)
+            {
+                GL.Clear(ClearBufferMask.StencilBufferBit);
+                GL.Enable(EnableCap.StencilTest);
+                GL.StencilMask(0xFFFFFF);
+                GL.StencilFunc(StencilFunction.Equal, 0, 0xFFFFFF);
+                GL.StencilOp(StencilOp.Keep, StencilOp.Keep, StencilOp.Incr);
+            }
+
+            foreach (StickJoint i in Joints)
+            {
+                if (i.parent != null)
+                {
+                    Sticked.theSticked.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
+                }
+                else if (i.drawState != 0)
+                {
+                    Sticked.theSticked.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
+                }
+            }
+
+            GL.Disable(EnableCap.StencilTest);
+        }
+
 		public void drawFigHandles(bool fromCanvas = true)
 		{
 			if (!fromCanvas)
@@ -395,6 +451,33 @@ namespace TISFAT_ZERO
 				}
 			}
 		}
+
+        public void drawFigHandles(int x, bool fromCanvas = true)
+        {
+            if (!fromCanvas)
+            {
+                Sticked.theSticked.Refresh();
+                return;
+            }
+
+            foreach (StickJoint i in Joints)
+            {
+                if (drawHandles)
+                {
+                    if (!isActiveFig)
+                    {
+                        Sticked.theSticked.drawGraphics(2, Color.DimGray, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
+                        continue;
+                    }
+
+                    if (i.handleDrawn & isActiveFig)
+                        Sticked.theSticked.drawGraphics(2, i.handleColor, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
+
+                    if (i.state == 1 | i.state == 3 | i.state == 4)
+                        Sticked.theSticked.drawGraphics(3, Color.WhiteSmoke, new Point(i.location.X - 1, i.location.Y - 1), 6, 6, new Point(0, 0));
+                }
+            }
+        }
 
 		#endregion Drawing
 
@@ -440,7 +523,7 @@ namespace TISFAT_ZERO
 		{
 			int index = getPointAt(coords, tolerance);
 			if (!drawHandles)
-				return new StickJoint("null", new Point(0, 0), 0, Color.Transparent, Color.Transparent);
+                return null;
 
 			if (index == -1)
 			{
@@ -448,7 +531,7 @@ namespace TISFAT_ZERO
 				{
 					Joints[i].handleColor = Joints[i].defaultHandleColor;
 				}
-				return new StickJoint("null", new Point(0, 0), 0, Color.Transparent, Color.Transparent);
+				return null;
 			}
 
 			for (int i = 0; i < Joints.Count(); i++)
@@ -707,4 +790,24 @@ namespace TISFAT_ZERO
 				Canvas.addTweenFigure(this);
 		}
 	}
+
+    public class StickCustom : StickObject
+    {
+        public StickCustom(bool isTweenFigure = false)
+        {
+            type = 4;
+            Joints = new List<StickJoint>();
+
+            if (!isTweenFigure)
+                Canvas.addFigure(this);
+            else
+                Canvas.addTweenFigure(this);
+        }
+
+        public StickCustom(int x, bool isTweenFigure = false)
+        {
+            type = 4;
+            Joints = new List<StickJoint>();
+        }
+    }
 }
