@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.GL_GRAPHICS = new OpenTK.GLControl();
+            
             this.pnl_toolBox = new System.Windows.Forms.Panel();
             this.pnl_Stats = new System.Windows.Forms.Panel();
             this.chk_drawHandles = new System.Windows.Forms.CheckBox();
@@ -95,6 +95,7 @@
             // 
             // GL_GRAPHICS
             // 
+            this.GL_GRAPHICS = new OpenTK.GLControl(new OpenTK.Graphics.GraphicsMode(32, 0, 1, 16), 3, 0, OpenTK.Graphics.GraphicsContextFlags.Default);
             this.GL_GRAPHICS.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));

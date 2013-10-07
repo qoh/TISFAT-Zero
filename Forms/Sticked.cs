@@ -98,7 +98,8 @@ namespace TISFAT_ZERO
             {
                 if (figure.Joints[i].parent != null)
                 {
-                    figure.Joints[i].parent.children.Add(figure.Joints[i]);
+                    if(!(figure.Joints[i].parent.children.IndexOf(figure.Joints[i]) >= 0))
+                        figure.Joints[i].parent.children.Add(figure.Joints[i]);
                 }
                 figure.Joints[i].ParentFigure = figure;
             }
