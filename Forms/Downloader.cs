@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Linq;
 
 namespace TISFAT_ZERO
 {
@@ -14,9 +15,11 @@ namespace TISFAT_ZERO
 		private string fileIndexURI = "https://dl.dropboxusercontent.com/s/kbthzy7skh4hmkf/Versions.txt";
 		private List<string> downloadQueue, fileNames;
 		private ManualResetEvent doneDownload = new ManualResetEvent(false);
-		private int bytesDownloaded, totalBytes = -1;
+		private int bytesDownloaded, totalBytes = -1, lastBytesDownloaded = 0;
 		private WebClient downloader;
-		private DateTime prevTick;
+		private Stopwatch watch = new Stopwatch();
+		private int measurements = 0, maxDataPoints = 10;
+		private double[] dataPoints;
 
 		public Downloader()
 		{
@@ -38,51 +41,48 @@ namespace TISFAT_ZERO
 
 			//Create a downloader object
 			downloader = new WebClient();
-
+			downloader.Proxy = new WebProxy();
 			downloader.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
 			downloader.DownloadDataCompleted += new DownloadDataCompletedEventHandler(client_DownloadFileCompleted);
 
 			lbl_DlTitle.Text = "Now Downloading: " + fileNames[0];
-			prevTick = DateTime.Now;
+			dataPoints = new double[maxDataPoints];
+			watch.Start();
 			downloader.DownloadDataAsync(new Uri(downloadQueue[0]));
 		}
 
 		void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
 		{
-			int msElapsed = (int)((DateTime.Now - prevTick).TotalMilliseconds);
+			watch.Stop();
+			double msElapsed = watch.Elapsed.TotalMilliseconds;
+			msElapsed = Math.Max(10d, msElapsed);
+			bytesDownloaded = (int)e.BytesReceived - lastBytesDownloaded;
+			lastBytesDownloaded = (int)e.BytesReceived;
+			double dataPoint = bytesDownloaded / (msElapsed / 1000);
+			
+			dataPoints[measurements++ % maxDataPoints] = dataPoint;
 
-			int bytesRecieved = (int)e.BytesReceived - bytesDownloaded;
-
-			bytesDownloaded = (int)e.BytesReceived;
+			double downloadSpeed = dataPoints.Average();
 
 			if (totalBytes == -1)
 				totalBytes = (int)e.TotalBytesToReceive;
 
-			int percentage = (bytesDownloaded * 100) / totalBytes;
+			pgr_fileProgress.Value = e.ProgressPercentage;
 
-			pgr_fileProgress.Value = 100;
-			pgr_fileProgress.Value = Math.Min(percentage, 100);
-
-			double downloadSpeed = (double)bytesRecieved / (Math.Max(msElapsed, 1) / 1000d);
+			double secondsRemaining = (totalBytes - lastBytesDownloaded) / downloadSpeed;
 
 			if (downloadSpeed < 1000)
-			{
 				lbl_DlSpeed.Text = "Download Speed: " + Math.Round(downloadSpeed) + " B/s";
-			}
 			else
 			{
 				downloadSpeed /= 1000;
 				if (downloadSpeed < 1000)
-				{
 					lbl_DlSpeed.Text = "Download Speed: " + Math.Round(downloadSpeed, 1) + " KB/s";
-				}
 				else
 				{
 					downloadSpeed /= 1000;
 					if (downloadSpeed < 1000)
-					{
 						lbl_DlSpeed.Text = "Download Speed: " + Math.Round(downloadSpeed, 2) + " MB/s";
-					}
 					else
 					{
 						downloadSpeed /= 1000;
@@ -90,13 +90,34 @@ namespace TISFAT_ZERO
 					}
 				}
 			}
-			prevTick = DateTime.Now;
+
+			if (secondsRemaining < 60)
+				lbl_TimeRemaining.Text = "Approximate DL Time: " + Math.Round(secondsRemaining) + " Seconds";
+			else
+			{
+				secondsRemaining /= 60;
+				if (secondsRemaining < 60)
+					lbl_TimeRemaining.Text = "Approximate DL Time: " + Math.Round(secondsRemaining, 1) + " Minutes";
+				else
+				{
+					secondsRemaining /= 60;
+					if (secondsRemaining < 24)
+						lbl_TimeRemaining.Text = "Approximate DL Time: " + Math.Round(secondsRemaining, 1) + " Hours";
+					else
+					{
+						secondsRemaining /= 24;
+						lbl_TimeRemaining.Text = "Approximate DL Time: " + Math.Round(secondsRemaining, 2) + " Days";
+					}
+				}
+			}
+			watch.Restart();
 		}
 
 		void client_DownloadFileCompleted(object sender, DownloadDataCompletedEventArgs e)
 		{
+			
 			FileStream write = File.Create(fileNames[0]);
-
+			watch.Reset();
 			byte[] downloadResult = e.Result;
 
 			write.Write(downloadResult, 0, downloadResult.Length);
@@ -112,7 +133,7 @@ namespace TISFAT_ZERO
 				totalBytes = -1;
 				bytesDownloaded = 0;
 
-				prevTick = DateTime.Now;
+				watch.Start();
 				downloader.DownloadDataAsync(new Uri(downloadQueue[0]));
 				lbl_DlTitle.Text = "Now Downloading: " + fileNames[0];
 			}
@@ -122,6 +143,7 @@ namespace TISFAT_ZERO
 		{
 			//Create an object so that we can download shtuff
 			WebClient downloader = new WebClient();
+			downloader.Proxy = new WebProxy();
 
 			byte[] result = downloader.DownloadData(fileIndexURI);
 			MemoryStream txt = new MemoryStream();
