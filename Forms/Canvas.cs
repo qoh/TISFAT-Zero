@@ -447,6 +447,9 @@ namespace TISFAT_ZERO
 
 		private void Canvas_Load(object sender, EventArgs e)
 		{
+            glGraphics = GL_GRAPHICS;
+            glGraphics.MakeCurrent();
+
 			/*var aa_modes = new List<int>();
 			int aa = 0;
 			do
@@ -476,8 +479,6 @@ namespace TISFAT_ZERO
 
             //Since we are 2d, we don't need the depth test
             GL.Disable(EnableCap.DepthTest);
-
-            glGraphics = GL_GRAPHICS;
 			
             //Idle is a great loop for rendering
             //Application.Idle += GL_GRAPHICS_OnRender;
@@ -529,6 +530,17 @@ namespace TISFAT_ZERO
             //    o.drawFigHandles();
 
             GL_GRAPHICS.SwapBuffers();
+        }
+
+        private void Canvas_Enter(object sender, EventArgs e)
+        {
+            Canvas_Load(new object(), new EventArgs());
+        }
+
+        private void Canvas_Leave(object sender, EventArgs e)
+        {
+            glGraphics.Dispose();
+            GLLoaded = false;
         }
 	}
 }

@@ -70,93 +70,93 @@ namespace TISFAT_ZERO
             this.flipLegsToolStripMenuItem,
             this.flipArmsToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(222, 258);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(233, 258);
             // 
             // moveToolStripMenuItem
             // 
             this.moveToolStripMenuItem.Name = "moveToolStripMenuItem";
-            this.moveToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.moveToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.moveToolStripMenuItem.Text = "Move";
             // 
             // copyPoseToolStripMenuItem
             // 
             this.copyPoseToolStripMenuItem.Name = "copyPoseToolStripMenuItem";
-            this.copyPoseToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.copyPoseToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.copyPoseToolStripMenuItem.Text = "Copy Pose";
             // 
             // applyPoseToolStripMenuItem
             // 
             this.applyPoseToolStripMenuItem.Name = "applyPoseToolStripMenuItem";
-            this.applyPoseToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.applyPoseToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.applyPoseToolStripMenuItem.Text = "Apply Pose";
             // 
             // setPoseToPreviousKeyframeToolStripMenuItem
             // 
             this.setPoseToPreviousKeyframeToolStripMenuItem.Name = "setPoseToPreviousKeyframeToolStripMenuItem";
-            this.setPoseToPreviousKeyframeToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.setPoseToPreviousKeyframeToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.setPoseToPreviousKeyframeToolStripMenuItem.Text = "Set pose to previous keyframe";
             // 
             // setPoseToNextKeyframeToolStripMenuItem
             // 
             this.setPoseToNextKeyframeToolStripMenuItem.Name = "setPoseToNextKeyframeToolStripMenuItem";
-            this.setPoseToNextKeyframeToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.setPoseToNextKeyframeToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.setPoseToNextKeyframeToolStripMenuItem.Text = "Set pose to next keyframe";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(218, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(229, 6);
             // 
             // changeMouthStateToolStripMenuItem
             // 
             this.changeMouthStateToolStripMenuItem.Name = "changeMouthStateToolStripMenuItem";
-            this.changeMouthStateToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.changeMouthStateToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.changeMouthStateToolStripMenuItem.Text = "Change mouth state";
             // 
             // changeFaceDirectionToolStripMenuItem
             // 
             this.changeFaceDirectionToolStripMenuItem.Name = "changeFaceDirectionToolStripMenuItem";
-            this.changeFaceDirectionToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.changeFaceDirectionToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.changeFaceDirectionToolStripMenuItem.Text = "Change face direction";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(218, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(229, 6);
             // 
             // flipHorizontallyToolStripMenuItem
             // 
             this.flipHorizontallyToolStripMenuItem.Name = "flipHorizontallyToolStripMenuItem";
-            this.flipHorizontallyToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.flipHorizontallyToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.flipHorizontallyToolStripMenuItem.Text = "Flip Horizontally";
             // 
             // flipVerticallyToolStripMenuItem
             // 
             this.flipVerticallyToolStripMenuItem.Name = "flipVerticallyToolStripMenuItem";
-            this.flipVerticallyToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.flipVerticallyToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.flipVerticallyToolStripMenuItem.Text = "Flip Vertically";
             // 
             // flipLegsToolStripMenuItem
             // 
             this.flipLegsToolStripMenuItem.Name = "flipLegsToolStripMenuItem";
-            this.flipLegsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.flipLegsToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.flipLegsToolStripMenuItem.Text = "Flip Legs";
             this.flipLegsToolStripMenuItem.Click += new System.EventHandler(this.flipLegsToolStripMenuItem_Click);
             // 
             // flipArmsToolStripMenuItem
             // 
             this.flipArmsToolStripMenuItem.Name = "flipArmsToolStripMenuItem";
-            this.flipArmsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.flipArmsToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.flipArmsToolStripMenuItem.Text = "Flip Arms";
             this.flipArmsToolStripMenuItem.Click += new System.EventHandler(this.flipArmsToolStripMenuItem_Click);
             // 
             // GL_GRAPHICS
             // 
-            this.GL_GRAPHICS = new OpenTK.GLControl(new OpenTK.Graphics.GraphicsMode(32, 0, 1, 16), 3, 0, OpenTK.Graphics.GraphicsContextFlags.Default);
             this.GL_GRAPHICS.BackColor = System.Drawing.Color.Black;
-            this.GL_GRAPHICS.Location = new System.Drawing.Point(0, -1);
+            this.GL_GRAPHICS.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.GL_GRAPHICS.Location = new System.Drawing.Point(0, 0);
             this.GL_GRAPHICS.Name = "GL_GRAPHICS";
-            this.GL_GRAPHICS.Size = new System.Drawing.Size(455, 340);
+            this.GL_GRAPHICS.Size = new System.Drawing.Size(444, 321);
             this.GL_GRAPHICS.TabIndex = 1;
             this.GL_GRAPHICS.VSync = false;
             this.GL_GRAPHICS.Paint += new System.Windows.Forms.PaintEventHandler(this.GL_GRAPHICS_Paint);
@@ -177,6 +177,8 @@ namespace TISFAT_ZERO
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Canvas";
             this.Load += new System.EventHandler(this.Canvas_Load);
+            this.Enter += new System.EventHandler(this.Canvas_Enter);
+            this.Leave += new System.EventHandler(this.Canvas_Leave);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 

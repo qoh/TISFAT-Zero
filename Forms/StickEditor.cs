@@ -12,11 +12,11 @@ using OpenTK.Graphics.OpenGL;
 
 namespace TISFAT_ZERO
 {
-    public partial class Sticked : Form
+    public partial class StickEditor : Form
     {
         private StickCustom figure = null;
 
-        public static Sticked theSticked;
+        public static StickEditor theSticked;
 
         private bool GLLoaded;
         private int GL_WIDTH, GL_HEIGHT;
@@ -35,13 +35,16 @@ namespace TISFAT_ZERO
 
         private int toolType = 1;
 
-        public Sticked()
+        public StickEditor()
         {
             InitializeComponent();
         }
 
-        private void Sticked_Load(object sender, EventArgs e)
+        private void StickEditor_Load(object sender, EventArgs e)
         {
+            glGraphics = GL_GRAPHICS;
+            glGraphics.MakeCurrent();
+
             GLLoaded = true;
 
             //If you are going to be resizing the canvas later or changing the background color,
@@ -57,10 +60,6 @@ namespace TISFAT_ZERO
             //Since we are 2d, we don't need the depth test
             GL.Disable(EnableCap.DepthTest);
 
-            glGraphics = GL_GRAPHICS;
-
-            glGraphics.MakeCurrent();
-
             com_lineType.SelectedIndex = 0;
 
             theSticked = this;
@@ -73,6 +72,8 @@ namespace TISFAT_ZERO
             figure.Joints.Add(new StickJoint("Base Joint 1", new Point(glGraphics.Width / 2, glGraphics.Height / 2), 12, Color.Black, Color.Yellow, 0, 0, false, null, true));
             figure.Joints.Add(new StickJoint("Base Joint 2", new Point(glGraphics.Width / 2, glGraphics.Height / 2 - 20), 12, Color.Black, Color.Blue, 0, 0, false, null, true));
             figure.Joints[1].parent = figure.Joints[0];
+            figure.Joints[0].drawOrder = 0;
+            figure.Joints[1].drawOrder = 1;
 
             recalcFigureJoints();
         }
@@ -103,10 +104,12 @@ namespace TISFAT_ZERO
                 }
                 figure.Joints[i].ParentFigure = figure;
             }
+            figure.reSortJoints();
         }
 
         private void GL_GRAPHICS_Paint(object sender, PaintEventArgs e)
         {
+            num_drawOrder.Maximum = figure.Joints.Count;
             if (!GLLoaded)
             {
                 return;
@@ -381,41 +384,45 @@ namespace TISFAT_ZERO
 
         private void GL_GRAPHICS_MouseDown(object sender, MouseEventArgs e)
         {
-            if (toolType == 0)
+            if (e.Button == MouseButtons.Left)
             {
-                selectedJoint = figure.selectPoint(e.Location, 4);
-                pointClicked = e.Location;
-                mouseDown = e.Button == MouseButtons.Left;
+                if (toolType == 0)
+                {
+                    selectedJoint = figure.selectPoint(e.Location, 4);
+                    pointClicked = e.Location;
+                    mouseDown = e.Button == MouseButtons.Left;
 
-                glGraphics.Invalidate();
-                updateToolboxInfo();
-            }
+                    glGraphics.Invalidate();
+                    updateToolboxInfo();
+                }
 
-            if (toolType == 1)
-            {
-                activeJoint = figure.selectPoint(e.Location, 4);
+                if (toolType == 1)
+                {
+                    activeJoint = figure.selectPoint(e.Location, 4);
 
-                if(!(activeJoint == null))
-                    selectedJoint = activeJoint;
+                    if (!(activeJoint == null))
+                        selectedJoint = activeJoint;
 
-                pointClicked = e.Location;
-                mouseDown = e.Button == MouseButtons.Left;
-                glGraphics.Invalidate();
-                updateToolboxInfo();
-            }
+                    pointClicked = e.Location;
+                    mouseDown = e.Button == MouseButtons.Left;
+                    glGraphics.Invalidate();
+                    updateToolboxInfo();
+                }
 
-            if (toolType == 2)
-            {
-                if (selectedJoint == null)
-                    return;
+                if (toolType == 2)
+                {
+                    if (selectedJoint == null)
+                        return;
 
-                StickJoint j = new StickJoint("New Joint", e.Location, (int)num_brushThickness.Value, selectedJoint.color, selectedJoint.handleColor, 0, 0, false, selectedJoint, true);
-                figure.Joints.Add(j);
+                    StickJoint j = new StickJoint("New Joint", e.Location, (int)num_brushThickness.Value, selectedJoint.color, selectedJoint.handleColor, 0, 0, false, selectedJoint, true);
+                    figure.Joints.Add(j);
+                    j.drawOrder = figure.Joints.IndexOf(j);
 
-                recalcFigureJoints();
-                selectedJoint = j;
-                glGraphics.Invalidate();
-                updateToolboxInfo();
+                    recalcFigureJoints();
+                    selectedJoint = j;
+                    glGraphics.Invalidate();
+                    updateToolboxInfo();
+                }
             }
         }
 
@@ -439,9 +446,12 @@ namespace TISFAT_ZERO
             num_handleAlpha.Value = selectedJoint.handleColor.A;
             num_lineAlpha.Value = selectedJoint.color.A;
             num_lineThickness.Value = selectedJoint.thickness;
+            num_drawOrder.Value = selectedJoint.drawOrder;
 
             chk_handleVisible.Checked = selectedJoint.handleDrawn;
             chk_lineVisible.Checked = selectedJoint.visible;
+
+            com_lineType.SelectedIndex = selectedJoint.drawState;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -506,6 +516,24 @@ namespace TISFAT_ZERO
                 return;
 
             selectedJoint.thickness = (int)num_lineThickness.Value;
+            glGraphics.Invalidate();
+        }
+
+        private void com_lineType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (selectedJoint == null)
+                return;
+
+            selectedJoint.drawState = com_lineType.SelectedIndex;
+            glGraphics.Invalidate();
+        }
+
+        private void num_drawOrder_ValueChanged(object sender, EventArgs e)
+        {
+            figure.Joints[(int)num_drawOrder.Value].drawOrder = selectedJoint.drawOrder;
+            selectedJoint.drawOrder = (int)num_drawOrder.Value;
+
+            recalcFigureJoints();
             glGraphics.Invalidate();
         }
     }

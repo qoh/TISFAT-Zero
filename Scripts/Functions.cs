@@ -20,5 +20,10 @@ namespace TISFAT_ZERO
 		{
 			return (Math.PI * d) / 180;
 		}
+
+        public static int compareDrawOrder(StickJoint x, StickJoint y)
+        {
+            return x.drawOrder - y.drawOrder;
+        }
 	}
 }

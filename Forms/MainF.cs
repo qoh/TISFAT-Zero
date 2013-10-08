@@ -233,7 +233,7 @@ namespace TISFAT_ZERO
 
         private void stickEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Sticked f = new Sticked();
+            StickEditor f = new StickEditor();
             f.ShowDialog();
         }
 	}

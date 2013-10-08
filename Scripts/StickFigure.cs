@@ -21,6 +21,7 @@ namespace TISFAT_ZERO
 			* 3 = Adjust to parent
 			* 4 = Adjust to parent locked
 			*/
+        public int drawOrder;
 		public int drawState;
 		/*
 			* 0 = Line
@@ -381,7 +382,7 @@ namespace TISFAT_ZERO
         {
             if (!fromCanvas)
             {
-                Sticked.theSticked.Refresh();
+                StickEditor.theSticked.Refresh();
                 return;
             }
 
@@ -414,11 +415,11 @@ namespace TISFAT_ZERO
             {
                 if (i.parent != null)
                 {
-                    Sticked.theSticked.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
+                    StickEditor.theSticked.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
                 }
                 else if (i.drawState != 0)
                 {
-                    Sticked.theSticked.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
+                    StickEditor.theSticked.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
                 }
             }
 
@@ -456,7 +457,7 @@ namespace TISFAT_ZERO
         {
             if (!fromCanvas)
             {
-                Sticked.theSticked.Refresh();
+                StickEditor.theSticked.Refresh();
                 return;
             }
 
@@ -466,15 +467,15 @@ namespace TISFAT_ZERO
                 {
                     if (!isActiveFig)
                     {
-                        Sticked.theSticked.drawGraphics(2, Color.DimGray, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
+                        StickEditor.theSticked.drawGraphics(2, Color.DimGray, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
                         continue;
                     }
 
                     if (i.handleDrawn & isActiveFig)
-                        Sticked.theSticked.drawGraphics(2, i.handleColor, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
+                        StickEditor.theSticked.drawGraphics(2, i.handleColor, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
 
                     if (i.state == 1 | i.state == 3 | i.state == 4)
-                        Sticked.theSticked.drawGraphics(3, Color.WhiteSmoke, new Point(i.location.X - 1, i.location.Y - 1), 6, 6, new Point(0, 0));
+                        StickEditor.theSticked.drawGraphics(3, Color.WhiteSmoke, new Point(i.location.X - 1, i.location.Y - 1), 6, 6, new Point(0, 0));
                 }
             }
         }
@@ -593,6 +594,11 @@ namespace TISFAT_ZERO
 			next.parent = prev;
 			prev.children.Add(next);
 		}
+
+        public void reSortJoints()
+        {
+            Joints.Sort(Functions.compareDrawOrder);
+        }
 	}
 	
 	public class StickFigure : StickObject
@@ -644,13 +650,14 @@ namespace TISFAT_ZERO
 
 			#endregion
 
-			#region Calculate joint Lengths/Add Children to Parents
+			#region Calculate joint Lengths/Add Children to Parents | Draw Order defined
 			for (int i = 0; i < Joints.Count(); i++)
 			{
 				if (Joints[i].parent != null)
 				{
 					Joints[i].CalcLength(null);
 				}
+                Joints[i].drawOrder = i;
 			}
 
 			for (int i = 0; i < Joints.Count(); i++)
@@ -659,7 +666,8 @@ namespace TISFAT_ZERO
 				{
 					Joints[i].parent.children.Add(Joints[i]);
 				}
-			} 
+			}
+            reSortJoints();
 			#endregion
 
 			Canvas.addFigure(this);
@@ -693,23 +701,25 @@ namespace TISFAT_ZERO
 
 			#endregion
 
-			#region Calculate joint Lengths/Add Children to Parents
-			for (int i = 0; i < Joints.Count(); i++)
-			{
-				if (Joints[i].parent != null)
-				{
-					Joints[i].CalcLength(null);
-				}
-			}
+            #region Calculate joint Lengths/Add Children to Parents | Draw Order defined
+            for (int i = 0; i < Joints.Count(); i++)
+            {
+                if (Joints[i].parent != null)
+                {
+                    Joints[i].CalcLength(null);
+                }
+                Joints[i].drawOrder = i;
+            }
 
-			for (int i = 0; i < Joints.Count(); i++)
-			{
-				if (Joints[i].parent != null)
-				{
-					Joints[i].parent.children.Add(Joints[i]);
-				}
-			}
-			#endregion
+            for (int i = 0; i < Joints.Count(); i++)
+            {
+                if (Joints[i].parent != null)
+                {
+                    Joints[i].parent.children.Add(Joints[i]);
+                }
+            }
+            reSortJoints();
+            #endregion
 
 			Canvas.addTweenFigure(this);
 			this.drawHandles = false;
