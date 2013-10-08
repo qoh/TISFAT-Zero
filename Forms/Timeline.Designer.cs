@@ -45,6 +45,7 @@ namespace TISFAT_ZERO
 			this.components = new System.ComponentModel.Container();
 			this.cxt_Menu = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.tst_insertKeyframe = new System.Windows.Forms.ToolStripMenuItem();
+			this.tst_insertKeyframeAtPose = new System.Windows.Forms.ToolStripMenuItem();
 			this.tst_removeKeyframe = new System.Windows.Forms.ToolStripMenuItem();
 			this.tst_setPosePrvKfrm = new System.Windows.Forms.ToolStripMenuItem();
 			this.tst_setPoseNxtKfrm = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,7 +67,6 @@ namespace TISFAT_ZERO
 			this.tst_separator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tst_gotoFrame = new System.Windows.Forms.ToolStripMenuItem();
 			this.playTimer = new System.Windows.Forms.Timer(this.components);
-			this.tst_insertKeyframeAtPose = new System.Windows.Forms.ToolStripMenuItem();
 			this.cxt_Menu.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -106,6 +106,12 @@ namespace TISFAT_ZERO
 			this.tst_insertKeyframe.Name = "tst_insertKeyframe";
 			this.tst_insertKeyframe.Size = new System.Drawing.Size(255, 22);
 			this.tst_insertKeyframe.Text = "Insert Keyframe";
+			// 
+			// tst_insertKeyframeAtPose
+			// 
+			this.tst_insertKeyframeAtPose.Name = "tst_insertKeyframeAtPose";
+			this.tst_insertKeyframeAtPose.Size = new System.Drawing.Size(255, 22);
+			this.tst_insertKeyframeAtPose.Text = "Insert Keyframe With Current Pose";
 			// 
 			// tst_removeKeyframe
 			// 
@@ -241,17 +247,11 @@ namespace TISFAT_ZERO
 			// 
 			this.playTimer.Tick += new System.EventHandler(this.playTimer_Tick);
 			// 
-			// tst_insertKeyframeAtPose
-			// 
-			this.tst_insertKeyframeAtPose.Name = "tst_insertKeyframeAtPose";
-			this.tst_insertKeyframeAtPose.Size = new System.Drawing.Size(255, 22);
-			this.tst_insertKeyframeAtPose.Text = "Insert Keyframe With Current Pose";
-			// 
 			// Timeline
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1, 1);
+			this.ClientSize = new System.Drawing.Size(220, 114);
 			this.ContextMenuStrip = this.cxt_Menu;
 			this.DoubleBuffered = true;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

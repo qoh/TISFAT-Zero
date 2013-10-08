@@ -20,6 +20,7 @@ namespace TISFAT_ZERO
         public static bool GLLoaded = false; //we can't touch GL until its fully loaded, this is a guard variable
         public static int GL_WIDTH;
         public static int GL_HEIGHT;
+		private static int maxaa;
 
 		public static List<StickObject> figureList = new List<StickObject>();
 		public static List<StickObject> tweenFigs = new List<StickObject>();
@@ -51,6 +52,15 @@ namespace TISFAT_ZERO
 			mainForm = f;
 			theCanvas = this;
 			theToolbox = t;
+
+			int aa = 0;
+			do
+			{
+				var mode = new GraphicsMode(32, 0, 0, aa);
+				if (mode.Samples == aa)
+					maxaa = aa;
+				aa += 2;
+			} while (aa <= 32);
 
 			InitializeComponent();
 		}
@@ -450,20 +460,6 @@ namespace TISFAT_ZERO
             glGraphics = GL_GRAPHICS;
             glGraphics.MakeCurrent();
 
-			/*var aa_modes = new List<int>();
-			int aa = 0;
-			do
-			{
-				var mode = new GraphicsMode(32, 0, 0, aa);
-				if (!aa_modes.Contains(mode.Samples))
-					aa_modes.Add(aa);
-				aa += 2;
-			} while (aa <= 32);*/
-
-			//GL_GRAPHICS = new OpenTK.GLControl(new GraphicsMode(32, 0, 1, aa_modes[aa_modes.Count - 1]), 3, 0, GraphicsContextFlags.Default);
-			
-			
-			//GL_GRAPHICS.MakeCurrent();
             //GLControl's load event is never fired, so we have to piggyback off the canvas's load function instead
             GLLoaded = true;
 
@@ -519,15 +515,6 @@ namespace TISFAT_ZERO
 
             for (int i = figureList.Count; i > 0; i--)
                 figureList[i-1].drawFigHandles();
-
-            //foreach (StickObject o in figureList)
-            //    o.drawFigure();
-
-            //foreach (StickObject o in tweenFigs)
-            //    o.drawFigure();
-
-            //foreach (StickObject o in figureList)
-            //    o.drawFigHandles();
 
             GL_GRAPHICS.SwapBuffers();
         }

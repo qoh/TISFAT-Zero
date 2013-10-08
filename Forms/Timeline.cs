@@ -32,6 +32,8 @@ namespace TISFAT_ZERO
 		private bool mouseDown = false, isPlaying = false;
 
 		private List<string> layers_dispNames = new List<string>();
+
+		private Point downPoint = new Point(0,0);
 		#endregion
 
 		/// <summary>
@@ -189,7 +191,7 @@ namespace TISFAT_ZERO
 			StickLayer n = new StickLayer(name, x, theCanvas);
 			layers.Add(n);
 
-			layer_cnt++;
+			mainForm.updateByLayers(++layer_cnt);
 
 			setFrame(n.firstKF);
 			return n;
@@ -207,9 +209,10 @@ namespace TISFAT_ZERO
 			LineLayer n = new LineLayer(name, x, theCanvas);
 			layers.Add(n);
 
-			layer_cnt++;
+			mainForm.updateByLayers(++layer_cnt);
 
 			setFrame(n.firstKF);
+			
 			return n;
 		}
 
@@ -225,7 +228,8 @@ namespace TISFAT_ZERO
 			RectLayer n = new RectLayer(name, x, theCanvas);
 			layers.Add(n);
 
-			layer_cnt++;
+
+			mainForm.updateByLayers(++layer_cnt);
 
 			setFrame(n.firstKF);
 			return n;
@@ -273,7 +277,10 @@ namespace TISFAT_ZERO
 			//Calculate how many frames need to be drawn and what the offset is
 			int frames = (mainForm.Width - 80) / 9;
 			int scroll = mainForm.splitContainer1.Panel1.HorizontalScroll.Value;
-			int offset = scroll / 9;
+			int xOffset = scroll / 9, yOffset = (mainForm.splitContainer1.Panel1.VerticalScroll.Value / 16) * 16;
+
+			int he = layers.Count * 16 + 16;
+			Height = Math.Min(he, mainForm.splitContainer1.SplitterDistance - 25);
 
 			//Grab the font we need to use to draw strings
 			Font fo = DefaultFont;
@@ -286,17 +293,15 @@ namespace TISFAT_ZERO
 			//Draw each layer
 			for (int a = 1; a - 1 < layers.Count; a++)
 			{
-				g.DrawLines(blk, new Point[] { new Point(79, 16 * a - 1), new Point(79, 16 * a + 15), new Point(0, 16 * a + 15) });
-				TextRenderer.DrawText(g, layers[a - 1].name, fo, new Point(1, 16 * a + 1), Color.Black);
+				g.DrawLines(blk, new Point[] { new Point(79, 16 * a - 1 - yOffset), new Point(79, 16 * a + 15 - yOffset), new Point(0, 16 * a + 15 - yOffset) });
+				TextRenderer.DrawText(g, layers[a - 1].name, fo, new Point(1, 16 * a + 1 - yOffset), Color.Black);
 			}
 
-			g.FillRectangle(new SolidBrush(Color.FromArgb(200, 200, 200)), new Rectangle(80, 16 * layer_sel + 16, Width, 16));
-
-			//Draw the timeline frames
-			for (int a = offset; a - offset < frames; a++)
+			g.FillRectangle(new SolidBrush(Color.FromArgb(200, 200, 200)), new Rectangle(80, 16 * layer_sel + 16 - yOffset, Width, 16));
+			for (int a = xOffset; a - xOffset < frames; a++)
 			{
 				//Calculate where on the timeline we need to draw the frame
-				int xx = (a - offset) * 9 + 80;
+				int xx = (a - xOffset) * 9 + 80;
 
 				//Default to cyan colour (10th frame colour)
 				Color x = tenthframe;
@@ -310,14 +315,9 @@ namespace TISFAT_ZERO
 				//If the frame is not a special colour, don't fill it in (as it's already filled in with that colour)
 				if ((a + 1) % 10 == 0)
 					g.FillRectangle(new SolidBrush(x), xx, 0, 8, 16 * layers.Count + 15);
-
-				//Write in the number
-				TextRenderer.DrawText(g, "" + ((a + 1) % 10), fo, new Point(xx - 2, 1), Color.Black);
 			}
 
-			Height = layers.Count * 16 + 16;
-
-			int sFrameLoc = ((int)frm_selPos - offset) * 9 + 80;
+			int sFrameLoc = ((int)frm_selPos - xOffset) * 9 + 80;
 
 			//Draw all the frame outlines
 			for (int a = 0, b = 88; a < frames; a++, b = 88 + 9 * a)
@@ -337,11 +337,14 @@ namespace TISFAT_ZERO
 				Layer l = layers[a];
 
 				//Figure out the y axis of where we need to draw
-				int y = a * 16 + 16;
+				int y = a * 16 + 16 - yOffset;
+
+				if (y < 16)
+					continue;
 
 				//Get the positions of the first and last keyframe
-				int first = l.firstKF - offset;
-				int last = l.lastKF - offset;
+				int first = l.firstKF - xOffset;
+				int last = l.lastKF - xOffset;
 
 
 				int count = Math.Min(frames, last - first);
@@ -352,7 +355,7 @@ namespace TISFAT_ZERO
 				for (int b = first, kind = 0; b <= max; b++)
 				{
 					Color x = Color.White;
-					if (l.keyFrames[kind].pos == b + offset)
+					if (l.keyFrames[kind].pos == b + xOffset)
 					{
 						kind++;
 						x = Color.Gold;
@@ -365,23 +368,56 @@ namespace TISFAT_ZERO
 				}
 			}
 
-			if (frm_selPos >= offset && frm_selPos - offset < frames)
+			#endregion Layer Rendering
+
+			//draw the timeline layer
+			g.FillRectangle(new SolidBrush(Color.FromArgb(70, 120, 255)), new Rectangle(0, 0, 79, layers.Count * 16 + 15));
+			g.DrawLines(blk, p1);
+
+			//Draw each layer
+			for (int a = 1; a - 1 < layers.Count; a++)
 			{
-				if (layer_sel != -1)
-					g.FillRectangle(new SolidBrush(Color.Red), sFrameLoc, layer_sel * 16 + 16, 8, 15);
-				else
+				g.DrawLines(blk, new Point[] { new Point(79, 16 * a - 1 - yOffset), new Point(79, 16 * a + 15 - yOffset), new Point(0, 16 * a + 15 - yOffset) });
+				TextRenderer.DrawText(g, layers[a - 1].name, fo, new Point(1, 16 * a + 1 - yOffset), Color.Black);
+			}
+
+		
+			g.FillRectangle(new SolidBrush(Color.FromArgb(70, 120, 255)), new Rectangle(0, 0, 79, 15));
+			TextRenderer.DrawText(g, "T I M E L I N E", fo, new Point(1, 1), Color.Black);
+
+			//Draw the timeline frames
+			for (int a = xOffset; a - xOffset < frames; a++)
+			{
+				//Calculate where on the timeline we need to draw the frame
+				int xx = (a - xOffset) * 9 + 80;
+
+				//Write in the number
+				TextRenderer.DrawText(g, "" + ((a + 1) % 10), fo, new Point(xx - 2, 1), Color.Black);
+			}
+
+			//Draw all the frame outlines
+			for (int a = 0, b = 88; a < frames; a++, b = 88 + 9 * a)
+				g.DrawLine(gray, new Point(b, 0), new Point(b, he));
+
+			//This one has <= instead of < so that the line on the bottom of the last layer gets drawn
+			for (int a = 0, b = 15; a <= layers.Count; a++, b = 16 * a + 15)
+				g.DrawLine(gray, new Point(80, b), new Point(frames * 9 + 80, b));
+
+			if (frm_selPos >= xOffset && frm_selPos - xOffset < frames)
+			{
+				if (layer_sel != -1 && layer_sel * 16 + 16 - yOffset > 0)
+					g.FillRectangle(new SolidBrush(Color.Red), sFrameLoc, layer_sel * 16 + 16 - yOffset, 8, 15);
+				else if(layer_sel == -1)
 				{
-					int x9 = frm_selPos * 9 + 79 - offset * 9;
+					int x9 = frm_selPos * 9 + 79 - xOffset * 9;
 					Pen pn = new Pen(new SolidBrush(Color.Red));
 					g.DrawLines(pn, new Point[] { new Point(x9, 0), new Point(x9 + 9, 0), new Point(x9 + 9, 15), new Point(x9, 15), new Point(x9, 1) });
-					g.DrawLines(pn, new Point[] { new Point(x9+1, 1), new Point(x9 + 8, 1), new Point(x9 + 8, 14), new Point(x9 + 1, 14), new Point(x9 + 1, 1) });
+					g.DrawLines(pn, new Point[] { new Point(x9 + 1, 1), new Point(x9 + 8, 1), new Point(x9 + 8, 14), new Point(x9 + 1, 14), new Point(x9 + 1, 1) });
 					g.DrawLine(pn, new Point(x9 + 4, 16), new Point(x9 + 4, layer_cnt * 16 + 32));
 					g.DrawLine(pn, new Point(x9 + 5, 16), new Point(x9 + 5, layer_cnt * 16 + 32));
 					pn.Dispose();
 				}
 			}
-
-			#endregion Layer Rendering
 
 			//Dispose of the pens (because apparently this is necessary)
 			gray.Dispose(); blk.Dispose();
@@ -399,7 +435,8 @@ namespace TISFAT_ZERO
 			if (isPlaying)
 				return;
 
-			int x = e.X, y = e.Y;
+			int x = e.X, y = e.Y + mainForm.splitContainer1.Panel1.VerticalScroll.Value;
+			downPoint = e.Location;
 
 			if (x > 80)
 			{
@@ -531,15 +568,16 @@ namespace TISFAT_ZERO
 		private void Timeline_MouseUp(object sender, MouseEventArgs e)
 		{
 			mouseDown = false;
-            int x = e.X, y = e.Y;
+			int x = downPoint.X, y = downPoint.Y / 16;
+			int x1 = e.X, y1 = e.Y / 16;
 
-            if (x > 80)
-                return;
+			if (y != y1 || x > 80 || x1 > 80)
+				return;
             else
             {
-                if (y < layers.Count() * 16 + 16)
+                if (y <= layers.Count() && y != 0)
                 {
-                    RenameLayer f = new RenameLayer((y - 16) / 16);
+                    RenameLayer f = new RenameLayer(y-1);
                     f.ShowDialog();
                     Refresh();
                 }

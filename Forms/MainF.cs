@@ -7,6 +7,7 @@ namespace TISFAT_ZERO
 {
 	public partial class MainF : Form
 	{
+
 		#region Variables
 		public Toolbox theToolbox;
 		private Canvas theCanvas;
@@ -14,7 +15,7 @@ namespace TISFAT_ZERO
 		bool bChanged;
 		bool bOld;
 
-		public int layersCount = 5; 
+		public int layersCount = 1; 
 		#endregion
 
 		#region Form/Class Events
@@ -142,12 +143,12 @@ namespace TISFAT_ZERO
 				splitContainer1.SplitterDistance = 51;
 
 			if(tline != null)
-				tline.Size = new Size(this.Width - 2 - (tline.Size.Height > splitContainer1.Panel1.Height ? 18 : 0), tline.Size.Height);
+				tline.Size = new Size(this.Width - 2 - (tline.Size.Height > splitContainer1.Panel1.Height ? 18 : 0), splitContainer1.SplitterDistance-12);
 		}
 
 		private void splitContainer1_Panel1_Scroll(object sender, ScrollEventArgs e)
 		{
-			tline.Location = new Point(0, tline.Location.Y);
+			tline.Location = new Point(0, 0);
 			tline.Refresh();
 		}
 
@@ -236,5 +237,11 @@ namespace TISFAT_ZERO
             StickEditor f = new StickEditor();
             f.ShowDialog();
         }
+
+		public void updateByLayers(int layercount)
+		{
+			layersCount = layercount;
+			panel1.Location = new Point(0, layersCount * 16 + 17);
+		}
 	}
 }
