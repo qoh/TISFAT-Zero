@@ -177,8 +177,6 @@ namespace TISFAT_ZERO
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Canvas";
             this.Load += new System.EventHandler(this.Canvas_Load);
-            this.Enter += new System.EventHandler(this.Canvas_Enter);
-            this.Leave += new System.EventHandler(this.Canvas_Leave);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 

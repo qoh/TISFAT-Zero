@@ -531,16 +531,5 @@ namespace TISFAT_ZERO
 
             GL_GRAPHICS.SwapBuffers();
         }
-
-        private void Canvas_Enter(object sender, EventArgs e)
-        {
-            Canvas_Load(new object(), new EventArgs());
-        }
-
-        private void Canvas_Leave(object sender, EventArgs e)
-        {
-            glGraphics.Dispose();
-            GLLoaded = false;
-        }
 	}
 }
