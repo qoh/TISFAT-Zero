@@ -136,6 +136,7 @@
     <Compile Include="Scripts\Layers.cs" />
     <Compile Include="Scripts\FileIO.cs" />
     <Compile Include="Scripts\StickFigure.cs" />
+    <Compile Include="Settings.cs" />
     <EmbeddedResource Include="Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>

@@ -61,6 +61,12 @@ namespace TISFAT_ZERO
 
 			theToolbox = t;
 			theCanvas = f;
+
+
+			if (Program.loadFile != "")
+			{
+				Loader.loadProjectFile(Program.loadFile);
+			}
 		} 
 		
 
@@ -143,7 +149,7 @@ namespace TISFAT_ZERO
 				splitContainer1.SplitterDistance = 51;
 
 			if(tline != null)
-				tline.Size = new Size(this.Width - 2 - (tline.Size.Height > splitContainer1.Panel1.Height ? 18 : 0), splitContainer1.SplitterDistance-12);
+				tline.Size = new Size(this.Width, splitContainer1.SplitterDistance - 20);
 		}
 
 		private void splitContainer1_Panel1_Scroll(object sender, ScrollEventArgs e)

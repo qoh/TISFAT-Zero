@@ -254,23 +254,23 @@
 			// 
 			this.maskedTextBox1.Location = new System.Drawing.Point(80, 44);
 			this.maskedTextBox1.Maximum = new decimal(new int[] {
-			120,
-			0,
-			0,
-			0});
+            120,
+            0,
+            0,
+            0});
 			this.maskedTextBox1.Minimum = new decimal(new int[] {
-			1,
-			0,
-			0,
-			0});
+            1,
+            0,
+            0,
+            0});
 			this.maskedTextBox1.Name = "maskedTextBox1";
 			this.maskedTextBox1.Size = new System.Drawing.Size(40, 20);
 			this.maskedTextBox1.TabIndex = 4;
 			this.maskedTextBox1.Value = new decimal(new int[] {
-			30,
-			0,
-			0,
-			0});
+            30,
+            0,
+            0,
+            0});
 			this.maskedTextBox1.ValueChanged += new System.EventHandler(this.maskedTextBox1_ValueChanged);
 			// 
 			// btn_playPause
@@ -299,9 +299,9 @@
 			this.lbl_frameCount.AutoSize = true;
 			this.lbl_frameCount.Location = new System.Drawing.Point(43, 7);
 			this.lbl_frameCount.Name = "lbl_frameCount";
-			this.lbl_frameCount.Size = new System.Drawing.Size(70, 13);
+			this.lbl_frameCount.Size = new System.Drawing.Size(67, 13);
 			this.lbl_frameCount.TabIndex = 0;
-			this.lbl_frameCount.Text = "Frame Count:";
+			this.lbl_frameCount.Text = "asdfasdfasdf";
 			// 
 			// tabPage2
 			// 
@@ -392,7 +392,7 @@
 			this.pnl_Properties_Stick.Dock = System.Windows.Forms.DockStyle.Top;
 			this.pnl_Properties_Stick.Location = new System.Drawing.Point(0, 158);
 			this.pnl_Properties_Stick.Name = "pnl_Properties_Stick";
-			this.pnl_Properties_Stick.Size = new System.Drawing.Size(134, 158);
+			this.pnl_Properties_Stick.Size = new System.Drawing.Size(141, 158);
 			this.pnl_Properties_Stick.TabIndex = 31;
 			// 
 			// lbl_pnlStick_Transparency
@@ -408,10 +408,10 @@
 			// 
 			this.num_alpha.Location = new System.Drawing.Point(45, 113);
 			this.num_alpha.Maximum = new decimal(new int[] {
-			255,
-			0,
-			0,
-			0});
+            255,
+            0,
+            0,
+            0});
 			this.num_alpha.Name = "num_alpha";
 			this.num_alpha.Size = new System.Drawing.Size(45, 20);
 			this.num_alpha.TabIndex = 3;
@@ -422,7 +422,7 @@
 			this.tkb_alpha.Location = new System.Drawing.Point(15, 76);
 			this.tkb_alpha.Maximum = 255;
 			this.tkb_alpha.Name = "tkb_alpha";
-			this.tkb_alpha.Size = new System.Drawing.Size(104, 45);
+			this.tkb_alpha.Size = new System.Drawing.Size(104, 26);
 			this.tkb_alpha.TabIndex = 2;
 			this.tkb_alpha.Scroll += new System.EventHandler(this.tkb_alpha_Scroll);
 			// 
@@ -457,7 +457,7 @@
 			this.pnl_Properties_Line.Dock = System.Windows.Forms.DockStyle.Top;
 			this.pnl_Properties_Line.Location = new System.Drawing.Point(0, 0);
 			this.pnl_Properties_Line.Name = "pnl_Properties_Line";
-			this.pnl_Properties_Line.Size = new System.Drawing.Size(134, 158);
+			this.pnl_Properties_Line.Size = new System.Drawing.Size(141, 158);
 			this.pnl_Properties_Line.TabIndex = 26;
 			// 
 			// lbl_pnlLine_Transparency
@@ -473,10 +473,10 @@
 			// 
 			this.num_pnlLine_Transparency.Location = new System.Drawing.Point(45, 121);
 			this.num_pnlLine_Transparency.Maximum = new decimal(new int[] {
-			255,
-			0,
-			0,
-			0});
+            255,
+            0,
+            0,
+            0});
 			this.num_pnlLine_Transparency.Name = "num_pnlLine_Transparency";
 			this.num_pnlLine_Transparency.Size = new System.Drawing.Size(45, 20);
 			this.num_pnlLine_Transparency.TabIndex = 3;
@@ -487,7 +487,7 @@
 			this.tkb_pnlLine_Transparency.Location = new System.Drawing.Point(15, 87);
 			this.tkb_pnlLine_Transparency.Maximum = 255;
 			this.tkb_pnlLine_Transparency.Name = "tkb_pnlLine_Transparency";
-			this.tkb_pnlLine_Transparency.Size = new System.Drawing.Size(104, 45);
+			this.tkb_pnlLine_Transparency.Size = new System.Drawing.Size(104, 26);
 			this.tkb_pnlLine_Transparency.TabIndex = 4;
 			// 
 			// lbl_pnlLine_Color

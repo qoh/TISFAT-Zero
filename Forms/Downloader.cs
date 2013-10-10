@@ -116,8 +116,11 @@ namespace TISFAT_ZERO
 
 		void client_DownloadFileCompleted(object sender, DownloadDataCompletedEventArgs e)
 		{
-			
-			FileStream write = File.Create(fileNames[0]);
+			FileStream write;
+			if (fileNames[0] != toExecute)
+				write = File.Create(fileNames[0]);
+			else
+				write = File.Create("T0_TMPFILE.exe");
 			watch.Reset();
 			byte[] downloadResult = e.Result;
 
@@ -141,7 +144,7 @@ namespace TISFAT_ZERO
 			else
 			{
 				Process x = new Process();
-				x.StartInfo = new ProcessStartInfo(toExecute);
+				x.StartInfo = new ProcessStartInfo("T0_TMPFILE.exe", "update1 \"" + toExecute + "\"");
 				x.Start();
 				Application.Exit();
 			}
