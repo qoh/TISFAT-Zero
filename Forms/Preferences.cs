@@ -84,6 +84,11 @@ namespace TISFAT_ZERO
             if (listView1.Items[1].Selected)
                 pnl_Updates.BringToFront();
 		}
+
+		private void checkBox1_CheckedChanged(object sender, EventArgs e)
+		{
+			label2.Text = "TISFAT:Zero will " + (checkBox1.Checked ? " " : "not ") + "automatically download updates for the selected builds upon closing the program.";
+		}
 	}
 
 	namespace NumericEditBox

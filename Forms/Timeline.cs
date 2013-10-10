@@ -365,6 +365,11 @@ namespace TISFAT_ZERO
 						continue;
 
 					g.FillRectangle(new SolidBrush(x), b * 9 + 80, y, 8, 15);
+					if (x == Color.Gold)
+					{
+						g.FillRectangle(new SolidBrush(Color.Black), b * 9 + 82, y + 9, 4, 4);
+						g.FillRectangle(new SolidBrush(Color.White), b * 9 + 83, y + 10, 2, 2);
+					}
 				}
 			}
 
