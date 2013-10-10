@@ -28,6 +28,8 @@ namespace TISFAT_ZERO
 
 		private void Preferences_Load(object sender, EventArgs e)
 		{
+            listView1.Items[0].Selected = true;
+
 			if (Properties.User.Default.DefaultSavePath == "")
 			{
 				txt_defaultSavePath.Text = Environment.SpecialFolder.MyDocuments + "\\TISFAT\\";
@@ -77,7 +79,10 @@ namespace TISFAT_ZERO
 
 		private void listView1_SelectedIndexChanged(object sender, EventArgs e)
 		{
-
+            if (listView1.Items[0].Selected)
+                pnl_General.BringToFront();
+            if (listView1.Items[1].Selected)
+                pnl_Updates.BringToFront();
 		}
 	}
 
