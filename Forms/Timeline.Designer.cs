@@ -73,28 +73,28 @@ namespace TISFAT_ZERO
 			// cxt_Menu
 			// 
 			this.cxt_Menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tst_insertKeyframe,
-            this.tst_insertKeyframeAtPose,
-            this.tst_removeKeyframe,
-            this.tst_setPosePrvKfrm,
-            this.tst_setPoseNxtKfrm,
-            this.tst_onionSkinning,
-            this.tst_separator1,
-            this.tst_insertFrameset,
-            this.tst_removeFrameset,
-            this.tst_separator2,
-            this.tst_moveLayerUp,
-            this.tst_moveLayerDown,
-            this.tst_insertLayer,
-            this.tst_removeLayer,
-            this.tst_separator3,
-            this.toolStripMenuItem1,
-            this.tst_keyFrameAction,
-            this.tst_separator4,
-            this.tst_hideLayer,
-            this.tst_showLayer,
-            this.tst_separator5,
-            this.tst_gotoFrame});
+			this.tst_insertKeyframe,
+			this.tst_insertKeyframeAtPose,
+			this.tst_removeKeyframe,
+			this.tst_setPosePrvKfrm,
+			this.tst_setPoseNxtKfrm,
+			this.tst_onionSkinning,
+			this.tst_separator1,
+			this.tst_insertFrameset,
+			this.tst_removeFrameset,
+			this.tst_separator2,
+			this.tst_moveLayerUp,
+			this.tst_moveLayerDown,
+			this.tst_insertLayer,
+			this.tst_removeLayer,
+			this.tst_separator3,
+			this.toolStripMenuItem1,
+			this.tst_keyFrameAction,
+			this.tst_separator4,
+			this.tst_hideLayer,
+			this.tst_showLayer,
+			this.tst_separator5,
+			this.tst_gotoFrame});
 			this.cxt_Menu.Name = "cxt_Menu";
 			this.cxt_Menu.Size = new System.Drawing.Size(256, 408);
 			this.cxt_Menu.Opening += new System.ComponentModel.CancelEventHandler(this.cxt_Menu_Opening);
@@ -268,29 +268,29 @@ namespace TISFAT_ZERO
 
 		#endregion
 
-        private ContextMenuStrip cxt_Menu;
-        private ToolStripMenuItem tst_insertKeyframe;
-        private ToolStripMenuItem tst_removeKeyframe;
-        private ToolStripMenuItem tst_setPosePrvKfrm;
-        private ToolStripMenuItem tst_setPoseNxtKfrm;
-        private ToolStripMenuItem tst_onionSkinning;
-        private ToolStripSeparator tst_separator1;
-        private ToolStripMenuItem tst_insertFrameset;
-        private ToolStripMenuItem tst_removeFrameset;
-        private ToolStripSeparator tst_separator2;
-        private ToolStripMenuItem tst_moveLayerUp;
-        private ToolStripMenuItem tst_moveLayerDown;
-        private ToolStripMenuItem tst_insertLayer;
-        private ToolStripMenuItem tst_removeLayer;
-        private ToolStripSeparator tst_separator3;
-        private ToolStripMenuItem tst_keyFrameAction;
-        private ToolStripSeparator tst_separator4;
-        private ToolStripMenuItem tst_hideLayer;
-        private ToolStripMenuItem tst_showLayer;
-        private ToolStripSeparator tst_separator5;
-        private ToolStripMenuItem tst_gotoFrame;
-        private ToolStripMenuItem toolStripMenuItem1;
-        private Timer playTimer;
+		private ContextMenuStrip cxt_Menu;
+		private ToolStripMenuItem tst_insertKeyframe;
+		private ToolStripMenuItem tst_removeKeyframe;
+		private ToolStripMenuItem tst_setPosePrvKfrm;
+		private ToolStripMenuItem tst_setPoseNxtKfrm;
+		private ToolStripMenuItem tst_onionSkinning;
+		private ToolStripSeparator tst_separator1;
+		private ToolStripMenuItem tst_insertFrameset;
+		private ToolStripMenuItem tst_removeFrameset;
+		private ToolStripSeparator tst_separator2;
+		private ToolStripMenuItem tst_moveLayerUp;
+		private ToolStripMenuItem tst_moveLayerDown;
+		private ToolStripMenuItem tst_insertLayer;
+		private ToolStripMenuItem tst_removeLayer;
+		private ToolStripSeparator tst_separator3;
+		private ToolStripMenuItem tst_keyFrameAction;
+		private ToolStripSeparator tst_separator4;
+		private ToolStripMenuItem tst_hideLayer;
+		private ToolStripMenuItem tst_showLayer;
+		private ToolStripSeparator tst_separator5;
+		private ToolStripMenuItem tst_gotoFrame;
+		private ToolStripMenuItem toolStripMenuItem1;
+		private Timer playTimer;
 		private ToolStripMenuItem tst_insertKeyframeAtPose;
 	}
 }

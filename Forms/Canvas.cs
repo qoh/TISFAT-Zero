@@ -17,9 +17,9 @@ namespace TISFAT_ZERO
 		public static Toolbox theToolbox;
 		public static Canvas theCanvas;
 		public static Graphics theCanvasGraphics; //We need a list of objects to draw.
-        public static bool GLLoaded = false; //we can't touch GL until its fully loaded, this is a guard variable
-        public static int GL_WIDTH;
-        public static int GL_HEIGHT;
+		public static bool GLLoaded = false; //we can't touch GL until its fully loaded, this is a guard variable
+		public static int GL_WIDTH;
+		public static int GL_HEIGHT;
 		private static int maxaa;
 
 		public static List<StickObject> figureList = new List<StickObject>();
@@ -38,7 +38,7 @@ namespace TISFAT_ZERO
 		private int[] fx = new int[12];
 		private int[] fy = new int[12];
 
-        public OpenTK.GLControl glGraphics;
+		public OpenTK.GLControl glGraphics;
 		#endregion
 
 		//Instantiate the class
@@ -66,7 +66,7 @@ namespace TISFAT_ZERO
 		}
 
 		#region Mouse Events
-        //Note: These events are hooked with the GLControl and not the canvas
+		//Note: These events are hooked with the GLControl and not the canvas
 		//Debug stuff, and dragging joints.
 		/// <summary>
 		/// Handles the MouseMove event of the Canvas control.
@@ -177,11 +177,11 @@ namespace TISFAT_ZERO
 						activeFigure.setAsBase(activeFigure.Joints[(activeFigure.Joints.IndexOf(f) + 1) % activeFigure.Joints.Count]);
 
 					//This sets the labels in the debug menu.
-                    if (selectedJoint == null)
-                    {
-                        theToolbox.lbl_selectedJoint.Text = "Selected Joint: " + f.name;
-                        theToolbox.lbl_jointLength.Text = "Joint Length: " + f.CalcLength(null).ToString();
-                    }
+					if (selectedJoint == null)
+					{
+						theToolbox.lbl_selectedJoint.Text = "Selected Joint: " + f.name;
+						theToolbox.lbl_jointLength.Text = "Joint Length: " + f.CalcLength(null).ToString();
+					}
 
 					//Sets the selectedJoint variable to the joint that we just selected.
 					selectedJoint = f;
@@ -266,124 +266,124 @@ namespace TISFAT_ZERO
 		/// <param name="two">The end point. (only used in line type)</param>
 		public static void drawGraphics(int type, Color color, Point one, int width, int height, Point two)
 		{
-            if (!GLLoaded)
-            {
-                return;
-            }
+			if (!GLLoaded)
+			{
+				return;
+			}
 
-            //Invert the y so OpenGL can draw it right-side up
-            one.Y = GL_HEIGHT - one.Y;
-            two.Y = GL_HEIGHT - two.Y;
+			//Invert the y so OpenGL can draw it right-side up
+			one.Y = GL_HEIGHT - one.Y;
+			two.Y = GL_HEIGHT - two.Y;
 
-            GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+			GL.Enable(EnableCap.Blend);
+			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
 			if (type == 0) //Line
 			{
-                //since some opengl cards don't support line widths past 1.0, we need to draw quads
-                GL.Color4(color);
+				//since some opengl cards don't support line widths past 1.0, we need to draw quads
+				GL.Color4(color);
 
-                //step 1: spam floats
-                float x1 = one.X;
-                float x2 = two.X;
-                float y1 = one.Y;
-                float y2 = two.Y;
+				//step 1: spam floats
+				float x1 = one.X;
+				float x2 = two.X;
+				float y1 = one.Y;
+				float y2 = two.Y;
 
-                //step 2: get slope/delta
-                float vecX = x1 - x2;
-                float vecY = y1 - y2;
+				//step 2: get slope/delta
+				float vecX = x1 - x2;
+				float vecY = y1 - y2;
 
-                //step 3: calculate distance
-                float dist = (float)Math.Sqrt(Math.Pow((x2 - x1), 2) + Math.Pow((y2 - y1), 2));
+				//step 3: calculate distance
+				float dist = (float)Math.Sqrt(Math.Pow((x2 - x1), 2) + Math.Pow((y2 - y1), 2));
 
-                //step 4: normalize
-                float norm1X = (vecX / dist);
-                float norm1Y = (vecY / dist);
+				//step 4: normalize
+				float norm1X = (vecX / dist);
+				float norm1Y = (vecY / dist);
 
-                GL.Begin(BeginMode.Quads);
+				GL.Begin(BeginMode.Quads);
 
-                //step 5: get the perpindicular line to norm1, and scale it based on our width
-                float normX = norm1Y * width / 2;
-                float normY = -norm1X * width / 2;
+				//step 5: get the perpindicular line to norm1, and scale it based on our width
+				float normX = norm1Y * width / 2;
+				float normY = -norm1X * width / 2;
 
-                //step 6: draw the quad from the points using the normal as the offset
-                GL.Vertex2((one.X - normX), (one.Y - normY));
-                GL.Vertex2((one.X + normX), (one.Y + normY));
+				//step 6: draw the quad from the points using the normal as the offset
+				GL.Vertex2((one.X - normX), (one.Y - normY));
+				GL.Vertex2((one.X + normX), (one.Y + normY));
 
-                GL.Vertex2((two.X + normX), (two.Y + normY));
-                GL.Vertex2((two.X - normX), (two.Y - normY));
+				GL.Vertex2((two.X + normX), (two.Y + normY));
+				GL.Vertex2((two.X - normX), (two.Y - normY));
 
-                GL.End();
+				GL.End();
 
-                DrawCircle(one.X, one.Y, width / 2);
-                DrawCircle(two.X, two.Y, width / 2);
+				DrawCircle(one.X, one.Y, width / 2);
+				DrawCircle(two.X, two.Y, width / 2);
 			}
 			else if (type == 1) //Circle
 			{
-                GL.Color4(color);
-                DrawCircle(one.X, one.Y, width);
+				GL.Color4(color);
+				DrawCircle(one.X, one.Y, width);
 			}
 			else if (type == 2) //Handle
 			{
-                //Evar doesn't like antialiased handles :c
-                GL.Disable(EnableCap.Multisample);
+				//Evar doesn't like antialiased handles :c
+				GL.Disable(EnableCap.Multisample);
 
-                GL.Color4(color);
-                GL.Begin(BeginMode.Quads);
+				GL.Color4(color);
+				GL.Begin(BeginMode.Quads);
 
-                GL.Vertex2(one.X - 2.5, one.Y - 2.5);
-                GL.Vertex2(one.X + 2.5, one.Y - 2.5);
-                GL.Vertex2(one.X + 2.5, one.Y + 2.5);
-                GL.Vertex2(one.X - 2.5, one.Y + 2.5);
+				GL.Vertex2(one.X - 2.5, one.Y - 2.5);
+				GL.Vertex2(one.X + 2.5, one.Y - 2.5);
+				GL.Vertex2(one.X + 2.5, one.Y + 2.5);
+				GL.Vertex2(one.X - 2.5, one.Y + 2.5);
 
-                GL.End();
+				GL.End();
 
-                GL.Enable(EnableCap.Multisample);
+				GL.Enable(EnableCap.Multisample);
 			}
 			else if (type == 3) //Hollow Handle
 			{
-                GL.Disable(EnableCap.Multisample);
+				GL.Disable(EnableCap.Multisample);
 
-                GL.Color4(color);
-                GL.Begin(BeginMode.LineLoop);
+				GL.Color4(color);
+				GL.Begin(BeginMode.LineLoop);
 
-                GL.Vertex2(one.X - 2.5, one.Y - 2.5);
-                GL.Vertex2(one.X + 2.5, one.Y - 2.5);
-                GL.Vertex2(one.X + 2.5, one.Y + 2.5);
-                GL.Vertex2(one.X - 2.5, one.Y + 2.5);
+				GL.Vertex2(one.X - 2.5, one.Y - 2.5);
+				GL.Vertex2(one.X + 2.5, one.Y - 2.5);
+				GL.Vertex2(one.X + 2.5, one.Y + 2.5);
+				GL.Vertex2(one.X - 2.5, one.Y + 2.5);
 
-                GL.End();
+				GL.End();
 
-                GL.Enable(EnableCap.Multisample);
+				GL.Enable(EnableCap.Multisample);
 			}
-            GL.Disable(EnableCap.Blend);
+			GL.Disable(EnableCap.Blend);
 		} 
 
-        private static void DrawCircle(float cx, float cy, float r) 
-        {
-            int num_segments = 5 * (int)Math.Sqrt(r);
+		private static void DrawCircle(float cx, float cy, float r) 
+		{
+			int num_segments = 5 * (int)Math.Sqrt(r);
 
 			float theta = 6.28271f / num_segments;
 			float tangetial_factor = (float)Math.Tan(theta);
 
 			float radial_factor = (float)Math.Cos(theta);
 
-	        float y = 0; 
-    
-	        GL.Begin(BeginMode.TriangleFan);
+			float y = 0; 
+	
+			GL.Begin(BeginMode.TriangleFan);
 
-	        for(int ii = 0; ii < num_segments; ii++) 
-	        { 
-		        GL.Vertex2(r + cx, y + cy);
+			for(int ii = 0; ii < num_segments; ii++) 
+			{ 
+				GL.Vertex2(r + cx, y + cy);
 
 				float ty = r;
 
 				r = (r + -y * tangetial_factor) * radial_factor;
 				y = (y + ty * tangetial_factor) * radial_factor;
-	        }
+			}
 
-	        GL.End();
-        }
+			GL.End();
+		}
 
 		#endregion
 
@@ -457,66 +457,66 @@ namespace TISFAT_ZERO
 
 		private void Canvas_Load(object sender, EventArgs e)
 		{
-            glGraphics = GL_GRAPHICS;
-            glGraphics.MakeCurrent();
+			glGraphics = GL_GRAPHICS;
+			glGraphics.MakeCurrent();
 
-            //GLControl's load event is never fired, so we have to piggyback off the canvas's load function instead
-            GLLoaded = true;
+			//GLControl's load event is never fired, so we have to piggyback off the canvas's load function instead
+			GLLoaded = true;
 
-            //If you are going to be resizing the canvas later or changing the background color,
-            //make sure to re-do these so the GLControl will work properly
-            GL_HEIGHT = GL_GRAPHICS.Height;
-            GL_WIDTH = GL_GRAPHICS.Width;
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadIdentity();
-            GL.Viewport(0, 0, GL_WIDTH, GL_HEIGHT);
-            GL.Ortho(0, GL_WIDTH, 0, GL_HEIGHT, -1, 1);
-            GL.ClearColor(Color.White);
+			//If you are going to be resizing the canvas later or changing the background color,
+			//make sure to re-do these so the GLControl will work properly
+			GL_HEIGHT = GL_GRAPHICS.Height;
+			GL_WIDTH = GL_GRAPHICS.Width;
+			GL.MatrixMode(MatrixMode.Projection);
+			GL.LoadIdentity();
+			GL.Viewport(0, 0, GL_WIDTH, GL_HEIGHT);
+			GL.Ortho(0, GL_WIDTH, 0, GL_HEIGHT, -1, 1);
+			GL.ClearColor(Color.White);
 
-            //Since we are 2d, we don't need the depth test
-            GL.Disable(EnableCap.DepthTest);
+			//Since we are 2d, we don't need the depth test
+			GL.Disable(EnableCap.DepthTest);
 			
-            //Idle is a great loop for rendering
-            //Application.Idle += GL_GRAPHICS_OnRender;
+			//Idle is a great loop for rendering
+			//Application.Idle += GL_GRAPHICS_OnRender;
 			
 		}
 
-        public void setBackgroundColor(Color c)
-        {
-            GL.ClearColor(c);
-            GL_GRAPHICS.Invalidate();
-        }
+		public void setBackgroundColor(Color c)
+		{
+			GL.ClearColor(c);
+			GL_GRAPHICS.Invalidate();
+		}
 
-        private void GL_GRAPHICS_OnRender(object sender, EventArgs e)
-        {
-            if(!GLLoaded)
-            {
-                return;
-            }
+		private void GL_GRAPHICS_OnRender(object sender, EventArgs e)
+		{
+			if(!GLLoaded)
+			{
+				return;
+			}
 
-            //Todo: make a better rendering loop
-            GL_GRAPHICS.Invalidate();
-        }
+			//Todo: make a better rendering loop
+			GL_GRAPHICS.Invalidate();
+		}
 
-        private void GL_GRAPHICS_Paint(object sender, PaintEventArgs e)
-        {
-            if (!GLLoaded)
-            {
-                return;
-            }
+		private void GL_GRAPHICS_Paint(object sender, PaintEventArgs e)
+		{
+			if (!GLLoaded)
+			{
+				return;
+			}
 
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.StencilBufferBit);
+			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.StencilBufferBit);
 
-            for (int i = figureList.Count; i > 0; i--)
-                figureList[i-1].drawFigure();
+			for (int i = figureList.Count; i > 0; i--)
+				figureList[i-1].drawFigure();
 
-            for (int i = tweenFigs.Count; i > 0; i--)
-                tweenFigs[i-1].drawFigure();
+			for (int i = tweenFigs.Count; i > 0; i--)
+				tweenFigs[i-1].drawFigure();
 
-            for (int i = figureList.Count; i > 0; i--)
-                figureList[i-1].drawFigHandles();
+			for (int i = figureList.Count; i > 0; i--)
+				figureList[i-1].drawFigHandles();
 
-            GL_GRAPHICS.SwapBuffers();
-        }
+			GL_GRAPHICS.SwapBuffers();
+		}
 	}
 }

@@ -578,15 +578,15 @@ namespace TISFAT_ZERO
 
 			if (y != y1 || x > 80 || x1 > 80)
 				return;
-            else
-            {
-                if (y <= layers.Count() && y != 0)
-                {
-                    RenameLayer f = new RenameLayer(y-1);
-                    f.ShowDialog();
-                    Refresh();
-                }
-            }
+			else
+			{
+				if (y <= layers.Count() && y != 0)
+				{
+					RenameLayer f = new RenameLayer(y-1);
+					f.ShowDialog();
+					Refresh();
+				}
+			}
 		}
 
 		/// <summary>
@@ -741,7 +741,7 @@ namespace TISFAT_ZERO
 		/// <param name="fps">The FPS.</param>
 		public void startTimer(byte fps)
 		{
-            int mspertick = 1000 / fps;
+			int mspertick = 1000 / fps;
 			playTimer.Interval = mspertick;
 
 			layer_sel = -1; //the -1 layer is the timeline 'layer'

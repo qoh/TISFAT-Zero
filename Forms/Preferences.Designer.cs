@@ -1,33 +1,33 @@
 ﻿namespace TISFAT_ZERO
 {
-    partial class Preferences
-    {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
+	partial class Preferences
+	{
+		/// <summary>
+		/// Required designer variable.
+		/// </summary>
+		private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+		/// <summary>
+		/// Clean up any resources being used.
+		/// </summary>
+		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing && (components != null))
+			{
+				components.Dispose();
+			}
+			base.Dispose(disposing);
+		}
 
-        #region Windows Form Designer generated code
+		#region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
+		/// <summary>
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
+		/// </summary>
+		private void InitializeComponent()
+		{
 			this.components = new System.ComponentModel.Container();
 			System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("General", System.Windows.Forms.HorizontalAlignment.Center);
 			System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Properties");
@@ -201,9 +201,9 @@
 			this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.comboBox1.FormattingEnabled = true;
 			this.comboBox1.Items.AddRange(new object[] {
-            "Stable (Reccomended)",
-            "Beta",
-            "Nightly (Not Reccomended)"});
+			"Stable (Reccomended)",
+			"Beta",
+			"Nightly (Not Reccomended)"});
 			this.comboBox1.Location = new System.Drawing.Point(93, 99);
 			this.comboBox1.Name = "comboBox1";
 			this.comboBox1.Size = new System.Drawing.Size(212, 21);
@@ -266,10 +266,10 @@
 			// 
 			this.num_Height.Location = new System.Drawing.Point(43, 97);
 			this.num_Height.Maximum = new decimal(new int[] {
-            90000,
-            0,
-            0,
-            0});
+			90000,
+			0,
+			0,
+			0});
 			this.num_Height.Name = "num_Height";
 			this.num_Height.Size = new System.Drawing.Size(54, 20);
 			this.num_Height.TabIndex = 18;
@@ -278,10 +278,10 @@
 			// 
 			this.num_Width.Location = new System.Drawing.Point(43, 58);
 			this.num_Width.Maximum = new decimal(new int[] {
-            90000,
-            0,
-            0,
-            0});
+			90000,
+			0,
+			0,
+			0});
 			this.num_Width.Name = "num_Width";
 			this.num_Width.Size = new System.Drawing.Size(54, 20);
 			this.num_Width.TabIndex = 17;
@@ -398,13 +398,13 @@
 			// 
 			this.listView1.Activation = System.Windows.Forms.ItemActivation.OneClick;
 			this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1});
+			this.columnHeader1});
 			this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			listViewGroup1.Header = "General";
 			listViewGroup1.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
 			listViewGroup1.Name = "lvg_General";
 			this.listView1.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup1});
+			listViewGroup1});
 			this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
 			this.listView1.HideSelection = false;
 			this.listView1.HoverSelection = true;
@@ -412,8 +412,8 @@
 			listViewItem1.StateImageIndex = 0;
 			listViewItem2.Group = listViewGroup1;
 			this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2});
+			listViewItem1,
+			listViewItem2});
 			this.listView1.Location = new System.Drawing.Point(0, 0);
 			this.listView1.MultiSelect = false;
 			this.listView1.Name = "listView1";
@@ -485,43 +485,43 @@
 			this.pnl_Submit.ResumeLayout(false);
 			this.ResumeLayout(false);
 
-        }
+		}
 
-        #endregion
+		#endregion
 
-        private System.Windows.Forms.FolderBrowserDialog dlg_folderBrowser;
-        private System.Windows.Forms.SplitContainer splitContainer1;
+		private System.Windows.Forms.FolderBrowserDialog dlg_folderBrowser;
+		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.Panel pnl_General;
-        private System.Windows.Forms.Button btn_defSavPathBrowse;
-        private System.Windows.Forms.TextBox txt_defaultSavePath;
-        private System.Windows.Forms.Label lbl_defaultSavePath;
-        private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.Label lbl_backgroundColor;
-        private System.Windows.Forms.Label lbl_canvasHeight;
-        private System.Windows.Forms.Label lbl_canvasWidth;
-        private System.Windows.Forms.Label lbl_defaultCanvasSize;
-        private System.Windows.Forms.ColorDialog dlg_colorDialog;
-        private System.Windows.Forms.Panel pnl_colorButtonHitbox;
-        private System.Windows.Forms.Label lbl_backgroundColorPic;
-        private System.Windows.Forms.PictureBox pic_colorBox;
-        private System.Windows.Forms.Splitter splt_Canvas;
-        private System.Windows.Forms.Panel pnl_Submit;
-        private System.Windows.Forms.Button btn_submitButton;
-        private System.Windows.Forms.NumericUpDown num_Height;
-        private System.Windows.Forms.NumericUpDown num_Width;
+		private System.Windows.Forms.Button btn_defSavPathBrowse;
+		private System.Windows.Forms.TextBox txt_defaultSavePath;
+		private System.Windows.Forms.Label lbl_defaultSavePath;
+		private System.Windows.Forms.SplitContainer splitContainer2;
+		private System.Windows.Forms.Label lbl_backgroundColor;
+		private System.Windows.Forms.Label lbl_canvasHeight;
+		private System.Windows.Forms.Label lbl_canvasWidth;
+		private System.Windows.Forms.Label lbl_defaultCanvasSize;
+		private System.Windows.Forms.ColorDialog dlg_colorDialog;
+		private System.Windows.Forms.Panel pnl_colorButtonHitbox;
+		private System.Windows.Forms.Label lbl_backgroundColorPic;
+		private System.Windows.Forms.PictureBox pic_colorBox;
+		private System.Windows.Forms.Splitter splt_Canvas;
+		private System.Windows.Forms.Panel pnl_Submit;
+		private System.Windows.Forms.Button btn_submitButton;
+		private System.Windows.Forms.NumericUpDown num_Height;
+		private System.Windows.Forms.NumericUpDown num_Width;
 		private System.Windows.Forms.ImageList imageList1;
 		private System.Windows.Forms.ListView listView1;
 		private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.Panel pnl_Updates;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-    }
+		private System.Windows.Forms.Panel pnl_Updates;
+		private System.Windows.Forms.ComboBox comboBox1;
+		private System.Windows.Forms.CheckBox checkBox1;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.CheckBox checkBox4;
+		private System.Windows.Forms.CheckBox checkBox3;
+		private System.Windows.Forms.CheckBox checkBox2;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label label2;
+	}
 }

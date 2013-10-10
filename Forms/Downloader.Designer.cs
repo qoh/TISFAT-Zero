@@ -50,7 +50,7 @@
 			// pgr_totalProgress
 			// 
 			this.pgr_totalProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.pgr_totalProgress.Location = new System.Drawing.Point(12, 78);
 			this.pgr_totalProgress.Name = "pgr_totalProgress";
 			this.pgr_totalProgress.Size = new System.Drawing.Size(385, 23);
@@ -59,7 +59,7 @@
 			// pgr_fileProgress
 			// 
 			this.pgr_fileProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.pgr_fileProgress.Location = new System.Drawing.Point(12, 107);
 			this.pgr_fileProgress.Name = "pgr_fileProgress";
 			this.pgr_fileProgress.Size = new System.Drawing.Size(385, 23);

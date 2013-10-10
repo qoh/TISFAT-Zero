@@ -290,10 +290,10 @@ namespace TISFAT_ZERO
 			tkb_alpha.Value = thecolor.A;
 		}
 
-        private void btn_BGButton_Click(object sender, EventArgs e)
-        {
-            dlg_Color.ShowDialog();
-            Canvas.theCanvas.setBackgroundColor(dlg_Color.Color);
-        }
+		private void btn_BGButton_Click(object sender, EventArgs e)
+		{
+			dlg_Color.ShowDialog();
+			Canvas.theCanvas.setBackgroundColor(dlg_Color.Color);
+		}
 	}
 }
