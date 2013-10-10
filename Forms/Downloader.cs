@@ -14,6 +14,7 @@ namespace TISFAT_ZERO
 	{
 		private string fileIndexURI = "https://dl.dropboxusercontent.com/s/kbthzy7skh4hmkf/Versions.txt";
 		private List<string> downloadQueue, fileNames;
+		private string toExecute;
 		private ManualResetEvent doneDownload = new ManualResetEvent(false);
 		private int bytesDownloaded, totalBytes = -1, lastBytesDownloaded = 0;
 		private WebClient downloader;
@@ -35,7 +36,7 @@ namespace TISFAT_ZERO
 
 			//Wait for it to finish
 			doneDownload.WaitOne();
-
+			
 			//Reset so we can use it for the other downloads
 			doneDownload.Reset();
 
@@ -137,6 +138,13 @@ namespace TISFAT_ZERO
 				downloader.DownloadDataAsync(new Uri(downloadQueue[0]));
 				lbl_DlTitle.Text = "Now Downloading: " + fileNames[0];
 			}
+			else
+			{
+				Process x = new Process();
+				x.StartInfo = new ProcessStartInfo(toExecute);
+				x.Start();
+				Application.Exit();
+			}
 		}
 
 		private void doDownload()
@@ -150,10 +158,16 @@ namespace TISFAT_ZERO
 			txt.Write(result, 0, result.Length);
 			txt.Position = 0;
 			TextReader x = new StreamReader(txt);
-
 			string type = x.ReadLine();
+			while (type != "stable")
+				type = x.ReadLine();
 
-			int filecount = int.Parse(x.ReadLine());
+			string dltype = x.ReadLine();
+			while (dltype != "exe")
+				dltype = x.ReadLine();
+
+			//int filecount = int.Parse(x.ReadLine());
+			int filecount = 1;
 
 			downloadQueue = new List<string>(filecount);
 			fileNames = new List<string>(filecount);
@@ -163,6 +177,8 @@ namespace TISFAT_ZERO
 				downloadQueue.Add(x.ReadLine());
 				fileNames.Add(x.ReadLine());
 			}
+
+			toExecute = fileNames[0];
 
 			x.Close();
 			x.Dispose();

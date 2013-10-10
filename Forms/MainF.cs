@@ -182,6 +182,9 @@ namespace TISFAT_ZERO
 
 		private void removeLayerCallback(object sender, EventArgs e)
 		{
+			if (Timeline.layer_cnt < 2)
+				return;
+
 			Layer toRemove = Timeline.layers[Timeline.layer_sel];
 
 			Canvas.figureList.Remove(toRemove.fig);
