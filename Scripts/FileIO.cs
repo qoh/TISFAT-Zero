@@ -89,7 +89,7 @@ namespace TISFAT_ZERO
 			bytes.AddRange(BitConverter.GetBytes((ushort)canSize.Width));
 			bytes.AddRange(BitConverter.GetBytes((ushort)canSize.Height));
 
-			Color canColr = Properties.User.Default.CanvasColor;
+			Color canColr = Canvas.theCanvas.BackColor;
 
 			bytes.Add((byte)canColr.R);
 			bytes.Add((byte)canColr.G);
@@ -272,13 +272,15 @@ namespace TISFAT_ZERO
 				string name = Encoding.UTF8.GetString(layer.data, 2, nameLength);
 
 				Layer newLayer;
-				
-				if(layerType == 1)
+
+				if (layerType == 1)
 					newLayer = new StickLayer(name, new StickFigure(false), zeCanvas);
-				else if(layerType == 2)
+				else if (layerType == 2)
 					newLayer = new LineLayer(name, new StickLine(false), zeCanvas);
-				else if(layerType == 3)
+				else if (layerType == 3)
 					newLayer = new RectLayer(name, new StickRect(false), zeCanvas);
+				else if (layerType == 4)
+					newLayer = new CustomLayer(name, new StickCustom(false), zeCanvas);
 				else
 					continue; //Only 1, 2, and 3 have been coded so far, so only load those types.
 
@@ -298,6 +300,8 @@ namespace TISFAT_ZERO
 						f = new LineFrame(0);
 					else if (layerType == 3)
 						f = new RectFrame(0);
+					else if (layerType == 4)
+						f = new custObjectFrame(0);
 					else
 						continue; //Nothing past layer type 3 has even begun implementation, so if we encounter any just skip.
 
@@ -322,6 +326,12 @@ namespace TISFAT_ZERO
 					Block posblk = propBlock;
 					Color figColor = Color.Black;
 
+					int jointcount = BitConverter.ToUInt16(posblk.data, 0) / 2;
+					if (layerType == 4)
+					{
+						f.Joints.AddRange(new StickJoint[jointcount]);
+					}
+
 					if (propBlock.type == 4)
 					{
 						//Obtain the colour that's stored in the properties block
@@ -331,9 +341,9 @@ namespace TISFAT_ZERO
 						posblk = readNextBlock(file); //Oh readNextBlock method, how you make my life simpler so
 					}
 					
-					try
+					try 
 					{
-						for (int a = 0; a < f.Joints.Count; a++)
+						for (int a = 0; a < jointcount; a++)
 						{
 							int x = 4 * a + 2;
 							f.Joints[a].color = figColor;

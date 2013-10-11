@@ -425,7 +425,15 @@ namespace TISFAT_ZERO
 			if (frm_selPos >= xOffset && frm_selPos - xOffset < frames)
 			{
 				if (layer_sel != -1 && layer_sel * 16 + 16 - yOffset > 0)
-					g.FillRectangle(new SolidBrush(Color.Red), sFrameLoc, layer_sel * 16 + 16 - yOffset, 8, 15);
+					if (selectedFrameType() >= 1 && selectedFrameType() <= 3)
+					{
+						g.FillRectangle(new SolidBrush(Color.Red), sFrameLoc, layer_sel * 16 + 16 - yOffset, 8, 15);
+						g.FillRectangle(new SolidBrush(Color.Black), sFrameLoc + 2, layer_sel * 16 + 25 - yOffset, 4, 4);
+						g.FillRectangle(new SolidBrush(Color.White), sFrameLoc + 3, layer_sel * 16 + 26 - yOffset, 2, 2);
+
+					}
+					else
+						g.FillRectangle(new SolidBrush(Color.Red), sFrameLoc, layer_sel * 16 + 16 - yOffset, 8, 15);
 				else if(layer_sel == -1)
 				{
 					int x9 = frm_selPos * 9 + 79 - xOffset * 9;

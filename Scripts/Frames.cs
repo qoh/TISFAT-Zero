@@ -141,6 +141,12 @@ namespace TISFAT_ZERO
 			Joints = createClone(ps, positions);
         }
 
+		public custObjectFrame(int po)
+		{
+			pos = po;
+			Joints = new List<StickJoint>();
+		}
+
 		public static List<StickJoint> createClone(List<StickJoint> old, int[] positions)
 		{
 			List<StickJoint> x = new List<StickJoint>();
