@@ -99,13 +99,19 @@ namespace TISFAT_ZERO
 					int[] positions = new int[ps.Count];
 					for (int a = 0; a < ps.Count; a++)
 					{
+						tweenFig.Joints[a].location = s.Joints[a].location;
+						tweenFig.Joints[a].Tween(s.Joints[a], e.Joints[a], percent);
+
 						StickJoint p = ps[a].parent;
 						if (p != null)
 							positions[a] = ps.IndexOf(p);
 						else
 							positions[a] = -1;
 					}
-					tweenFig.Joints = custObjectFrame.createClone(s.Joints, positions);
+					//tweenFig.Joints = custObjectFrame.createClone(s.Joints, positions);
+
+					// ^^^
+					//IPPY WTF YOU BROKE TWEENING WITH THIS. YOU HAVE NO CLUE HOW LONG IT TOOK To FIGURE THAT OUT >.<
 				}
 				else
 				{
