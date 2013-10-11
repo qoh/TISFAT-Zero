@@ -295,5 +295,11 @@ namespace TISFAT_ZERO
 			dlg_Color.ShowDialog();
 			Canvas.theCanvas.setBackgroundColor(dlg_Color.Color);
 		}
+
+		private void btn_addCustomStick_Click(object sender, EventArgs e)
+		{
+			StickEditor f = new StickEditor();
+			f.ShowDialog(this);
+		}
 	}
 }

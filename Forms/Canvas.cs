@@ -518,5 +518,35 @@ namespace TISFAT_ZERO
 
 			GL_GRAPHICS.SwapBuffers();
 		}
+
+		public void recieveStickFigure(StickCustom figure)
+		{
+			CustomLayer c = mainForm.tline.addCustomLayer("Custom Figure");
+
+			List<StickJoint> ps = figure.Joints;
+			c.fig = figure;
+
+			int[] positions = new int[ps.Count];
+			for (int a = 0; a < ps.Count; a++)
+			{
+				StickJoint p = ps[a].parent;
+				if (p != null)
+					positions[a] = ps.IndexOf(p);
+				else
+					positions[a] = -1;
+			}
+			//c.keyFrames[0].Joints = ps;
+			c.keyFrames[0].Joints = custObjectFrame.createClone(ps, positions);
+			//c.keyFrames[1].Joints = ps;
+			c.keyFrames[1].Joints = custObjectFrame.createClone(ps, positions);
+
+			c.tweenFig = new StickCustom(true);
+			c.tweenFig.Joints = custObjectFrame.createClone(ps, positions);
+
+			addFigure(c.fig);
+
+			mainForm.tline.Invalidate();
+			mainForm.tline.setFrame(c.firstKF); 
+		}
 	}
 }

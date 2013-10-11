@@ -104,11 +104,11 @@
 			// 
 			// pnl_mainPanel
 			// 
+			this.pnl_mainPanel.Controls.Add(this.pnl_addTools);
 			this.pnl_mainPanel.Controls.Add(this.pnl_mainTools);
 			this.pnl_mainPanel.Controls.Add(this.pnl_ctrlPanel);
 			this.pnl_mainPanel.Controls.Add(this.lbl_selectionDummy);
 			this.pnl_mainPanel.Controls.Add(this.pnl_Properties);
-			this.pnl_mainPanel.Controls.Add(this.pnl_addTools);
 			this.pnl_mainPanel.Controls.Add(this.pnl_Drawing);
 			this.pnl_mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnl_mainPanel.Location = new System.Drawing.Point(0, 0);
@@ -299,9 +299,9 @@
 			this.lbl_frameCount.AutoSize = true;
 			this.lbl_frameCount.Location = new System.Drawing.Point(43, 7);
 			this.lbl_frameCount.Name = "lbl_frameCount";
-			this.lbl_frameCount.Size = new System.Drawing.Size(67, 13);
+			this.lbl_frameCount.Size = new System.Drawing.Size(70, 13);
 			this.lbl_frameCount.TabIndex = 0;
-			this.lbl_frameCount.Text = "asdfasdfasdf";
+			this.lbl_frameCount.Text = "Frame Count:";
 			// 
 			// tabPage2
 			// 
@@ -392,7 +392,7 @@
 			this.pnl_Properties_Stick.Dock = System.Windows.Forms.DockStyle.Top;
 			this.pnl_Properties_Stick.Location = new System.Drawing.Point(0, 158);
 			this.pnl_Properties_Stick.Name = "pnl_Properties_Stick";
-			this.pnl_Properties_Stick.Size = new System.Drawing.Size(141, 158);
+			this.pnl_Properties_Stick.Size = new System.Drawing.Size(134, 158);
 			this.pnl_Properties_Stick.TabIndex = 31;
 			// 
 			// lbl_pnlStick_Transparency
@@ -422,7 +422,7 @@
 			this.tkb_alpha.Location = new System.Drawing.Point(15, 76);
 			this.tkb_alpha.Maximum = 255;
 			this.tkb_alpha.Name = "tkb_alpha";
-			this.tkb_alpha.Size = new System.Drawing.Size(104, 26);
+			this.tkb_alpha.Size = new System.Drawing.Size(104, 45);
 			this.tkb_alpha.TabIndex = 2;
 			this.tkb_alpha.Scroll += new System.EventHandler(this.tkb_alpha_Scroll);
 			// 
@@ -457,7 +457,7 @@
 			this.pnl_Properties_Line.Dock = System.Windows.Forms.DockStyle.Top;
 			this.pnl_Properties_Line.Location = new System.Drawing.Point(0, 0);
 			this.pnl_Properties_Line.Name = "pnl_Properties_Line";
-			this.pnl_Properties_Line.Size = new System.Drawing.Size(141, 158);
+			this.pnl_Properties_Line.Size = new System.Drawing.Size(134, 158);
 			this.pnl_Properties_Line.TabIndex = 26;
 			// 
 			// lbl_pnlLine_Transparency
@@ -487,7 +487,7 @@
 			this.tkb_pnlLine_Transparency.Location = new System.Drawing.Point(15, 87);
 			this.tkb_pnlLine_Transparency.Maximum = 255;
 			this.tkb_pnlLine_Transparency.Name = "tkb_pnlLine_Transparency";
-			this.tkb_pnlLine_Transparency.Size = new System.Drawing.Size(104, 26);
+			this.tkb_pnlLine_Transparency.Size = new System.Drawing.Size(104, 45);
 			this.tkb_pnlLine_Transparency.TabIndex = 4;
 			// 
 			// lbl_pnlLine_Color
@@ -626,7 +626,6 @@
 			this.btn_addCustomStick.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addCustomStick.BackgroundImage")));
 			this.btn_addCustomStick.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 			this.btn_addCustomStick.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.btn_addCustomStick.Enabled = false;
 			this.btn_addCustomStick.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.btn_addCustomStick.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
 			this.btn_addCustomStick.Location = new System.Drawing.Point(77, 4);
@@ -635,6 +634,7 @@
 			this.btn_addCustomStick.TabIndex = 20;
 			this.btn_addCustomStick.TabStop = false;
 			this.btn_addCustomStick.UseVisualStyleBackColor = true;
+			this.btn_addCustomStick.Click += new System.EventHandler(this.btn_addCustomStick_Click);
 			// 
 			// btn_addStick
 			// 

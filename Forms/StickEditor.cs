@@ -20,7 +20,7 @@ namespace TISFAT_ZERO
 
 		private bool GLLoaded;
 		private int GL_WIDTH, GL_HEIGHT;
-		private OpenTK.GLControl glGraphics;
+		private OpenTK.GLControl glGraphics, oldGL;
 
 		private StickJoint activeJoint = null;
 		private StickJoint selectedJoint = null;
@@ -64,7 +64,7 @@ namespace TISFAT_ZERO
 
 			theSticked = this;
 
-			figure = new StickCustom();
+			figure = new StickCustom(1);
 			figure.drawFig = true;
 			figure.drawHandles = true;
 			figure.isActiveFig = true;
@@ -109,6 +109,12 @@ namespace TISFAT_ZERO
 
 		private void GL_GRAPHICS_Paint(object sender, PaintEventArgs e)
 		{
+            if (!(selectedJoint == null))
+            {
+                lbl_jointPosition.Text = "Position: (" + selectedJoint.location.X + ", " + selectedJoint.location.Y + ")";
+                lbl_lineLength.Text = "Line Length: " + selectedJoint.length.ToString();
+            }
+
 			num_drawOrder.Maximum = figure.Joints.Count;
 			if (!GLLoaded)
 			{
@@ -536,5 +542,22 @@ namespace TISFAT_ZERO
 			recalcFigureJoints();
 			glGraphics.Invalidate();
 		}
+
+        private void StickEditor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            glGraphics.Dispose();
+
+			Point oldLoc = figure.Joints[0].location;
+
+			figure.Joints[0].location = new Point(222, 195);
+
+			for (int i = 1; i < figure.Joints.Count; i++)
+			{
+				figure.Joints[i].location = new Point(figure.Joints[0].location.X + Functions.calcFigureDiff(oldLoc, figure.Joints[i]).X, figure.Joints[0].location.Y + Functions.calcFigureDiff(oldLoc, figure.Joints[i]).Y);
+			}
+
+            Canvas.theCanvas.GL_GRAPHICS.MakeCurrent();
+			Canvas.theCanvas.recieveStickFigure(figure);
+        }
 	}
 }

@@ -20,7 +20,7 @@ namespace TISFAT_ZERO
 		{
 			if (pos == firstKF || pos == lastKF)
 				return false;
-			
+
 			foreach (KeyFrame k in keyFrames)
 				if (pos == k.pos)
 				{
@@ -30,7 +30,7 @@ namespace TISFAT_ZERO
 
 			return false;
 		}
-		
+
 		public void doDisplay(int pos, bool current = true)
 		{
 			bool render = false; int imid = -1;
@@ -94,14 +94,18 @@ namespace TISFAT_ZERO
 				{
 					KeyFrame s = keyFrames[start], e = keyFrames[end];
 					float percent = (float)(pos - s.pos) / (e.pos - s.pos);
-
+					List<StickJoint> ps = s.Joints;
 					tweenFig.drawFig = true;
-
-					for (int a = 0; a < s.Joints.Count; a++)
+					int[] positions = new int[ps.Count];
+					for (int a = 0; a < ps.Count; a++)
 					{
-						tweenFig.Joints[a].location = s.Joints[a].location;
-						tweenFig.Joints[a].Tween(s.Joints[a], e.Joints[a], percent);
+						StickJoint p = ps[a].parent;
+						if (p != null)
+							positions[a] = ps.IndexOf(p);
+						else
+							positions[a] = -1;
 					}
+					tweenFig.Joints = custObjectFrame.createClone(s.Joints, positions);
 				}
 				else
 				{
@@ -161,7 +165,7 @@ namespace TISFAT_ZERO
 			if (pos < firstKF)
 			{
 				firstKF = pos;
-				StickFrame x = new StickFrame(((StickFrame)keyFrames[0]).Joints,pos);
+				StickFrame x = new StickFrame(((StickFrame)keyFrames[0]).Joints, pos);
 
 				keyFrames.Insert(0, x);
 
@@ -183,7 +187,7 @@ namespace TISFAT_ZERO
 			int c = 0;
 
 			//Look through the list for the nearest keyframe (as we want to retain all it's properties except for the position in the timeline)
-			for(int a = 0; a < keyFrames.Count; a++)
+			for (int a = 0; a < keyFrames.Count; a++)
 			{
 				StickFrame k = (StickFrame)keyFrames[a];
 				if (pos < k.pos)
@@ -192,7 +196,7 @@ namespace TISFAT_ZERO
 					n.pos = pos;
 					break;
 				}
-				else if(pos > k.pos)
+				else if (pos > k.pos)
 				{
 					c++;
 				}
@@ -277,10 +281,10 @@ namespace TISFAT_ZERO
 
 	public class RectLayer : Layer
 	{
-		public RectLayer(string Name, StickRect Line, Canvas _Canvas)
+		public RectLayer(string Name, StickRect rect, Canvas _Canvas)
 		{
 			name = Name;
-			fig = Line;
+			fig = rect;
 			theCanvas = _Canvas;
 			tweenFig = new StickRect(true);
 			type = 3;
@@ -327,6 +331,75 @@ namespace TISFAT_ZERO
 				if (pos < k.pos)
 				{
 					n = new RectFrame(keyFrames[c - 1].Joints, pos);
+					n.pos = pos;
+					break;
+				}
+				else if (pos > k.pos)
+					c++;
+				else if (pos == k.pos)
+					return -1;
+
+			}
+
+			keyFrames.Insert(c, n);
+
+			return c;
+		}
+	}
+
+	public class CustomLayer : Layer
+	{
+		public CustomLayer(string Name, StickCustom custom, Canvas _Canvas)
+		{
+			name = Name;
+			fig = custom;
+			theCanvas = _Canvas;
+			tweenFig = new StickCustom(true);
+
+			type = 4;
+
+			firstKF = 0;
+			lastKF = 19;
+
+			keyFrames = new List<KeyFrame>();
+			keyFrames.Add(new custObjectFrame(custom.Joints, firstKF));
+			keyFrames.Add(new custObjectFrame(custom.Joints, lastKF));
+		}
+
+		public override int insertKeyFrame(int pos)
+		{
+			//If inserting before the first, then make the new keyframe the first and re-arrange list
+			if (pos < firstKF)
+			{
+				firstKF = pos;
+				custObjectFrame x = new custObjectFrame(keyFrames[0].Joints, pos);
+
+				keyFrames.Insert(0, x);
+
+				return 0;
+			}
+			else if (pos > lastKF) //Do the same if it's more than the last
+			{
+				lastKF = pos;
+
+				custObjectFrame x = new custObjectFrame(keyFrames[keyFrames.Count - 1].Joints, pos);
+				x.pos = pos;
+
+				keyFrames.Add(x);
+
+				return keyFrames.Count - 1;
+			}
+
+			custObjectFrame n = null;
+			int c = 0;
+
+			//Look through the list for the nearest keyframe (as we want to retain all it's properties except for the position in the timeline)
+			for (int a = 0; a < keyFrames.Count; a++)
+			{
+				custObjectFrame k = (custObjectFrame)keyFrames[a];
+				if (pos < k.pos)
+				{
+					n = new custObjectFrame(keyFrames[c - 1].Joints, pos);
 					n.pos = pos;
 					break;
 				}

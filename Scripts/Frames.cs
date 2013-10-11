@@ -123,4 +123,39 @@ namespace TISFAT_ZERO
 			Joints.Add(new StickJoint("CornerTR", new Point(150, 30), 12, Color.Black, Color.Blue, 0, 0, false, Joints[2]));
 		}
 	}
+
+    public class custObjectFrame : KeyFrame
+    {
+        public custObjectFrame(List<StickJoint> ps, int po)
+        {
+            type = 4; pos = po;
+            int[] positions = new int[ps.Count];
+            for (int a = 0; a < ps.Count; a++)
+            {
+                StickJoint p = ps[a].parent;
+				if (p != null)
+					positions[a] = ps.IndexOf(p);
+				else
+					positions[a] = -1;
+            }
+			Joints = createClone(ps, positions);
+        }
+
+		public static List<StickJoint> createClone(List<StickJoint> old, int[] positions)
+		{
+			List<StickJoint> x = new List<StickJoint>();
+			x.AddRange(new StickJoint[old.Count]);
+			for (int a = 0; a < old.Count; a++)
+				writeJoint(x, old, a, positions);
+			return x;
+		}
+
+		private static void writeJoint(List<StickJoint> jnts, List<StickJoint> olds, int p, int[] positions)
+		{
+			if (positions[p] != -1 && jnts[positions[p]] == null)
+				writeJoint(jnts, olds, positions[p], positions);
+			jnts[p] = new StickJoint(olds[p], positions[p] != -1 ? jnts[positions[p]]: null);
+		}
+
+    }
 }

@@ -235,6 +235,20 @@ namespace TISFAT_ZERO
 			return n;
 		}
 
+		public CustomLayer addCustomLayer(string name)
+		{
+			StickCustom x = new StickCustom(1, false);
+
+			CustomLayer n = new CustomLayer(name, x, theCanvas);
+			layers.Add(n);
+
+
+			mainForm.updateByLayers(++layer_cnt);
+
+			setFrame(n.firstKF);
+			return n;
+		}
+
 		/// <summary>
 		/// Resets the timeline as if you restarted the program.
 		/// </summary>

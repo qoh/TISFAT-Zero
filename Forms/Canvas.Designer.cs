@@ -198,6 +198,6 @@ namespace TISFAT_ZERO
 		private System.Windows.Forms.ToolStripMenuItem flipVerticallyToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem flipLegsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem flipArmsToolStripMenuItem;
-		private GLControl GL_GRAPHICS;
+		public GLControl GL_GRAPHICS;
 	}
 }

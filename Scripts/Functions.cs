@@ -25,5 +25,27 @@ namespace TISFAT_ZERO
         {
             return x.drawOrder - y.drawOrder;
         }
+
+		public static Point calcFigureDiff(StickJoint a, StickJoint b)
+		{
+			int x1 = a.location.X;
+			int y1 = a.location.Y;
+
+			int x2 = b.location.X;
+			int y2 = b.location.Y;
+
+			return new Point(x2 - x1, y2 - y1);
+		}
+
+		public static Point calcFigureDiff(Point a, StickJoint b)
+		{
+			int x1 = a.X;
+			int y1 = a.Y;
+
+			int x2 = b.location.X;
+			int y2 = b.location.Y;
+
+			return new Point(x2 - x1, y2 - y1);
+		}
 	}
 }
