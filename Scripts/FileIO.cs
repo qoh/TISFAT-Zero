@@ -10,12 +10,12 @@ using System;
 
 namespace TISFAT_ZERO
 {
-	class tzf
+	class tzs
 	{
 		//This class holds the various constants used in file saving/loading.
 		public static readonly byte[]
 			fileSig =		{ 0x54, 0x49, 0x53, 0x46, 0x41, 0x54, 0x2D, 0x30 }, //TISFAT-0 in hex
-			curVersion =	{ 0x00, 0x02, 0x01, 0x0A };
+			curVersion =	{ 0x00, 0x03, 0x00, 0x00 };
 
 		public static readonly string saveFileExt = ".tzs";
 	}
@@ -32,6 +32,7 @@ namespace TISFAT_ZERO
 		//04: keyframe properties
 		//05: int list
 		//06: Properties
+		//07: custom fig block
 	}
 
 	class Saver
@@ -42,8 +43,8 @@ namespace TISFAT_ZERO
 			MemoryStream memst = new MemoryStream();
 
 			//Write the file signature and current version
-			memst.Write(tzf.fileSig, 0, tzf.fileSig.Length);
-			memst.Write(tzf.curVersion, 0, tzf.curVersion.Length);
+			memst.Write(tzs.fileSig, 0, tzs.fileSig.Length);
+			memst.Write(tzs.curVersion, 0, tzs.curVersion.Length);
 
 			writePreferencesBlock(memst);
 
@@ -119,6 +120,9 @@ namespace TISFAT_ZERO
 
 			stream.Write(bytes.ToArray(), 0, bytes.Count);
 
+			if (l.type == 4)
+				writeCustomFigBlock(l, stream);
+
 			for(int x = 0; x < l.keyFrames.Count; x++)
 				writeFrameBlock(l.keyFrames[x], stream);
 
@@ -128,6 +132,53 @@ namespace TISFAT_ZERO
 			b2.Add(0);
 
 			stream.Write(b2.ToArray(), 0, 7);
+		}
+
+		private static void writeCustomFigBlock(Layer l, Stream s)
+		{
+			List<byte> bytes = new List<byte>();
+
+			bytes.AddRange(BitConverter.GetBytes((ushort)7));
+			List<StickJoint> customFig = l.keyFrames[0].Joints;
+			bytes.AddRange(BitConverter.GetBytes((ushort)customFig.Count));
+
+			foreach (StickJoint j in customFig)
+			{
+				//Parent index
+				if (j.parent != null)
+					bytes.AddRange(BitConverter.GetBytes((ushort)(customFig.IndexOf(j.parent) + 1)));
+				else
+					bytes.AddRange(BitConverter.GetBytes((ushort)0));
+
+				//Joint Color
+				bytes.Add((byte)j.color.A);
+				bytes.Add((byte)j.color.R);
+				bytes.Add((byte)j.color.G);
+				bytes.Add((byte)j.color.B);
+
+				//Handle Color
+				bytes.Add((byte)j.handleColor.A);
+				bytes.Add((byte)j.handleColor.R);
+				bytes.Add((byte)j.handleColor.G);
+				bytes.Add((byte)j.handleColor.B);
+
+				//Thickness
+				bytes.Add((byte)j.thickness);
+
+				//DrawState
+				bytes.Add((byte)j.drawState);
+
+				//Draw order
+				bytes.AddRange(BitConverter.GetBytes((ushort)j.drawOrder));
+
+				//handle visible and visible
+				bytes.AddRange(BitConverter.GetBytes(j.visible));
+				bytes.AddRange(BitConverter.GetBytes(j.handleDrawn));
+			}
+
+			bytes.InsertRange(0, BitConverter.GetBytes(bytes.Count));
+
+			s.Write(bytes.ToArray(), 0, bytes.Count);
 		}
 		
 		private static void writeFrameBlock(KeyFrame f, Stream stream)
@@ -159,11 +210,20 @@ namespace TISFAT_ZERO
 			List<byte> bytes = new List<byte>();
 
 			bytes.AddRange(BitConverter.GetBytes((ushort)4));
-			bytes.AddRange(BitConverter.GetBytes(true)); //This true is a placeholder for the (to come) IsAllOneColour bool in the keyframe class.
-			bytes.Add((byte)k.figColor.A);
-			bytes.Add((byte)k.figColor.R);
-			bytes.Add((byte)k.figColor.G);
-			bytes.Add((byte)k.figColor.B);
+			if (k.type != 4)
+			{
+				bytes.AddRange(BitConverter.GetBytes(true));
+				bytes.Add((byte)k.figColor.A);
+				bytes.Add((byte)k.figColor.R);
+				bytes.Add((byte)k.figColor.G);
+				bytes.Add((byte)k.figColor.B);
+			}
+			else
+			{
+				bytes.AddRange(BitConverter.GetBytes(false));
+				bytes.AddRange(new byte[4]);
+			}
+
 			if (k.type == 2)
 				bytes.Add((byte)k.Joints[0].thickness);
 
@@ -272,6 +332,7 @@ namespace TISFAT_ZERO
 				string name = Encoding.UTF8.GetString(layer.data, 2, nameLength);
 
 				Layer newLayer;
+				Block otherTmpBlock = new Block();
 
 				if (layerType == 1)
 					newLayer = new StickLayer(name, new StickFigure(false), zeCanvas);
@@ -280,7 +341,10 @@ namespace TISFAT_ZERO
 				else if (layerType == 3)
 					newLayer = new RectLayer(name, new StickRect(false), zeCanvas);
 				else if (layerType == 4)
+				{
 					newLayer = new CustomLayer(name, new StickCustom(false), zeCanvas);
+					otherTmpBlock = readNextBlock(file);
+				}
 				else
 					continue; //Only 1, 2, and 3 have been coded so far, so only load those types.
 
@@ -301,7 +365,14 @@ namespace TISFAT_ZERO
 					else if (layerType == 3)
 						f = new RectFrame(0);
 					else if (layerType == 4)
+					{
 						f = new custObjectFrame(0);
+						int JC = BitConverter.ToUInt16(otherTmpBlock.data, 0);
+						//for (int a = 0; a < JC; a++)
+						//{
+						//	int[] positions
+						//}
+					}
 					else
 						continue; //Nothing past layer type 3 has even begun implementation, so if we encounter any just skip.
 
