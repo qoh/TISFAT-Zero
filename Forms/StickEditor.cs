@@ -121,6 +121,8 @@ namespace TISFAT_ZERO
 				return;
 			}
 
+            GL_GRAPHICS.MakeCurrent();
+
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.StencilBufferBit);
 
 			if (!(figure == null))

@@ -176,15 +176,15 @@ namespace TISFAT_ZERO
 					if(!hasLockedJoint)
 						activeFigure.setAsBase(activeFigure.Joints[(activeFigure.Joints.IndexOf(f) + 1) % activeFigure.Joints.Count]);
 
+                    //Sets the selectedJoint variable to the joint that we just selected.
+                    selectedJoint = f;
+
 					//This sets the labels in the debug menu.
-					if (selectedJoint == null)
+					if (selectedJoint != null)
 					{
 						theToolbox.lbl_selectedJoint.Text = "Selected Joint: " + f.name;
 						theToolbox.lbl_jointLength.Text = "Joint Length: " + f.CalcLength(null).ToString();
 					}
-
-					//Sets the selectedJoint variable to the joint that we just selected.
-					selectedJoint = f;
 
 					//This tells the form that the mouse button is being held down, and
 					//that we should redraw the form when it's moved.
@@ -505,6 +505,8 @@ namespace TISFAT_ZERO
 				return;
 			}
 
+            GL_GRAPHICS.MakeCurrent();
+
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.StencilBufferBit);
 
 			for (int i = figureList.Count; i > 0; i--)
@@ -530,10 +532,14 @@ namespace TISFAT_ZERO
 			for (int a = 0; a < ps.Count; a++)
 			{
 				StickJoint p = ps[a].parent;
-				if (p != null)
-					positions[a] = ps.IndexOf(p);
-				else
-					positions[a] = -1;
+                if (p != null)
+                {
+                    positions[a] = ps.IndexOf(p);
+                }
+                else
+                {
+                    positions[a] = -1;
+                }
 			}
 			//c.keyFrames[0].Joints = ps;
 			c.keyFrames[0].Joints = custObjectFrame.createClone(ps, positions);

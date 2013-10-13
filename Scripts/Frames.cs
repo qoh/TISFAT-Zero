@@ -133,10 +133,16 @@ namespace TISFAT_ZERO
             for (int a = 0; a < ps.Count; a++)
             {
                 StickJoint p = ps[a].parent;
-				if (p != null)
-					positions[a] = ps.IndexOf(p);
-				else
-					positions[a] = -1;
+                if (p != null)
+                {
+                    ps[a].CalcLength(p);
+                    positions[a] = ps.IndexOf(p);
+                }
+                else
+                {
+                    positions[a] = -1;
+                    ps[a].CalcLength(ps[a]);
+                }
             }
 			Joints = createClone(ps, positions);
         }

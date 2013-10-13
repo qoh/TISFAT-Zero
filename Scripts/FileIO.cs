@@ -346,7 +346,7 @@ namespace TISFAT_ZERO
 					otherTmpBlock = readNextBlock(file);
 				}
 				else
-					continue; //Only 1, 2, and 3 have been coded so far, so only load those types.
+					continue; //Only 1, 2, 3, and 4 have been coded so far, so only load those types.
 
 				List<KeyFrame> thingy = new List<KeyFrame>();
 
@@ -368,13 +368,43 @@ namespace TISFAT_ZERO
 					{
 						f = new custObjectFrame(0);
 						int JC = BitConverter.ToUInt16(otherTmpBlock.data, 0);
-						//for (int a = 0; a < JC; a++)
-						//{
-						//	int[] positions
-						//}
+
+                        f.Joints.AddRange(new StickJoint[JC]);
+
+                        int[] parents = new int[JC];
+                        
+                        for (int a = 0; a < JC; a++)
+						{
+                            f.Joints[a] = new StickJoint("", new Point(0, 0), 0, Color.Black, Color.Black, 0, 0, false, null, false);
+                            int blockItr = a * 16;
+
+                            ushort parentIndex = (ushort)BitConverter.ToInt16(otherTmpBlock.data, blockItr + 2);
+
+                            parents[a] = -1;
+                            if (parentIndex != 0)
+                            {
+                                parents[a] = parentIndex;
+                            }
+
+                            f.Joints[a].color = Color.FromArgb(otherTmpBlock.data[blockItr + 4], otherTmpBlock.data[blockItr + 5], otherTmpBlock.data[blockItr + 6], otherTmpBlock.data[blockItr + 7]);
+                            f.Joints[a].handleColor = Color.FromArgb(otherTmpBlock.data[blockItr + 8], otherTmpBlock.data[blockItr + 9], otherTmpBlock.data[blockItr + 10], otherTmpBlock.data[blockItr + 11]);
+                            f.Joints[a].thickness = otherTmpBlock.data[blockItr + 12];
+                            f.Joints[a].drawState = otherTmpBlock.data[blockItr + 13];
+                            f.Joints[a].drawOrder = (ushort)BitConverter.ToInt16(otherTmpBlock.data, blockItr + 14);
+                            f.Joints[a].visible = (bool)BitConverter.ToBoolean(otherTmpBlock.data, 16);
+                            f.Joints[a].handleDrawn = (bool)BitConverter.ToBoolean(otherTmpBlock.data, 17);
+						}
+
+                        for (int i = 0; i < JC; i++)
+                        {
+                            if (parents[i] != -1)
+                            {
+                                f.Joints[i].parent = f.Joints[parents[i] - 1];
+                            }
+                        }
 					}
 					else
-						continue; //Nothing past layer type 3 has even begun implementation, so if we encounter any just skip.
+						continue; //Nothing past layer type 4 has even begun implementation, so if we encounter any just skip.
 
 					int kPos = BitConverter.ToInt32(tmpBlk.data, 0);
 
@@ -397,27 +427,27 @@ namespace TISFAT_ZERO
 					Block posblk = propBlock;
 					Color figColor = Color.Black;
 
-					int jointcount = BitConverter.ToUInt16(posblk.data, 0) / 2;
-					if (layerType == 4)
-					{
-						f.Joints.AddRange(new StickJoint[jointcount]);
-					}
-
 					if (propBlock.type == 4)
 					{
 						//Obtain the colour that's stored in the properties block
-						figColor = Color.FromArgb(propBlock.data[1], propBlock.data[2], propBlock.data[3], propBlock.data[4]);
+                        if(layerType != 4)
+						    figColor = Color.FromArgb(propBlock.data[1], propBlock.data[2], propBlock.data[3], propBlock.data[4]);
 
 						//Obtain the joints positions block
 						posblk = readNextBlock(file); //Oh readNextBlock method, how you make my life simpler so
 					}
+
+                    int jointcount = BitConverter.ToUInt16(posblk.data, 0);
 					
 					try 
 					{
 						for (int a = 0; a < jointcount; a++)
 						{
 							int x = 4 * a + 2;
-							f.Joints[a].color = figColor;
+
+                            if(layerType != 4)
+							    f.Joints[a].color = figColor;
+
 							f.Joints[a].location = new Point(BitConverter.ToInt16(posblk.data, x),
 															BitConverter.ToInt16(posblk.data, x + 2));
 
