@@ -80,12 +80,7 @@ namespace TISFAT_ZERO
 
 		private void recalcFigureJoints()
 		{
-			////Clear all children from joints.
-			//for (int i = 0; i < figure.Joints.Count; i++)
-			//{
-			//	for (int j = 0; j < figure.Joints[i].children.Count; j++)
-			//		figure.Joints[i].children[j] = null;
-			//}
+			figure.reSortJoints();
 
 			for (int i = 0; i < figure.Joints.Count(); i++)
 			{
@@ -104,7 +99,6 @@ namespace TISFAT_ZERO
 				}
 				figure.Joints[i].ParentFigure = figure;
 			}
-			figure.reSortJoints();
 		}
 
 		private void GL_GRAPHICS_Paint(object sender, PaintEventArgs e)
@@ -121,9 +115,8 @@ namespace TISFAT_ZERO
 				return;
 			}
 
-            GL_GRAPHICS.MakeCurrent();
-
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.StencilBufferBit);
+			GL_GRAPHICS.MakeCurrent();
 
 			if (!(figure == null))
 				figure.drawFigure(1, true);
@@ -332,24 +325,25 @@ namespace TISFAT_ZERO
 
 		private void GL_GRAPHICS_MouseMove(object sender, MouseEventArgs e)
 		{
+			if (!(figure == null) & !mouseDown)
+			{
+				if (figure.getPointAt(new Point(e.X, e.Y), 4) != -1)
+				{
+					this.Cursor = Cursors.Hand;
+					mouseHot = true;
+					glGraphics.Invalidate();
+				}
+				else
+				{
+					this.Cursor = Cursors.Default;
+					mouseHot = false;
+					glGraphics.Invalidate();
+				}
+			}
+
 			if (toolType == 1)
 			{
-				if (!(figure == null) & !mouseDown)
-				{
-					if (figure.getPointAt(new Point(e.X, e.Y), 4) != -1)
-					{
-						this.Cursor = Cursors.Hand;
-						mouseHot = true;
-						glGraphics.Invalidate();
-					}
-					else
-					{
-						this.Cursor = Cursors.Default;
-						mouseHot = false;
-						glGraphics.Invalidate();
-					}
-				}
-				else if (mouseDown && !(activeJoint == null))
+				if (mouseDown && !(activeJoint == null))
 				{
 					if (!obeyIK)
 					{
@@ -429,6 +423,26 @@ namespace TISFAT_ZERO
 					recalcFigureJoints();
 					selectedJoint = j;
 					glGraphics.Invalidate();
+					updateToolboxInfo();
+				}
+
+				if (toolType == 3)
+				{
+					activeJoint = figure.selectPoint(e.Location, 4);
+					if (!(activeJoint == null))
+						selectedJoint = activeJoint;
+
+					if(activeJoint == null || activeJoint.parent == null)
+						return;
+
+					selectedJoint = activeJoint.parent;
+					StickJoint parent = activeJoint;
+
+					figure.Joints.Remove(activeJoint);
+					recalcFigureJoints();
+					glGraphics.Invalidate();
+					activeJoint = null;
+
 					updateToolboxInfo();
 				}
 			}
@@ -561,5 +575,10 @@ namespace TISFAT_ZERO
             Canvas.theCanvas.GL_GRAPHICS.MakeCurrent();
 			Canvas.theCanvas.recieveStickFigure(figure);
         }
+
+		private void openToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			dlg_openFile.ShowDialog();
+		}
 	}
 }

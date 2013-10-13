@@ -551,6 +551,15 @@ namespace TISFAT_ZERO
 
 			addFigure(c.fig);
 
+			for (int i = 0; i < c.fig.Joints.Count; i++)
+			{
+				if (c.fig.Joints[i].parent != null)
+				{
+					c.fig.Joints[i].CalcLength(null);
+				}
+				c.fig.Joints[i].drawOrder = i;
+			}
+
 			mainForm.tline.Invalidate();
 			mainForm.tline.setFrame(c.firstKF); 
 		}
