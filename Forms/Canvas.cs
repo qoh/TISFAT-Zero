@@ -541,6 +541,7 @@ namespace TISFAT_ZERO
                     positions[a] = -1;
                 }
 			}
+
 			//c.keyFrames[0].Joints = ps;
 			c.keyFrames[0].Joints = custObjectFrame.createClone(ps, positions);
 			//c.keyFrames[1].Joints = ps;
@@ -550,16 +551,6 @@ namespace TISFAT_ZERO
 			c.tweenFig.Joints = custObjectFrame.createClone(ps, positions);
 
 			addFigure(c.fig);
-
-			for (int i = 0; i < c.fig.Joints.Count; i++)
-			{
-				if (c.fig.Joints[i].parent != null)
-				{
-					c.fig.Joints[i].CalcLength(null);
-				}
-				c.fig.Joints[i].drawOrder = i;
-			}
-
 			mainForm.tline.Invalidate();
 			mainForm.tline.setFrame(c.firstKF); 
 		}

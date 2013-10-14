@@ -168,12 +168,14 @@ namespace TISFAT_ZERO
 				//DrawState
 				bytes.Add((byte)j.drawState);
 
+
 				//Draw order
 				bytes.AddRange(BitConverter.GetBytes((ushort)j.drawOrder));
 
 				//handle visible and visible
 				bytes.AddRange(BitConverter.GetBytes(j.visible));
 				bytes.AddRange(BitConverter.GetBytes(j.handleDrawn));
+				
 			}
 
 			bytes.InsertRange(0, BitConverter.GetBytes(bytes.Count));
@@ -383,11 +385,12 @@ namespace TISFAT_ZERO
                             parents[a] = -1;
                             if (parentIndex != 0)
                             {
-                                parents[a] = parentIndex;
+                                parents[a] = parentIndex - 1;
                             }
 
                             f.Joints[a].color = Color.FromArgb(otherTmpBlock.data[blockItr + 4], otherTmpBlock.data[blockItr + 5], otherTmpBlock.data[blockItr + 6], otherTmpBlock.data[blockItr + 7]);
                             f.Joints[a].handleColor = Color.FromArgb(otherTmpBlock.data[blockItr + 8], otherTmpBlock.data[blockItr + 9], otherTmpBlock.data[blockItr + 10], otherTmpBlock.data[blockItr + 11]);
+							f.Joints[a].defaultHandleColor = f.Joints[a].handleColor;
                             f.Joints[a].thickness = otherTmpBlock.data[blockItr + 12];
                             f.Joints[a].drawState = otherTmpBlock.data[blockItr + 13];
                             f.Joints[a].drawOrder = (ushort)BitConverter.ToInt16(otherTmpBlock.data, blockItr + 14);
@@ -399,9 +402,17 @@ namespace TISFAT_ZERO
                         {
                             if (parents[i] != -1)
                             {
-                                f.Joints[i].parent = f.Joints[parents[i] - 1];
+                                f.Joints[i].parent = f.Joints[parents[i]];
                             }
                         }
+
+						foreach (StickJoint j in f.Joints)
+						{
+							if (j.parent != null)
+								j.CalcLength(null);
+
+						}
+						newLayer.tweenFig.Joints = custObjectFrame.createClone(f.Joints, parents);
 					}
 					else
 						continue; //Nothing past layer type 4 has even begun implementation, so if we encounter any just skip.

@@ -109,7 +109,7 @@ namespace TISFAT_ZERO
                 lbl_lineLength.Text = "Line Length: " + selectedJoint.length.ToString();
             }
 
-			num_drawOrder.Maximum = figure.Joints.Count;
+			num_drawOrder.Maximum = figure.Joints.Count + 1;
 			if (!GLLoaded)
 			{
 				return;
