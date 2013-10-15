@@ -553,8 +553,13 @@ namespace TISFAT_ZERO
 			c.tweenFig.Joints = custObjectFrame.createClone(ps, positions);
 
 			addFigure(c.fig);
+			mainForm.tline.setFrame(c.firstKF);
 			mainForm.tline.Invalidate();
-			mainForm.tline.setFrame(c.firstKF); 
+		}
+
+		public void recieveStickFigure(StickCustom figure, bool lean)
+		{
+			//TODO: Make the current keyframe update with the new positions for the Custom Stick.
 		}
 	}
 }

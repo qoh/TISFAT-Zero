@@ -114,7 +114,7 @@ namespace TISFAT_ZERO
 			bin.BaseStream.Position += 12;
 
 			int jointCount = bin.ReadInt32();
-			sticked.figure = new StickCustom(false);
+			sticked.figure = new StickCustom(1);
 			sticked.figure.drawFig = true;
 			sticked.figure.drawHandles = true;
 			sticked.figure.isActiveFig = true;
@@ -147,7 +147,6 @@ namespace TISFAT_ZERO
 			bin.Close();
 			bin.Dispose();
 		}
-
 	}
 
 	class Saver

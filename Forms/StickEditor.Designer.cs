@@ -487,6 +487,7 @@
 			this.chk_handleVisible.TabIndex = 4;
 			this.chk_handleVisible.Text = "Visible";
 			this.chk_handleVisible.UseVisualStyleBackColor = true;
+			this.chk_handleVisible.CheckedChanged += new System.EventHandler(this.chk_handleVisible_CheckedChanged);
 			// 
 			// num_handleAlpha
 			// 

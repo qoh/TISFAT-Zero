@@ -47,5 +47,26 @@ namespace TISFAT_ZERO
 
 			return new Point(x2 - x1, y2 - y1);
 		}
+
+		public static void recalcFigureJoints(StickObject figure)
+		{
+			for (int i = 0; i < figure.Joints.Count; i++)
+			{
+				if (figure.Joints[i].parent != null)
+				{
+					figure.Joints[i].CalcLength(null);
+				}
+			}
+
+			for (int i = 0; i < figure.Joints.Count; i++)
+			{
+				if (figure.Joints[i].parent != null)
+				{
+					if (!(figure.Joints[i].parent.children.IndexOf(figure.Joints[i]) >= 0))
+						figure.Joints[i].parent.children.Add(figure.Joints[i]);
+				}
+				figure.Joints[i].ParentFigure = figure;
+			}
+		}
 	}
 }

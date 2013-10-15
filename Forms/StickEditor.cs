@@ -38,13 +38,22 @@ namespace TISFAT_ZERO
 
 		private int toolType = 1;
 
+		private bool loaded = false;
+
 		public StickEditor()
 		{
 			InitializeComponent();
 		}
 
+		public StickEditor(bool loading)
+		{
+			InitializeComponent();
+			loaded = true;
+		}
+
 		private void StickEditor_Load(object sender, EventArgs e)
 		{
+			num_drawOrder.Maximum = int.MaxValue;
 			glGraphics = GL_GRAPHICS;
 			glGraphics.MakeCurrent();
 
@@ -67,18 +76,21 @@ namespace TISFAT_ZERO
 
 			theSticked = this;
 
-			figure = new StickCustom(1);
-			figure.drawFig = true;
-			figure.drawHandles = true;
-			figure.isActiveFig = true;
+			if (!loaded)
+			{
+				figure = new StickCustom(1);
+				figure.drawFig = true;
+				figure.drawHandles = true;
+				figure.isActiveFig = true;
 
-			figure.Joints.Add(new StickJoint("Base Joint 1", new Point(glGraphics.Width / 2, glGraphics.Height / 2), 12, Color.Black, Color.Yellow, 0, 0, false, null, true));
-			figure.Joints.Add(new StickJoint("Base Joint 2", new Point(glGraphics.Width / 2, glGraphics.Height / 2 - 20), 12, Color.Black, Color.Blue, 0, 0, false, null, true));
-			figure.Joints[1].parent = figure.Joints[0];
-			figure.Joints[0].drawOrder = 0;
-			figure.Joints[1].drawOrder = 1;
+				figure.Joints.Add(new StickJoint("Base Joint 1", new Point(glGraphics.Width / 2, glGraphics.Height / 2), 12, Color.Black, Color.Yellow, 0, 0, false, null, true));
+				figure.Joints.Add(new StickJoint("Base Joint 2", new Point(glGraphics.Width / 2, glGraphics.Height / 2 - 20), 12, Color.Black, Color.Blue, 0, 0, false, null, true));
+				figure.Joints[1].parent = figure.Joints[0];
+				figure.Joints[0].drawOrder = 0;
+				figure.Joints[1].drawOrder = 1;
 
-			recalcFigureJoints();
+				recalcFigureJoints();
+			}
 		}
 
 		public void recalcFigureJoints()
@@ -104,64 +116,31 @@ namespace TISFAT_ZERO
 			}
 		}
 
-		private void GL_GRAPHICS_Paint(object sender, PaintEventArgs e)
+		public void loadFigure(StickCustom fig)
 		{
-            if (!(selectedJoint == null))
-            {
-                lbl_jointPosition.Text = "Position: (" + selectedJoint.location.X + ", " + selectedJoint.location.Y + ")";
-                lbl_lineLength.Text = "Line Length: " + selectedJoint.length.ToString();
-            }
+			loaded = true;
 
-			num_drawOrder.Maximum = figure.Joints.Count + 1;
-			if (!GLLoaded)
+			this.figure = new StickCustom(1);
+			this.figure.drawFig = true;
+			this.figure.drawHandles = true;
+			this.figure.isActiveFig = true;
+
+			for (int i = 0; i < fig.Joints.Count; i++)
 			{
-				return;
-			}
+				this.figure.Joints.Add(fig.Joints[i]);
+				StickJoint parent = null;
 
-			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.StencilBufferBit);
-			GL_GRAPHICS.MakeCurrent();
-
-			if (!(figure == null))
-				figure.drawFigure(1, true);
-
-			if (!(selectedJoint == null) && drawHandles)
-			{
-				drawGraphics(2, Color.FromArgb(105, Color.SkyBlue), selectedJoint.location, 4, 4, new Point(selectedJoint.location.X + 7, selectedJoint.location.Y + 7));
-				drawGraphics(3, Color.Red, selectedJoint.location, 5, 5, new Point(selectedJoint.location.X + 7, selectedJoint.location.Y + 7));
-			}
-
-			if (toolType == 0)
-			{
-				if (figure.selectPoint(mouseLoc, 4) != null)
+				if (!(fig.Joints[i].parent == null))
 				{
-					drawGraphics(2, Color.Blue, figure.selectPoint(mouseLoc, 4).location, 1, 1, figure.selectPoint(mouseLoc, 4).location);
-					this.Cursor = Cursors.Hand;
-				}
-				else
-					this.Cursor = Cursors.Default;
-
-				if (!mouseDown && !mouseHot)
-					drawGraphics(3, Color.Green, mouseLoc, 1, 1, mouseLoc);
-				else if (!mouseHot)
-					drawGraphics(4, Color.SkyBlue, pointClicked, 1, 1, mouseLoc);
-			}
-
-			if (toolType == 2)
-			{
-				if (!(selectedJoint == null))
-				{
-					drawGraphics(0, Color.FromArgb(100, selectedJoint.color), selectedJoint.location, (int)num_brushThickness.Value, (int)num_brushThickness.Value, mouseLoc);
+					int parentIndex = fig.Joints.IndexOf(fig.Joints[i].parent);
+					
+					parent = fig.Joints[i].parent;
 				}
 
-				if (!mouseDown && !mouseHot)
-					drawGraphics(3, Color.Green, mouseLoc, 1, 1, mouseLoc);
+				this.figure.Joints[i].parent = parent;
 			}
 
-			if(!(figure == null))
-				if (drawHandles)
-					figure.drawFigHandles(1, true);
-
-			GL_GRAPHICS.SwapBuffers();
+			recalcFigureJoints();
 		}
 
 		#region Drawing Grapics
@@ -314,7 +293,7 @@ namespace TISFAT_ZERO
 		}
 		#endregion
 
-		#region Callbacks
+		#region GL_GRAPHICS Callbacks
 		private void GL_GRAPHICS_Resize(object sender, EventArgs e)
 		{
 			GL_HEIGHT = GL_GRAPHICS.Height;
@@ -372,32 +351,6 @@ namespace TISFAT_ZERO
 			glGraphics.Invalidate();
 		}
 
-		private void pic_handleColor_Click(object sender, EventArgs e)
-		{
-			if (selectedJoint == null)
-				return;
-
-			if (!(dlg_Color.ShowDialog() == DialogResult.OK))
-				return;
-			pic_handleColor.BackColor = dlg_Color.Color;
-
-			selectedJoint.defaultHandleColor = dlg_Color.Color;
-			selectedJoint.handleColor = dlg_Color.Color;
-		}
-
-		private void pic_lineColor_Click(object sender, EventArgs e)
-		{
-			if (selectedJoint == null)
-				return;
-
-			if (!(dlg_Color.ShowDialog() == DialogResult.OK))
-				return;
-			pic_lineColor.BackColor = dlg_Color.Color;
-			selectedJoint.color = dlg_Color.Color;
-
-			glGraphics.Invalidate();
-		}
-
 		private void GL_GRAPHICS_MouseDown(object sender, MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
@@ -452,6 +405,7 @@ namespace TISFAT_ZERO
 					selectedJoint = activeJoint.parent;
 					StickJoint parent = activeJoint;
 
+					activeJoint.removeChildren();
 					figure.Joints.Remove(activeJoint);
 					recalcFigureJoints();
 					glGraphics.Invalidate();
@@ -476,6 +430,65 @@ namespace TISFAT_ZERO
 			}
 		}
 
+		private void GL_GRAPHICS_Paint(object sender, PaintEventArgs e)
+		{
+			if (!(selectedJoint == null))
+			{
+				lbl_jointPosition.Text = "Position: (" + selectedJoint.location.X + ", " + selectedJoint.location.Y + ")";
+				lbl_lineLength.Text = "Line Length: " + selectedJoint.length.ToString();
+			}
+
+			if (!GLLoaded)
+			{
+				return;
+			}
+
+			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.StencilBufferBit);
+			GL_GRAPHICS.MakeCurrent();
+
+			if (!(figure == null))
+				figure.drawFigure(1, true);
+
+			if (!(selectedJoint == null) && drawHandles)
+			{
+				drawGraphics(2, Color.FromArgb(105, Color.SkyBlue), selectedJoint.location, 4, 4, new Point(selectedJoint.location.X + 7, selectedJoint.location.Y + 7));
+				drawGraphics(3, Color.Red, selectedJoint.location, 5, 5, new Point(selectedJoint.location.X + 7, selectedJoint.location.Y + 7));
+			}
+
+			if (toolType == 0)
+			{
+				if (figure.selectPoint(mouseLoc, 4) != null)
+				{
+					drawGraphics(2, Color.Blue, figure.selectPoint(mouseLoc, 4).location, 1, 1, figure.selectPoint(mouseLoc, 4).location);
+					this.Cursor = Cursors.Hand;
+				}
+				else
+					this.Cursor = Cursors.Default;
+
+				if (!mouseDown && !mouseHot)
+					drawGraphics(3, Color.Green, mouseLoc, 1, 1, mouseLoc);
+				else if (!mouseHot)
+					drawGraphics(4, Color.SkyBlue, pointClicked, 1, 1, mouseLoc);
+			}
+
+			if (toolType == 2)
+			{
+				if (!(selectedJoint == null))
+				{
+					drawGraphics(0, Color.FromArgb(100, selectedJoint.color), selectedJoint.location, (int)num_brushThickness.Value, (int)num_brushThickness.Value, mouseLoc);
+				}
+
+				if (!mouseDown && !mouseHot)
+					drawGraphics(3, Color.Green, mouseLoc, 1, 1, mouseLoc);
+			}
+
+			if (!(figure == null))
+				if (drawHandles)
+					figure.drawFigHandles(1, true);
+
+			GL_GRAPHICS.SwapBuffers();
+		}
+
 		private void GL_GRAPHICS_MouseUp(object sender, MouseEventArgs e)
 		{
 			activeJoint = null;
@@ -485,6 +498,7 @@ namespace TISFAT_ZERO
 		}
 		#endregion
 
+		#region Callbacks
 		private void updateToolboxInfo()
 		{
 			if (selectedJoint == null)
@@ -587,23 +601,6 @@ namespace TISFAT_ZERO
 			glGraphics.Invalidate();
 		}
 
-        private void StickEditor_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            glGraphics.Dispose();
-
-			Point oldLoc = figure.Joints[0].location;
-
-			figure.Joints[0].location = new Point(222, 195);
-
-			for (int i = 1; i < figure.Joints.Count; i++)
-			{
-				figure.Joints[i].location = new Point(figure.Joints[0].location.X + Functions.calcFigureDiff(oldLoc, figure.Joints[i]).X, figure.Joints[0].location.Y + Functions.calcFigureDiff(oldLoc, figure.Joints[i]).Y);
-			}
-
-            Canvas.theCanvas.GL_GRAPHICS.MakeCurrent();
-			Canvas.theCanvas.recieveStickFigure(figure);
-        }
-
 		private void openToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			dlg_openFile.ShowDialog();
@@ -623,5 +620,61 @@ namespace TISFAT_ZERO
 		{
 			CustomFigLoader.loadStickFile(dlg_openFile.FileName);
 		}
+
+		private void chk_handleVisible_CheckedChanged(object sender, EventArgs e)
+		{
+			if (selectedJoint == null)
+				return;
+
+			selectedJoint.handleDrawn = chk_handleVisible.Checked;
+			glGraphics.Invalidate();
+		}
+
+		private void pic_handleColor_Click(object sender, EventArgs e)
+		{
+			if (selectedJoint == null)
+				return;
+
+			if (!(dlg_Color.ShowDialog() == DialogResult.OK))
+				return;
+			pic_handleColor.BackColor = dlg_Color.Color;
+
+			selectedJoint.defaultHandleColor = dlg_Color.Color;
+			selectedJoint.handleColor = dlg_Color.Color;
+		}
+
+		private void pic_lineColor_Click(object sender, EventArgs e)
+		{
+			if (selectedJoint == null)
+				return;
+
+			if (!(dlg_Color.ShowDialog() == DialogResult.OK))
+				return;
+			pic_lineColor.BackColor = dlg_Color.Color;
+			selectedJoint.color = dlg_Color.Color;
+
+			glGraphics.Invalidate();
+		}
+
+		private void StickEditor_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			glGraphics.Dispose();
+
+			Point oldLoc = figure.Joints[0].location;
+
+			figure.Joints[0].location = new Point(222, 195);
+
+			for (int i = 1; i < figure.Joints.Count; i++)
+			{
+				figure.Joints[i].location = new Point(figure.Joints[0].location.X + Functions.calcFigureDiff(oldLoc, figure.Joints[i]).X, figure.Joints[0].location.Y + Functions.calcFigureDiff(oldLoc, figure.Joints[i]).Y);
+			}
+
+			Canvas.theCanvas.GL_GRAPHICS.MakeCurrent();
+			if (!loaded)
+				Canvas.theCanvas.recieveStickFigure(figure);
+			else
+				Canvas.theCanvas.recieveStickFigure(figure, true);
+		}
+		#endregion
 	}
 }

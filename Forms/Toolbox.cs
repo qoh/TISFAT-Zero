@@ -236,7 +236,13 @@ namespace TISFAT_ZERO
 					pic_pnlLine_color.BackColor = Canvas.activeFigure.figColor;
 					num_pnlLine_thickness.Value = Canvas.activeFigure.Joints[0].thickness;
 				}
-
+				else if (Canvas.activeFigure.type == 4)
+				{
+					StickEditor f = new StickEditor(true);
+					f.loadFigure((StickCustom)Canvas.activeFigure);
+					f.ShowDialog();
+					return;
+				}
 
 				pnl_mainTools.Enabled = false;
 				slideOutObject = pnl_Properties;

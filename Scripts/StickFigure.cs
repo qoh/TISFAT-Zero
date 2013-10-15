@@ -159,6 +159,16 @@ namespace TISFAT_ZERO
 
 			color = Color.FromArgb(a[2], r[2], g[2], b[2]);
 		}
+
+		public void removeChildren()
+		{
+			for (int i = children.Count; i > 0; i--)
+			{
+				children[i-1].removeChildren();
+				ParentFigure.Joints.Remove(children[i-1]);
+				children.RemoveAt(i-1);
+			}
+		}
 		#endregion
 
 		#region Positioning
@@ -268,7 +278,7 @@ namespace TISFAT_ZERO
 		#region Properties
 
 		public List<StickJoint> Joints;
-		public bool isActiveFig, drawFig, drawHandles, isTweenFig;
+		public bool isActiveFig, drawFig, drawHandles, isTweenFig, fromSticked;
 		public Color figColor = Color.Black;
 
 		public bool isDrawn
@@ -473,6 +483,8 @@ namespace TISFAT_ZERO
 
                     if (i.handleDrawn & isActiveFig)
                         StickEditor.theSticked.drawGraphics(2, i.handleColor, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
+					else if (!i.handleDrawn & isActiveFig)
+						StickEditor.theSticked.drawGraphics(3, i.handleColor, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
 
                     if (i.state == 1 | i.state == 3 | i.state == 4)
                         StickEditor.theSticked.drawGraphics(3, Color.WhiteSmoke, new Point(i.location.X - 1, i.location.Y - 1), 6, 6, new Point(0, 0));
@@ -505,7 +517,16 @@ namespace TISFAT_ZERO
 
 			for (int i = 0; i < Joints.Count(); i++)
 			{
-				if (Joints[i].handleDrawn)
+				if (Joints[i].handleDrawn & !fromSticked)
+				{
+					double itr_result = Math.Sqrt(Math.Pow(coords.X - Joints[i].location.X, 2) + Math.Pow(coords.Y - Joints[i].location.Y, 2));
+					if (itr_result < minimum)
+					{
+						minimum = itr_result;
+						index = i;
+					}
+				}
+				else if (fromSticked)
 				{
 					double itr_result = Math.Sqrt(Math.Pow(coords.X - Joints[i].location.X, 2) + Math.Pow(coords.Y - Joints[i].location.Y, 2));
 					if (itr_result < minimum)
@@ -597,6 +618,9 @@ namespace TISFAT_ZERO
 
         public void reSortJoints()
         {
+			foreach (StickJoint j in Joints)
+				if (Joints.IndexOf(j) < j.drawOrder)
+					j.drawOrder = Joints.IndexOf(j);
             Joints.Sort(Functions.compareDrawOrder);
         }
 	}
@@ -818,6 +842,8 @@ namespace TISFAT_ZERO
         {
             type = 4;
             Joints = new List<StickJoint>();
+
+			fromSticked = true;
         }
     }
 }
