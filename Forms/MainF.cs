@@ -219,6 +219,7 @@ namespace TISFAT_ZERO
 		private void dlThingyToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			Downloader f = new Downloader();
+			Properties.User.Default.selectedBuilds = Preferences.buildNames[Preferences.currentBuild];
 			f.ShowDialog();
 		}
 

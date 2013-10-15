@@ -29,17 +29,19 @@ namespace TISFAT_ZERO
 
 		private void Downloader_Load(object sender, EventArgs e)
 		{
-			//Create the thread to fetch all the files to download
-			Thread downloaderThread = new Thread(doDownload);
-			downloaderThread.Start();
-			lbl_DlTitle.Text = "Now Downloading: File List";
-
-			//Wait for it to finish
-			doneDownload.WaitOne();
-			
-			//Reset so we can use it for the other downloads
-			doneDownload.Reset();
-
+			if (File.Exists("T0Updater.exe"))
+			{
+				Process x = new Process();
+				x.StartInfo = new ProcessStartInfo("T0Updater.exe", "\"" + Path.GetFileName(Application.ExecutablePath) + "\" " + Properties.User.Default.selectedBuilds + " " + Program.Version);
+				x.Start();
+				Application.Exit();
+			}
+			else
+			{
+				downloadQueue = new List<string>(); fileNames = new List<string>();
+				downloadQueue.Add("https://dl.dropboxusercontent.com/s/31h1ysf1k32ssue/T0Updater.exe");
+				fileNames.Add("T0Updater.exe");
+			}
 			//Create a downloader object
 			downloader = new WebClient();
 			downloader.Proxy = new WebProxy();
@@ -143,54 +145,14 @@ namespace TISFAT_ZERO
 			}
 			else
 			{
+				while (!File.Exists("T0Updater.exe"))
+					Thread.Sleep(100);
+
 				Process x = new Process();
-				x.StartInfo = new ProcessStartInfo("T0_TMPFILE.exe", "update1 \"" + toExecute + "\"");
+				x.StartInfo = new ProcessStartInfo("T0Updater.exe", "\"" + Path.GetFileName(Application.ExecutablePath) + "\" " + Properties.User.Default.selectedBuilds + " " + Program.Version);
 				x.Start();
 				Application.Exit();
 			}
 		}
-
-		private void doDownload()
-		{
-			//Create an object so that we can download shtuff
-			WebClient downloader = new WebClient();
-			downloader.Proxy = new WebProxy();
-
-			byte[] result = downloader.DownloadData(fileIndexURI);
-			MemoryStream txt = new MemoryStream();
-			txt.Write(result, 0, result.Length);
-			txt.Position = 0;
-			TextReader x = new StreamReader(txt);
-			string type = x.ReadLine();
-			while (type != "stable")
-				type = x.ReadLine();
-
-			string dltype = x.ReadLine();
-			while (dltype != "exe")
-				dltype = x.ReadLine();
-
-			//int filecount = int.Parse(x.ReadLine());
-			int filecount = 1;
-
-			downloadQueue = new List<string>(filecount);
-			fileNames = new List<string>(filecount);
-
-			for (int a = 0; a < filecount; a++)
-			{
-				downloadQueue.Add(x.ReadLine());
-				fileNames.Add(x.ReadLine());
-			}
-
-			toExecute = fileNames[0];
-
-			x.Close();
-			x.Dispose();
-			txt.Close();
-			txt.Dispose();
-
-			doneDownload.Set();
-		}
-
-
 	}
 }

@@ -94,24 +94,14 @@ namespace TISFAT_ZERO
 				{
 					KeyFrame s = keyFrames[start], e = keyFrames[end];
 					float percent = (float)(pos - s.pos) / (e.pos - s.pos);
-					List<StickJoint> ps = s.Joints;
+					List<StickJoint> ps = e.Joints;
 					tweenFig.drawFig = true;
-					int[] positions = new int[ps.Count];
-					for (int a = 0; a < ps.Count; a++)
+
+					for (int a = 0; a < tweenFig.Joints.Count; a++)
 					{
-						tweenFig.Joints[a].location = s.Joints[a].location;
-						tweenFig.Joints[a].Tween(s.Joints[a], e.Joints[a], percent);
-
-						StickJoint p = ps[a].parent;
-						if (p != null)
-							positions[a] = ps.IndexOf(p);
-						else
-							positions[a] = -1;
+						tweenFig.Joints[a].location = ps[a].location;
+						tweenFig.Joints[a].Tween(s.Joints[a], ps[a], percent);
 					}
-					//tweenFig.Joints = custObjectFrame.createClone(s.Joints, positions);
-
-					// ^^^
-					//IPPY WTF YOU BROKE TWEENING WITH THIS. YOU HAVE NO CLUE HOW LONG IT TOOK To FIGURE THAT OUT >.<
 				}
 				else
 				{

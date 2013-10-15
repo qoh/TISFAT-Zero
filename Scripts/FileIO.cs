@@ -256,8 +256,9 @@ namespace TISFAT_ZERO
 			List<StickJoint> customFig = l.keyFrames[0].Joints;
 			bytes.AddRange(BitConverter.GetBytes((ushort)customFig.Count));
 
-			foreach (StickJoint j in customFig)
+			for(int a = 0; a < customFig.Count; a++)
 			{
+				StickJoint j = customFig[a];
 				//Parent index
 				if (j.parent != null)
 					bytes.AddRange(BitConverter.GetBytes((ushort)(customFig.IndexOf(j.parent) + 1)));
@@ -529,6 +530,7 @@ namespace TISFAT_ZERO
 							}
 
 						}
+						newLayer.tweenFig = new StickCustom(true);
 						newLayer.tweenFig.Joints = custObjectFrame.createClone(f.Joints, parents);
 					}
 					else

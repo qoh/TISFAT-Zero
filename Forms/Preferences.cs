@@ -11,8 +11,9 @@ namespace TISFAT_ZERO
 		private string folderPath = Environment.SpecialFolder.ApplicationData + "\\TISFAT\\";
 
 		private string[] saveFile;
-		private byte currentBuild = 2; //current build version. 0 = stable, 1 = beta, 2 = nightly
+		public static byte currentBuild = 0; //current build version. 0 = stable, 1 = beta, 2 = nightly
 		private string buildName;
+		public static string[] buildNames = new string[] { "stable", "beta", "nightly" };
 
 		public Preferences()
 		{
@@ -30,12 +31,9 @@ namespace TISFAT_ZERO
 
 		private void Preferences_Load(object sender, EventArgs e)
 		{
-			//DO NOT CHANGE THIS
-			buildName = currentBuild == 0 ? "stable" : currentBuild == 1 ? "beta" : "nightly";
+			buildName = buildNames[currentBuild];
 
-
-			listView1.Items[0].Selected = true;
-			
+			listView1.Items[currentBuild].Selected = true;
 
 			if (Properties.User.Default.DefaultSavePath == "")
 			{
@@ -51,20 +49,12 @@ namespace TISFAT_ZERO
 			num_Width.Value = Properties.User.Default.CanvasSize.Width;
 			num_Height.Value = Properties.User.Default.CanvasSize.Height;
 
-			//If there are no installed builds registered in the preferences then we have to add one, the current one.
-			//If this is a nightly build, this should be nightly, if it's beta it should be beta, etc.
-
 			string bld_Installed = Properties.User.Default.buildsInstalled;
 
-			if (bld_Installed == "")
+			if (bld_Installed != buildName)
 			{
 				Properties.User.Default.buildsInstalled = Properties.User.Default.selectedBuilds = buildName;
 				Properties.User.Default.buildLocations = Application.ExecutablePath;
-			}
-			else if (!bld_Installed.Contains(buildName))
-			{
-				Properties.User.Default.buildsInstalled += "," + buildName;
-				Properties.User.Default.buildLocations += "," + Application.ExecutablePath;
 			}
 
 			//This should also be changed according to the current version.
@@ -103,6 +93,13 @@ namespace TISFAT_ZERO
 			Properties.User.Default.CanvasSize = new System.Drawing.Size((int)num_Width.Value, (int)num_Height.Value);
 			Properties.User.Default.Save();
 
+			if (comboBox1.SelectedIndex != currentBuild)
+			{
+				Properties.User.Default.selectedBuilds = buildNames[comboBox1.SelectedIndex];
+				Downloader x = new Downloader();
+				x.ShowDialog();
+			}
+
 			this.Close();
 		}
 
@@ -125,7 +122,6 @@ namespace TISFAT_ZERO
 
 		private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			
 		}
 	}
 

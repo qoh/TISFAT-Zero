@@ -241,6 +241,9 @@ namespace TISFAT_ZERO
 					StickEditor f = new StickEditor(true);
 					f.loadFigure((StickCustom)Canvas.activeFigure);
 					f.ShowDialog();
+					pnl_mainTools.Enabled = false;
+					slideOutObject = pnl_addTools;
+					animTimer.Start();
 					return;
 				}
 
