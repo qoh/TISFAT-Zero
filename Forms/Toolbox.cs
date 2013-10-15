@@ -189,7 +189,9 @@ namespace TISFAT_ZERO
 
 		private void pic_pnlLine_color_Click(object sender, EventArgs e)
 		{
-			dlg_Color.ShowDialog();
+			if (!(dlg_Color.ShowDialog() == DialogResult.OK))
+				return;
+
 			pic_pnlLine_color.BackColor = dlg_Color.Color;
 			Canvas.activeFigure.setColor(dlg_Color.Color);
 			Canvas.theCanvas.Refresh();
@@ -207,7 +209,8 @@ namespace TISFAT_ZERO
 
 		private void pic_pnlStick_color_Click(object sender, EventArgs e)
 		{
-			dlg_Color.ShowDialog();
+			if (!(dlg_Color.ShowDialog() == DialogResult.OK))
+				return;
 			pic_pnlStick_color.BackColor = dlg_Color.Color;
 			Canvas.activeFigure.setColor(dlg_Color.Color);
 			((StickFrame)mainForm.tline.frm_selected).figColor = dlg_Color.Color;
@@ -292,7 +295,8 @@ namespace TISFAT_ZERO
 
 		private void btn_BGButton_Click(object sender, EventArgs e)
 		{
-			dlg_Color.ShowDialog();
+			if (!(dlg_Color.ShowDialog() == DialogResult.OK))
+				return;
 			Canvas.theCanvas.setBackgroundColor(dlg_Color.Color);
 		}
 

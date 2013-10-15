@@ -97,14 +97,14 @@
 			// 
 			// splitContainer1.Panel1
 			// 
-			this.splitContainer1.Panel1.Controls.Add(this.pnl_Updates);
 			this.splitContainer1.Panel1.Controls.Add(this.pnl_General);
+			this.splitContainer1.Panel1.Controls.Add(this.pnl_Updates);
 			// 
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.listView1);
 			this.splitContainer1.Panel2.Controls.Add(this.pnl_Submit);
-			this.splitContainer1.Size = new System.Drawing.Size(524, 292);
+			this.splitContainer1.Size = new System.Drawing.Size(524, 291);
 			this.splitContainer1.SplitterDistance = 398;
 			this.splitContainer1.TabIndex = 0;
 			// 
@@ -123,7 +123,7 @@
 			this.pnl_Updates.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnl_Updates.Location = new System.Drawing.Point(0, 0);
 			this.pnl_Updates.Name = "pnl_Updates";
-			this.pnl_Updates.Size = new System.Drawing.Size(398, 292);
+			this.pnl_Updates.Size = new System.Drawing.Size(398, 291);
 			this.pnl_Updates.TabIndex = 1;
 			// 
 			// label5
@@ -239,14 +239,14 @@
 			this.pnl_General.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnl_General.Location = new System.Drawing.Point(0, 0);
 			this.pnl_General.Name = "pnl_General";
-			this.pnl_General.Size = new System.Drawing.Size(398, 292);
+			this.pnl_General.Size = new System.Drawing.Size(398, 291);
 			this.pnl_General.TabIndex = 0;
 			// 
 			// splitContainer2
 			// 
 			this.splitContainer2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.splitContainer2.Location = new System.Drawing.Point(0, 58);
+			this.splitContainer2.Location = new System.Drawing.Point(0, 57);
 			this.splitContainer2.Name = "splitContainer2";
 			// 
 			// splitContainer2.Panel1
@@ -417,7 +417,7 @@
 			this.listView1.Location = new System.Drawing.Point(0, 0);
 			this.listView1.MultiSelect = false;
 			this.listView1.Name = "listView1";
-			this.listView1.Size = new System.Drawing.Size(122, 256);
+			this.listView1.Size = new System.Drawing.Size(122, 255);
 			this.listView1.StateImageList = this.imageList1;
 			this.listView1.TabIndex = 2;
 			this.listView1.UseCompatibleStateImageBehavior = false;
@@ -436,7 +436,7 @@
 			this.pnl_Submit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.pnl_Submit.Controls.Add(this.btn_submitButton);
 			this.pnl_Submit.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pnl_Submit.Location = new System.Drawing.Point(0, 256);
+			this.pnl_Submit.Location = new System.Drawing.Point(0, 255);
 			this.pnl_Submit.Name = "pnl_Submit";
 			this.pnl_Submit.Size = new System.Drawing.Size(122, 36);
 			this.pnl_Submit.TabIndex = 1;
@@ -455,7 +455,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(524, 292);
+			this.ClientSize = new System.Drawing.Size(524, 291);
 			this.Controls.Add(this.splitContainer1);
 			this.MaximizeBox = false;
 			this.MaximumSize = new System.Drawing.Size(540, 330);

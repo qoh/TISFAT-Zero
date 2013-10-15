@@ -377,7 +377,8 @@ namespace TISFAT_ZERO
 			if (selectedJoint == null)
 				return;
 
-			dlg_Color.ShowDialog();
+			if (!(dlg_Color.ShowDialog() == DialogResult.OK))
+				return;
 			pic_handleColor.BackColor = dlg_Color.Color;
 
 			selectedJoint.defaultHandleColor = dlg_Color.Color;
@@ -389,7 +390,8 @@ namespace TISFAT_ZERO
 			if (selectedJoint == null)
 				return;
 
-			dlg_Color.ShowDialog();
+			if (!(dlg_Color.ShowDialog() == DialogResult.OK))
+				return;
 			pic_lineColor.BackColor = dlg_Color.Color;
 			selectedJoint.color = dlg_Color.Color;
 

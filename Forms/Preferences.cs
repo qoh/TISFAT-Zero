@@ -73,21 +73,25 @@ namespace TISFAT_ZERO
 
 		private void pnl_colorButtonHitbox_MouseClick(object sender, MouseEventArgs e)
 		{
-			dlg_colorDialog.ShowDialog();
+			if(!(dlg_colorDialog.ShowDialog() == DialogResult.OK))
+				return;
+
 			pic_colorBox.BackColor = dlg_colorDialog.Color;
 			lbl_backgroundColorPic.Text = dlg_colorDialog.Color.Name;
 		}
 
 		private void pnl_colorButtonHitbox_MouseClick(object sender, EventArgs e)
 		{
-			dlg_colorDialog.ShowDialog();
+			if(!(dlg_colorDialog.ShowDialog() == DialogResult.OK))
+				return;
 			pic_colorBox.BackColor = dlg_colorDialog.Color;
 			lbl_backgroundColorPic.Text = dlg_colorDialog.Color.Name;
 		}
 
 		private void btn_defSavPathBrowse_Click(object sender, EventArgs e)
 		{
-			dlg_folderBrowser.ShowDialog();
+			if(!(dlg_folderBrowser.ShowDialog() == DialogResult.OK))
+				return;
 			if(!(dlg_folderBrowser.SelectedPath == ""))
 				txt_defaultSavePath.Text = dlg_folderBrowser.SelectedPath;
 		}
