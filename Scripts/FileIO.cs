@@ -20,6 +20,15 @@ namespace TISFAT_ZERO
 		public static readonly string saveFileExt = ".tzs";
 	}
 
+	class tzf
+	{
+		public static readonly byte[]
+			fileSig =		{ 0x53, 0x74, 0x69, 0x63, 0x6b, 0x20, 0x46, 0x69, 0x67 }, //Stick Fig in hex
+			curVersion =	{ 0x00, 0x03, 0x00, 0x00 };
+
+		public static readonly string saveFileExt = ".tzf";
+	}
+
 	struct Block
 	{
 		public ushort type;
@@ -33,6 +42,112 @@ namespace TISFAT_ZERO
 		//05: int list
 		//06: Properties
 		//07: custom fig block
+	}
+
+	class CustomFigSaver
+	{
+		string blockSig = "jz";
+
+		public static bool saveFigure(string path, StickCustom figure)
+		{
+			BinaryWriter bin = new BinaryWriter(File.Open(path, FileMode.Create));
+			bin.Write(tzf.fileSig, 0, tzs.fileSig.Length);
+			bin.Write(tzf.curVersion, 0, tzf.curVersion.Length);
+
+			bin.Write(figure.Joints.Count);
+			
+			try
+			{
+				foreach (StickJoint joint in figure.Joints)
+					writeJointBlock(bin, figure, joint);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Saving failed. Error Detail:\n" + ex.Message, "Saving Failed!");
+				bin.Close();
+				bin.Dispose();
+
+				return false;
+			}
+
+			bin.Close();
+			bin.Dispose();
+			return true;
+		}
+
+		private static void writeJointBlock(BinaryWriter bin, StickCustom figure, StickJoint j)
+		{
+			bin.Write(j.location.X);
+			bin.Write(j.location.Y);
+
+			bin.Write(j.color.ToArgb());
+			bin.Write(j.handleColor.ToArgb());
+			bin.Write(j.defaultHandleColor.ToArgb());
+			bin.Write(j.thickness);
+			bin.Write(j.drawState);
+			bin.Write(j.drawOrder);
+			bin.Write(j.visible);
+			bin.Write(j.handleDrawn);
+			if (!(j.parent == null))
+				bin.Write(figure.Joints.IndexOf(j.parent));
+			else
+				bin.Write(-1);
+		}
+	}
+
+	class CustomFigLoader
+	{
+		public static void loadStickFile(string path)
+		{
+			StickEditor sticked = StickEditor.theSticked;
+
+			BinaryReader bin;
+			try
+			{
+				bin = new BinaryReader(File.Open(path, FileMode.Open));
+			}
+			catch
+			{
+				throw new Exception("Failed to load project file. Reason: Unable to open file.");
+			}
+
+			bin.BaseStream.Position += 12;
+
+			int jointCount = bin.ReadInt32();
+			sticked.figure = new StickCustom(false);
+			sticked.figure.drawFig = true;
+			sticked.figure.drawHandles = true;
+			sticked.figure.isActiveFig = true;
+
+			for(int i = 0; i < jointCount; i++)
+			{
+				int x = bin.ReadInt32();
+				int y = bin.ReadInt32();
+
+				Color col = Color.FromArgb(bin.ReadInt32());
+				Color hCol = Color.FromArgb(bin.ReadInt32());
+				Color defHCol = Color.FromArgb(bin.ReadInt32());
+				int thickness = bin.ReadInt32();
+				int drawState = bin.ReadInt32();
+				int drawOrder = bin.ReadInt32();
+				bool visible = bin.ReadBoolean();
+				bool handleDrawn = bin.ReadBoolean();
+				int parentIndex = bin.ReadInt32();
+
+				StickJoint parent;
+
+				if (parentIndex == -1)
+					parent = null;
+				else
+					parent = sticked.figure.Joints[parentIndex];
+				sticked.figure.Joints.Add(new StickJoint("New Joint", new Point(x, y), thickness, col, hCol, 0, drawState, false, parent, handleDrawn));
+			}
+
+			sticked.recalcFigureJoints();
+			bin.Close();
+			bin.Dispose();
+		}
+
 	}
 
 	class Saver

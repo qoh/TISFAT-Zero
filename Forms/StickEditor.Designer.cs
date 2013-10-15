@@ -592,6 +592,7 @@
 			this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
 			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.saveAsToolStripMenuItem.Text = "Save As..";
+			this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator1
 			// 
@@ -656,7 +657,16 @@
 			// 
 			// dlg_openFile
 			// 
+			this.dlg_openFile.DefaultExt = "tzf";
 			this.dlg_openFile.FileName = "openFileDialog1";
+			this.dlg_openFile.Filter = "TISFAT Stick Figure (*.tzf)|*.tzf";
+			this.dlg_openFile.FileOk += new System.ComponentModel.CancelEventHandler(this.dlg_openFile_FileOk);
+			// 
+			// dlg_saveFile
+			// 
+			this.dlg_saveFile.DefaultExt = "tzf";
+			this.dlg_saveFile.Filter = "TISFAT Stick Figure (*.tzf)|*.tzf";
+			this.dlg_saveFile.FileOk += new System.ComponentModel.CancelEventHandler(this.dlg_saveFile_FileOk);
 			// 
 			// StickEditor
 			// 

@@ -14,7 +14,7 @@ namespace TISFAT_ZERO
 {
 	public partial class StickEditor : Form
 	{
-		private StickCustom figure = null;
+		public StickCustom figure = null;
 
 		public static StickEditor theSticked;
 
@@ -81,7 +81,7 @@ namespace TISFAT_ZERO
 			recalcFigureJoints();
 		}
 
-		private void recalcFigureJoints()
+		public void recalcFigureJoints()
 		{
 			figure.reSortJoints();
 
@@ -607,6 +607,21 @@ namespace TISFAT_ZERO
 		private void openToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			dlg_openFile.ShowDialog();
+		}
+
+		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			dlg_saveFile.ShowDialog();
+		}
+
+		private void dlg_saveFile_FileOk(object sender, CancelEventArgs e)
+		{
+			CustomFigSaver.saveFigure(dlg_saveFile.FileName, figure);
+		}
+
+		private void dlg_openFile_FileOk(object sender, CancelEventArgs e)
+		{
+			CustomFigLoader.loadStickFile(dlg_openFile.FileName);
 		}
 	}
 }
