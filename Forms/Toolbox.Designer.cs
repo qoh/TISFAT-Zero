@@ -414,9 +414,9 @@
 			this.lbl_frameCount.AutoSize = true;
 			this.lbl_frameCount.Location = new System.Drawing.Point(43, 7);
 			this.lbl_frameCount.Name = "lbl_frameCount";
-			this.lbl_frameCount.Size = new System.Drawing.Size(79, 13);
+			this.lbl_frameCount.Size = new System.Drawing.Size(54, 13);
 			this.lbl_frameCount.TabIndex = 0;
-			this.lbl_frameCount.Text = "nopenoepnope";
+			this.lbl_frameCount.Text = "Playback:";
 			// 
 			// tabPage2
 			// 
@@ -507,7 +507,7 @@
 			this.pnl_Properties_Stick.Dock = System.Windows.Forms.DockStyle.Top;
 			this.pnl_Properties_Stick.Location = new System.Drawing.Point(0, 158);
 			this.pnl_Properties_Stick.Name = "pnl_Properties_Stick";
-			this.pnl_Properties_Stick.Size = new System.Drawing.Size(141, 158);
+			this.pnl_Properties_Stick.Size = new System.Drawing.Size(134, 158);
 			this.pnl_Properties_Stick.TabIndex = 31;
 			// 
 			// lbl_pnlStick_Transparency
@@ -537,7 +537,7 @@
 			this.tkb_alpha.Location = new System.Drawing.Point(15, 76);
 			this.tkb_alpha.Maximum = 255;
 			this.tkb_alpha.Name = "tkb_alpha";
-			this.tkb_alpha.Size = new System.Drawing.Size(104, 26);
+			this.tkb_alpha.Size = new System.Drawing.Size(104, 45);
 			this.tkb_alpha.TabIndex = 2;
 			this.tkb_alpha.Scroll += new System.EventHandler(this.tkb_alpha_Scroll);
 			// 
@@ -572,7 +572,7 @@
 			this.pnl_Properties_Line.Dock = System.Windows.Forms.DockStyle.Top;
 			this.pnl_Properties_Line.Location = new System.Drawing.Point(0, 0);
 			this.pnl_Properties_Line.Name = "pnl_Properties_Line";
-			this.pnl_Properties_Line.Size = new System.Drawing.Size(141, 158);
+			this.pnl_Properties_Line.Size = new System.Drawing.Size(134, 158);
 			this.pnl_Properties_Line.TabIndex = 26;
 			// 
 			// lbl_pnlLine_Transparency
@@ -602,7 +602,7 @@
 			this.tkb_pnlLine_Transparency.Location = new System.Drawing.Point(15, 87);
 			this.tkb_pnlLine_Transparency.Maximum = 255;
 			this.tkb_pnlLine_Transparency.Name = "tkb_pnlLine_Transparency";
-			this.tkb_pnlLine_Transparency.Size = new System.Drawing.Size(104, 26);
+			this.tkb_pnlLine_Transparency.Size = new System.Drawing.Size(104, 45);
 			this.tkb_pnlLine_Transparency.TabIndex = 4;
 			// 
 			// lbl_pnlLine_Color

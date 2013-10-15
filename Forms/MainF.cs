@@ -216,13 +216,6 @@ namespace TISFAT_ZERO
 			Timeline.resetEverything(false);
 		}
 
-		private void dlThingyToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			Downloader f = new Downloader();
-			Properties.User.Default.selectedBuilds = Preferences.buildNames[Preferences.currentBuild];
-			f.ShowDialog();
-		}
-
 		private void stickEditorToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 		}
@@ -231,6 +224,13 @@ namespace TISFAT_ZERO
 		{
 			layersCount = layercount;
 			panel1.Location = new Point(0, layersCount * 16 + 17);
+		}
+
+		private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Downloader f = new Downloader();
+			Properties.User.Default.selectedBuilds = Preferences.buildNames[Preferences.currentBuild];
+			f.ShowDialog();
 		}
 	}
 }
