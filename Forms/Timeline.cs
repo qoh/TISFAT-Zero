@@ -381,6 +381,8 @@ namespace TISFAT_ZERO
 					g.FillRectangle(new SolidBrush(x), b * 9 + 80, y, 8, 15);
 					if (x == Color.Gold)
 					{
+						g.FillRectangle(new SolidBrush(Color.FromArgb(255, 127, 106, 0)), b * 9 + 80, y + 0, 8, 2);
+
 						g.FillRectangle(new SolidBrush(Color.Black), b * 9 + 82, y + 9, 4, 4);
 						g.FillRectangle(new SolidBrush(Color.White), b * 9 + 83, y + 10, 2, 2);
 					}
@@ -428,6 +430,8 @@ namespace TISFAT_ZERO
 					if (selectedFrameType() >= 1 && selectedFrameType() <= 3)
 					{
 						g.FillRectangle(new SolidBrush(Color.Red), sFrameLoc, layer_sel * 16 + 16 - yOffset, 8, 15);
+
+						g.FillRectangle(new SolidBrush(Color.FromArgb(255, 127, 0, 0)), sFrameLoc, layer_sel * 16 + 16, 8, 2);
 						g.FillRectangle(new SolidBrush(Color.Black), sFrameLoc + 2, layer_sel * 16 + 25 - yOffset, 4, 4);
 						g.FillRectangle(new SolidBrush(Color.White), sFrameLoc + 3, layer_sel * 16 + 26 - yOffset, 2, 2);
 
@@ -642,7 +646,7 @@ namespace TISFAT_ZERO
 			tst_moveLayerUp.Enabled = true;
 			tst_moveLayerDown.Enabled = true;
 			tst_insertLayer.Enabled = true;
-			tst_removeLayer.Enabled = layer_cnt > 1;
+			tst_removeLayer.Enabled = layer_cnt > 0;
 
 			tst_keyFrameAction.Enabled = frameType != 0 | frameType != 4;
 
@@ -670,10 +674,14 @@ namespace TISFAT_ZERO
 				case "tst_insertKeyframe":
 					cLayer.insertKeyFrame(frm_selPos);
 					selectedFrameType();
+					setFrame();
+					Refresh();
 					break;
 
 				case "tst_removeKeyframe":
 					cLayer.removeKeyFrame(frm_selPos);
+					setFrame();
+					Refresh();
 					break;
 
 				//Insert a keyframe like before and then copy the positions of the
@@ -685,7 +693,8 @@ namespace TISFAT_ZERO
 
 					for (int a = 0; a < jointz.Count; a++)
 						newFrame.Joints[a].location = jointz[a].location;
-
+					setFrame();
+					Refresh();
 					break;
 
 				case "tst_setPosePrvKfrm":
@@ -702,6 +711,10 @@ namespace TISFAT_ZERO
 					for (int a = 0; a < cLayer.keyFrames[pos].Joints.Count; a++)
 						cLayer.keyFrames[pos].Joints[a].location = new Point(cLayer.keyFrames[pos + 1].Joints[a].location.X, cLayer.keyFrames[pos + 1].Joints[a].location.Y);
 
+					break;
+
+				case "tst_insertLayer":
+					mainForm.theToolbox.addButton_Click(new object(), new EventArgs());
 					break;
 
 				case "tst_removeLayer":

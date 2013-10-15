@@ -160,8 +160,7 @@ namespace TISFAT_ZERO
 			for (int a = 0; a < old.Count; a++)
 				writeJoint(x, old, a, positions);
 			for (int a = 0; a < old.Count; a++)
-				if (x[a].parent != null)
-					x[a].CalcLength(null);
+				x[a].CalcLength(null);
 			for (int i = 0; i < x.Count; i++)
 			{
 				if (x[i].parent != null)

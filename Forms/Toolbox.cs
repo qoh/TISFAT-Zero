@@ -47,7 +47,7 @@ namespace TISFAT_ZERO
 			lbl_selectionDummy.Focus();
 		}
 
-		private void addButton_Click(object sender, EventArgs e)
+		public void addButton_Click(object sender, EventArgs e)
 		{
 			pnl_mainTools.Enabled = false;
 			slideOutObject = pnl_addTools;

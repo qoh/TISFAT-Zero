@@ -35,8 +35,7 @@ namespace TISFAT_ZERO
 		private int ox;
 		private int oy;
 
-		private int[] fx = new int[12];
-		private int[] fy = new int[12];
+		private List<int> fx, fy;
 
 		public OpenTK.GLControl glGraphics;
 		#endregion
@@ -218,10 +217,13 @@ namespace TISFAT_ZERO
 
 				ox = e.X;
 				oy = e.Y;
+				fx = new List<int>();
+				fy = new List<int>();
+
 				for (int i = 0; i < activeFigure.Joints.Count; i++)
 				{
-					fx[i] = activeFigure.Joints[i].location.X;
-					fy[i] = activeFigure.Joints[i].location.Y;
+					fx.Add(activeFigure.Joints[i].location.X);
+					fy.Add(activeFigure.Joints[i].location.Y);
 				}
 
 				draw = true;

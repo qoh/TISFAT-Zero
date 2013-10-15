@@ -33,6 +33,9 @@ namespace TISFAT_ZERO
 		private bool obeyIK = false;
 		private bool drawHandles = true;
 
+		private int ox, oy;
+		private List<int> fx, fy;
+
 		private int toolType = 1;
 
 		public StickEditor()
@@ -356,6 +359,15 @@ namespace TISFAT_ZERO
 				}
 			}
 
+			if (e.Button == MouseButtons.Right && !mouseDown)
+			{
+				for (int i = 0; i < figure.Joints.Count; i++)
+				{
+					figure.Joints[i].location.X = fx[i] + (e.X - ox);
+					figure.Joints[i].location.Y = fy[i] + (e.Y - oy);
+				}
+			}
+
 			mouseLoc = e.Location;
 			glGraphics.Invalidate();
 		}
@@ -444,6 +456,20 @@ namespace TISFAT_ZERO
 					activeJoint = null;
 
 					updateToolboxInfo();
+				}
+			}
+
+			if (e.Button == MouseButtons.Right)
+			{
+				ox = e.X;
+				oy = e.Y;
+				fx = new List<int>();
+				fy = new List<int>();
+
+				for (int i = 0; i < figure.Joints.Count; i++)
+				{
+					fx.Add(figure.Joints[i].location.X);
+					fy.Add(figure.Joints[i].location.Y);
 				}
 			}
 		}

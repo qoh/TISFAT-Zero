@@ -409,7 +409,10 @@ namespace TISFAT_ZERO
 						foreach (StickJoint j in f.Joints)
 						{
 							if (j.parent != null)
+							{
+								j.parent.children.Add(j);
 								j.CalcLength(null);
+							}
 
 						}
 						newLayer.tweenFig.Joints = custObjectFrame.createClone(f.Joints, parents);

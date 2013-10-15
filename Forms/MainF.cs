@@ -114,25 +114,6 @@ namespace TISFAT_ZERO
 		{
 			//Do stuff here
 		}
-
-		//Outline for loading files.
-		public void LoadFile(string strFileName)
-		{
-			/*int f, g, h, i, nFrameSetCount, nFramesCount, x, y, nWide, nHigh, nType, nActionCount, misc, nSkip;
-			Layer pLayer;
-			//SingleFrame pFrameSet
-			KeyFrame pFrame;
-			String[] strInfo, strLayerName = new string[255];
-			FileStream fs;
-			bool bRead, bLoadNew, bTrans, bFirstLayer, bMore, bNewFormat;
-			//ActionObj pAction;
-
-			Bitmap bitty;
-			MemoryStream ms;
-
-			fs = new FileStream(strFileName, FileMode.Open);*/
-
-		} 
 		#endregion
 
 		#region Form Controls
@@ -188,7 +169,7 @@ namespace TISFAT_ZERO
 
 		private void removeLayerCallback(object sender, EventArgs e)
 		{
-			if (Timeline.layer_cnt < 2)
+			if (Timeline.layer_cnt < 1)
 				return;
 
 			Layer toRemove = Timeline.layers[Timeline.layer_sel];
