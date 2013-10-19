@@ -11,7 +11,7 @@ namespace TISFAT_ZERO
 		private string folderPath = Environment.SpecialFolder.ApplicationData + "\\TISFAT\\";
 
 		private string[] saveFile;
-		public static byte currentBuild = 0; //current build version. 0 = stable, 1 = beta, 2 = nightly
+		public static byte currentBuild = 2; //current build version. 0 = stable, 1 = beta, 2 = nightly
 		private string buildName;
 		public static string[] buildNames = new string[] { "stable", "beta", "nightly" };
 
@@ -32,6 +32,8 @@ namespace TISFAT_ZERO
 		private void Preferences_Load(object sender, EventArgs e)
 		{
 			buildName = buildNames[currentBuild];
+
+			label1.Text = "Build Version: v" + Program.Version;
 
 			listView1.Items[currentBuild].Selected = true;
 
@@ -59,6 +61,7 @@ namespace TISFAT_ZERO
 
 			//This should also be changed according to the current version.
 			comboBox1.SelectedIndex = 2;
+			checkBox1.Checked = Properties.User.Default.autoCheck;
 		}
 
 		private void pnl_colorButtonHitbox_MouseClick(object sender, MouseEventArgs e)
@@ -96,7 +99,7 @@ namespace TISFAT_ZERO
 			if (comboBox1.SelectedIndex != currentBuild)
 			{
 				Properties.User.Default.selectedBuilds = buildNames[comboBox1.SelectedIndex];
-				Downloader x = new Downloader();
+				CheckUpdateForm x = new CheckUpdateForm();
 				x.ShowDialog();
 			}
 
@@ -116,7 +119,7 @@ namespace TISFAT_ZERO
 
 		private void checkBox1_CheckedChanged(object sender, EventArgs e)
 		{
-			label2.Text = "TISFAT:Zero will" + (checkBox1.Checked ? " " : " not ") + "automatically download updates for checked builds upon opening the program.";
+			label2.Text = "TISFAT:Zero will" + (checkBox1.Checked ? " " : " not ") + "automatically check for updates for checked builds upon opening the program.";
 			Properties.User.Default.autoCheck = checkBox1.Checked;
 		}
 

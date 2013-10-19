@@ -23,7 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -73,11 +73,11 @@
     <Compile Include="Forms\Canvas.Designer.cs">
       <DependentUpon>Canvas.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Downloader.cs">
+    <Compile Include="Forms\CheckUpdatesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Downloader.Designer.cs">
-      <DependentUpon>Downloader.cs</DependentUpon>
+    <Compile Include="Forms\CheckUpdatesForm.Designer.cs">
+      <DependentUpon>CheckUpdatesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\MainF.cs">
       <SubType>Form</SubType>
@@ -143,8 +143,8 @@
     <EmbeddedResource Include="Forms\Canvas.resx">
       <DependentUpon>Canvas.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Downloader.resx">
-      <DependentUpon>Downloader.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\CheckUpdatesForm.resx">
+      <DependentUpon>CheckUpdatesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainF.resx">
       <DependentUpon>MainF.cs</DependentUpon>

@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace TISFAT_ZERO
 {
@@ -27,6 +28,9 @@ namespace TISFAT_ZERO
 
 		private void Main_Load(object sender, EventArgs e)
 		{
+			//This is just temporary, until I get proper build selection and installation implemented.
+			Properties.User.Default.selectedBuilds = Preferences.buildNames[Preferences.currentBuild];
+
 			Toolbox t = new Toolbox(this);
 			t.TopLevel = false;
 			t.Parent = this.splitContainer1.Panel2;
@@ -62,10 +66,18 @@ namespace TISFAT_ZERO
 			theToolbox = t;
 			theCanvas = f;
 
-
 			if (Program.loadFile != "")
 			{
 				Loader.loadProjectFile(Program.loadFile);
+			}
+
+			//If the auto check updates value is true, then start the update checker in the background.
+			if (Properties.User.Default.autoCheck)
+			{
+				//Create the checker with an argument that makes the form auto-close if no updates are available
+				CheckUpdateForm checker = new CheckUpdateForm(true);
+				checker.Show();
+				this.Focus();
 			}
 		} 
 		
@@ -228,8 +240,7 @@ namespace TISFAT_ZERO
 
 		private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			Downloader f = new Downloader();
-			Properties.User.Default.selectedBuilds = Preferences.buildNames[Preferences.currentBuild];
+			CheckUpdateForm f = new CheckUpdateForm();
 			f.ShowDialog();
 		}
 	}

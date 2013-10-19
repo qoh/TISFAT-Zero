@@ -46,8 +46,6 @@ namespace TISFAT_ZERO
 
 	class CustomFigSaver
 	{
-		string blockSig = "jz";
-
 		public static bool saveFigure(string path, StickCustom figure)
 		{
 			BinaryWriter bin = new BinaryWriter(File.Open(path, FileMode.Create));
