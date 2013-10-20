@@ -618,9 +618,6 @@ namespace TISFAT_ZERO
 
         public void reSortJoints()
         {
-			foreach (StickJoint j in Joints)
-				if (Joints.IndexOf(j) < j.drawOrder)
-					j.drawOrder = Joints.IndexOf(j);
             Joints.Sort(Functions.compareDrawOrder);
         }
 	}

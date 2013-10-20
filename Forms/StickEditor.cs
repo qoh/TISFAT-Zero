@@ -114,6 +114,7 @@ namespace TISFAT_ZERO
 				}
 				figure.Joints[i].ParentFigure = figure;
 			}
+			glGraphics.Refresh();
 		}
 
 		public void loadFigure(StickCustom fig)
@@ -594,7 +595,6 @@ namespace TISFAT_ZERO
 
 		private void num_drawOrder_ValueChanged(object sender, EventArgs e)
 		{
-			figure.Joints[(int)num_drawOrder.Value].drawOrder = selectedJoint.drawOrder;
 			selectedJoint.drawOrder = (int)num_drawOrder.Value;
 
 			recalcFigureJoints();

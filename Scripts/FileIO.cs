@@ -116,11 +116,13 @@ namespace TISFAT_ZERO
 			sticked.figure.drawFig = true;
 			sticked.figure.drawHandles = true;
 			sticked.figure.isActiveFig = true;
+			List<int> parentList = new List<int>();
 
 			for(int i = 0; i < jointCount; i++)
 			{
 				int x = bin.ReadInt32();
 				int y = bin.ReadInt32();
+				
 
 				Color col = Color.FromArgb(bin.ReadInt32());
 				Color hCol = Color.FromArgb(bin.ReadInt32());
@@ -134,12 +136,19 @@ namespace TISFAT_ZERO
 
 				StickJoint parent;
 
-				if (parentIndex == -1)
-					parent = null;
-				else
-					parent = sticked.figure.Joints[parentIndex];
-				sticked.figure.Joints.Add(new StickJoint("New Joint", new Point(x, y), thickness, col, hCol, 0, drawState, false, parent, handleDrawn));
+				parentList.Add(parentIndex);
+
+
+				sticked.figure.Joints.Add(new StickJoint("Joint " + i.ToString(), new Point(x, y), thickness, col, hCol, 0, drawState, false, null, handleDrawn));
+				sticked.figure.Joints.Find(
+					delegate(StickJoint j)
+					{
+						return j.name == "Joint " + i.ToString();
+					}).drawOrder = drawOrder;
 			}
+			for (int i = 0; i < jointCount; i++)
+				if(parentList[i] != -1)
+					sticked.figure.Joints[i].parent = sticked.figure.Joints[parentList[i]];
 
 			sticked.recalcFigureJoints();
 			bin.Close();
