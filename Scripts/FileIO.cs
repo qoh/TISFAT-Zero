@@ -140,11 +140,13 @@ namespace TISFAT_ZERO
 
 
 				sticked.figure.Joints.Add(new StickJoint("Joint " + i.ToString(), new Point(x, y), thickness, col, hCol, 0, drawState, false, null, handleDrawn));
-				sticked.figure.Joints.Find(
-					delegate(StickJoint j)
-					{
-						return j.name == "Joint " + i.ToString();
-					}).drawOrder = drawOrder;
+				//sticked.figure.Joints.Find(
+					//delegate(StickJoint j)
+					//{
+						//return j.name == "Joint " + i.ToString();
+					//}).drawOrder = drawOrder; //wat r u doin evar, this aint necessary
+
+				sticked.figure.Joints[sticked.figure.Joints.Count - 1].drawOrder = drawOrder;
 			}
 			for (int i = 0; i < jointCount; i++)
 				if(parentList[i] != -1)

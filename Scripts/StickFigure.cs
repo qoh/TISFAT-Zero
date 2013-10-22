@@ -21,7 +21,7 @@ namespace TISFAT_ZERO
 			* 3 = Adjust to parent
 			* 4 = Adjust to parent locked
 			*/
-        public int drawOrder;
+		public int drawOrder;
 		public int drawState;
 		/*
 			* 0 = Line
@@ -48,7 +48,7 @@ namespace TISFAT_ZERO
 
 		public Color color;
 		public Color handleColor;
-		public Color defaultHandleColor; 
+		public Color defaultHandleColor;
 		#endregion
 
 		#region Functions
@@ -164,9 +164,9 @@ namespace TISFAT_ZERO
 		{
 			for (int i = children.Count; i > 0; i--)
 			{
-				children[i-1].removeChildren();
-				ParentFigure.Joints.Remove(children[i-1]);
-				children.RemoveAt(i-1);
+				children[i - 1].removeChildren();
+				ParentFigure.Joints.Remove(children[i - 1]);
+				children.RemoveAt(i - 1);
 			}
 		}
 		#endregion
@@ -180,53 +180,36 @@ namespace TISFAT_ZERO
 
 		public void Recalc(StickJoint pStart = null)
 		{
-			if (pStart == null)
+			if (pStart == null || pStart.children.Count == 0)
 				return;
 
-			int xDiff, yDiff, f, g = 0;
-			double dAngle, dRads, cx, cy;
-			StickJoint pJoint;
-
-			for (f = 0; f < pStart.children.Count() && g < 100; f++, g++)
+			foreach (StickJoint pJoint in pStart.children)
 			{
-				pJoint = pStart.children[f];
+				int xDiff = pStart.location.X - pJoint.location.X;
+				int yDiff = pStart.location.Y - pJoint.location.Y;
 
-				xDiff = pStart.location.X - pJoint.location.X;
-				yDiff = pStart.location.Y - pJoint.location.Y;
-				dAngle = 180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI);
+				double dAngle = 180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI);
+				double dRads = Functions.DegToRads(dAngle);
 
-				if ((pJoint.state == 3) | (pJoint.state == 4))
+				if (pStart.parent != null)
 				{
-					if (!(pStart.parent == null))
-					{
-						xDiff = pStart.parent.location.X - pStart.location.X;
-						yDiff = pStart.parent.location.Y - pStart.location.Y;
-						dAngle = 180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI);
-						dAngle = (dAngle - pJoint.AngleToParent);
-					}
+					xDiff = pStart.parent.location.X - pStart.location.X;
+					yDiff = pStart.parent.location.Y - pStart.location.Y;
+					pJoint.AngleToParent = (180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI)) - dAngle;
 				}
-				else
-				{
-					if (!(pStart.parent == null))
-					{
-						xDiff = pStart.parent.location.X - pStart.location.X;
-						yDiff = pStart.parent.location.Y - pStart.location.Y;
-						pJoint.AngleToParent = (180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI)) - dAngle;
-					}
-				}
-				dRads = Functions.DegToRads(dAngle);
-				cx = Math.Round(pJoint.length * Math.Cos(dRads));
-				cy = Math.Round(pJoint.length * Math.Sin(dRads));
+
+				double cx = Math.Round(pJoint.length * Math.Cos(dRads));
+				double cy = Math.Round(pJoint.length * Math.Sin(dRads));
+
 				pJoint.SetPosAbs(Math.Round(pStart.location.X + cx), Math.Round(pStart.location.Y + cy));
+
 				Recalc(pJoint);
 			}
-
-			this.ParentFigure.onJointMoved();
 		}
 
 		public void SetPos(int vx, int vy)
 		{
-			int xDiff, yDiff, g = 0;
+			int xDiff, yDiff;
 			StickJoint pParent, pThis;
 			double dAngle, dRads, dParentAngle, cx, cy;
 			bool bContinue;
@@ -236,9 +219,8 @@ namespace TISFAT_ZERO
 			pThis = this;
 			pParent = parent;
 			bContinue = true;
-			while (pParent != null && g < 100)
+			while (pParent != null)
 			{
-				g++;
 				if ((pParent.state != 0) & !(pParent.selected))
 					bContinue = false;
 				if (bContinue)
@@ -267,7 +249,7 @@ namespace TISFAT_ZERO
 			Recalc(pThis);
 
 			this.ParentFigure.onJointMoved();
-		} 
+		}
 		#endregion
 
 	}
@@ -315,13 +297,13 @@ namespace TISFAT_ZERO
 			drawJoints(fromCanvas);
 		}
 
-        public void drawFigure(int x, bool fromCanvas = true)
-        {
-            if (!drawFig)
-                return;
+		public void drawFigure(int x, bool fromCanvas = true)
+		{
+			if (!drawFig)
+				return;
 
-            drawJoints(1, fromCanvas);
-        }
+			drawJoints(1, fromCanvas);
+		}
 
 		public void drawWholeFigure(bool fromCanvas = true)
 		{
@@ -348,93 +330,93 @@ namespace TISFAT_ZERO
 				return;
 			}
 
-            bool useStencil = false;
-            //there's probably a better way instead of looping to determine if any parts have transparency...
-            foreach (StickJoint i in Joints)
-            {
-                if (i.parent != null)
-                {
-                    if (i.color.A != 255)
-                    {
-                        useStencil = true;
-                        break;
-                    }
-                }
-            }
+			bool useStencil = false;
+			//there's probably a better way instead of looping to determine if any parts have transparency...
+			foreach (StickJoint i in Joints)
+			{
+				if (i.parent != null)
+				{
+					if (i.color.A != 255)
+					{
+						useStencil = true;
+						break;
+					}
+				}
+			}
 
-            GL.Disable(EnableCap.StencilTest);
+			GL.Disable(EnableCap.StencilTest);
 
-            if (useStencil)
-            {
-                GL.Clear(ClearBufferMask.StencilBufferBit);
-                GL.Enable(EnableCap.StencilTest);
-                GL.StencilMask(0xFFFFFF);
-                GL.StencilFunc(StencilFunction.Equal, 0, 0xFFFFFF);
-                GL.StencilOp(StencilOp.Keep, StencilOp.Keep, StencilOp.Incr);
-            }
+			if (useStencil)
+			{
+				GL.Clear(ClearBufferMask.StencilBufferBit);
+				GL.Enable(EnableCap.StencilTest);
+				GL.StencilMask(0xFFFFFF);
+				GL.StencilFunc(StencilFunction.Equal, 0, 0xFFFFFF);
+				GL.StencilOp(StencilOp.Keep, StencilOp.Keep, StencilOp.Incr);
+			}
 
-            foreach (StickJoint i in Joints)
-            {
-                if (i.parent != null)
-                {
-                    Canvas.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
-                }
+			foreach (StickJoint i in Joints)
+			{
+				if (i.parent != null)
+				{
+					Canvas.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
+				}
 				else if (i.drawState != 0)
 				{
 					Canvas.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
 				}
-            }
+			}
 
-            GL.Disable(EnableCap.StencilTest);
+			GL.Disable(EnableCap.StencilTest);
 		}
 
-        private void drawJoints(int x, bool fromCanvas = true)
-        {
-            if (!fromCanvas)
-            {
-                StickEditor.theSticked.Refresh();
-                return;
-            }
+		private void drawJoints(int x, bool fromCanvas = true)
+		{
+			if (!fromCanvas)
+			{
+				StickEditor.theSticked.Refresh();
+				return;
+			}
 
-            bool useStencil = false;
-            //there's probably a better way instead of looping to determine if any parts have transparency...
-            foreach (StickJoint i in Joints)
-            {
-                if (i.parent != null)
-                {
-                    if (i.color.A != 255)
-                    {
-                        useStencil = true;
-                        break;
-                    }
-                }
-            }
+			bool useStencil = false;
+			//there's probably a better way instead of looping to determine if any parts have transparency...
+			foreach (StickJoint i in Joints)
+			{
+				if (i.parent != null)
+				{
+					if (i.color.A != 255)
+					{
+						useStencil = true;
+						break;
+					}
+				}
+			}
 
-            GL.Disable(EnableCap.StencilTest);
+			GL.Disable(EnableCap.StencilTest);
 
-            if (useStencil)
-            {
-                GL.Clear(ClearBufferMask.StencilBufferBit);
-                GL.Enable(EnableCap.StencilTest);
-                GL.StencilMask(0xFFFFFF);
-                GL.StencilFunc(StencilFunction.Equal, 0, 0xFFFFFF);
-                GL.StencilOp(StencilOp.Keep, StencilOp.Keep, StencilOp.Incr);
-            }
+			if (useStencil)
+			{
+				GL.Clear(ClearBufferMask.StencilBufferBit);
+				GL.Enable(EnableCap.StencilTest);
+				GL.StencilMask(0xFFFFFF);
+				GL.StencilFunc(StencilFunction.Equal, 0, 0xFFFFFF);
+				GL.StencilOp(StencilOp.Keep, StencilOp.Keep, StencilOp.Incr);
+			}
 
-            foreach (StickJoint i in Joints)
-            {
-                if (i.parent != null)
-                {
-                    StickEditor.theSticked.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
-                }
-                else if (i.drawState != 0)
-                {
-                    StickEditor.theSticked.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
-                }
-            }
+			foreach (StickJoint i in Joints)
+			{
+				if (i.parent != null)
+				{
+					StickEditor.theSticked.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
+				}
+				else if (i.drawState != 0)
+				{
+					StickEditor.theSticked.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
+				}
+			}
 
-            GL.Disable(EnableCap.StencilTest);
-        }
+			GL.Disable(EnableCap.StencilTest);
+		}
 
 		public void drawFigHandles(bool fromCanvas = true)
 		{
@@ -463,34 +445,34 @@ namespace TISFAT_ZERO
 			}
 		}
 
-        public void drawFigHandles(int x, bool fromCanvas = true)
-        {
-            if (!fromCanvas)
-            {
-                StickEditor.theSticked.Refresh();
-                return;
-            }
+		public void drawFigHandles(int x, bool fromCanvas = true)
+		{
+			if (!fromCanvas)
+			{
+				StickEditor.theSticked.Refresh();
+				return;
+			}
 
-            foreach (StickJoint i in Joints)
-            {
-                if (drawHandles)
-                {
-                    if (!isActiveFig)
-                    {
-                        StickEditor.theSticked.drawGraphics(2, Color.DimGray, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
-                        continue;
-                    }
+			foreach (StickJoint i in Joints)
+			{
+				if (drawHandles)
+				{
+					if (!isActiveFig)
+					{
+						StickEditor.theSticked.drawGraphics(2, Color.DimGray, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
+						continue;
+					}
 
-                    if (i.handleDrawn & isActiveFig)
-                        StickEditor.theSticked.drawGraphics(2, i.handleColor, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
+					if (i.handleDrawn & isActiveFig)
+						StickEditor.theSticked.drawGraphics(2, i.handleColor, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
 					else if (!i.handleDrawn & isActiveFig)
 						StickEditor.theSticked.drawGraphics(3, i.handleColor, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
 
-                    if (i.state == 1 | i.state == 3 | i.state == 4)
-                        StickEditor.theSticked.drawGraphics(3, Color.WhiteSmoke, new Point(i.location.X - 1, i.location.Y - 1), 6, 6, new Point(0, 0));
-                }
-            }
-        }
+					if (i.state == 1 | i.state == 3 | i.state == 4)
+						StickEditor.theSticked.drawGraphics(3, Color.WhiteSmoke, new Point(i.location.X - 1, i.location.Y - 1), 6, 6, new Point(0, 0));
+				}
+			}
+		}
 
 		#endregion Drawing
 
@@ -545,7 +527,7 @@ namespace TISFAT_ZERO
 		{
 			int index = getPointAt(coords, tolerance);
 			if (!drawHandles)
-                return null;
+				return null;
 
 			if (index == -1)
 			{
@@ -616,12 +598,12 @@ namespace TISFAT_ZERO
 			prev.children.Add(next);
 		}
 
-        public void reSortJoints()
-        {
-            Joints.Sort(Functions.compareDrawOrder);
-        }
+		public void reSortJoints()
+		{
+			Joints.Sort(Functions.compareDrawOrder);
+		}
 	}
-	
+
 	public class StickFigure : StickObject
 	{
 
@@ -665,7 +647,7 @@ namespace TISFAT_ZERO
 			Joints.Add(new StickJoint("RKnee", new Point(234, 217), 12, Color.Black, Color.Red, 0, 0, false, Joints[6]));
 			Joints.Add(new StickJoint("RFoot", new Point(243, 240), 12, Color.Black, Color.Red, 0, 0, false, Joints[9]));
 			Joints.Add(new StickJoint("Head", new Point(222, 150), 13, Color.Black, Color.Yellow, 0, 1, true, Joints[0]));
-			
+
 			for (int a = 0; a < 12; a++)
 				Joints[a].ParentFigure = this;
 
@@ -678,7 +660,7 @@ namespace TISFAT_ZERO
 				{
 					Joints[i].CalcLength(null);
 				}
-                Joints[i].drawOrder = i;
+				Joints[i].drawOrder = i;
 			}
 
 			for (int i = 0; i < Joints.Count(); i++)
@@ -688,14 +670,14 @@ namespace TISFAT_ZERO
 					Joints[i].parent.children.Add(Joints[i]);
 				}
 			}
-            reSortJoints();
+			reSortJoints();
 			#endregion
 
 			Canvas.addFigure(this);
 			base.drawFig = activate;
 			this.drawHandles = activate;
 			this.isTweenFig = false;
-			if(activate)
+			if (activate)
 				this.activate();
 		}
 
@@ -722,25 +704,25 @@ namespace TISFAT_ZERO
 
 			#endregion
 
-            #region Calculate joint Lengths/Add Children to Parents | Draw Order defined
-            for (int i = 0; i < Joints.Count(); i++)
-            {
-                if (Joints[i].parent != null)
-                {
-                    Joints[i].CalcLength(null);
-                }
-                Joints[i].drawOrder = i;
-            }
+			#region Calculate joint Lengths/Add Children to Parents | Draw Order defined
+			for (int i = 0; i < Joints.Count(); i++)
+			{
+				if (Joints[i].parent != null)
+				{
+					Joints[i].CalcLength(null);
+				}
+				Joints[i].drawOrder = i;
+			}
 
-            for (int i = 0; i < Joints.Count(); i++)
-            {
-                if (Joints[i].parent != null)
-                {
-                    Joints[i].parent.children.Add(Joints[i]);
-                }
-            }
-            reSortJoints();
-            #endregion
+			for (int i = 0; i < Joints.Count(); i++)
+			{
+				if (Joints[i].parent != null)
+				{
+					Joints[i].parent.children.Add(Joints[i]);
+				}
+			}
+			reSortJoints();
+			#endregion
 
 			Canvas.addTweenFigure(this);
 			this.drawHandles = false;
@@ -772,7 +754,7 @@ namespace TISFAT_ZERO
 			Joints[8].location = rFoot;
 			Joints[9].location = lKnee;
 			Joints[10].location = lFoot;
-		} 
+		}
 		#endregion
 
 	}
@@ -787,7 +769,7 @@ namespace TISFAT_ZERO
 			//Somewhere between a rock and a hardplace is a line. :) -Evar678
 			//I don't get it. -Ipquarx
 
-			Joints.Add(new StickJoint("Rock", new Point(30, 30), 12, Color.Black, Color.Green, 0, 0, false, null)); 
+			Joints.Add(new StickJoint("Rock", new Point(30, 30), 12, Color.Black, Color.Green, 0, 0, false, null));
 			Joints.Add(new StickJoint("Hard Place", new Point(45, 30), 12, Color.Black, Color.Yellow, 0, 0, false, Joints[0]));
 
 			if (!isTweenFigure)
@@ -822,25 +804,25 @@ namespace TISFAT_ZERO
 		}
 	}
 
-    public class StickCustom : StickObject
-    {
-        public StickCustom(bool isTweenFigure = false)
-        {
-            type = 4;
-            Joints = new List<StickJoint>();
+	public class StickCustom : StickObject
+	{
+		public StickCustom(bool isTweenFigure = false)
+		{
+			type = 4;
+			Joints = new List<StickJoint>();
 
-            if (!isTweenFigure)
-                Canvas.addFigure(this);
-            else
-                Canvas.addTweenFigure(this);
-        }
+			if (!isTweenFigure)
+				Canvas.addFigure(this);
+			else
+				Canvas.addTweenFigure(this);
+		}
 
-        public StickCustom(int x, bool isTweenFigure = false)
-        {
-            type = 4;
-            Joints = new List<StickJoint>();
+		public StickCustom(int x, bool isTweenFigure = false)
+		{
+			type = 4;
+			Joints = new List<StickJoint>();
 
 			fromSticked = true;
-        }
-    }
+		}
+	}
 }

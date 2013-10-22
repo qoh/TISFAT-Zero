@@ -35,7 +35,7 @@ namespace TISFAT_ZERO
 
 			label1.Text = "Build Version: v" + Program.Version;
 
-			listView1.Items[currentBuild].Selected = true;
+			listView1.Items[0].Selected = true;
 
 			if (Properties.User.Default.DefaultSavePath == "")
 			{
@@ -59,8 +59,7 @@ namespace TISFAT_ZERO
 				Properties.User.Default.buildLocations = Application.ExecutablePath;
 			}
 
-			//This should also be changed according to the current version.
-			comboBox1.SelectedIndex = 2;
+			comboBox1.SelectedIndex = currentBuild;
 			checkBox1.Checked = Properties.User.Default.autoCheck;
 		}
 

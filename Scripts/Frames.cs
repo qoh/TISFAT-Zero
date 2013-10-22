@@ -175,9 +175,11 @@ namespace TISFAT_ZERO
 		{
 			if (positions[p] != -1 && jnts[positions[p]] == null)
 				writeJoint(jnts, olds, positions[p], positions);
-			if (jnts[p] != null && jnts[p].location == olds[p].location && jnts[p].drawOrder == olds[p].drawOrder)
+
+			if (jnts[p] != null && jnts[p].location == olds[p].location)
 				return;
-			jnts[p] = new StickJoint(olds[p], positions[p] != -1 ? jnts[positions[p]]: null);
+
+			jnts[p] = new StickJoint(olds[p], positions[p] != -1 ? jnts[positions[p]] : null);
 		}
 
     }

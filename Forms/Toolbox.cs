@@ -311,6 +311,9 @@ namespace TISFAT_ZERO
 
 		private void btn_addCustomStick_Click(object sender, EventArgs e)
 		{
+			CustomLayer l = mainForm.tline.addCustomLayer("Custom Figure");
+			Timeline.layer_sel = Timeline.layer_cnt - 1;
+
 			StickEditor f = new StickEditor();
 			f.ShowDialog(this);
 		}

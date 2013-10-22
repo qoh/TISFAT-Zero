@@ -172,8 +172,8 @@ namespace TISFAT_ZERO
 					//tolerance of about 4 pixels.
 					f = activeFigure.selectPoint(new Point(e.X, e.Y), 4);
 
-					if(!hasLockedJoint)
-						activeFigure.setAsBase(activeFigure.Joints[(activeFigure.Joints.IndexOf(f) + 1) % activeFigure.Joints.Count]);
+					//if(!hasLockedJoint)
+					//	activeFigure.setAsBase(activeFigure.Joints[(activeFigure.Joints.IndexOf(f) + 1) % activeFigure.Joints.Count]);
 
                     //Sets the selectedJoint variable to the joint that we just selected.
                     selectedJoint = f;
@@ -525,7 +525,7 @@ namespace TISFAT_ZERO
 
 		public void recieveStickFigure(StickCustom figure)
 		{
-			CustomLayer c = mainForm.tline.addCustomLayer("Custom Figure");
+			CustomLayer c = (CustomLayer)Timeline.layers[Timeline.layer_sel];
 
 			List<StickJoint> ps = figure.Joints;
 			c.fig = figure;
@@ -544,15 +544,14 @@ namespace TISFAT_ZERO
                 }
 			}
 
-			//c.keyFrames[0].Joints = ps;
-			c.keyFrames[0].Joints = custObjectFrame.createClone(ps, positions);
-			//c.keyFrames[1].Joints = ps;
+			c.keyFrames[0].Joints = ps;
 			c.keyFrames[1].Joints = custObjectFrame.createClone(ps, positions);
 
 			c.tweenFig = new StickCustom(true);
 			c.tweenFig.Joints = custObjectFrame.createClone(ps, positions);
 
 			addFigure(c.fig);
+			Timeline.layer_sel = Timeline.layer_cnt - 1;
 			mainForm.tline.setFrame(c.firstKF);
 			mainForm.tline.Invalidate();
 		}
