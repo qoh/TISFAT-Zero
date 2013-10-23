@@ -104,11 +104,11 @@
 			// 
 			// pnl_mainPanel
 			// 
+			this.pnl_mainPanel.Controls.Add(this.pnl_Properties);
 			this.pnl_mainPanel.Controls.Add(this.pnl_addTools);
 			this.pnl_mainPanel.Controls.Add(this.pnl_mainTools);
 			this.pnl_mainPanel.Controls.Add(this.pnl_ctrlPanel);
 			this.pnl_mainPanel.Controls.Add(this.lbl_selectionDummy);
-			this.pnl_mainPanel.Controls.Add(this.pnl_Properties);
 			this.pnl_mainPanel.Controls.Add(this.pnl_Drawing);
 			this.pnl_mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnl_mainPanel.Location = new System.Drawing.Point(0, 0);
@@ -176,7 +176,6 @@
 			this.btn_addRectangle.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addRectangle.BackgroundImage")));
 			this.btn_addRectangle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 			this.btn_addRectangle.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.btn_addRectangle.Enabled = false;
 			this.btn_addRectangle.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.btn_addRectangle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
 			this.btn_addRectangle.Location = new System.Drawing.Point(77, 56);

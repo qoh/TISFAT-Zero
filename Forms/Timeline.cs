@@ -637,7 +637,7 @@ namespace TISFAT_ZERO
 			tst_insertKeyframeAtPose.Enabled = frameType == 4;
 			tst_removeKeyframe.Enabled = frameType == 1;
 			tst_setPosePrvKfrm.Enabled = frameType == 1 || frameType == 3;
-			tst_setPosePrvKfrm.Enabled = frameType == 1 || frameType == 2;
+			tst_setPoseNxtKfrm.Enabled = frameType == 1 || frameType == 2;
 			tst_onionSkinning.Enabled = frameType != 0 | frameType != 4;
 
 			tst_insertFrameset.Enabled = frameType == 0;

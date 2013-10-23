@@ -797,10 +797,37 @@ namespace TISFAT_ZERO
 			Joints.Add(new StickJoint("CornerLR", new Point(150, 70), 12, Color.Black, Color.Red, 0, 0, false, Joints[1]));
 			Joints.Add(new StickJoint("CornerTR", new Point(150, 30), 12, Color.Black, Color.Blue, 0, 0, false, Joints[2]));
 
+			Joints[0].parent = Joints[3];
+			Joints[3].children.Add(Joints[0]);
+
 			if (!isTweenFigure)
 				Canvas.addFigure(this);
 			else
 				Canvas.addTweenFigure(this);
+		}
+
+		public void onRectJointMoved(StickJoint j)
+		{
+			if (j.name == "CornerTL")
+			{
+				Joints[1].location.X = j.location.X;
+				Joints[3].location.Y = j.location.Y;
+			}
+			else if (j.name == "CornerLL")
+			{
+				Joints[0].location.X = j.location.X;
+				Joints[2].location.Y = j.location.Y;
+			}
+			else if (j.name == "CornerLR")
+			{
+				Joints[3].location.X = j.location.X;
+				Joints[1].location.Y = j.location.Y;
+			}
+			else if (j.name == "CornerTR")
+			{
+				Joints[2].location.X = j.location.X;
+				Joints[0].location.Y = j.location.Y;
+			}
 		}
 	}
 

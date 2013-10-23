@@ -84,10 +84,15 @@ namespace TISFAT_ZERO
 			if (draw & !(e.Button == MouseButtons.Right))
 			{
 				//To prevent exceptions being thrown.
-				if (!(selectedJoint == null))
+				if (!(selectedJoint == null) && (selectedJoint.ParentFigure.type != 3))
 				{
 					selectedJoint.SetPos(e.X, e.Y);
 					Refresh();
+				}
+				else if (selectedJoint != null && selectedJoint.ParentFigure.type == 3)
+				{
+					selectedJoint.SetPosAbs(e.X, e.Y);
+					((StickRect)selectedJoint.ParentFigure).onRectJointMoved(selectedJoint);
 				}
 				//This prevents any other figures from becoming active as you are dragging a joint.
 				foreach (StickObject fig in figureList)

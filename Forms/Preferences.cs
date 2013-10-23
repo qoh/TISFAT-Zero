@@ -93,7 +93,6 @@ namespace TISFAT_ZERO
 			Properties.User.Default.DefaultSavePath = txt_defaultSavePath.Text;
 			Properties.User.Default.CanvasColor = pic_colorBox.BackColor;
 			Properties.User.Default.CanvasSize = new System.Drawing.Size((int)num_Width.Value, (int)num_Height.Value);
-			Properties.User.Default.Save();
 
 			if (comboBox1.SelectedIndex != currentBuild)
 			{
@@ -102,6 +101,7 @@ namespace TISFAT_ZERO
 				x.ShowDialog();
 			}
 
+			Properties.User.Default.Save();
 			this.Close();
 		}
 
