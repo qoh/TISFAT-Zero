@@ -355,17 +355,21 @@ namespace TISFAT_ZERO
 				GL.StencilOp(StencilOp.Keep, StencilOp.Keep, StencilOp.Incr);
 			}
 
-			foreach (StickJoint i in Joints)
-			{
-				if (i.parent != null)
+
+			if (type == 3)
+				Canvas.drawGraphics(5, figColor, Joints[0].location, Joints[0].thickness, Joints[0].thickness, Joints[2].location);
+			else
+				foreach (StickJoint i in Joints)
 				{
-					Canvas.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
+					if (i.parent != null)
+					{
+						Canvas.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
+					}
+					else if (i.drawState != 0)
+					{
+						Canvas.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
+					}
 				}
-				else if (i.drawState != 0)
-				{
-					Canvas.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
-				}
-			}
 
 			GL.Disable(EnableCap.StencilTest);
 		}
@@ -787,6 +791,8 @@ namespace TISFAT_ZERO
 
 	public class StickRect : StickObject
 	{
+		public bool filled = true;
+
 		public StickRect(bool isTweenFigure = false)
 		{
 			type = 3;

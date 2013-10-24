@@ -125,7 +125,7 @@ namespace TISFAT_ZERO
 			//moused over.
 			for (int i = 0; i < figureList.Count; i++)
 			{
-				if (figureList[i].getPointAt(new Point(e.X, e.Y), 4) != -1 && figureList[i].drawHandles)
+				if (figureList[i].getPointAt(new Point(e.X, e.Y), 6) != -1 && figureList[i].drawHandles)
 				{
 					if (activeFigure != null)
 						activeFigure.isActiveFig = false;
@@ -142,7 +142,7 @@ namespace TISFAT_ZERO
 			//This is what sets the cursor to the hand when you mouse over a joint.
 			if (!(activeFigure == null) & !draw)
 			{
-				if (activeFigure.getPointAt(new Point(e.X, e.Y), 4) != -1)
+				if (activeFigure.getPointAt(new Point(e.X, e.Y), 6) != -1)
 				{
 					this.Cursor = Cursors.Hand;
 				}
@@ -362,6 +362,19 @@ namespace TISFAT_ZERO
 				GL.End();
 
 				GL.Enable(EnableCap.Multisample);
+			}
+			else if (type == 5) //Rect Fill
+			{
+
+				GL.Color4(color);
+				GL.Begin(BeginMode.Quads);
+
+				GL.Vertex2(one.X, one.Y);
+				GL.Vertex2(two.X, one.Y);
+				GL.Vertex2(two.X, two.Y);
+				GL.Vertex2(one.X, two.Y);
+
+				GL.End();
 			}
 			GL.Disable(EnableCap.Blend);
 		} 

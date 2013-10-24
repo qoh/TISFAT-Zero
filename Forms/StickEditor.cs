@@ -310,7 +310,7 @@ namespace TISFAT_ZERO
 		{
 			if (!(figure == null) & !mouseDown)
 			{
-				if (figure.getPointAt(new Point(e.X, e.Y), 4) != -1)
+				if (figure.getPointAt(new Point(e.X, e.Y), 6) != -1)
 				{
 					this.Cursor = Cursors.Hand;
 					mouseHot = true;
