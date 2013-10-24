@@ -3,6 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using TISFAT_ZERO.Properties;
+using System.Net;
+using System.ComponentModel;
 
 namespace TISFAT_ZERO
 {
@@ -96,9 +98,10 @@ namespace TISFAT_ZERO
 
 			if (comboBox1.SelectedIndex != currentBuild)
 			{
-				Properties.User.Default.selectedBuilds = buildNames[comboBox1.SelectedIndex];
-				CheckUpdateForm x = new CheckUpdateForm();
-				x.ShowDialog();
+				WebClient downloader = new WebClient();
+				downloader.Proxy = new WebProxy();
+				downloader.DownloadFileCompleted += new AsyncCompletedEventHandler(Downloader_Done);
+				downloader.DownloadFileAsync(new Uri("https://dl.dropboxusercontent.com/s/31h1ysf1k32ssue/T0Updater.exe"), "T0Updater.exe");
 			}
 
 			Properties.User.Default.Save();
@@ -124,6 +127,11 @@ namespace TISFAT_ZERO
 
 		private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
 		{
+		}
+
+		private void Downloader_Done(object sender, AsyncCompletedEventArgs e)
+		{
+
 		}
 	}
 

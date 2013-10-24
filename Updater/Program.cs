@@ -8,6 +8,7 @@ namespace T0Updater
 	static class Program
 	{
 		public static string oldfile, version, curv;
+		public static bool forceDownload;
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
@@ -19,6 +20,11 @@ namespace T0Updater
 				oldfile = args[0];
 				version = args[1];
 				curv = args[2];
+
+				if (args.Length > 3)
+					forceDownload = bool.Parse(args[3]);
+				else
+					forceDownload = false;
 			}
 
 			Application.EnableVisualStyles();
