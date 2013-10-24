@@ -112,7 +112,7 @@ namespace TISFAT_ZERO
 			}
 
 			if (frm_selected != null)
-				mainForm.theToolbox.setColor(frm_selected.figColor);
+				mainForm.theToolbox.updateOpenPanel();
 
 			theCanvas.Refresh();
 		}

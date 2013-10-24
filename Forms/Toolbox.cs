@@ -19,6 +19,12 @@ namespace TISFAT_ZERO
 
 		public Panel slideOutObject;
 
+		public string[] panels = new String[] { "None", "Stick", "Line", "Rect", "Poly", "Paint" };
+		public string pnlOpen = "None";
+
+		private bool reOpen = false;
+		private Panel reOpenPanel;
+
 		public Toolbox(MainF f)
 		{
 			mainForm = f;
@@ -128,6 +134,12 @@ namespace TISFAT_ZERO
 					slideOutObject.Enabled = true;
 					pnl_mainTools.Enabled = true;
 					animTimer.Stop();
+					if (reOpen)
+					{
+						slideOutObject = reOpenPanel;
+						reOpen = false;
+						animTimer.Start();
+					}
 				}
 			}
 		}
@@ -224,26 +236,34 @@ namespace TISFAT_ZERO
 				if (Canvas.activeFigure.type == 1)
 				{
 					pnl_Properties_Stick.Visible = true;
+					pnl_Properties_Rect.Visible = false;
 					pnl_Properties_Line.Visible = false;
 					pic_pnlStick_color.BackColor = ((StickFrame)mainForm.tline.frm_selected).figColor;
 					tkb_alpha.Value = ((StickFrame)mainForm.tline.frm_selected).figColor.A;
 					num_alpha.Value = ((StickFrame)mainForm.tline.frm_selected).figColor.A;
+					pnlOpen = panels[1];
 				}
 				else if (Canvas.activeFigure.type == 2)
 				{
 					pnl_Properties_Stick.Visible = false;
+					pnl_Properties_Rect.Visible = false;
 					pnl_Properties_Line.Visible = true;
-					pic_pnlLine_color.BackColor = Canvas.activeFigure.figColor;
+					pic_pnlLine_color.BackColor = Canvas.activeFigure.Joints[0].color;
 					num_pnlLine_thickness.Value = Canvas.activeFigure.Joints[0].thickness;
+					pnlOpen = panels[2];
+				}
+				else if (Canvas.activeFigure.type == 3)
+				{
+					pnl_Properties_Stick.Visible = false;
+					pnl_Properties_Rect.Visible = true;
+					pnl_Properties_Line.Visible = false;
+					pnlOpen = panels[3];
 				}
 				else if (Canvas.activeFigure.type == 4)
 				{
 					StickEditor f = new StickEditor(true);
 					f.loadFigure((StickCustom)Canvas.activeFigure);
 					f.ShowDialog();
-					pnl_mainTools.Enabled = false;
-					slideOutObject = pnl_addTools;
-					animTimer.Start();
 					return;
 				}
 
@@ -255,6 +275,7 @@ namespace TISFAT_ZERO
 
 		private void btn_pnlLine_Cancel_Click(object sender, EventArgs e)
 		{
+			pnlOpen = "None";
 			slideOutObject = pnl_Properties;
 			animTimer.Start();
 		}
@@ -273,7 +294,7 @@ namespace TISFAT_ZERO
 
 		private void setFigureAlpha(int value)
 		{
-			if (mainForm.tline.frm_selected == null)
+			if (mainForm.tline.frm_selected == null | mainForm.tline.frm_selected.GetType() != typeof(StickFrame))
 				return;
 
 			int[] argb = new int[4];
@@ -316,6 +337,71 @@ namespace TISFAT_ZERO
 
 			StickEditor f = new StickEditor();
 			f.ShowDialog(this);
+		}
+
+		public void updateOpenPanel()
+		{
+			if (pnlOpen == "None")
+				return;
+			int type = Canvas.activeFigure.type;
+			setColor(mainForm.tline.frm_selected.figColor);
+
+			if (type == 1)
+			{
+				if (pnlOpen != panels[1])
+				{
+					pnl_Properties_Stick.Visible = true;
+					pnl_Properties_Rect.Visible = false;
+					pnl_Properties_Line.Visible = false;
+
+					slideOutObject = pnl_Properties;
+					reOpen = true;
+					reOpenPanel = pnl_Properties;
+
+					pnlOpen = panels[1];
+
+					animTimer.Start();
+				}
+				pic_pnlStick_color.BackColor = Canvas.activeFigure.figColor;
+				tkb_alpha.Value = Canvas.activeFigure.figColor.A;
+				num_alpha.Value = Canvas.activeFigure.figColor.A;
+			}
+			else if (type == 2)
+			{
+				if (pnlOpen != panels[2])
+				{
+					pnl_Properties_Stick.Visible = false;
+					pnl_Properties_Rect.Visible = false;
+					pnl_Properties_Line.Visible = true;
+
+					slideOutObject = pnl_Properties;
+					reOpen = true;
+					reOpenPanel = pnl_Properties;
+
+					pnlOpen = panels[2];
+
+					animTimer.Start();
+				}
+				pic_pnlLine_color.BackColor = Canvas.activeFigure.Joints[0].color;
+				num_pnlLine_thickness.Value = Canvas.activeFigure.Joints[0].thickness;
+			}
+			else if (type == 3)
+			{
+				if (pnlOpen != panels[3])
+				{
+					pnl_Properties_Stick.Visible = false;
+					pnl_Properties_Rect.Visible = true;
+					pnl_Properties_Line.Visible = false;
+
+					slideOutObject = pnl_Properties;
+					reOpen = true;
+					reOpenPanel = pnl_Properties;
+
+					pnlOpen = panels[3];
+
+					animTimer.Start();
+				}
+			}
 		}
 	}
 }
