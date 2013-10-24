@@ -16,6 +16,8 @@ namespace TISFAT_ZERO
 		public StickObject fig, tweenFig;
 		protected Canvas theCanvas;
 
+		public KeyFrame adjacentBack, adjacentFront;
+
 		public bool removeKeyFrame(int pos)
 		{
 			if (pos == firstKF || pos == lastKF)
@@ -36,15 +38,6 @@ namespace TISFAT_ZERO
 			bool render = false; int imid = -1;
 			if (keyFrames == null)
 				return;
-
-			if (selectedFrame >= 0)
-			{
-				KeyFrame frm = keyFrames[selectedFrame];
-				for (int a = 0; a < frm.Joints.Count; a++)
-				{
-					frm.Joints[a].ParentFigure = null;
-				}
-			}
 
 			//Binary search for the frame that has the specified position
 			//Binary searches only work on sorted lists, and since the keyframes are always sorted based on position, this works nicely.
@@ -80,6 +73,11 @@ namespace TISFAT_ZERO
 					{
 						render = true;
 						fig.Joints = keyFrames[imid].Joints;
+						if (fig.type == 3)
+						{
+							fig.figColor = keyFrames[imid].figColor;
+						}
+
 						if (!(tweenFig == null))
 							tweenFig.drawFig = false;
 
@@ -93,6 +91,9 @@ namespace TISFAT_ZERO
 				if (pos > firstKF && pos < lastKF)
 				{
 					KeyFrame s = keyFrames[start], e = keyFrames[end];
+
+					adjacentBack = s; adjacentFront = e;
+
 					float percent = (float)(pos - s.pos) / (e.pos - s.pos);
 					List<StickJoint> ps = e.Joints;
 					tweenFig.drawFig = true;
@@ -117,15 +118,8 @@ namespace TISFAT_ZERO
 			if (current)
 			{
 				Timeline.frm_selInd = selectedFrame;
-			}
-
-			if (selectedFrame >= 0)
-			{
-				KeyFrame frm = keyFrames[selectedFrame];
-				for (int a = 0; a < frm.Joints.Count; a++)
-				{
-					frm.Joints[a].ParentFigure = fig;
-				}
+				if(fig.type == 3)
+					Canvas.activeFigure.figColor = keyFrames[imid].figColor;
 			}
 		}
 
@@ -137,6 +131,7 @@ namespace TISFAT_ZERO
 		public StickLayer(string nom, StickFigure figure, Canvas aTheCanvas)
 		{
 			fig = figure;
+			fig.parentLayer = this;
 
 			//These are the default positions for keyframes.
 			firstKF = 0;
@@ -144,8 +139,17 @@ namespace TISFAT_ZERO
 			type = 1;
 
 			keyFrames = new List<KeyFrame>();
-			keyFrames.Add(new StickFrame(firstKF));
-			keyFrames.Add(new StickFrame(lastKF));
+
+			StickFrame first = new StickFrame(firstKF), last = new StickFrame(lastKF);
+
+			foreach (StickJoint j in first.Joints)
+				j.ParentFigure = fig;
+
+			foreach (StickJoint j in last.Joints)
+				j.ParentFigure = fig;
+
+			keyFrames.Add(first);
+			keyFrames.Add(last);
 
 			theCanvas = aTheCanvas;
 
@@ -201,6 +205,9 @@ namespace TISFAT_ZERO
 
 			}
 
+			foreach (StickJoint j in n.Joints)
+				j.ParentFigure = fig;
+
 			keyFrames.Insert(c, n);
 
 			return c;
@@ -212,7 +219,10 @@ namespace TISFAT_ZERO
 		public LineLayer(string Name, StickLine Line, Canvas _Canvas)
 		{
 			name = Name;
+
 			fig = Line;
+			fig.parentLayer = this;
+
 			theCanvas = _Canvas;
 			tweenFig = new StickLine(true);
 			type = 2;
@@ -221,8 +231,17 @@ namespace TISFAT_ZERO
 			lastKF = 19;
 
 			keyFrames = new List<KeyFrame>();
-			keyFrames.Add(new LineFrame(firstKF));
-			keyFrames.Add(new LineFrame(lastKF));
+
+			LineFrame first = new LineFrame(firstKF), last = new LineFrame(lastKF);
+
+			foreach (StickJoint j in first.Joints)
+				j.ParentFigure = fig;
+
+			foreach (StickJoint j in last.Joints)
+				j.ParentFigure = fig;
+
+			keyFrames.Add(first);
+			keyFrames.Add(last);
 		}
 
 		public override int insertKeyFrame(int pos)
@@ -269,6 +288,9 @@ namespace TISFAT_ZERO
 
 			}
 
+			foreach (StickJoint j in n.Joints)
+				j.ParentFigure = fig;
+
 			keyFrames.Insert(c, n);
 
 			return c;
@@ -280,7 +302,10 @@ namespace TISFAT_ZERO
 		public RectLayer(string Name, StickRect rect, Canvas _Canvas)
 		{
 			name = Name;
+
 			fig = rect;
+			fig.parentLayer = this;
+
 			theCanvas = _Canvas;
 			tweenFig = new StickRect(true);
 			type = 3;
@@ -289,8 +314,17 @@ namespace TISFAT_ZERO
 			lastKF = 19;
 
 			keyFrames = new List<KeyFrame>();
-			keyFrames.Add(new RectFrame(firstKF));
-			keyFrames.Add(new RectFrame(lastKF));
+
+			RectFrame first = new RectFrame(firstKF), last = new RectFrame(lastKF);
+
+			foreach (StickJoint j in first.Joints)
+				j.ParentFigure = fig;
+
+			foreach (StickJoint j in last.Joints)
+				j.ParentFigure = fig;
+
+			keyFrames.Add(first);
+			keyFrames.Add(last);
 		}
 
 		public override int insertKeyFrame(int pos)
@@ -337,6 +371,9 @@ namespace TISFAT_ZERO
 
 			}
 
+			foreach (StickJoint j in n.Joints)
+				j.ParentFigure = fig;
+
 			keyFrames.Insert(c, n);
 
 			return c;
@@ -348,7 +385,10 @@ namespace TISFAT_ZERO
 		public CustomLayer(string Name, StickCustom custom, Canvas _Canvas)
 		{
 			name = Name;
+
 			fig = custom;
+			fig.parentLayer = this;
+
 			theCanvas = _Canvas;
 			tweenFig = new StickCustom(true);
 
@@ -358,8 +398,17 @@ namespace TISFAT_ZERO
 			lastKF = 19;
 
 			keyFrames = new List<KeyFrame>();
-			keyFrames.Add(new custObjectFrame(custom.Joints, firstKF));
-			keyFrames.Add(new custObjectFrame(custom.Joints, lastKF));
+
+			custObjectFrame first = new custObjectFrame(firstKF), last = new custObjectFrame(lastKF);
+
+			foreach (StickJoint j in first.Joints)
+				j.ParentFigure = fig;
+
+			foreach (StickJoint j in last.Joints)
+				j.ParentFigure = fig;
+
+			keyFrames.Add(first);
+			keyFrames.Add(last);
 		}
 
 		public override int insertKeyFrame(int pos)
@@ -405,6 +454,9 @@ namespace TISFAT_ZERO
 					return -1;
 
 			}
+
+			foreach (StickJoint j in n.Joints)
+				j.ParentFigure = fig;
 
 			keyFrames.Insert(c, n);
 

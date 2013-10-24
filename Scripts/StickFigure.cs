@@ -137,7 +137,36 @@ namespace TISFAT_ZERO
 			length = (int)Math.Round(pStart.length + ((pEnd.length - pStart.length) * sPercent));
 			thickness = (int)Math.Round(pStart.thickness + ((pEnd.thickness - pStart.thickness) * sPercent));
 
+			if (pStart.ParentFigure.type == 3 && ((StickRect)ParentFigure).filled)
+			{
+				int[] r2 = new int[3];
+				int[] g2 = new int[3];
+				int[] b2 = new int[3];
+				int[] a2 = new int[3];
 
+				Color tmp1 = pStart.ParentFigure.parentLayer.adjacentBack.figColor;
+				Color tmp2 = pEnd.ParentFigure.parentLayer.adjacentFront.figColor;
+
+				r2[0] = tmp1.R;
+				g2[0] = tmp1.G;
+				b2[0] = tmp1.B;
+				a2[0] = tmp1.A;
+
+				r2[1] = tmp2.R;
+				g2[1] = tmp2.G;
+				b2[1] = tmp2.B;
+				a2[1] = tmp2.A;
+
+				r2[2] = r2[0] + (int)Math.Round(sPercent * (r2[1] - r2[0]));
+				g2[2] = g2[0] + (int)Math.Round(sPercent * (g2[1] - g2[0]));
+				b2[2] = b2[0] + (int)Math.Round(sPercent * (b2[1] - b2[0]));
+				a2[2] = a2[0] + (int)Math.Round(sPercent * (a2[1] - a2[0]));
+
+				if (a2[2] > 255)
+					a2[2] = 255;
+
+				((StickRect)ParentFigure).figColor = Color.FromArgb(a2[2], r2[2], g2[2], b2[2]);
+			}
 
 			r[0] = pStart.color.R;
 			g[0] = pStart.color.G;
@@ -262,6 +291,7 @@ namespace TISFAT_ZERO
 		public List<StickJoint> Joints;
 		public bool isActiveFig, drawFig, drawHandles, isTweenFig, fromSticked;
 		public Color figColor = Color.Black;
+		public Layer parentLayer;
 
 		public bool isDrawn
 		{
@@ -357,19 +387,19 @@ namespace TISFAT_ZERO
 
 
 			if (type == 3)
-				Canvas.drawGraphics(5, figColor, Joints[0].location, Joints[0].thickness, Joints[0].thickness, Joints[2].location);
-			else
-				foreach (StickJoint i in Joints)
+				if (((StickRect)this).filled)
+					Canvas.drawGraphics(5, figColor, Joints[0].location, Joints[0].thickness, Joints[0].thickness, Joints[2].location);
+			foreach (StickJoint i in Joints)
+			{
+				if (i.parent != null)
 				{
-					if (i.parent != null)
-					{
-						Canvas.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
-					}
-					else if (i.drawState != 0)
-					{
-						Canvas.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
-					}
+					Canvas.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
 				}
+				else if (i.drawState != 0)
+				{
+					Canvas.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
+				}
+			}
 
 			GL.Disable(EnableCap.StencilTest);
 		}
@@ -490,6 +520,11 @@ namespace TISFAT_ZERO
 			{
 				Joints[i].color = color;
 			}
+			figColor = color;
+		}
+
+		public void setFillColor(Color color)
+		{
 			figColor = color;
 		}
 
@@ -652,8 +687,8 @@ namespace TISFAT_ZERO
 			Joints.Add(new StickJoint("RFoot", new Point(243, 240), 12, Color.Black, Color.Red, 0, 0, false, Joints[9]));
 			Joints.Add(new StickJoint("Head", new Point(222, 150), 13, Color.Black, Color.Yellow, 0, 1, true, Joints[0]));
 
-			for (int a = 0; a < 12; a++)
-				Joints[a].ParentFigure = this;
+			foreach (StickJoint j in Joints)
+				j.ParentFigure = this;
 
 			#endregion
 
@@ -661,19 +696,15 @@ namespace TISFAT_ZERO
 			for (int i = 0; i < Joints.Count(); i++)
 			{
 				if (Joints[i].parent != null)
-				{
 					Joints[i].CalcLength(null);
-				}
+
 				Joints[i].drawOrder = i;
 			}
 
 			for (int i = 0; i < Joints.Count(); i++)
-			{
 				if (Joints[i].parent != null)
-				{
 					Joints[i].parent.children.Add(Joints[i]);
-				}
-			}
+
 			reSortJoints();
 			#endregion
 
@@ -703,8 +734,8 @@ namespace TISFAT_ZERO
 			Joints.Add(new StickJoint("RFoot", new Point(243, 240), 12, Color.Black, Color.Red, 0, 0, false, Joints[9]));
 			Joints.Add(new StickJoint("Head", new Point(222, 155), 13, Color.Black, Color.Yellow, 0, 1, true, Joints[0]));
 
-			for (int a = 0; a < 12; a++)
-				Joints[a].ParentFigure = this;
+			foreach (StickJoint j in Joints)
+				j.ParentFigure = this;
 
 			#endregion
 
@@ -725,6 +756,7 @@ namespace TISFAT_ZERO
 					Joints[i].parent.children.Add(Joints[i]);
 				}
 			}
+
 			reSortJoints();
 			#endregion
 
@@ -776,6 +808,9 @@ namespace TISFAT_ZERO
 			Joints.Add(new StickJoint("Rock", new Point(30, 30), 12, Color.Black, Color.Green, 0, 0, false, null));
 			Joints.Add(new StickJoint("Hard Place", new Point(45, 30), 12, Color.Black, Color.Yellow, 0, 0, false, Joints[0]));
 
+			foreach (StickJoint j in Joints)
+				j.ParentFigure = this;
+
 			if (!isTweenFigure)
 				Canvas.addFigure(this);
 			else
@@ -798,10 +833,13 @@ namespace TISFAT_ZERO
 			type = 3;
 			Joints = new List<StickJoint>(4);
 
-			Joints.Add(new StickJoint("CornerTL", new Point(30, 30), 12, Color.Black, Color.LimeGreen, 0, 0, false, null));
-			Joints.Add(new StickJoint("CornerLL", new Point(30, 70), 12, Color.Black, Color.Yellow, 0, 0, false, Joints[0]));
-			Joints.Add(new StickJoint("CornerLR", new Point(150, 70), 12, Color.Black, Color.Red, 0, 0, false, Joints[1]));
-			Joints.Add(new StickJoint("CornerTR", new Point(150, 30), 12, Color.Black, Color.Blue, 0, 0, false, Joints[2]));
+			Joints.Add(new StickJoint("CornerTL", new Point(30, 30), 3, Color.Black, Color.LimeGreen, 0, 0, false, null));
+			Joints.Add(new StickJoint("CornerLL", new Point(30, 70), 3, Color.Black, Color.Yellow, 0, 0, false, Joints[0]));
+			Joints.Add(new StickJoint("CornerLR", new Point(150, 70), 3, Color.Black, Color.Red, 0, 0, false, Joints[1]));
+			Joints.Add(new StickJoint("CornerTR", new Point(150, 30), 3, Color.Black, Color.Blue, 0, 0, false, Joints[2]));
+
+			foreach (StickJoint j in Joints)
+				j.ParentFigure = this;
 
 			Joints[0].parent = Joints[3];
 			Joints[3].children.Add(Joints[0]);

@@ -142,6 +142,7 @@ namespace TISFAT_ZERO
 					}
 				}
 			}
+			Canvas.theCanvas.glGraphics.Refresh();
 		}
 
 		private void Toolbox_Load(object sender, EventArgs e)
@@ -387,6 +388,8 @@ namespace TISFAT_ZERO
 			}
 			else if (type == 3)
 			{
+
+				pic_rectFillColor.BackColor = Canvas.activeFigure.figColor;
 				if (pnlOpen != panels[3])
 				{
 					pnl_Properties_Stick.Visible = false;
@@ -402,6 +405,17 @@ namespace TISFAT_ZERO
 					animTimer.Start();
 				}
 			}
+		}
+
+		private void pic_rectFillColor_Click(object sender, EventArgs e)
+		{
+			if (!(dlg_Color.ShowDialog() == DialogResult.OK))
+				return;
+			pic_rectFillColor.BackColor = dlg_Color.Color;
+			Canvas.activeFigure.setFillColor(dlg_Color.Color);
+			mainForm.tline.frm_selected.figColor = dlg_Color.Color;
+			
+			Canvas.theCanvas.Refresh();
 		}
 	}
 }

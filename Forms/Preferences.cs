@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using TISFAT_ZERO.Properties;
 using System.Net;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace TISFAT_ZERO
 {
@@ -98,10 +99,14 @@ namespace TISFAT_ZERO
 
 			if (comboBox1.SelectedIndex != currentBuild)
 			{
+				Properties.User.Default.Save();
+
 				WebClient downloader = new WebClient();
 				downloader.Proxy = new WebProxy();
 				downloader.DownloadFileCompleted += new AsyncCompletedEventHandler(Downloader_Done);
 				downloader.DownloadFileAsync(new Uri("https://dl.dropboxusercontent.com/s/31h1ysf1k32ssue/T0Updater.exe"), "T0Updater.exe");
+
+				return;
 			}
 
 			Properties.User.Default.Save();
@@ -131,7 +136,10 @@ namespace TISFAT_ZERO
 
 		private void Downloader_Done(object sender, AsyncCompletedEventArgs e)
 		{
-
+			Process x = new Process();
+			x.StartInfo = new ProcessStartInfo("T0Updater.exe", "\"" + Path.GetFileName(Application.ExecutablePath) + "\" " + buildNames[comboBox1.SelectedIndex] + " " + Program.Version + " True");
+			x.Start();
+			Application.Exit();
 		}
 	}
 

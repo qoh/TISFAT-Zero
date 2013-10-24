@@ -191,6 +191,8 @@ namespace TISFAT_ZERO
 			StickLayer n = new StickLayer(name, x, theCanvas);
 			layers.Add(n);
 
+			layer_sel = layer_cnt;
+
 			mainForm.updateByLayers(++layer_cnt);
 
 			setFrame(n.firstKF);
@@ -208,6 +210,8 @@ namespace TISFAT_ZERO
 
 			LineLayer n = new LineLayer(name, x, theCanvas);
 			layers.Add(n);
+
+			layer_sel = layer_cnt;
 
 			mainForm.updateByLayers(++layer_cnt);
 
@@ -228,6 +232,7 @@ namespace TISFAT_ZERO
 			RectLayer n = new RectLayer(name, x, theCanvas);
 			layers.Add(n);
 
+			layer_sel = layer_cnt;
 
 			mainForm.updateByLayers(++layer_cnt);
 
@@ -242,6 +247,7 @@ namespace TISFAT_ZERO
 			CustomLayer n = new CustomLayer(name, x, theCanvas);
 			layers.Add(n);
 
+			layer_sel = layer_cnt;
 
 			mainForm.updateByLayers(++layer_cnt);
 

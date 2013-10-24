@@ -36,6 +36,8 @@ namespace TISFAT_ZERO
 			Joints.Add(new StickJoint(ps[10], Joints[9]));
 			Joints.Add(new StickJoint(ps[11], Joints[0]));
 
+
+
 			for (int i = 0; i < Joints.Count; i++)
 				if (Joints[i].parent != null)
 					Joints[i].CalcLength(null);
@@ -103,6 +105,8 @@ namespace TISFAT_ZERO
 
 	public class RectFrame : KeyFrame
 	{
+		public Color fillColor = Color.Black;
+
 		public RectFrame(List<StickJoint> ps, int po)
 		{
 			type = 3; pos = po;
@@ -111,16 +115,18 @@ namespace TISFAT_ZERO
 			Joints.Add(new StickJoint(ps[1], Joints[0]));
 			Joints.Add(new StickJoint(ps[2], Joints[1]));
 			Joints.Add(new StickJoint(ps[3], Joints[2]));
+			Joints[0].parent = Joints[3];
 		}
 
 		public RectFrame(int po)
 		{
 			type = 3; pos = po;
 
-			Joints.Add(new StickJoint("CornerTL", new Point(30, 30), 12, Color.Black, Color.LimeGreen, 0, 0, false, null));
-			Joints.Add(new StickJoint("CornerLL", new Point(30, 70), 12, Color.Black, Color.Yellow, 0, 0, false, Joints[0]));
-			Joints.Add(new StickJoint("CornerLR", new Point(150, 70), 12, Color.Black, Color.Red, 0, 0, false, Joints[1]));
-			Joints.Add(new StickJoint("CornerTR", new Point(150, 30), 12, Color.Black, Color.Blue, 0, 0, false, Joints[2]));
+			Joints.Add(new StickJoint("CornerTL", new Point(30, 30), 3, Color.Black, Color.LimeGreen, 0, 0, false, null));
+			Joints.Add(new StickJoint("CornerLL", new Point(30, 70), 3, Color.Black, Color.Yellow, 0, 0, false, Joints[0]));
+			Joints.Add(new StickJoint("CornerLR", new Point(150, 70), 3, Color.Black, Color.Red, 0, 0, false, Joints[1]));
+			Joints.Add(new StickJoint("CornerTR", new Point(150, 30), 3, Color.Black, Color.Blue, 0, 0, false, Joints[2]));
+			Joints[0].parent = Joints[3];
 		}
 	}
 

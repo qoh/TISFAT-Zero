@@ -32,6 +32,19 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Toolbox));
 			this.pnl_mainPanel = new System.Windows.Forms.Panel();
 			this.pnl_Properties = new System.Windows.Forms.Panel();
+			this.pnl_Properties_Rect = new System.Windows.Forms.Panel();
+			this.num_rectOLAlpha = new System.Windows.Forms.NumericUpDown();
+			this.num_rectFillAlpha = new System.Windows.Forms.NumericUpDown();
+			this.num_rectOLThickness = new System.Windows.Forms.NumericUpDown();
+			this.lbl_rectOLThickness = new System.Windows.Forms.Label();
+			this.lbl_rectOLAlpha = new System.Windows.Forms.Label();
+			this.lbl_rectFillAlpha = new System.Windows.Forms.Label();
+			this.pic_rectOLColor = new System.Windows.Forms.PictureBox();
+			this.lbl_rectOLColor = new System.Windows.Forms.Label();
+			this.pic_rectFillColor = new System.Windows.Forms.PictureBox();
+			this.chk_rectFilled = new System.Windows.Forms.CheckBox();
+			this.lbl_rectFillColor = new System.Windows.Forms.Label();
+			this.btn_pnlLine_Cancel = new System.Windows.Forms.Button();
 			this.pnl_Properties_Stick = new System.Windows.Forms.Panel();
 			this.lbl_pnlStick_Transparency = new System.Windows.Forms.Label();
 			this.num_alpha = new System.Windows.Forms.NumericUpDown();
@@ -46,7 +59,6 @@
 			this.pic_pnlLine_color = new System.Windows.Forms.PictureBox();
 			this.num_pnlLine_thickness = new System.Windows.Forms.NumericUpDown();
 			this.lbl_pnlLine_thickness = new System.Windows.Forms.Label();
-			this.btn_pnlLine_Cancel = new System.Windows.Forms.Button();
 			this.pnl_addTools = new System.Windows.Forms.Panel();
 			this.btn_cancelButton = new System.Windows.Forms.Button();
 			this.btn_addCircle = new System.Windows.Forms.Button();
@@ -81,20 +93,14 @@
 			this.btn_cancelButtonDraw = new System.Windows.Forms.Button();
 			this.animTimer = new System.Windows.Forms.Timer(this.components);
 			this.dlg_Color = new System.Windows.Forms.ColorDialog();
-			this.pnl_Properties_Rect = new System.Windows.Forms.Panel();
-			this.lbl_rectFillColor = new System.Windows.Forms.Label();
-			this.chk_rectFilled = new System.Windows.Forms.CheckBox();
-			this.pic_rectFillColor = new System.Windows.Forms.PictureBox();
-			this.lbl_rectOLColor = new System.Windows.Forms.Label();
-			this.pic_rectOLColor = new System.Windows.Forms.PictureBox();
-			this.lbl_rectFillAlpha = new System.Windows.Forms.Label();
-			this.lbl_rectOLAlpha = new System.Windows.Forms.Label();
-			this.lbl_rectOLThickness = new System.Windows.Forms.Label();
-			this.num_rectOLThickness = new System.Windows.Forms.NumericUpDown();
-			this.num_rectFillAlpha = new System.Windows.Forms.NumericUpDown();
-			this.num_rectOLAlpha = new System.Windows.Forms.NumericUpDown();
 			this.pnl_mainPanel.SuspendLayout();
 			this.pnl_Properties.SuspendLayout();
+			this.pnl_Properties_Rect.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_rectOLAlpha)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.num_rectFillAlpha)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.num_rectOLThickness)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_rectOLColor)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_rectFillColor)).BeginInit();
 			this.pnl_Properties_Stick.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.num_alpha)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.tkb_alpha)).BeginInit();
@@ -112,12 +118,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.maskedTextBox1)).BeginInit();
 			this.tabPage2.SuspendLayout();
 			this.pnl_Drawing.SuspendLayout();
-			this.pnl_Properties_Rect.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pic_rectFillColor)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pic_rectOLColor)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.num_rectOLThickness)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.num_rectFillAlpha)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.num_rectOLAlpha)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// pnl_mainPanel
@@ -137,14 +137,143 @@
 			// 
 			// pnl_Properties
 			// 
+			this.pnl_Properties.AutoSize = true;
 			this.pnl_Properties.Controls.Add(this.pnl_Properties_Rect);
 			this.pnl_Properties.Controls.Add(this.btn_pnlLine_Cancel);
 			this.pnl_Properties.Controls.Add(this.pnl_Properties_Stick);
 			this.pnl_Properties.Controls.Add(this.pnl_Properties_Line);
 			this.pnl_Properties.Location = new System.Drawing.Point(198, 142);
 			this.pnl_Properties.Name = "pnl_Properties";
-			this.pnl_Properties.Size = new System.Drawing.Size(151, 203);
+			this.pnl_Properties.Size = new System.Drawing.Size(151, 474);
 			this.pnl_Properties.TabIndex = 30;
+			// 
+			// pnl_Properties_Rect
+			// 
+			this.pnl_Properties_Rect.AutoScroll = true;
+			this.pnl_Properties_Rect.Controls.Add(this.num_rectOLAlpha);
+			this.pnl_Properties_Rect.Controls.Add(this.num_rectFillAlpha);
+			this.pnl_Properties_Rect.Controls.Add(this.num_rectOLThickness);
+			this.pnl_Properties_Rect.Controls.Add(this.lbl_rectOLThickness);
+			this.pnl_Properties_Rect.Controls.Add(this.lbl_rectOLAlpha);
+			this.pnl_Properties_Rect.Controls.Add(this.lbl_rectFillAlpha);
+			this.pnl_Properties_Rect.Controls.Add(this.pic_rectOLColor);
+			this.pnl_Properties_Rect.Controls.Add(this.lbl_rectOLColor);
+			this.pnl_Properties_Rect.Controls.Add(this.pic_rectFillColor);
+			this.pnl_Properties_Rect.Controls.Add(this.chk_rectFilled);
+			this.pnl_Properties_Rect.Controls.Add(this.lbl_rectFillColor);
+			this.pnl_Properties_Rect.Dock = System.Windows.Forms.DockStyle.Top;
+			this.pnl_Properties_Rect.Location = new System.Drawing.Point(0, 316);
+			this.pnl_Properties_Rect.Name = "pnl_Properties_Rect";
+			this.pnl_Properties_Rect.Size = new System.Drawing.Size(151, 158);
+			this.pnl_Properties_Rect.TabIndex = 32;
+			// 
+			// num_rectOLAlpha
+			// 
+			this.num_rectOLAlpha.Location = new System.Drawing.Point(83, 88);
+			this.num_rectOLAlpha.Name = "num_rectOLAlpha";
+			this.num_rectOLAlpha.Size = new System.Drawing.Size(45, 20);
+			this.num_rectOLAlpha.TabIndex = 35;
+			// 
+			// num_rectFillAlpha
+			// 
+			this.num_rectFillAlpha.Location = new System.Drawing.Point(22, 88);
+			this.num_rectFillAlpha.Name = "num_rectFillAlpha";
+			this.num_rectFillAlpha.Size = new System.Drawing.Size(45, 20);
+			this.num_rectFillAlpha.TabIndex = 34;
+			// 
+			// num_rectOLThickness
+			// 
+			this.num_rectOLThickness.Location = new System.Drawing.Point(51, 128);
+			this.num_rectOLThickness.Name = "num_rectOLThickness";
+			this.num_rectOLThickness.Size = new System.Drawing.Size(45, 20);
+			this.num_rectOLThickness.TabIndex = 33;
+			// 
+			// lbl_rectOLThickness
+			// 
+			this.lbl_rectOLThickness.AutoSize = true;
+			this.lbl_rectOLThickness.Location = new System.Drawing.Point(37, 110);
+			this.lbl_rectOLThickness.Name = "lbl_rectOLThickness";
+			this.lbl_rectOLThickness.Size = new System.Drawing.Size(73, 13);
+			this.lbl_rectOLThickness.TabIndex = 9;
+			this.lbl_rectOLThickness.Text = "OL Thickness";
+			// 
+			// lbl_rectOLAlpha
+			// 
+			this.lbl_rectOLAlpha.AutoSize = true;
+			this.lbl_rectOLAlpha.Location = new System.Drawing.Point(80, 72);
+			this.lbl_rectOLAlpha.Name = "lbl_rectOLAlpha";
+			this.lbl_rectOLAlpha.Size = new System.Drawing.Size(51, 13);
+			this.lbl_rectOLAlpha.TabIndex = 8;
+			this.lbl_rectOLAlpha.Text = "OL Alpha";
+			// 
+			// lbl_rectFillAlpha
+			// 
+			this.lbl_rectFillAlpha.AutoSize = true;
+			this.lbl_rectFillAlpha.Location = new System.Drawing.Point(19, 72);
+			this.lbl_rectFillAlpha.Name = "lbl_rectFillAlpha";
+			this.lbl_rectFillAlpha.Size = new System.Drawing.Size(49, 13);
+			this.lbl_rectFillAlpha.TabIndex = 5;
+			this.lbl_rectFillAlpha.Text = "Fill Alpha";
+			// 
+			// pic_rectOLColor
+			// 
+			this.pic_rectOLColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_rectOLColor.Location = new System.Drawing.Point(90, 43);
+			this.pic_rectOLColor.Name = "pic_rectOLColor";
+			this.pic_rectOLColor.Size = new System.Drawing.Size(25, 25);
+			this.pic_rectOLColor.TabIndex = 4;
+			this.pic_rectOLColor.TabStop = false;
+			// 
+			// lbl_rectOLColor
+			// 
+			this.lbl_rectOLColor.AutoSize = true;
+			this.lbl_rectOLColor.Location = new System.Drawing.Point(80, 27);
+			this.lbl_rectOLColor.Name = "lbl_rectOLColor";
+			this.lbl_rectOLColor.Size = new System.Drawing.Size(48, 13);
+			this.lbl_rectOLColor.TabIndex = 3;
+			this.lbl_rectOLColor.Text = "OL Color";
+			// 
+			// pic_rectFillColor
+			// 
+			this.pic_rectFillColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_rectFillColor.Location = new System.Drawing.Point(28, 43);
+			this.pic_rectFillColor.Name = "pic_rectFillColor";
+			this.pic_rectFillColor.Size = new System.Drawing.Size(25, 25);
+			this.pic_rectFillColor.TabIndex = 2;
+			this.pic_rectFillColor.TabStop = false;
+			this.pic_rectFillColor.Click += new System.EventHandler(this.pic_rectFillColor_Click);
+			// 
+			// chk_rectFilled
+			// 
+			this.chk_rectFilled.AutoSize = true;
+			this.chk_rectFilled.Checked = true;
+			this.chk_rectFilled.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.chk_rectFilled.Location = new System.Drawing.Point(48, 8);
+			this.chk_rectFilled.Name = "chk_rectFilled";
+			this.chk_rectFilled.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+			this.chk_rectFilled.Size = new System.Drawing.Size(50, 17);
+			this.chk_rectFilled.TabIndex = 1;
+			this.chk_rectFilled.Text = "Filled";
+			this.chk_rectFilled.UseVisualStyleBackColor = true;
+			// 
+			// lbl_rectFillColor
+			// 
+			this.lbl_rectFillColor.AutoSize = true;
+			this.lbl_rectFillColor.Location = new System.Drawing.Point(19, 27);
+			this.lbl_rectFillColor.Name = "lbl_rectFillColor";
+			this.lbl_rectFillColor.Size = new System.Drawing.Size(46, 13);
+			this.lbl_rectFillColor.TabIndex = 0;
+			this.lbl_rectFillColor.Text = "Fill Color";
+			// 
+			// btn_pnlLine_Cancel
+			// 
+			this.btn_pnlLine_Cancel.Location = new System.Drawing.Point(38, 164);
+			this.btn_pnlLine_Cancel.Name = "btn_pnlLine_Cancel";
+			this.btn_pnlLine_Cancel.Size = new System.Drawing.Size(75, 23);
+			this.btn_pnlLine_Cancel.TabIndex = 25;
+			this.btn_pnlLine_Cancel.Text = "Cancel";
+			this.btn_pnlLine_Cancel.UseVisualStyleBackColor = true;
+			this.btn_pnlLine_Cancel.Click += new System.EventHandler(this.btn_pnlLine_Cancel_Click);
 			// 
 			// pnl_Properties_Stick
 			// 
@@ -186,7 +315,7 @@
 			this.tkb_alpha.Location = new System.Drawing.Point(23, 76);
 			this.tkb_alpha.Maximum = 255;
 			this.tkb_alpha.Name = "tkb_alpha";
-			this.tkb_alpha.Size = new System.Drawing.Size(104, 45);
+			this.tkb_alpha.Size = new System.Drawing.Size(104, 26);
 			this.tkb_alpha.TabIndex = 2;
 			this.tkb_alpha.Scroll += new System.EventHandler(this.tkb_alpha_Scroll);
 			// 
@@ -251,7 +380,7 @@
 			this.tkb_pnlLine_Transparency.Location = new System.Drawing.Point(23, 87);
 			this.tkb_pnlLine_Transparency.Maximum = 255;
 			this.tkb_pnlLine_Transparency.Name = "tkb_pnlLine_Transparency";
-			this.tkb_pnlLine_Transparency.Size = new System.Drawing.Size(104, 45);
+			this.tkb_pnlLine_Transparency.Size = new System.Drawing.Size(104, 26);
 			this.tkb_pnlLine_Transparency.TabIndex = 4;
 			// 
 			// lbl_pnlLine_Color
@@ -289,16 +418,6 @@
 			this.lbl_pnlLine_thickness.Size = new System.Drawing.Size(62, 13);
 			this.lbl_pnlLine_thickness.TabIndex = 0;
 			this.lbl_pnlLine_thickness.Text = "Thickness: ";
-			// 
-			// btn_pnlLine_Cancel
-			// 
-			this.btn_pnlLine_Cancel.Location = new System.Drawing.Point(34, 164);
-			this.btn_pnlLine_Cancel.Name = "btn_pnlLine_Cancel";
-			this.btn_pnlLine_Cancel.Size = new System.Drawing.Size(75, 23);
-			this.btn_pnlLine_Cancel.TabIndex = 25;
-			this.btn_pnlLine_Cancel.Text = "Cancel";
-			this.btn_pnlLine_Cancel.UseVisualStyleBackColor = true;
-			this.btn_pnlLine_Cancel.Click += new System.EventHandler(this.btn_pnlLine_Cancel_Click);
 			// 
 			// pnl_addTools
 			// 
@@ -611,7 +730,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(758, 114);
+			this.tabPage2.Size = new System.Drawing.Size(1013, 114);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Debug";
 			// 
@@ -700,123 +819,6 @@
 			this.animTimer.Interval = 24;
 			this.animTimer.Tick += new System.EventHandler(this.animTimer_Tick);
 			// 
-			// pnl_Properties_Rect
-			// 
-			this.pnl_Properties_Rect.AutoScroll = true;
-			this.pnl_Properties_Rect.Controls.Add(this.num_rectOLAlpha);
-			this.pnl_Properties_Rect.Controls.Add(this.num_rectFillAlpha);
-			this.pnl_Properties_Rect.Controls.Add(this.num_rectOLThickness);
-			this.pnl_Properties_Rect.Controls.Add(this.lbl_rectOLThickness);
-			this.pnl_Properties_Rect.Controls.Add(this.lbl_rectOLAlpha);
-			this.pnl_Properties_Rect.Controls.Add(this.lbl_rectFillAlpha);
-			this.pnl_Properties_Rect.Controls.Add(this.pic_rectOLColor);
-			this.pnl_Properties_Rect.Controls.Add(this.lbl_rectOLColor);
-			this.pnl_Properties_Rect.Controls.Add(this.pic_rectFillColor);
-			this.pnl_Properties_Rect.Controls.Add(this.chk_rectFilled);
-			this.pnl_Properties_Rect.Controls.Add(this.lbl_rectFillColor);
-			this.pnl_Properties_Rect.Dock = System.Windows.Forms.DockStyle.Top;
-			this.pnl_Properties_Rect.Location = new System.Drawing.Point(0, 316);
-			this.pnl_Properties_Rect.Name = "pnl_Properties_Rect";
-			this.pnl_Properties_Rect.Size = new System.Drawing.Size(151, 158);
-			this.pnl_Properties_Rect.TabIndex = 32;
-			// 
-			// lbl_rectFillColor
-			// 
-			this.lbl_rectFillColor.AutoSize = true;
-			this.lbl_rectFillColor.Location = new System.Drawing.Point(19, 27);
-			this.lbl_rectFillColor.Name = "lbl_rectFillColor";
-			this.lbl_rectFillColor.Size = new System.Drawing.Size(46, 13);
-			this.lbl_rectFillColor.TabIndex = 0;
-			this.lbl_rectFillColor.Text = "Fill Color";
-			// 
-			// chk_rectFilled
-			// 
-			this.chk_rectFilled.AutoSize = true;
-			this.chk_rectFilled.Checked = true;
-			this.chk_rectFilled.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.chk_rectFilled.Location = new System.Drawing.Point(48, 8);
-			this.chk_rectFilled.Name = "chk_rectFilled";
-			this.chk_rectFilled.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-			this.chk_rectFilled.Size = new System.Drawing.Size(50, 17);
-			this.chk_rectFilled.TabIndex = 1;
-			this.chk_rectFilled.Text = "Filled";
-			this.chk_rectFilled.UseVisualStyleBackColor = true;
-			// 
-			// pic_rectFillColor
-			// 
-			this.pic_rectFillColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pic_rectFillColor.Location = new System.Drawing.Point(28, 43);
-			this.pic_rectFillColor.Name = "pic_rectFillColor";
-			this.pic_rectFillColor.Size = new System.Drawing.Size(25, 25);
-			this.pic_rectFillColor.TabIndex = 2;
-			this.pic_rectFillColor.TabStop = false;
-			// 
-			// lbl_rectOLColor
-			// 
-			this.lbl_rectOLColor.AutoSize = true;
-			this.lbl_rectOLColor.Location = new System.Drawing.Point(80, 27);
-			this.lbl_rectOLColor.Name = "lbl_rectOLColor";
-			this.lbl_rectOLColor.Size = new System.Drawing.Size(48, 13);
-			this.lbl_rectOLColor.TabIndex = 3;
-			this.lbl_rectOLColor.Text = "OL Color";
-			// 
-			// pic_rectOLColor
-			// 
-			this.pic_rectOLColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pic_rectOLColor.Location = new System.Drawing.Point(90, 43);
-			this.pic_rectOLColor.Name = "pic_rectOLColor";
-			this.pic_rectOLColor.Size = new System.Drawing.Size(25, 25);
-			this.pic_rectOLColor.TabIndex = 4;
-			this.pic_rectOLColor.TabStop = false;
-			// 
-			// lbl_rectFillAlpha
-			// 
-			this.lbl_rectFillAlpha.AutoSize = true;
-			this.lbl_rectFillAlpha.Location = new System.Drawing.Point(19, 72);
-			this.lbl_rectFillAlpha.Name = "lbl_rectFillAlpha";
-			this.lbl_rectFillAlpha.Size = new System.Drawing.Size(49, 13);
-			this.lbl_rectFillAlpha.TabIndex = 5;
-			this.lbl_rectFillAlpha.Text = "Fill Alpha";
-			// 
-			// lbl_rectOLAlpha
-			// 
-			this.lbl_rectOLAlpha.AutoSize = true;
-			this.lbl_rectOLAlpha.Location = new System.Drawing.Point(80, 72);
-			this.lbl_rectOLAlpha.Name = "lbl_rectOLAlpha";
-			this.lbl_rectOLAlpha.Size = new System.Drawing.Size(51, 13);
-			this.lbl_rectOLAlpha.TabIndex = 8;
-			this.lbl_rectOLAlpha.Text = "OL Alpha";
-			// 
-			// lbl_rectOLThickness
-			// 
-			this.lbl_rectOLThickness.AutoSize = true;
-			this.lbl_rectOLThickness.Location = new System.Drawing.Point(37, 110);
-			this.lbl_rectOLThickness.Name = "lbl_rectOLThickness";
-			this.lbl_rectOLThickness.Size = new System.Drawing.Size(73, 13);
-			this.lbl_rectOLThickness.TabIndex = 9;
-			this.lbl_rectOLThickness.Text = "OL Thickness";
-			// 
-			// num_rectOLThickness
-			// 
-			this.num_rectOLThickness.Location = new System.Drawing.Point(51, 128);
-			this.num_rectOLThickness.Name = "num_rectOLThickness";
-			this.num_rectOLThickness.Size = new System.Drawing.Size(45, 20);
-			this.num_rectOLThickness.TabIndex = 33;
-			// 
-			// num_rectFillAlpha
-			// 
-			this.num_rectFillAlpha.Location = new System.Drawing.Point(22, 88);
-			this.num_rectFillAlpha.Name = "num_rectFillAlpha";
-			this.num_rectFillAlpha.Size = new System.Drawing.Size(45, 20);
-			this.num_rectFillAlpha.TabIndex = 34;
-			// 
-			// num_rectOLAlpha
-			// 
-			this.num_rectOLAlpha.Location = new System.Drawing.Point(83, 88);
-			this.num_rectOLAlpha.Name = "num_rectOLAlpha";
-			this.num_rectOLAlpha.Size = new System.Drawing.Size(45, 20);
-			this.num_rectOLAlpha.TabIndex = 35;
-			// 
 			// Toolbox
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -833,6 +835,13 @@
 			this.pnl_mainPanel.ResumeLayout(false);
 			this.pnl_mainPanel.PerformLayout();
 			this.pnl_Properties.ResumeLayout(false);
+			this.pnl_Properties_Rect.ResumeLayout(false);
+			this.pnl_Properties_Rect.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_rectOLAlpha)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.num_rectFillAlpha)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.num_rectOLThickness)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_rectOLColor)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_rectFillColor)).EndInit();
 			this.pnl_Properties_Stick.ResumeLayout(false);
 			this.pnl_Properties_Stick.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.num_alpha)).EndInit();
@@ -854,13 +863,6 @@
 			this.tabPage2.ResumeLayout(false);
 			this.tabPage2.PerformLayout();
 			this.pnl_Drawing.ResumeLayout(false);
-			this.pnl_Properties_Rect.ResumeLayout(false);
-			this.pnl_Properties_Rect.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pic_rectFillColor)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pic_rectOLColor)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.num_rectOLThickness)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.num_rectFillAlpha)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.num_rectOLAlpha)).EndInit();
 			this.ResumeLayout(false);
 
 		}

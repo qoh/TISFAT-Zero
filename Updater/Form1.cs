@@ -226,16 +226,20 @@ namespace T0Updater
 				V2[z] = Int32.Parse(v2[z++]);
 			}
 
-			bool needsUpdating = false;
-			for (int a = 0; a < V1.Length; a++)
+			bool needsUpdating = Program.forceDownload;
+
+			if (!needsUpdating)
 			{
-				if (V2[a] < V1[a])
+				for (int a = 0; a < V1.Length; a++)
 				{
-					needsUpdating = true;
-					break;
+					if (V2[a] < V1[a])
+					{
+						needsUpdating = true;
+						break;
+					}
+					else if (V2[a] > V1[a])
+						break;
 				}
-				else if (V2[a] > V1[a])
-					break;
 			}
 
 			if (!needsUpdating)
