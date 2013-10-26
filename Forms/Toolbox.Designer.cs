@@ -170,20 +170,37 @@
 			// num_rectOLAlpha
 			// 
 			this.num_rectOLAlpha.Location = new System.Drawing.Point(83, 88);
+			this.num_rectOLAlpha.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
 			this.num_rectOLAlpha.Name = "num_rectOLAlpha";
 			this.num_rectOLAlpha.Size = new System.Drawing.Size(45, 20);
 			this.num_rectOLAlpha.TabIndex = 35;
+			this.num_rectOLAlpha.ValueChanged += new System.EventHandler(this.num_rectOLAlpha_ValueChanged);
 			// 
 			// num_rectFillAlpha
 			// 
 			this.num_rectFillAlpha.Location = new System.Drawing.Point(22, 88);
+			this.num_rectFillAlpha.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
 			this.num_rectFillAlpha.Name = "num_rectFillAlpha";
 			this.num_rectFillAlpha.Size = new System.Drawing.Size(45, 20);
 			this.num_rectFillAlpha.TabIndex = 34;
+			this.num_rectFillAlpha.ValueChanged += new System.EventHandler(this.num_rectFillAlpha_ValueChanged);
 			// 
 			// num_rectOLThickness
 			// 
 			this.num_rectOLThickness.Location = new System.Drawing.Point(51, 128);
+			this.num_rectOLThickness.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
 			this.num_rectOLThickness.Name = "num_rectOLThickness";
 			this.num_rectOLThickness.Size = new System.Drawing.Size(45, 20);
 			this.num_rectOLThickness.TabIndex = 33;
@@ -223,6 +240,7 @@
 			this.pic_rectOLColor.Size = new System.Drawing.Size(25, 25);
 			this.pic_rectOLColor.TabIndex = 4;
 			this.pic_rectOLColor.TabStop = false;
+			this.pic_rectOLColor.Click += new System.EventHandler(this.pic_rectOLColor_Click);
 			// 
 			// lbl_rectOLColor
 			// 
@@ -255,6 +273,7 @@
 			this.chk_rectFilled.TabIndex = 1;
 			this.chk_rectFilled.Text = "Filled";
 			this.chk_rectFilled.UseVisualStyleBackColor = true;
+			this.chk_rectFilled.CheckedChanged += new System.EventHandler(this.chk_rectFilled_CheckedChanged);
 			// 
 			// lbl_rectFillColor
 			// 
@@ -405,6 +424,11 @@
 			// num_pnlLine_thickness
 			// 
 			this.num_pnlLine_thickness.Location = new System.Drawing.Point(83, 17);
+			this.num_pnlLine_thickness.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
 			this.num_pnlLine_thickness.Name = "num_pnlLine_thickness";
 			this.num_pnlLine_thickness.Size = new System.Drawing.Size(45, 20);
 			this.num_pnlLine_thickness.TabIndex = 1;

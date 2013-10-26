@@ -105,7 +105,7 @@ namespace TISFAT_ZERO
 
 	public class RectFrame : KeyFrame
 	{
-		public Color fillColor = Color.Black;
+		public bool filled = true;
 
 		public RectFrame(List<StickJoint> ps, int po)
 		{

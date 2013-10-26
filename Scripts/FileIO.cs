@@ -134,8 +134,6 @@ namespace TISFAT_ZERO
 				bool handleDrawn = bin.ReadBoolean();
 				int parentIndex = bin.ReadInt32();
 
-				StickJoint parent;
-
 				parentList.Add(parentIndex);
 
 
@@ -343,6 +341,22 @@ namespace TISFAT_ZERO
 				bytes.Add((byte)k.figColor.R);
 				bytes.Add((byte)k.figColor.G);
 				bytes.Add((byte)k.figColor.B);
+			}
+			else if (k.type == 3)
+			{
+				RectFrame x = (RectFrame)k;
+				bytes.AddRange(BitConverter.GetBytes(x.filled));
+				bytes.Add((byte)x.figColor.A);
+				bytes.Add((byte)x.figColor.R);
+				bytes.Add((byte)x.figColor.G);
+				bytes.Add((byte)x.figColor.B);
+
+				Color outlineColor = k.Joints[0].color;
+
+				bytes.Add((byte)outlineColor.A);
+				bytes.Add((byte)outlineColor.R);
+				bytes.Add((byte)outlineColor.G);
+				bytes.Add((byte)outlineColor.B);
 			}
 			else
 			{
@@ -571,7 +585,17 @@ namespace TISFAT_ZERO
 						//Obtain the colour that's stored in the properties block
                         if(layerType != 4)
 						    figColor = Color.FromArgb(propBlock.data[1], propBlock.data[2], propBlock.data[3], propBlock.data[4]);
+						
+						if (layerType == 3)
+						{
+							((RectFrame)f).figColor = figColor;
 
+							Color outlineColor = Color.FromArgb(propBlock.data[5], propBlock.data[6], propBlock.data[7], propBlock.data[8]);
+
+							foreach (StickJoint j in f.Joints)
+								j.color = outlineColor;
+						}
+						
 						//Obtain the joints positions block
 						posblk = readNextBlock(file); //Oh readNextBlock method, how you make my life simpler so
 					}
@@ -584,7 +608,7 @@ namespace TISFAT_ZERO
 						{
 							int x = 4 * a + 2;
 
-                            if(layerType != 4)
+                            if(layerType != 4 && layerType != 3)
 							    f.Joints[a].color = figColor;
 
 							f.Joints[a].location = new Point(BitConverter.ToInt16(posblk.data, x),

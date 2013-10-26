@@ -520,7 +520,8 @@ namespace TISFAT_ZERO
 			{
 				Joints[i].color = color;
 			}
-			figColor = color;
+			if(type != 3)
+				figColor = color;
 		}
 
 		public void setFillColor(Color color)

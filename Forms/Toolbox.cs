@@ -258,6 +258,15 @@ namespace TISFAT_ZERO
 					pnl_Properties_Stick.Visible = false;
 					pnl_Properties_Rect.Visible = true;
 					pnl_Properties_Line.Visible = false;
+
+					pic_rectFillColor.BackColor = Canvas.activeFigure.figColor;
+					pic_rectOLColor.BackColor = Canvas.activeFigure.Joints[0].color;
+					chk_rectFilled.Checked = ((StickRect)Canvas.activeFigure).filled;
+
+					num_rectFillAlpha.Value = Canvas.activeFigure.figColor.A;
+					num_rectOLAlpha.Value = Canvas.activeFigure.Joints[0].color.A;
+					num_rectOLThickness.Value = Canvas.activeFigure.Joints[0].thickness;
+
 					pnlOpen = panels[3];
 				}
 				else if (Canvas.activeFigure.type == 4)
@@ -295,7 +304,7 @@ namespace TISFAT_ZERO
 
 		private void setFigureAlpha(int value)
 		{
-			if (mainForm.tline.frm_selected == null | mainForm.tline.frm_selected.GetType() != typeof(StickFrame))
+			if (mainForm.tline.frm_selected == null || Timeline.layers[Timeline.layer_sel].type == 4)
 				return;
 
 			int[] argb = new int[4];
@@ -305,12 +314,39 @@ namespace TISFAT_ZERO
 			argb[2] = Canvas.activeFigure.figColor.G;
 			argb[3] = Canvas.activeFigure.figColor.B;
 
-			List<StickJoint> sf = ((StickFrame)mainForm.tline.frm_selected).Joints;
+			if (Timeline.layers[Timeline.layer_sel].type != 3)
+			{
+				List<StickJoint> sf = Canvas.activeFigure.Joints;
+
+				foreach (StickJoint a in sf)
+					a.color = Color.FromArgb(argb[0], argb[1], argb[2], argb[3]);
+			}
+
+			(mainForm.tline.frm_selected).figColor = Color.FromArgb(argb[0], argb[1], argb[2], argb[3]);
+
+			if(Canvas.activeFigure.type == 3)
+				Canvas.activeFigure.setFillColor(Color.FromArgb(argb[0], argb[1], argb[2], argb[3]));
+			else
+				Canvas.activeFigure.setColor(Color.FromArgb(argb[0], argb[1], argb[2], argb[3]));
+			Canvas.theCanvas.Refresh();
+		}
+
+		private void setOLAlpha(int value)
+		{
+			if (mainForm.tline.frm_selected == null | mainForm.tline.frm_selected.GetType() != typeof(RectFrame))
+				return;
+
+			int[] argb = new int[4];
+
+			argb[0] = value;
+			argb[1] = Canvas.activeFigure.Joints[0].color.R;
+			argb[2] = Canvas.activeFigure.Joints[0].color.G;
+			argb[3] = Canvas.activeFigure.Joints[0].color.B;
+
+			List<StickJoint> sf = mainForm.tline.frm_selected.Joints;
 
 			foreach (StickJoint a in sf)
 				a.color = Color.FromArgb(argb[0], argb[1], argb[2], argb[3]);
-
-			((StickFrame)mainForm.tline.frm_selected).figColor = Color.FromArgb(argb[0], argb[1], argb[2], argb[3]);
 
 			Canvas.activeFigure.setColor(Color.FromArgb(argb[0], argb[1], argb[2], argb[3]));
 			Canvas.theCanvas.Refresh();
@@ -349,6 +385,9 @@ namespace TISFAT_ZERO
 
 			if (type == 1)
 			{
+				pic_pnlStick_color.BackColor = Canvas.activeFigure.figColor;
+				tkb_alpha.Value = Canvas.activeFigure.figColor.A;
+				num_alpha.Value = Canvas.activeFigure.figColor.A;
 				if (pnlOpen != panels[1])
 				{
 					pnl_Properties_Stick.Visible = true;
@@ -363,12 +402,11 @@ namespace TISFAT_ZERO
 
 					animTimer.Start();
 				}
-				pic_pnlStick_color.BackColor = Canvas.activeFigure.figColor;
-				tkb_alpha.Value = Canvas.activeFigure.figColor.A;
-				num_alpha.Value = Canvas.activeFigure.figColor.A;
 			}
 			else if (type == 2)
 			{
+				pic_pnlLine_color.BackColor = Canvas.activeFigure.Joints[0].color;
+				num_pnlLine_thickness.Value = Canvas.activeFigure.Joints[0].thickness;
 				if (pnlOpen != panels[2])
 				{
 					pnl_Properties_Stick.Visible = false;
@@ -383,13 +421,16 @@ namespace TISFAT_ZERO
 
 					animTimer.Start();
 				}
-				pic_pnlLine_color.BackColor = Canvas.activeFigure.Joints[0].color;
-				num_pnlLine_thickness.Value = Canvas.activeFigure.Joints[0].thickness;
 			}
 			else if (type == 3)
 			{
-
 				pic_rectFillColor.BackColor = Canvas.activeFigure.figColor;
+				pic_rectOLColor.BackColor = Canvas.activeFigure.Joints[0].color;
+				chk_rectFilled.Checked = ((StickRect)Canvas.activeFigure).filled;
+
+				num_rectFillAlpha.Value = Canvas.activeFigure.figColor.A;
+				num_rectOLAlpha.Value = Canvas.activeFigure.Joints[0].color.A;
+				num_rectOLThickness.Value = Canvas.activeFigure.Joints[0].thickness;
 				if (pnlOpen != panels[3])
 				{
 					pnl_Properties_Stick.Visible = false;
@@ -415,6 +456,37 @@ namespace TISFAT_ZERO
 			Canvas.activeFigure.setFillColor(dlg_Color.Color);
 			mainForm.tline.frm_selected.figColor = dlg_Color.Color;
 			
+			Canvas.theCanvas.Refresh();
+		}
+
+		private void chk_rectFilled_CheckedChanged(object sender, EventArgs e)
+		{
+			((StickRect)Canvas.activeFigure).filled = chk_rectFilled.Checked;
+
+			Canvas.theCanvas.Refresh();
+		}
+
+		private void pic_rectOLColor_Click(object sender, EventArgs e)
+		{
+			if (!(dlg_Color.ShowDialog() == DialogResult.OK))
+				return;
+			pic_rectOLColor.BackColor = dlg_Color.Color;
+			Canvas.activeFigure.setColor(dlg_Color.Color);
+			for(int i = 0; i < mainForm.tline.frm_selected.Joints.Count; i++)
+				mainForm.tline.frm_selected.Joints[i].color = dlg_Color.Color;
+
+			Canvas.theCanvas.Refresh();
+		}
+
+		private void num_rectFillAlpha_ValueChanged(object sender, EventArgs e)
+		{
+			setFigureAlpha((int)num_rectFillAlpha.Value);
+			Canvas.theCanvas.Refresh();
+		}
+
+		private void num_rectOLAlpha_ValueChanged(object sender, EventArgs e)
+		{
+			setOLAlpha((int)num_rectOLAlpha.Value);
 			Canvas.theCanvas.Refresh();
 		}
 	}
