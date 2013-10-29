@@ -704,18 +704,18 @@ namespace TISFAT_ZERO
 					break;
 
 				case "tst_setPosePrvKfrm":
-					int pos = cLayer.keyFrames.IndexOf(frm_selected);
+					int pos = frm_selInd - 1;
 
 					for (int a = 0; a < cLayer.keyFrames[pos].Joints.Count; a++)
-						cLayer.keyFrames[pos].Joints[a].location = new Point(cLayer.keyFrames[pos - 1].Joints[a].location.X, cLayer.keyFrames[pos - 1].Joints[a].location.Y);
+						cLayer.keyFrames[pos].Joints[a].location = new Point(cLayer.keyFrames[pos - 1].Joints[a].location.X, cLayer.keyFrames[pos].Joints[a].location.Y);
 
 					break;
 
 				case "tst_setPoseNxtKfrm":
-					pos = cLayer.keyFrames.IndexOf(frm_selected);
+					pos = frm_selInd + 1;
 
 					for (int a = 0; a < cLayer.keyFrames[pos].Joints.Count; a++)
-						cLayer.keyFrames[pos].Joints[a].location = new Point(cLayer.keyFrames[pos + 1].Joints[a].location.X, cLayer.keyFrames[pos + 1].Joints[a].location.Y);
+						cLayer.keyFrames[pos].Joints[a].location = new Point(cLayer.keyFrames[pos + 1].Joints[a].location.X, cLayer.keyFrames[pos].Joints[a].location.Y);
 
 					break;
 
