@@ -37,11 +37,21 @@ namespace TISFAT_ZERO
 		private List<int> fx, fy;
 
 		private int toolType = 1;
+		private int maxaa = 1;
 
 		private bool loaded = false;
 
 		public StickEditor()
 		{
+			int aa = 0;
+			do
+			{
+				var mode = new GraphicsMode(32, 0, 0, aa);
+				if (mode.Samples == aa)
+					maxaa = aa;
+				aa += 2;
+			} while (aa <= 32);
+
 			InitializeComponent();
 		}
 
@@ -358,7 +368,7 @@ namespace TISFAT_ZERO
 			{
 				if (toolType == 0)
 				{
-					selectedJoint = figure.selectPoint(e.Location, 4);
+					selectedJoint = figure.selectPoint(e.Location, 6);
 					pointClicked = e.Location;
 					mouseDown = e.Button == MouseButtons.Left;
 
@@ -368,7 +378,7 @@ namespace TISFAT_ZERO
 
 				if (toolType == 1)
 				{
-					activeJoint = figure.selectPoint(e.Location, 4);
+					activeJoint = figure.selectPoint(e.Location, 6);
 
 					if (!(activeJoint == null))
 						selectedJoint = activeJoint;
@@ -396,7 +406,7 @@ namespace TISFAT_ZERO
 
 				if (toolType == 3)
 				{
-					activeJoint = figure.selectPoint(e.Location, 4);
+					activeJoint = figure.selectPoint(e.Location, 6);
 					if (!(activeJoint == null))
 						selectedJoint = activeJoint;
 
@@ -460,7 +470,7 @@ namespace TISFAT_ZERO
 			{
 				if (figure.selectPoint(mouseLoc, 4) != null)
 				{
-					drawGraphics(2, Color.Blue, figure.selectPoint(mouseLoc, 4).location, 1, 1, figure.selectPoint(mouseLoc, 4).location);
+					drawGraphics(2, Color.Blue, figure.selectPoint(mouseLoc, 6).location, 1, 1, figure.selectPoint(mouseLoc, 6).location);
 					this.Cursor = Cursors.Hand;
 				}
 				else

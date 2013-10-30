@@ -175,13 +175,13 @@ namespace TISFAT_ZERO
 
 					//Selects the point at the location that the user clicked, with a
 					//tolerance of about 4 pixels.
-					f = activeFigure.selectPoint(new Point(e.X, e.Y), 4);
+					f = activeFigure.selectPoint(new Point(e.X, e.Y), 6);
 
 					//if(!hasLockedJoint)
 					//	activeFigure.setAsBase(activeFigure.Joints[(activeFigure.Joints.IndexOf(f) + 1) % activeFigure.Joints.Count]);
 
-                    //Sets the selectedJoint variable to the joint that we just selected.
-                    selectedJoint = f;
+					//Sets the selectedJoint variable to the joint that we just selected.
+					selectedJoint = f;
 
 					//This sets the labels in the debug menu.
 					if (selectedJoint != null)
@@ -201,7 +201,7 @@ namespace TISFAT_ZERO
 						StickJoint f = null;
 						if (activeFigure != null)
 						{
-							f = activeFigure.selectPoint(new Point(e.X, e.Y), 4);
+							f = activeFigure.selectPoint(new Point(e.X, e.Y), 6);
 							f.state = (f.state == 1) ? f.state = 0 : f.state = 1;
 							hasLockedJoint = !hasLockedJoint;
 							GL_GRAPHICS.Invalidate();
@@ -525,7 +525,7 @@ namespace TISFAT_ZERO
 				return;
 			}
 
-            GL_GRAPHICS.MakeCurrent();
+			GL_GRAPHICS.MakeCurrent();
 
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.StencilBufferBit);
 
@@ -552,14 +552,14 @@ namespace TISFAT_ZERO
 			for (int a = 0; a < ps.Count; a++)
 			{
 				StickJoint p = ps[a].parent;
-                if (p != null)
-                {
-                    positions[a] = ps.IndexOf(p);
-                }
-                else
-                {
-                    positions[a] = -1;
-                }
+				if (p != null)
+				{
+					positions[a] = ps.IndexOf(p);
+				}
+				else
+				{
+					positions[a] = -1;
+				}
 			}
 
 			c.keyFrames[0].Joints = ps;

@@ -449,14 +449,14 @@ namespace TISFAT_ZERO
 
 			while (file.Position + 1 < length)
 			{
-                try
-                {
-                    layer = readNextBlock(file);
-                }
-                catch
-                {
-                    throw new Exception("Failed to load project file. Reason: Unable to read from file.");
-                }
+				try
+				{
+					layer = readNextBlock(file);
+				}
+				catch
+				{
+					throw new Exception("Failed to load project file. Reason: Unable to read from file.");
+				}
 
 				if (layer.type != 0) //If it isn't the actual layer type, then skip.
 					continue;
@@ -505,40 +505,40 @@ namespace TISFAT_ZERO
 						f = new custObjectFrame(0);
 						int JC = BitConverter.ToUInt16(otherTmpBlock.data, 0);
 
-                        f.Joints.AddRange(new StickJoint[JC]);
+						f.Joints.AddRange(new StickJoint[JC]);
 
-                        int[] parents = new int[JC];
-                        
-                        for (int a = 0; a < JC; a++)
+						int[] parents = new int[JC];
+						
+						for (int a = 0; a < JC; a++)
 						{
-                            f.Joints[a] = new StickJoint("", new Point(0, 0), 0, Color.Black, Color.Black, 0, 0, false, null, false);
-                            int blockItr = a * 16;
+							f.Joints[a] = new StickJoint("", new Point(0, 0), 0, Color.Black, Color.Black, 0, 0, false, null, false);
+							int blockItr = a * 16;
 
-                            ushort parentIndex = (ushort)BitConverter.ToInt16(otherTmpBlock.data, blockItr + 2);
+							ushort parentIndex = (ushort)BitConverter.ToInt16(otherTmpBlock.data, blockItr + 2);
 
-                            parents[a] = -1;
-                            if (parentIndex != 0)
-                            {
-                                parents[a] = parentIndex - 1;
-                            }
+							parents[a] = -1;
+							if (parentIndex != 0)
+							{
+								parents[a] = parentIndex - 1;
+							}
 
-                            f.Joints[a].color = Color.FromArgb(otherTmpBlock.data[blockItr + 4], otherTmpBlock.data[blockItr + 5], otherTmpBlock.data[blockItr + 6], otherTmpBlock.data[blockItr + 7]);
-                            f.Joints[a].handleColor = Color.FromArgb(otherTmpBlock.data[blockItr + 8], otherTmpBlock.data[blockItr + 9], otherTmpBlock.data[blockItr + 10], otherTmpBlock.data[blockItr + 11]);
+							f.Joints[a].color = Color.FromArgb(otherTmpBlock.data[blockItr + 4], otherTmpBlock.data[blockItr + 5], otherTmpBlock.data[blockItr + 6], otherTmpBlock.data[blockItr + 7]);
+							f.Joints[a].handleColor = Color.FromArgb(otherTmpBlock.data[blockItr + 8], otherTmpBlock.data[blockItr + 9], otherTmpBlock.data[blockItr + 10], otherTmpBlock.data[blockItr + 11]);
 							f.Joints[a].defaultHandleColor = f.Joints[a].handleColor;
-                            f.Joints[a].thickness = otherTmpBlock.data[blockItr + 12];
-                            f.Joints[a].drawState = otherTmpBlock.data[blockItr + 13];
-                            f.Joints[a].drawOrder = (ushort)BitConverter.ToInt16(otherTmpBlock.data, blockItr + 14);
-                            f.Joints[a].visible = (bool)BitConverter.ToBoolean(otherTmpBlock.data, 16);
-                            f.Joints[a].handleDrawn = (bool)BitConverter.ToBoolean(otherTmpBlock.data, 17);
+							f.Joints[a].thickness = otherTmpBlock.data[blockItr + 12];
+							f.Joints[a].drawState = otherTmpBlock.data[blockItr + 13];
+							f.Joints[a].drawOrder = (ushort)BitConverter.ToInt16(otherTmpBlock.data, blockItr + 14);
+							f.Joints[a].visible = (bool)BitConverter.ToBoolean(otherTmpBlock.data, 16);
+							f.Joints[a].handleDrawn = (bool)BitConverter.ToBoolean(otherTmpBlock.data, 17);
 						}
 
-                        for (int i = 0; i < JC; i++)
-                        {
-                            if (parents[i] != -1)
-                            {
-                                f.Joints[i].parent = f.Joints[parents[i]];
-                            }
-                        }
+						for (int i = 0; i < JC; i++)
+						{
+							if (parents[i] != -1)
+							{
+								f.Joints[i].parent = f.Joints[parents[i]];
+							}
+						}
 
 						foreach (StickJoint j in f.Joints)
 						{
@@ -579,8 +579,8 @@ namespace TISFAT_ZERO
 					if (propBlock.type == 4)
 					{
 						//Obtain the colour that's stored in the properties block
-                        if(layerType != 4)
-						    figColor = Color.FromArgb(propBlock.data[1], propBlock.data[2], propBlock.data[3], propBlock.data[4]);
+						if(layerType != 4)
+							figColor = Color.FromArgb(propBlock.data[1], propBlock.data[2], propBlock.data[3], propBlock.data[4]);
 						
 						if (layerType == 3)
 						{
@@ -596,7 +596,7 @@ namespace TISFAT_ZERO
 						posblk = readNextBlock(file); //Oh readNextBlock method, how you make my life simpler so
 					}
 
-                    int jointcount = BitConverter.ToUInt16(posblk.data, 0);
+					int jointcount = BitConverter.ToUInt16(posblk.data, 0);
 					
 					try 
 					{
@@ -604,8 +604,8 @@ namespace TISFAT_ZERO
 						{
 							int x = 4 * a + 2;
 
-                            if(layerType != 4 && layerType != 3)
-							    f.Joints[a].color = figColor;
+							if(layerType != 4 && layerType != 3)
+								f.Joints[a].color = figColor;
 
 							f.Joints[a].location = new Point(BitConverter.ToInt16(posblk.data, x),
 															BitConverter.ToInt16(posblk.data, x + 2));
@@ -625,8 +625,8 @@ namespace TISFAT_ZERO
 					thingy.Add(f);
 				}
 				newLayer.keyFrames = thingy;
-                newLayer.firstKF = newLayer.keyFrames[0].pos;
-                newLayer.lastKF = newLayer.keyFrames[newLayer.keyFrames.Count - 1].pos;
+				newLayer.firstKF = newLayer.keyFrames[0].pos;
+				newLayer.lastKF = newLayer.keyFrames[newLayer.keyFrames.Count - 1].pos;
 				layers.Add(newLayer);
 			}
 			Timeline.layers = layers;

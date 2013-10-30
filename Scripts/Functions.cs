@@ -21,10 +21,10 @@ namespace TISFAT_ZERO
 			return (Math.PI * d) / 180;
 		}
 
-        public static int compareDrawOrder(StickJoint x, StickJoint y)
-        {
-            return x.drawOrder - y.drawOrder;
-        }
+		public static int compareDrawOrder(StickJoint x, StickJoint y)
+		{
+			return x.drawOrder - y.drawOrder;
+		}
 
 		public static Point calcFigureDiff(StickJoint a, StickJoint b)
 		{
@@ -65,7 +65,7 @@ namespace TISFAT_ZERO
 					if (!(figure.Joints[i].parent.children.IndexOf(figure.Joints[i]) >= 0))
 						figure.Joints[i].parent.children.Add(figure.Joints[i]);
 				}
-				figure.Joints[i].ParentFigure = figure;
+			figure.Joints[i].ParentFigure = figure;
 			}
 		}
 	}

@@ -123,11 +123,11 @@
 			// pnl_mainPanel
 			// 
 			this.pnl_mainPanel.Controls.Add(this.pnl_Properties);
-			this.pnl_mainPanel.Controls.Add(this.pnl_addTools);
 			this.pnl_mainPanel.Controls.Add(this.pnl_mainTools);
 			this.pnl_mainPanel.Controls.Add(this.pnl_ctrlPanel);
 			this.pnl_mainPanel.Controls.Add(this.lbl_selectionDummy);
 			this.pnl_mainPanel.Controls.Add(this.pnl_Drawing);
+			this.pnl_mainPanel.Controls.Add(this.pnl_addTools);
 			this.pnl_mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnl_mainPanel.Location = new System.Drawing.Point(0, 0);
 			this.pnl_mainPanel.Margin = new System.Windows.Forms.Padding(0);
@@ -171,10 +171,10 @@
 			// 
 			this.num_rectOLAlpha.Location = new System.Drawing.Point(83, 88);
 			this.num_rectOLAlpha.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
+			255,
+			0,
+			0,
+			0});
 			this.num_rectOLAlpha.Name = "num_rectOLAlpha";
 			this.num_rectOLAlpha.Size = new System.Drawing.Size(45, 20);
 			this.num_rectOLAlpha.TabIndex = 35;
@@ -184,10 +184,10 @@
 			// 
 			this.num_rectFillAlpha.Location = new System.Drawing.Point(22, 88);
 			this.num_rectFillAlpha.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
+			255,
+			0,
+			0,
+			0});
 			this.num_rectFillAlpha.Name = "num_rectFillAlpha";
 			this.num_rectFillAlpha.Size = new System.Drawing.Size(45, 20);
 			this.num_rectFillAlpha.TabIndex = 34;
@@ -197,10 +197,10 @@
 			// 
 			this.num_rectOLThickness.Location = new System.Drawing.Point(51, 128);
 			this.num_rectOLThickness.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
+			1000,
+			0,
+			0,
+			0});
 			this.num_rectOLThickness.Name = "num_rectOLThickness";
 			this.num_rectOLThickness.Size = new System.Drawing.Size(45, 20);
 			this.num_rectOLThickness.TabIndex = 33;
@@ -320,10 +320,10 @@
 			// 
 			this.num_alpha.Location = new System.Drawing.Point(53, 113);
 			this.num_alpha.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
+			255,
+			0,
+			0,
+			0});
 			this.num_alpha.Name = "num_alpha";
 			this.num_alpha.Size = new System.Drawing.Size(45, 20);
 			this.num_alpha.TabIndex = 3;
@@ -385,10 +385,10 @@
 			// 
 			this.num_pnlLine_Transparency.Location = new System.Drawing.Point(53, 121);
 			this.num_pnlLine_Transparency.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
+			255,
+			0,
+			0,
+			0});
 			this.num_pnlLine_Transparency.Name = "num_pnlLine_Transparency";
 			this.num_pnlLine_Transparency.Size = new System.Drawing.Size(45, 20);
 			this.num_pnlLine_Transparency.TabIndex = 3;
@@ -425,10 +425,10 @@
 			// 
 			this.num_pnlLine_thickness.Location = new System.Drawing.Point(83, 17);
 			this.num_pnlLine_thickness.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
+			1000,
+			0,
+			0,
+			0});
 			this.num_pnlLine_thickness.Name = "num_pnlLine_thickness";
 			this.num_pnlLine_thickness.Size = new System.Drawing.Size(45, 20);
 			this.num_pnlLine_thickness.TabIndex = 1;
@@ -694,23 +694,23 @@
 			// 
 			this.maskedTextBox1.Location = new System.Drawing.Point(80, 44);
 			this.maskedTextBox1.Maximum = new decimal(new int[] {
-            120,
-            0,
-            0,
-            0});
+			120,
+			0,
+			0,
+			0});
 			this.maskedTextBox1.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+			1,
+			0,
+			0,
+			0});
 			this.maskedTextBox1.Name = "maskedTextBox1";
 			this.maskedTextBox1.Size = new System.Drawing.Size(40, 20);
 			this.maskedTextBox1.TabIndex = 4;
 			this.maskedTextBox1.Value = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
+			30,
+			0,
+			0,
+			0});
 			this.maskedTextBox1.ValueChanged += new System.EventHandler(this.maskedTextBox1_ValueChanged);
 			// 
 			// btn_playPause

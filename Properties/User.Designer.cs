@@ -25,18 +25,6 @@ namespace TISFAT_ZERO.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("%userprofile%\\My Documents\\TISFAT")]
-        public string DefaultSavePath {
-            get {
-                return ((string)(this["DefaultSavePath"]));
-            }
-            set {
-                this["DefaultSavePath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("460, 360")]
         public global::System.Drawing.Size CanvasSize {
             get {
@@ -104,6 +92,18 @@ namespace TISFAT_ZERO.Properties {
             }
             set {
                 this["selectedBuilds"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("%userprofile%\\My Documents\\TISFAT")]
+        public string DefaultSavePath {
+            get {
+                return ((string)(this["DefaultSavePath"]));
+            }
+            set {
+                this["DefaultSavePath"] = value;
             }
         }
     }

@@ -472,14 +472,14 @@ namespace TISFAT_ZERO
 			if (isPlaying)
 				return;
 
-			int x = e.X, y = e.Y + mainForm.splitContainer1.Panel1.VerticalScroll.Value;
+			int x = e.X, y = e.Y - mainForm.splitContainer1.Panel1.VerticalScroll.Value;
 			downPoint = e.Location;
 
 			if (x > 80)
 			{
 				frm_selPos = (x - 80) / 9 + mainForm.splitContainer1.Panel1.HorizontalScroll.Value / 9;
 
-				if (y < 16)
+				if (e.Y - mainForm.splitContainer1.Panel1.VerticalScroll.Value < 16)
 					layer_sel = -1;
 				else if (y < layers.Count() * 16 + 16)
 					layer_sel = (y - 16) / 16;

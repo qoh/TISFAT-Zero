@@ -205,9 +205,9 @@
 			this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.comboBox1.FormattingEnabled = true;
 			this.comboBox1.Items.AddRange(new object[] {
-            "Stable (Reccomended)",
-            "Beta",
-            "Nightly (Not Reccomended)"});
+			"Stable (Reccomended)",
+			"Beta",
+			"Nightly (Not Reccomended)"});
 			this.comboBox1.Location = new System.Drawing.Point(93, 91);
 			this.comboBox1.Name = "comboBox1";
 			this.comboBox1.Size = new System.Drawing.Size(212, 21);
@@ -273,10 +273,10 @@
 			// 
 			this.num_Height.Location = new System.Drawing.Point(43, 97);
 			this.num_Height.Maximum = new decimal(new int[] {
-            90000,
-            0,
-            0,
-            0});
+			90000,
+			0,
+			0,
+			0});
 			this.num_Height.Name = "num_Height";
 			this.num_Height.Size = new System.Drawing.Size(54, 20);
 			this.num_Height.TabIndex = 18;
@@ -285,10 +285,10 @@
 			// 
 			this.num_Width.Location = new System.Drawing.Point(43, 58);
 			this.num_Width.Maximum = new decimal(new int[] {
-            90000,
-            0,
-            0,
-            0});
+			90000,
+			0,
+			0,
+			0});
 			this.num_Width.Name = "num_Width";
 			this.num_Width.Size = new System.Drawing.Size(54, 20);
 			this.num_Width.TabIndex = 17;
@@ -405,21 +405,21 @@
 			// 
 			this.listView1.Activation = System.Windows.Forms.ItemActivation.OneClick;
 			this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1});
+			this.columnHeader1});
 			this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			listViewGroup1.Header = "General";
 			listViewGroup1.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
 			listViewGroup1.Name = "lvg_General";
 			this.listView1.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup1});
+			listViewGroup1});
 			this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
 			this.listView1.HideSelection = false;
 			listViewItem1.Group = listViewGroup1;
 			listViewItem1.StateImageIndex = 0;
 			listViewItem2.Group = listViewGroup1;
 			this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2});
+			listViewItem1,
+			listViewItem2});
 			this.listView1.Location = new System.Drawing.Point(0, 0);
 			this.listView1.MultiSelect = false;
 			this.listView1.Name = "listView1";

@@ -2,9 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TISFAT_ZERO.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="DefaultSavePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">%userprofile%\My Documents\TISFAT</Value>
-    </Setting>
     <Setting Name="CanvasSize" Type="System.Drawing.Size" Scope="User">
       <Value Profile="(Default)">460, 360</Value>
     </Setting>
@@ -22,6 +19,9 @@
     </Setting>
     <Setting Name="selectedBuilds" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DefaultSavePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">%userprofile%\My Documents\TISFAT</Value>
     </Setting>
   </Settings>
 </SettingsFile>

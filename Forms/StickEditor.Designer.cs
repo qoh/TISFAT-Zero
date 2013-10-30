@@ -1,4 +1,6 @@
-﻿namespace TISFAT_ZERO
+﻿using OpenTK.Graphics;
+
+namespace TISFAT_ZERO
 {
 	partial class StickEditor
 	{
@@ -78,7 +80,7 @@
 			this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.originalTisfatFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.exitStickEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.GL_GRAPHICS = new OpenTK.GLControl();
+			this.GL_GRAPHICS = new OpenTK.GLControl(new GraphicsMode(32, 0, 1, maxaa), 3, 0, GraphicsContextFlags.Default);
 			this.lbl_lineLength = new System.Windows.Forms.Label();
 			this.lbl_jointPosition = new System.Windows.Forms.Label();
 			this.dlg_openFile = new System.Windows.Forms.OpenFileDialog();
@@ -136,18 +138,18 @@
 			// 
 			this.num_brushThickness.Location = new System.Drawing.Point(94, 11);
 			this.num_brushThickness.Maximum = new decimal(new int[] {
-            500,
-            0,
-            0,
-            0});
+			500,
+			0,
+			0,
+			0});
 			this.num_brushThickness.Name = "num_brushThickness";
 			this.num_brushThickness.Size = new System.Drawing.Size(46, 20);
 			this.num_brushThickness.TabIndex = 1;
 			this.num_brushThickness.Value = new decimal(new int[] {
-            12,
-            0,
-            0,
-            0});
+			12,
+			0,
+			0,
+			0});
 			// 
 			// lbl_brushThickness
 			// 
@@ -196,7 +198,7 @@
 			// pnl_toolboxMain
 			// 
 			this.pnl_toolboxMain.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+			| System.Windows.Forms.AnchorStyles.Left)));
 			this.pnl_toolboxMain.BackColor = System.Drawing.Color.Silver;
 			this.pnl_toolboxMain.Controls.Add(this.pnl_toolPanel);
 			this.pnl_toolboxMain.Controls.Add(this.lbl_toolBox);
@@ -212,7 +214,7 @@
 			// pnl_toolPanel
 			// 
 			this.pnl_toolPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.pnl_toolPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.pnl_toolPanel.Controls.Add(this.btn_toolRemove);
 			this.pnl_toolPanel.Controls.Add(this.btn_toolAdd);
@@ -266,7 +268,7 @@
 			// lbl_toolBox
 			// 
 			this.lbl_toolBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.lbl_toolBox.Location = new System.Drawing.Point(6, 255);
 			this.lbl_toolBox.Name = "lbl_toolBox";
 			this.lbl_toolBox.Size = new System.Drawing.Size(45, 13);
@@ -276,7 +278,7 @@
 			// pnl_lineProps
 			// 
 			this.pnl_lineProps.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+			| System.Windows.Forms.AnchorStyles.Left)));
 			this.pnl_lineProps.AutoScroll = true;
 			this.pnl_lineProps.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.pnl_lineProps.Controls.Add(this.num_drawOrder);
@@ -320,10 +322,10 @@
 			// 
 			this.num_lineThickness.Location = new System.Drawing.Point(91, 160);
 			this.num_lineThickness.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
+			999,
+			0,
+			0,
+			0});
 			this.num_lineThickness.Name = "num_lineThickness";
 			this.num_lineThickness.Size = new System.Drawing.Size(43, 20);
 			this.num_lineThickness.TabIndex = 12;
@@ -392,8 +394,8 @@
 			this.com_lineType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.com_lineType.FormattingEnabled = true;
 			this.com_lineType.Items.AddRange(new object[] {
-            "Line",
-            "Circle"});
+			"Line",
+			"Circle"});
 			this.com_lineType.Location = new System.Drawing.Point(39, 46);
 			this.com_lineType.Name = "com_lineType";
 			this.com_lineType.Size = new System.Drawing.Size(115, 21);
@@ -413,18 +415,18 @@
 			// 
 			this.num_lineAlpha.Location = new System.Drawing.Point(112, 14);
 			this.num_lineAlpha.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
+			255,
+			0,
+			0,
+			0});
 			this.num_lineAlpha.Name = "num_lineAlpha";
 			this.num_lineAlpha.Size = new System.Drawing.Size(41, 20);
 			this.num_lineAlpha.TabIndex = 5;
 			this.num_lineAlpha.Value = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
+			255,
+			0,
+			0,
+			0});
 			this.num_lineAlpha.ValueChanged += new System.EventHandler(this.num_lineAlpha_ValueChanged);
 			// 
 			// lbl_lineAlpha
@@ -493,18 +495,18 @@
 			// 
 			this.num_handleAlpha.Location = new System.Drawing.Point(124, 15);
 			this.num_handleAlpha.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
+			255,
+			0,
+			0,
+			0});
 			this.num_handleAlpha.Name = "num_handleAlpha";
 			this.num_handleAlpha.Size = new System.Drawing.Size(41, 20);
 			this.num_handleAlpha.TabIndex = 3;
 			this.num_handleAlpha.Value = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
+			255,
+			0,
+			0,
+			0});
 			this.num_handleAlpha.ValueChanged += new System.EventHandler(this.num_handleAlpha_ValueChanged);
 			// 
 			// lbl_handleAlpha
@@ -548,7 +550,7 @@
 			// mnu_Main
 			// 
 			this.mnu_Main.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+			this.fileToolStripMenuItem});
 			this.mnu_Main.Location = new System.Drawing.Point(0, 0);
 			this.mnu_Main.Name = "mnu_Main";
 			this.mnu_Main.Size = new System.Drawing.Size(710, 24);
@@ -558,13 +560,13 @@
 			// fileToolStripMenuItem
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newToolStripMenuItem,
-            this.openToolStripMenuItem,
-            this.saveToolStripMenuItem,
-            this.saveAsToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.importToolStripMenuItem,
-            this.exitStickEditorToolStripMenuItem});
+			this.newToolStripMenuItem,
+			this.openToolStripMenuItem,
+			this.saveToolStripMenuItem,
+			this.saveAsToolStripMenuItem,
+			this.toolStripSeparator1,
+			this.importToolStripMenuItem,
+			this.exitStickEditorToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
 			this.fileToolStripMenuItem.Text = "File";
@@ -603,7 +605,7 @@
 			// importToolStripMenuItem
 			// 
 			this.importToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.originalTisfatFileToolStripMenuItem});
+			this.originalTisfatFileToolStripMenuItem});
 			this.importToolStripMenuItem.Name = "importToolStripMenuItem";
 			this.importToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.importToolStripMenuItem.Text = "Import..";
@@ -624,8 +626,8 @@
 			// GL_GRAPHICS
 			// 
 			this.GL_GRAPHICS.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Left) 
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.GL_GRAPHICS.BackColor = System.Drawing.Color.Black;
 			this.GL_GRAPHICS.Location = new System.Drawing.Point(0, 27);
 			this.GL_GRAPHICS.Name = "GL_GRAPHICS";
@@ -764,8 +766,8 @@
 		private System.Windows.Forms.CheckBox chk_lineVisible;
 		private System.Windows.Forms.NumericUpDown num_drawOrder;
 		private System.Windows.Forms.Label lbl_drawOrder;
-        private System.Windows.Forms.Label lbl_lineLength;
-        private System.Windows.Forms.Label lbl_jointPosition;
+		private System.Windows.Forms.Label lbl_lineLength;
+		private System.Windows.Forms.Label lbl_jointPosition;
 		private System.Windows.Forms.OpenFileDialog dlg_openFile;
 		private System.Windows.Forms.SaveFileDialog dlg_saveFile;
 

@@ -36,15 +36,14 @@ namespace TISFAT_ZERO
 			Joints.Add(new StickJoint(ps[10], Joints[9]));
 			Joints.Add(new StickJoint(ps[11], Joints[0]));
 
-
-
 			for (int i = 0; i < Joints.Count; i++)
+			{
 				if (Joints[i].parent != null)
+				{
 					Joints[i].CalcLength(null);
-
-			for (int i = 0; i < Joints.Count; i++)
-				if (Joints[i].parent != null)
 					Joints[i].parent.children.Add(Joints[i]);
+				}
+			}
 
 			if(ps[0].ParentFigure != null)
 				figColor = ps[0].ParentFigure.figColor;
@@ -74,12 +73,13 @@ namespace TISFAT_ZERO
 			Joints.Add(new StickJoint("Head", new Point(222, 147), 13, Color.Black, Color.Yellow, 0, 1, true, Joints[0]));
 
 			for (int i = 0; i < Joints.Count; i++)
+			{
 				if (Joints[i].parent != null)
+				{
 					Joints[i].CalcLength(null);
-
-			for (int i = 0; i < Joints.Count; i++)
-				if (Joints[i].parent != null)
 					Joints[i].parent.children.Add(Joints[i]);
+				}
+			}
 
 			pos = po;
 			type = 0;
@@ -130,28 +130,28 @@ namespace TISFAT_ZERO
 		}
 	}
 
-    public class custObjectFrame : KeyFrame
-    {
-        public custObjectFrame(List<StickJoint> ps, int po)
-        {
-            type = 4; pos = po;
-            int[] positions = new int[ps.Count];
-            for (int a = 0; a < ps.Count; a++)
-            {
-                StickJoint p = ps[a].parent;
-                if (p != null)
-                {
-                    ps[a].CalcLength(p);
-                    positions[a] = ps.IndexOf(p);
-                }
-                else
-                {
-                    positions[a] = -1;
-                    ps[a].CalcLength(ps[a]);
-                }
-            }
+	public class custObjectFrame : KeyFrame
+	{
+		public custObjectFrame(List<StickJoint> ps, int po)
+		{
+			type = 4; pos = po;
+			int[] positions = new int[ps.Count];
+			for (int a = 0; a < ps.Count; a++)
+			{
+				StickJoint p = ps[a].parent;
+				if (p != null)
+				{
+					ps[a].CalcLength(p);
+					positions[a] = ps.IndexOf(p);
+				}
+				else
+				{
+					positions[a] = -1;
+					ps[a].CalcLength(ps[a]);
+				}
+			}
 			Joints = createClone(ps, positions);
-        }
+		}
 
 		public custObjectFrame(int po)
 		{
@@ -188,5 +188,5 @@ namespace TISFAT_ZERO
 			jnts[p] = new StickJoint(olds[p], positions[p] != -1 ? jnts[positions[p]] : null);
 		}
 
-    }
+	}
 }
