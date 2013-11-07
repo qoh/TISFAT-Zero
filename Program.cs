@@ -10,8 +10,9 @@ namespace NewKeyFrames
 	{
 		static void Main(string[] args)
 		{
+			RectFrame x = new RectFrame(5);
+			Console.WriteLine(((RectFrame)(x.createClone())).isFilled);
 			Console.ReadKey(true);
-			Console.WriteLine(typeof(KeyFrame).FindMembers(MemberTypes.Property, BindingFlags.SetProperty, null, null)[0].Name);
 		}
 	}
 }
