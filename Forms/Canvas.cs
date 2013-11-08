@@ -6,6 +6,7 @@ using System.Drawing.Drawing2D;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Graphics;
 using System.Diagnostics;
+using System.Drawing.Imaging;
 
 namespace TISFAT_ZERO
 {
@@ -24,6 +25,7 @@ namespace TISFAT_ZERO
 
 		public static List<StickObject> figureList = new List<StickObject>();
 		public static List<StickObject> tweenFigs = new List<StickObject>();
+        public static List<int> textures = new List<int>();
 
 		//Now we need a method to add figures to these lists.
 
@@ -271,7 +273,7 @@ namespace TISFAT_ZERO
 		/// <param name="width">The width.</param>
 		/// <param name="height">The height.</param>
 		/// <param name="two">The end point. (only used in line type)</param>
-		public static void drawGraphics(int type, Color color, Point one, int width, int height, Point two)
+		public static void drawGraphics(int type, Color color, Point one, int width, int height, Point two, int textureID = 0)
 		{
 			if (!GLLoaded)
 			{
@@ -376,6 +378,32 @@ namespace TISFAT_ZERO
 
 				GL.End();
 			}
+            else if (type == 6) //Texture
+            {
+                GL.Color4(color);
+
+                GL.Enable(EnableCap.Texture2D);
+
+                GL.BindTexture(TextureTarget.Texture2D, textureID);
+                GL.Begin(BeginMode.Quads);
+
+                GL.TexCoord2(0.0, 0.0);
+                GL.Vertex2(one.X, one.Y);
+
+                GL.TexCoord2(0.0, 1.0);
+                GL.Vertex2(one.X, one.Y - height);
+
+                GL.TexCoord2(1.0, 1.0);
+                GL.Vertex2(one.X + width, one.Y - height);
+
+                GL.TexCoord2(1.0, 0.0);
+                GL.Vertex2(one.X + width, one.Y);
+
+                GL.End();
+
+                GL.Disable(EnableCap.Texture2D);
+            }
+
 			GL.Disable(EnableCap.Blend);
 		} 
 
@@ -475,10 +503,32 @@ namespace TISFAT_ZERO
 		} 
 		#endregion
 
+        private int GL_Create_TextureID(string fileName)
+        {
+            Bitmap raw = new Bitmap(fileName);
+            BitmapData rawData = raw.LockBits(new Rectangle(0, 0, raw.Width, raw.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            int gl_id = GL.GenTexture();
+            GL.BindTexture(TextureTarget.Texture2D, gl_id);
+
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, rawData.Width, rawData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, rawData.Scan0);
+            raw.UnlockBits(rawData);
+
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.LinearMipmapLinear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+
+            GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
+
+            return gl_id;
+        }
+
 		private void Canvas_Load(object sender, EventArgs e)
 		{
 			glGraphics = GL_GRAPHICS;
 			glGraphics.MakeCurrent();
+
+            //Using subsequent calls to back out of the bin directory to get to the images directory to grab texture.png... I'm sure this can be done better
+            textures.Add(GL_Create_TextureID(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath("texture.png")))) + "//Images/texture.png"));
 
 			//GLControl's load event is never fired, so we have to piggyback off the canvas's load function instead
 			GLLoaded = true;
@@ -495,10 +545,6 @@ namespace TISFAT_ZERO
 
 			//Since we are 2d, we don't need the depth test
 			GL.Disable(EnableCap.DepthTest);
-			
-			//Idle is a great loop for rendering
-			//Application.Idle += GL_GRAPHICS_OnRender;
-			
 		}
 
 		public void setBackgroundColor(Color c)
@@ -537,6 +583,9 @@ namespace TISFAT_ZERO
 
 			for (int i = figureList.Count; i > 0; i--)
 				figureList[i-1].drawFigHandles();
+
+            for (int i = textures.Count; i > 0; i--)
+                drawGraphics(6, Color.White, new Point(50, 100), 100, 200, new Point(0, 0), textures[i-1]);
 
 			GL_GRAPHICS.SwapBuffers();
 		}
