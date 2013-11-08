@@ -528,7 +528,7 @@ namespace TISFAT_ZERO
 			glGraphics.MakeCurrent();
 
             //Using subsequent calls to back out of the bin directory to get to the images directory to grab texture.png... I'm sure this can be done better
-            textures.Add(GL_Create_TextureID(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath("texture.png")))) + "//Images/texture.png"));
+            //textures.Add(GL_Create_TextureID(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath("texture.png")))) + "//Images/texture.png"));
 
 			//GLControl's load event is never fired, so we have to piggyback off the canvas's load function instead
 			GLLoaded = true;

@@ -80,11 +80,12 @@ namespace TISFAT_ZERO
 			this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.originalTisfatFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.exitStickEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.GL_GRAPHICS = new OpenTK.GLControl(new GraphicsMode(32, 0, 1, maxaa), 3, 0, GraphicsContextFlags.Default);
 			this.lbl_lineLength = new System.Windows.Forms.Label();
 			this.lbl_jointPosition = new System.Windows.Forms.Label();
 			this.dlg_openFile = new System.Windows.Forms.OpenFileDialog();
 			this.dlg_saveFile = new System.Windows.Forms.SaveFileDialog();
+			this.dlg_openBitmap = new System.Windows.Forms.OpenFileDialog();
+			this.GL_GRAPHICS = new OpenTK.GLControl();
 			this.pnl_toolBox.SuspendLayout();
 			this.pnl_Stats.SuspendLayout();
 			this.pnl_brushProps.SuspendLayout();
@@ -138,18 +139,18 @@ namespace TISFAT_ZERO
 			// 
 			this.num_brushThickness.Location = new System.Drawing.Point(94, 11);
 			this.num_brushThickness.Maximum = new decimal(new int[] {
-			500,
-			0,
-			0,
-			0});
+            500,
+            0,
+            0,
+            0});
 			this.num_brushThickness.Name = "num_brushThickness";
 			this.num_brushThickness.Size = new System.Drawing.Size(46, 20);
 			this.num_brushThickness.TabIndex = 1;
 			this.num_brushThickness.Value = new decimal(new int[] {
-			12,
-			0,
-			0,
-			0});
+            12,
+            0,
+            0,
+            0});
 			// 
 			// lbl_brushThickness
 			// 
@@ -198,7 +199,7 @@ namespace TISFAT_ZERO
 			// pnl_toolboxMain
 			// 
 			this.pnl_toolboxMain.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-			| System.Windows.Forms.AnchorStyles.Left)));
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.pnl_toolboxMain.BackColor = System.Drawing.Color.Silver;
 			this.pnl_toolboxMain.Controls.Add(this.pnl_toolPanel);
 			this.pnl_toolboxMain.Controls.Add(this.lbl_toolBox);
@@ -214,7 +215,7 @@ namespace TISFAT_ZERO
 			// pnl_toolPanel
 			// 
 			this.pnl_toolPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-			| System.Windows.Forms.AnchorStyles.Right)));
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.pnl_toolPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.pnl_toolPanel.Controls.Add(this.btn_toolRemove);
 			this.pnl_toolPanel.Controls.Add(this.btn_toolAdd);
@@ -268,7 +269,7 @@ namespace TISFAT_ZERO
 			// lbl_toolBox
 			// 
 			this.lbl_toolBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-			| System.Windows.Forms.AnchorStyles.Right)));
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.lbl_toolBox.Location = new System.Drawing.Point(6, 255);
 			this.lbl_toolBox.Name = "lbl_toolBox";
 			this.lbl_toolBox.Size = new System.Drawing.Size(45, 13);
@@ -278,7 +279,7 @@ namespace TISFAT_ZERO
 			// pnl_lineProps
 			// 
 			this.pnl_lineProps.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-			| System.Windows.Forms.AnchorStyles.Left)));
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.pnl_lineProps.AutoScroll = true;
 			this.pnl_lineProps.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.pnl_lineProps.Controls.Add(this.num_drawOrder);
@@ -322,10 +323,10 @@ namespace TISFAT_ZERO
 			// 
 			this.num_lineThickness.Location = new System.Drawing.Point(91, 160);
 			this.num_lineThickness.Maximum = new decimal(new int[] {
-			999,
-			0,
-			0,
-			0});
+            999,
+            0,
+            0,
+            0});
 			this.num_lineThickness.Name = "num_lineThickness";
 			this.num_lineThickness.Size = new System.Drawing.Size(43, 20);
 			this.num_lineThickness.TabIndex = 12;
@@ -352,7 +353,6 @@ namespace TISFAT_ZERO
 			// 
 			// btn_remBitmap
 			// 
-			this.btn_remBitmap.Enabled = false;
 			this.btn_remBitmap.Location = new System.Drawing.Point(96, 102);
 			this.btn_remBitmap.Name = "btn_remBitmap";
 			this.btn_remBitmap.Size = new System.Drawing.Size(56, 23);
@@ -362,18 +362,17 @@ namespace TISFAT_ZERO
 			// 
 			// btn_addBitmap
 			// 
-			this.btn_addBitmap.Enabled = false;
 			this.btn_addBitmap.Location = new System.Drawing.Point(38, 102);
 			this.btn_addBitmap.Name = "btn_addBitmap";
 			this.btn_addBitmap.Size = new System.Drawing.Size(56, 23);
 			this.btn_addBitmap.TabIndex = 9;
 			this.btn_addBitmap.Text = "Add";
 			this.btn_addBitmap.UseVisualStyleBackColor = true;
+			this.btn_addBitmap.Click += new System.EventHandler(this.btn_addBitmap_Click);
 			// 
 			// com_lineBitmap
 			// 
 			this.com_lineBitmap.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.com_lineBitmap.Enabled = false;
 			this.com_lineBitmap.FormattingEnabled = true;
 			this.com_lineBitmap.Location = new System.Drawing.Point(39, 75);
 			this.com_lineBitmap.Name = "com_lineBitmap";
@@ -394,8 +393,8 @@ namespace TISFAT_ZERO
 			this.com_lineType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.com_lineType.FormattingEnabled = true;
 			this.com_lineType.Items.AddRange(new object[] {
-			"Line",
-			"Circle"});
+            "Line",
+            "Circle"});
 			this.com_lineType.Location = new System.Drawing.Point(39, 46);
 			this.com_lineType.Name = "com_lineType";
 			this.com_lineType.Size = new System.Drawing.Size(115, 21);
@@ -415,18 +414,18 @@ namespace TISFAT_ZERO
 			// 
 			this.num_lineAlpha.Location = new System.Drawing.Point(112, 14);
 			this.num_lineAlpha.Maximum = new decimal(new int[] {
-			255,
-			0,
-			0,
-			0});
+            255,
+            0,
+            0,
+            0});
 			this.num_lineAlpha.Name = "num_lineAlpha";
 			this.num_lineAlpha.Size = new System.Drawing.Size(41, 20);
 			this.num_lineAlpha.TabIndex = 5;
 			this.num_lineAlpha.Value = new decimal(new int[] {
-			255,
-			0,
-			0,
-			0});
+            255,
+            0,
+            0,
+            0});
 			this.num_lineAlpha.ValueChanged += new System.EventHandler(this.num_lineAlpha_ValueChanged);
 			// 
 			// lbl_lineAlpha
@@ -495,18 +494,18 @@ namespace TISFAT_ZERO
 			// 
 			this.num_handleAlpha.Location = new System.Drawing.Point(124, 15);
 			this.num_handleAlpha.Maximum = new decimal(new int[] {
-			255,
-			0,
-			0,
-			0});
+            255,
+            0,
+            0,
+            0});
 			this.num_handleAlpha.Name = "num_handleAlpha";
 			this.num_handleAlpha.Size = new System.Drawing.Size(41, 20);
 			this.num_handleAlpha.TabIndex = 3;
 			this.num_handleAlpha.Value = new decimal(new int[] {
-			255,
-			0,
-			0,
-			0});
+            255,
+            0,
+            0,
+            0});
 			this.num_handleAlpha.ValueChanged += new System.EventHandler(this.num_handleAlpha_ValueChanged);
 			// 
 			// lbl_handleAlpha
@@ -550,7 +549,7 @@ namespace TISFAT_ZERO
 			// mnu_Main
 			// 
 			this.mnu_Main.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem});
 			this.mnu_Main.Location = new System.Drawing.Point(0, 0);
 			this.mnu_Main.Name = "mnu_Main";
 			this.mnu_Main.Size = new System.Drawing.Size(710, 24);
@@ -560,13 +559,13 @@ namespace TISFAT_ZERO
 			// fileToolStripMenuItem
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.newToolStripMenuItem,
-			this.openToolStripMenuItem,
-			this.saveToolStripMenuItem,
-			this.saveAsToolStripMenuItem,
-			this.toolStripSeparator1,
-			this.importToolStripMenuItem,
-			this.exitStickEditorToolStripMenuItem});
+            this.newToolStripMenuItem,
+            this.openToolStripMenuItem,
+            this.saveToolStripMenuItem,
+            this.saveAsToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.importToolStripMenuItem,
+            this.exitStickEditorToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
 			this.fileToolStripMenuItem.Text = "File";
@@ -605,7 +604,7 @@ namespace TISFAT_ZERO
 			// importToolStripMenuItem
 			// 
 			this.importToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.originalTisfatFileToolStripMenuItem});
+            this.originalTisfatFileToolStripMenuItem});
 			this.importToolStripMenuItem.Name = "importToolStripMenuItem";
 			this.importToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.importToolStripMenuItem.Text = "Import..";
@@ -622,23 +621,6 @@ namespace TISFAT_ZERO
 			this.exitStickEditorToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.exitStickEditorToolStripMenuItem.Text = "Exit Stick Editor";
 			this.exitStickEditorToolStripMenuItem.Click += new System.EventHandler(this.exitStickEditorToolStripMenuItem_Click);
-			// 
-			// GL_GRAPHICS
-			// 
-			this.GL_GRAPHICS.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-			| System.Windows.Forms.AnchorStyles.Left) 
-			| System.Windows.Forms.AnchorStyles.Right)));
-			this.GL_GRAPHICS.BackColor = System.Drawing.Color.Black;
-			this.GL_GRAPHICS.Location = new System.Drawing.Point(0, 27);
-			this.GL_GRAPHICS.Name = "GL_GRAPHICS";
-			this.GL_GRAPHICS.Size = new System.Drawing.Size(711, 484);
-			this.GL_GRAPHICS.TabIndex = 2;
-			this.GL_GRAPHICS.VSync = false;
-			this.GL_GRAPHICS.Paint += new System.Windows.Forms.PaintEventHandler(this.GL_GRAPHICS_Paint);
-			this.GL_GRAPHICS.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GL_GRAPHICS_MouseDown);
-			this.GL_GRAPHICS.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GL_GRAPHICS_MouseMove);
-			this.GL_GRAPHICS.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GL_GRAPHICS_MouseUp);
-			this.GL_GRAPHICS.Resize += new System.EventHandler(this.GL_GRAPHICS_Resize);
 			// 
 			// lbl_lineLength
 			// 
@@ -661,7 +643,6 @@ namespace TISFAT_ZERO
 			// dlg_openFile
 			// 
 			this.dlg_openFile.DefaultExt = "tzf";
-			this.dlg_openFile.FileName = "openFileDialog1";
 			this.dlg_openFile.Filter = "TISFAT Stick Figure (*.tzf)|*.tzf";
 			this.dlg_openFile.FileOk += new System.ComponentModel.CancelEventHandler(this.dlg_openFile_FileOk);
 			// 
@@ -671,16 +652,36 @@ namespace TISFAT_ZERO
 			this.dlg_saveFile.Filter = "TISFAT Stick Figure (*.tzf)|*.tzf";
 			this.dlg_saveFile.FileOk += new System.ComponentModel.CancelEventHandler(this.dlg_saveFile_FileOk);
 			// 
+			// dlg_openBitmap
+			// 
+			this.dlg_openBitmap.DefaultExt = "png";
+			this.dlg_openBitmap.FileOk += new System.ComponentModel.CancelEventHandler(this.dlg_openBitmap_FileOk);
+			// 
+			// GL_GRAPHICS
+			// 
+			this.GL_GRAPHICS.BackColor = System.Drawing.Color.Black;
+			this.GL_GRAPHICS.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.GL_GRAPHICS.Location = new System.Drawing.Point(0, 24);
+			this.GL_GRAPHICS.Name = "GL_GRAPHICS";
+			this.GL_GRAPHICS.Size = new System.Drawing.Size(710, 487);
+			this.GL_GRAPHICS.TabIndex = 7;
+			this.GL_GRAPHICS.VSync = false;
+			this.GL_GRAPHICS.Paint += new System.Windows.Forms.PaintEventHandler(this.GL_GRAPHICS_Paint);
+			this.GL_GRAPHICS.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GL_GRAPHICS_MouseDown);
+			this.GL_GRAPHICS.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GL_GRAPHICS_MouseMove);
+			this.GL_GRAPHICS.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GL_GRAPHICS_MouseUp);
+			this.GL_GRAPHICS.Resize += new System.EventHandler(this.GL_GRAPHICS_Resize);
+			// 
 			// StickEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(884, 511);
+			this.Controls.Add(this.GL_GRAPHICS);
 			this.Controls.Add(this.lbl_jointPosition);
 			this.Controls.Add(this.lbl_lineLength);
 			this.Controls.Add(this.mnu_Main);
 			this.Controls.Add(this.pnl_toolBox);
-			this.Controls.Add(this.GL_GRAPHICS);
 			this.MainMenuStrip = this.mnu_Main;
 			this.MinimumSize = new System.Drawing.Size(900, 550);
 			this.Name = "StickEditor";
@@ -715,7 +716,6 @@ namespace TISFAT_ZERO
 
 		#endregion
 
-		private OpenTK.GLControl GL_GRAPHICS;
 		private System.Windows.Forms.Panel pnl_toolBox;
 		private System.Windows.Forms.Panel pnl_toolboxMain;
 		private System.Windows.Forms.Panel pnl_handleProps;
@@ -743,7 +743,6 @@ namespace TISFAT_ZERO
 		private System.Windows.Forms.Panel pnl_lineProps;
 		private System.Windows.Forms.Button btn_remBitmap;
 		private System.Windows.Forms.Button btn_addBitmap;
-		private System.Windows.Forms.ComboBox com_lineBitmap;
 		private System.Windows.Forms.Label lbl_lineBitmap;
 		private System.Windows.Forms.ComboBox com_lineType;
 		private System.Windows.Forms.Label lbl_lineType;
@@ -770,6 +769,9 @@ namespace TISFAT_ZERO
 		private System.Windows.Forms.Label lbl_jointPosition;
 		private System.Windows.Forms.OpenFileDialog dlg_openFile;
 		private System.Windows.Forms.SaveFileDialog dlg_saveFile;
+		private System.Windows.Forms.OpenFileDialog dlg_openBitmap;
+		private OpenTK.GLControl GL_GRAPHICS;
+		public System.Windows.Forms.ComboBox com_lineBitmap;
 
 	}
 }

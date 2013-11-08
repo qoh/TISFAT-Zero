@@ -49,7 +49,7 @@ namespace TISFAT_ZERO
 		public Color handleColor;
 		public Color defaultHandleColor;
 
-		public String bitmapName;
+		public String bitmapName = null;
 		public Bitmap Bitmap;
 		#endregion
 
