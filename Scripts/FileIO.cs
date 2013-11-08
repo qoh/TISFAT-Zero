@@ -87,6 +87,7 @@ namespace TISFAT_ZERO
 			bin.Write(j.visible);
 			bin.Write(j.handleDrawn);
 
+			bin.Write(j.bitmapName);
 			j.Bitmap.Save(bin.BaseStream, System.Drawing.Imaging.ImageFormat.Png);
 
 			if (!(j.parent == null))
@@ -137,12 +138,13 @@ namespace TISFAT_ZERO
 				bool handleDrawn = bin.ReadBoolean();
 				int parentIndex = bin.ReadInt32();
 
+				String bittyName = bin.ReadString();
 				Bitmap bitty = (Bitmap)Bitmap.FromStream(bin.BaseStream);
 
 				parentList.Add(parentIndex);
 
 
-				sticked.figure.Joints.Add(new StickJoint("Joint " + i.ToString(), new Point(x, y), thickness, col, hCol, 0, drawState, false, null, handleDrawn, bitty));
+				sticked.figure.Joints.Add(new StickJoint("Joint " + i.ToString(), new Point(x, y), thickness, col, hCol, 0, drawState, false, null, handleDrawn, bitty, bittyName));
 
 				sticked.figure.Joints[sticked.figure.Joints.Count - 1].drawOrder = drawOrder;
 			}

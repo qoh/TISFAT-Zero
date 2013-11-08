@@ -49,11 +49,12 @@ namespace TISFAT_ZERO
 		public Color handleColor;
 		public Color defaultHandleColor;
 
+		public String bitmapName;
 		public Bitmap Bitmap;
 		#endregion
 
 		#region Functions
-		public StickJoint(string newname, Point newLocation, int newThickness, Color newColor, Color newHandleColor, int newState = 0, int newDrawState = 0, bool newFill = false, StickJoint newParent = null, bool newHandleDrawn = true, Bitmap bitty = null)
+		public StickJoint(string newname, Point newLocation, int newThickness, Color newColor, Color newHandleColor, int newState = 0, int newDrawState = 0, bool newFill = false, StickJoint newParent = null, bool newHandleDrawn = true, Bitmap bitty = null, String bName = null)
 		{
 			name = newname;
 			location = newLocation;
@@ -68,6 +69,7 @@ namespace TISFAT_ZERO
 			handleDrawn = newHandleDrawn;
 
 			this.Bitmap = bitty;
+			bitmapName = bName;
 		}
 
 		public StickJoint(StickJoint obj, StickJoint newParent)
