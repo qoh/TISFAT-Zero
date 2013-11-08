@@ -43,16 +43,17 @@ namespace TISFAT_ZERO
 		public bool selected;
 		public bool handleDrawn;
 
-		public int bitmap; //The index of the bitmap in the image array. Possibly used later?
 		public Double AngleToParent;
 
 		public Color color;
 		public Color handleColor;
 		public Color defaultHandleColor;
+
+		public Bitmap Bitmap;
 		#endregion
 
 		#region Functions
-		public StickJoint(string newname, Point newLocation, int newThickness, Color newColor, Color newHandleColor, int newState = 0, int newDrawState = 0, bool newFill = false, StickJoint newParent = null, bool newHandleDrawn = true)
+		public StickJoint(string newname, Point newLocation, int newThickness, Color newColor, Color newHandleColor, int newState = 0, int newDrawState = 0, bool newFill = false, StickJoint newParent = null, bool newHandleDrawn = true, Bitmap bitty = null)
 		{
 			name = newname;
 			location = newLocation;
@@ -65,6 +66,8 @@ namespace TISFAT_ZERO
 			fill = newFill;
 			parent = newParent;
 			handleDrawn = newHandleDrawn;
+
+			this.Bitmap = bitty;
 		}
 
 		public StickJoint(StickJoint obj, StickJoint newParent)
