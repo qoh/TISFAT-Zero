@@ -368,7 +368,6 @@ namespace TISFAT_ZERO
 			this.btn_addBitmap.TabIndex = 9;
 			this.btn_addBitmap.Text = "Add";
 			this.btn_addBitmap.UseVisualStyleBackColor = true;
-			this.btn_addBitmap.Click += new System.EventHandler(this.btn_addBitmap_Click);
 			// 
 			// com_lineBitmap
 			// 
@@ -655,7 +654,6 @@ namespace TISFAT_ZERO
 			// dlg_openBitmap
 			// 
 			this.dlg_openBitmap.DefaultExt = "png";
-			this.dlg_openBitmap.FileOk += new System.ComponentModel.CancelEventHandler(this.dlg_openBitmap_FileOk);
 			// 
 			// GL_GRAPHICS
 			// 
