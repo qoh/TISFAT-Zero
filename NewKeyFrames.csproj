@@ -42,7 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interface1.cs" />
+    <Compile Include="Frameset.cs" />
+    <Compile Include="Drawable.cs" />
     <Compile Include="KeyFrame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties.cs" />

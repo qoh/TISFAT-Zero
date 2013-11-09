@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Drawing;
@@ -74,22 +75,14 @@ namespace NewKeyFrames
 
 		public int attributeCount
 		{
-			get
-			{
-				return attributes.Count;
-			}
+			get { return attributes.Count; }
 		}
 
 		public dynamic this[string name]
 		{
-			get
-			{
-				return attributes[attributeNames.BinarySearch(name)];
-			}
-			set
-			{
-				attributes[attributeNames.BinarySearch(name)] = value;
-			}
+			get { return attributes[attributeNames.BinarySearch(name)]; }
+
+			set { attributes[attributeNames.BinarySearch(name)] = value; }
 		}
 	}
 
@@ -145,7 +138,7 @@ namespace NewKeyFrames
 			handleDrawn = newHandleDrawn;
 		}
 
-		public StickJoint(StickJoint obj, StickJoint newParent)
+		public StickJoint(StickJoint obj, StickJoint newParent = null)
 		{
 			jointName = obj.jointName;
 			location = obj.location;
@@ -240,9 +233,8 @@ namespace NewKeyFrames
 
 	}
 
-	abstract class StickObject
+	abstract class StickObject : IEnumerable<StickJoint>
 	{
-
 		#region Properties
 
 		public List<StickJoint> FigureJoints;
@@ -492,14 +484,8 @@ namespace NewKeyFrames
 			{
 				StickJoint current = original[a];
 
-				newList.Add(new StickJoint(current, null));
-
-				int parentPosition = original.IndexOf(current.parentJoint);
-
-				if (parentPosition >= a || parentPosition == -1)
-					parentPositions[a] = parentPosition;
-				else if (parentPosition != -1)
-					newList[a].parentJoint = newList[parentPosition];
+				newList.Add(new StickJoint(current));
+				parentPositions[a] = original.IndexOf(current.parentJoint);
 			}
 
 			for (int a = 0; a < listCount; a++)
@@ -525,7 +511,7 @@ namespace NewKeyFrames
 			int listCount = original.Count;
 
 			foreach(StickJoint j in original)
-				newList.Add(new StickJoint(j, null));
+				newList.Add(new StickJoint(j));
 
 			for (int a = 0; a < listCount; a++)
 				if (parentPositions[a] != -1)
@@ -546,6 +532,17 @@ namespace NewKeyFrames
 		public List<StickJoint> copyJoints()
 		{
 			return StickObject.copyJoints(FigureJoints);
+		}
+
+		public IEnumerator<StickJoint> GetEnumerator()
+		{
+			foreach (StickJoint j in FigureJoints)
+				yield return j;
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
 		}
 
 		#endregion Methods
@@ -586,7 +583,6 @@ namespace NewKeyFrames
 
 		#endregion
 
-		//Yay for no redundant code!
 		public StickFigure( bool setAsActive = true) : base(setAsActive)
 		{
 			figureType = 1;
