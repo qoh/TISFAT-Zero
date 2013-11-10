@@ -27,12 +27,15 @@ namespace NewKeyFrames
 			get { return frameCount; }
 		}
 
-		public Frameset(Type SetType, int StartingPosition = 0, int Extent = 20)
+		public Frameset(Type SetType, int startingPosition = 0, int extent = 20)
 		{
+			if (SetType.BaseType != typeof(KeyFrame))
+				throw new ArgumentException("SetType must be a derived type of KeyFrame", "SetType");
+
 			ConstructorInfo KFConstructor = SetType.GetConstructor(new Type[] { typeof(int)});
 
-			startPos = StartingPosition;
-			endPos = startPos + Extent;
+			startPos = startingPosition;
+			endPos = startPos + extent;
 
 			KeyFrames.Add((KeyFrame)KFConstructor.Invoke(new object[] { startPos }));
 			KeyFrames.Add((KeyFrame)KFConstructor.Invoke(new object[] { endPos }));
@@ -43,13 +46,13 @@ namespace NewKeyFrames
 			KeyFrames.AddRange(new KeyFrame[] { First, Last });
 		}
 
-		public Frameset(KeyFrame Base, int StartingPosition = 0, int Extent = 20)
+		public Frameset(KeyFrame Base, int startingPosition = 0, int extent = 20)
 		{
 			KeyFrame start = Base.createClone();
-			start.Position = StartingPosition;
+			start.Position = startingPosition;
 
 			KeyFrame end = Base.createClone();
-			end.Position = StartingPosition + Extent;
+			end.Position = startingPosition + extent;
 
 			KeyFrames.AddRange(new KeyFrame[] { start, end });
 		}
@@ -61,23 +64,23 @@ namespace NewKeyFrames
 			set { KeyFrames[index] = value; }
 		}
 
-		public bool insertKeyFrame(KeyFrame Item, bool copyBeforeInsert = false)
+		public bool InsertKeyFrame(KeyFrame item, bool copyBeforeInsert = false)
 		{
-			if(Item.Position < 0)
+			if(item.Position < 0)
 				throw new ArgumentException("Item's Position must be >= 0", "Item");
 
-			int insertPosition = -BinarySearch(Item.Position) - 1;
+			int insertPosition = -BinarySearch(item.Position) - 1;
 
 			if(copyBeforeInsert)
-				Item = Item.createClone();
+				item = item.createClone();
 
 			//If the variable is below 0 that means that there's a keyframe with that position already in the frameset. 
 			if(insertPosition < 0)
 				return false;
 
-			KeyFrames.Insert(insertPosition, Item);
+			KeyFrames.Insert(insertPosition, item);
 
-			int Position = Item.Position;
+			int Position = item.Position;
 
 			if(Position < startPos)
 				startPos = Position;
@@ -87,24 +90,26 @@ namespace NewKeyFrames
 			return true;
 		}
 
-		public bool insertKeyFrameAt(KeyFrame Item, int Position, bool copyBeforeInsert = false)
+		public bool InsertKeyFrameAt(KeyFrame item, int position, bool copyBeforeInsert = false)
 		{
-			if(Position < 0)
-				throw new ArgumentException("Parameter must be >= 0", "Position");
+			if (position < 0)
+				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
 
 			if(copyBeforeInsert)
-				Item = Item.createClone();
+				item = item.createClone();
 
-			Item.Position = Position;
+			item.Position = position;
 
-			return insertKeyFrame(Item, false);
+			return InsertKeyFrame(item, false);
 		}
 
 		//Attempts to remove the keyframe from the set that has the specified position.
-
-		public bool removeKeyFrameAt(int Position)
+		public bool RemoveKeyFrameAt(int position)
 		{
-			int Index = BinarySearch(Position);
+			if(position < 0)
+				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
+
+			int Index = BinarySearch(position);
 
 			if(Index >= 0)
 			{
@@ -115,36 +120,36 @@ namespace NewKeyFrames
 			return false;
 		}
 
-		public bool removeKeyFrame(int Index)
+		public bool RemoveKeyFrame(int index)
 		{
-			if(Index < startPos)
+			if(index < startPos)
 			{
-				if(Index < 0)
+				if(index < 0)
 					throw new ArgumentOutOfRangeException("Index", "Argument must be >= 0");
 
 				return false;
 			}
-			else if(Index > endPos)
+			else if(index > endPos)
 				return false;
 
-			KeyFrames.RemoveAt(Index);
-
+			KeyFrames.RemoveAt(index);
 			return true;
 		}
 
-		public bool removeKeyFrame(KeyFrame Item)
+		public bool RemoveKeyFrame(KeyFrame item)
 		{
-			int Index = KeyFrames.IndexOf(Item);
-
-			if(Index < 0)
+			try
+			{
+				return RemoveKeyFrame(KeyFrames.IndexOf(item));
+			}
+			catch
+			{
 				return false;
-
-			KeyFrames.RemoveAt(Index);
-			return true;
+			}
 		}
 
 		//Returns a negative value if not found, and positive if found.
-		private int BinarySearch(int Position)
+		private int BinarySearch(int position)
 		{
 			int bottom = 0;
 			int top = frameCount;
@@ -155,9 +160,9 @@ namespace NewKeyFrames
 			{
 				int x = KeyFrames[middle].Position;
 
-				if (x > Position)
+				if (x > position)
 					top = middle - 1;
-				else if (x < Position)
+				else if (x < position)
 					bottom = middle + 1;
 				else
 					return middle;
@@ -166,6 +171,81 @@ namespace NewKeyFrames
 			}
 
 			return -middle - 1;
+		}
+
+		public KeyFrame GetKeyFrameAt(int position)
+		{
+			if (position < 0)
+				throw new ArgumentOutOfRangeException("Position", "Argument must be >= 0");
+
+			if (position > endPos || position < startPos)
+				return null;
+
+			int SearchPos = BinarySearch(position);
+
+			if (SearchPos < 0)
+				return null;
+
+			return KeyFrames[SearchPos];
+		}
+
+		public bool MoveKeyFrameTo(KeyFrame item, int position)
+		{
+			if(position < 0)
+				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
+
+			try
+			{
+				return MoveKeyFrameTo(KeyFrames.IndexOf(item), position);
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		public bool MoveKeyFrameTo(int index, int position)
+		{
+			if (position < 0)
+				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
+			if(index < 0 || index > frameCount)
+				throw new ArgumentOutOfRangeException("index", "Argument must be >= 0 and < " + frameCount);
+
+			int insertPosition = -BinarySearch(position) - 1;
+
+			if(insertPosition < 0)
+				return false;
+
+			if (insertPosition > index)
+				insertPosition--;
+
+			KeyFrame item = KeyFrames[index];
+
+			KeyFrames.RemoveAt(index);
+			KeyFrames.Insert(insertPosition, item);
+
+			return true;
+		}
+
+		public bool MoveKeyFrameAtTo(int oldPosition, int newPosition)
+		{
+			if (oldPosition < 0)
+				throw new ArgumentOutOfRangeException("oldPosition", "Argument must be >= 0");
+
+			if (newPosition < 0)
+				throw new ArgumentOutOfRangeException("newPosition", "Argument must be >= 0");
+
+			if (oldPosition < startPos || oldPosition > endPos)
+				return false;
+			else if (oldPosition == newPosition)
+				return true; //Technically it DOES succeed in moving the keyframe by doing absolutely nothing.
+
+			int index = BinarySearch(oldPosition);
+
+			if (index < 0)
+				return false;
+
+			return MoveKeyFrameTo(index, newPosition);
 		}
 
 		public IEnumerator<KeyFrame> GetEnumerator()
