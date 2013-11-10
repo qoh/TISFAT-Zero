@@ -7,69 +7,66 @@ using System.Reflection;
 
 namespace NewKeyFrames
 {
-	//KEYFRAME CLASSES ARE DONE, BASE CLASS NEEDS A BIT OF WORK FOR WHEN FRAMESETS AND LAYERS ARE DONE
 	abstract class KeyFrame
 	{
 
 		#region Properties
 
-		//Default attributes
-		protected byte type;
-		protected int position;
-		public List<StickJoint> frameJoints;
-		protected Color figColor;
+		//Default properties
+		protected ushort frameType;
+		public int Position;
+		public List<StickJoint> FrameJoints;
+		public Color figColor;
 		//public Layer parentLayer;
 
 		//Dynamic properties
 		protected Attributes Properties;
 
-		public int Position
-		{
-			get { return position; }
-		}
-
 		//This is used to specify what type of stickobject it is. ie StickFigure, StickLine, etc.
-		public static Type FrameType
+		public static Type ObjectType
 		{
 			get { return null; }
 		}
 
-		//TO-DO: MAKE SET POSITION METHOD
+		public ushort FrameType
+		{
+			get { return frameType; }
+		}
 
 		#endregion Properties
 
 		#region Constructors
 
-		public KeyFrame(KeyFrame original)
+		public KeyFrame(KeyFrame original, int NewPosition = -1)
 		{
 			KeyFrame New = original.createClone();
 
-			type = New.type;
-			position = New.position;
-			frameJoints = New.frameJoints;
+			frameType = New.frameType;
+			Position = NewPosition == -1 ? New.Position : NewPosition;
+			FrameJoints = New.FrameJoints;
 			figColor = New.figColor;
 			Properties = New.Properties;
 		}
 
-		public KeyFrame(int Position)
+		public KeyFrame(int FramePosition)
 		{
-			frameJoints = (List<StickJoint>)(((Type)(this.GetType().GetProperty("FrameType").GetValue(this, null))).GetProperty("DefaultPose").GetValue(this, null));
+			FrameJoints = (List<StickJoint>)(((Type)(this.GetType().GetProperty("FrameType").GetValue(this, null))).GetProperty("DefaultPose").GetValue(this, null));
 
 			Properties = new Attributes();
 
-			for (int i = 0; i < frameJoints.Count; i++)
+			foreach(StickJoint j in FrameJoints)
 			{
-				if (frameJoints[i].parentJoint != null)
+				if (j.parentJoint != null)
 				{
-					frameJoints[i].CalcLength(null);
-					frameJoints[i].parentJoint.childJoints.Add(frameJoints[i]);
+					j.CalcLength();
+					j.parentJoint.childJoints.Add(j);
 				}
 			}
 
-			position = Position;
+			Position = FramePosition;
 		}
 
-		public KeyFrame(){}
+		public KeyFrame() : this(0) {}
 
 		#endregion Constructors
 
@@ -93,9 +90,9 @@ namespace NewKeyFrames
 			T newKeyFrame = new T();
 
 			//Copy all default properties
-			newKeyFrame.type = type;
-			newKeyFrame.position = position;
-			newKeyFrame.frameJoints = StickObject.copyJoints(frameJoints);
+			newKeyFrame.frameType = frameType;
+			newKeyFrame.Position = Position;
+			newKeyFrame.FrameJoints = StickObject.copyJoints(FrameJoints);
 			newKeyFrame.figColor = figColor;
 
 			//The copyKeyFrameStep2 method is overridden by each keyframe class which has custom properties, and will make a new instance of the attributes class with values equivalent to the original.
@@ -116,10 +113,10 @@ namespace NewKeyFrames
 
 		public StickFrame(int Position) : base(Position)
 		{
-			type = 0;
+			frameType = 0;
 		}
 
-		public StickFrame() { }
+		public StickFrame() : base(0) { }
 	}
 
 	class LineFrame : KeyFrame
@@ -131,10 +128,10 @@ namespace NewKeyFrames
 
 		public LineFrame(int Position) : base(Position)
 		{
-			type = 2;
+			frameType = 2;
 		}
 
-		public LineFrame() { }
+		public LineFrame() : base(0) { }
 	}
 
 	class RectFrame : KeyFrame
@@ -153,12 +150,12 @@ namespace NewKeyFrames
 
 		public RectFrame(int Position) : base(Position)
 		{
-			type = 3;
+			frameType = 3;
 
 			Properties.addAttribute(true, "isFilled");
 		}
 
-		public RectFrame() { }
+		public RectFrame() : base(0) { }
 
 		protected override void copyKeyFrameStep2(Attributes oldAttributes)
 		{
@@ -176,9 +173,9 @@ namespace NewKeyFrames
 
 		public CustomFrame(int Position) : base(Position)
 		{
-			type = 4;
+			frameType = 4;
 		}
 
-		public CustomFrame() { }
+		public CustomFrame() : base(0) { }
 	}
 }

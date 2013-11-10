@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Reflection;
 
 namespace NewKeyFrames
 {
@@ -10,9 +9,13 @@ namespace NewKeyFrames
 	{
 		static void Main(string[] args)
 		{
-			RectFrame x = new RectFrame(5);
-			Console.WriteLine(((RectFrame)(x.createClone())).isFilled);
+			Console.WriteLine(s0());
 			Console.ReadKey(true);
+		}
+
+		public static decimal s0()
+		{
+			return -0;
 		}
 	}
 }

@@ -235,6 +235,7 @@ namespace NewKeyFrames
 
 	abstract class StickObject : IEnumerable<StickJoint>
 	{
+
 		#region Properties
 
 		public List<StickJoint> FigureJoints;
@@ -302,8 +303,8 @@ namespace NewKeyFrames
 		private void drawJoints(IDrawable Canvas)
 		{
 			bool useStencil = false;
-			//there's probably a better way instead of looping to determine if any parts have transparency...
 
+			//there's probably a better way instead of looping to determine if any parts have transparency...
 			if (figureType != 3)
 			{
 				foreach (StickJoint j in FigureJoints)
@@ -373,14 +374,14 @@ namespace NewKeyFrames
 
 		public void setJointsColor(Color NewColor)
 		{
-			for (int i = 0; i < FigureJoints.Count; i++)
-				FigureJoints[i].jointColor = NewColor;
+			foreach(StickJoint j in FigureJoints)
+				j.jointColor = NewColor;
 
 			if (figureType != 3)
 				figColor = NewColor;
 		}
 
-		public int getPointAt(Point Coords, int Toleranc)
+		public int getPointAt(Point Coords, int Tolerance)
 		{
 			if (FigureJoints.Count == 0)
 				return -1;
@@ -394,7 +395,7 @@ namespace NewKeyFrames
 				{
 					double itr_result = Math.Sqrt(Math.Pow(Coords.X - FigureJoints[i].location.X, 2) + Math.Pow(Coords.Y - FigureJoints[i].location.Y, 2));
 
-					if (itr_result < minimum && itr_result <= Toleranc)
+					if (itr_result < minimum && itr_result <= Tolerance)
 					{
 						minimum = itr_result;
 						index = i;
