@@ -27,6 +27,13 @@ namespace NewKeyFrames
 			get { return frameCount; }
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Frameset"/> class.
+		/// </summary>
+		/// <param name="SetType">The type of keyframes in the set.</param>
+		/// <param name="startingPosition">The starting position of the frameset.</param>
+		/// <param name="extent">The length of the set.</param>
+		/// <exception cref="System.ArgumentException">SetType must be a derived type of KeyFrame;SetType</exception>
 		public Frameset(Type SetType, int startingPosition = 0, int extent = 20)
 		{
 			if (SetType.BaseType != typeof(KeyFrame))
@@ -41,22 +48,62 @@ namespace NewKeyFrames
 			KeyFrames.Add((KeyFrame)KFConstructor.Invoke(new object[] { endPos }));
 		}
 
-		public Frameset(KeyFrame First, KeyFrame Last)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Frameset"/> class from two existing keyframes.
+		/// </summary>
+		/// <param name="First">The first keyframe in the set.</param>
+		/// <param name="Last">The last keyframe in the set.</param>
+		public Frameset(KeyFrame First, KeyFrame Last) : this(new KeyFrame[] { First, Last })
+		{ }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Frameset"/> class from a set of keyframes sorted by timeline position.
+		/// </summary>
+		/// <param name="Frames">The set of frames to use in the frameset.</param>
+		public Frameset(List<KeyFrame> Frames) : this(Frames.ToArray())
+		{ }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Frameset"/> class from a set of keyframes sorted by timeline position.
+		/// </summary>
+		/// <param name="Frames">The set of frames to use in the frameset.</param>
+		public Frameset(KeyFrame[] Frames)
 		{
-			KeyFrames.AddRange(new KeyFrame[] { First, Last });
+			KeyFrames.AddRange(Frames);
+
+			startPos = Frames[0].Position;
+			endPos = Frames[Frames.Length - 1].Position;
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Frameset"/> class from a single keyframe.
+		/// </summary>
+		/// <param name="Base">The base.</param>
+		/// <param name="startingPosition">The starting position.</param>
+		/// <param name="extent">The extent.</param>
 		public Frameset(KeyFrame Base, int startingPosition = 0, int extent = 20)
 		{
+			startPos = startingPosition;
+			endPos = startingPosition + extent;
+
 			KeyFrame start = Base.createClone();
-			start.Position = startingPosition;
+			start.Position = startPos;
 
 			KeyFrame end = Base.createClone();
-			end.Position = startingPosition + extent;
+			end.Position = endPos;
+
 
 			KeyFrames.AddRange(new KeyFrame[] { start, end });
 		}
 
+		/// <summary>
+		/// Gets or sets the <see cref="KeyFrame"/> at the specified index.
+		/// </summary>
+		/// <value>
+		/// The <see cref="KeyFrame"/>.
+		/// </value>
+		/// <param name="index">The index of the keyframe to get/set.</param>
+		/// <returns></returns>
 		public KeyFrame this[int index]
 		{
 			get { return KeyFrames[index]; }
@@ -64,10 +111,17 @@ namespace NewKeyFrames
 			set { KeyFrames[index] = value; }
 		}
 
+		/// <summary>
+		/// Inserts a keyframe into the frameset.
+		/// </summary>
+		/// <param name="item">The item.</param>
+		/// <param name="copyBeforeInsert">if set to <c>true</c>, insert a copy of the keyframe so that instance is not used by the frameset.</param>
+		/// <returns>A boolean indicating whether or not the operation succeeded.</returns>
+		/// <exception cref="System.ArgumentOutOfRangeException">Item's Position must be >= 0</exception>
 		public bool InsertKeyFrame(KeyFrame item, bool copyBeforeInsert = false)
 		{
 			if(item.Position < 0)
-				throw new ArgumentException("Item's Position must be >= 0", "Item");
+				throw new ArgumentOutOfRangeException("Item", "Item's Position must be >= 0");
 
 			int insertPosition = -BinarySearch(item.Position) - 1;
 
@@ -79,6 +133,7 @@ namespace NewKeyFrames
 				return false;
 
 			KeyFrames.Insert(insertPosition, item);
+			frameCount++;
 
 			int Position = item.Position;
 
@@ -90,6 +145,14 @@ namespace NewKeyFrames
 			return true;
 		}
 
+		/// <summary>
+		/// Inserts a keyframe into the frameset.
+		/// </summary>
+		/// <param name="item">The item.</param>
+		/// <param name="position">The position in the timeline that the new keyframe will have.</param>
+		/// <param name="copyBeforeInsert">if set to <c>true</c>, insert a copy of the keyframe so that instance is not used by the frameset.</param>
+		/// <returns>A boolean indicating whether or not the operation succeeded.</returns>
+		/// <exception cref="System.ArgumentOutOfRangeException">Item's Position must be >= 0</exception>
 		public bool InsertKeyFrameAt(KeyFrame item, int position, bool copyBeforeInsert = false)
 		{
 			if (position < 0)
@@ -103,7 +166,12 @@ namespace NewKeyFrames
 			return InsertKeyFrame(item, false);
 		}
 
-		//Attempts to remove the keyframe from the set that has the specified position.
+		/// <summary>
+		/// Attempts to remove the keyframe that has the specified position in the timeline.
+		/// </summary>
+		/// <param name="position">The position at which to remove the keyframe from.</param>
+		/// <returns>A boolean indicating whether or not the operation was a success.</returns>
+		/// <exception cref="System.ArgumentOutOfRangeException">Position argument must be >= 0</exception>
 		public bool RemoveKeyFrameAt(int position)
 		{
 			if(position < 0)
@@ -114,12 +182,20 @@ namespace NewKeyFrames
 			if(Index >= 0)
 			{
 				KeyFrames.RemoveAt(Index);
+				frameCount--;
+
 				return true;
 			}
 
 			return false;
 		}
 
+		/// <summary>
+		/// Removes the keyframe at the specified index inside the frameset.
+		/// </summary>
+		/// <param name="index">The index at which to remove.</param>
+		/// <returns>A boolean indicating whether or not the operation was a success.</returns>
+		/// <exception cref="System.ArgumentOutOfRangeException">Index argument must be >= 0</exception>
 		public bool RemoveKeyFrame(int index)
 		{
 			if(index < startPos)
@@ -133,23 +209,28 @@ namespace NewKeyFrames
 				return false;
 
 			KeyFrames.RemoveAt(index);
+			frameCount--;
+
 			return true;
 		}
 
+		/// <summary>
+		/// Removes the given keyframe from the frameset.
+		/// </summary>
+		/// <param name="item">The keyframe to remove from the set.</param>
+		/// <returns>A boolean indicating whether or not the operation was a success.</returns>
 		public bool RemoveKeyFrame(KeyFrame item)
 		{
-			try
-			{
-				return RemoveKeyFrame(KeyFrames.IndexOf(item));
-			}
-			catch
-			{
-				return false;
-			}
+			try { return RemoveKeyFrame(KeyFrames.IndexOf(item)); }
+			catch { return false; }
 		}
 
-		//Returns a negative value if not found, and positive if found.
-		private int BinarySearch(int position)
+		/// <summary>
+		/// Does a binary search through the frameset for a keyframe with the given position.
+		/// </summary>
+		/// <param name="position">The position to search for.</param>
+		/// <returns>A positive number giving the index of the keyframe inside the frameset if it is found, and a negative number if one was not found.</returns>
+		public int BinarySearch(int position)
 		{
 			int bottom = 0;
 			int top = frameCount;
@@ -173,6 +254,12 @@ namespace NewKeyFrames
 			return -middle - 1;
 		}
 
+		/// <summary>
+		/// Gets the keyframe that has the specified position in the timeline.
+		/// </summary>
+		/// <param name="position">The position.</param>
+		/// <returns>The keyframe that is at the specified position.</returns>
+		/// <exception cref="System.ArgumentOutOfRangeException">Position argument must be >= 0</exception>
 		public KeyFrame GetKeyFrameAt(int position)
 		{
 			if (position < 0)
@@ -189,21 +276,33 @@ namespace NewKeyFrames
 			return KeyFrames[SearchPos];
 		}
 
+		/// <summary>
+		/// Moves the specified keyframe to a new position inside the timeline.
+		/// </summary>
+		/// <param name="item">The keyframe to move.</param>
+		/// <param name="position">The position to move the keyframe to.</param>
+		/// <returns>A boolean indicating whether or not the operation was a success.</returns>
+		/// <exception cref="System.ArgumentOutOfRangeException">Position argument must be >= 0</exception>
 		public bool MoveKeyFrameTo(KeyFrame item, int position)
 		{
 			if(position < 0)
 				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
 
-			try
-			{
-				return MoveKeyFrameTo(KeyFrames.IndexOf(item), position);
-			}
-			catch
-			{
-				return false;
-			}
+			try { return MoveKeyFrameTo(KeyFrames.IndexOf(item), position); }
+			catch { return false; }
 		}
 
+		/// <summary>
+		/// Moves the keyframe at the specified index inside the set to a new position.
+		/// </summary>
+		/// <param name="index">The index of the keyframe to move.</param>
+		/// <param name="position">The position to move the keyframe to.</param>
+		/// <returns>A boolean indicating whether or not the operation was a success.</returns>
+		/// <exception cref="System.ArgumentOutOfRangeException">
+		/// Position argument must be >= 0
+		/// or
+		/// Index argument must be [0, this.FrameCount)
+		/// </exception>
 		public bool MoveKeyFrameTo(int index, int position)
 		{
 			if (position < 0)
@@ -227,6 +326,17 @@ namespace NewKeyFrames
 			return true;
 		}
 
+		/// <summary>
+		/// Moves the keyframe that is at the specified position in the timeline to a new location.
+		/// </summary>
+		/// <param name="oldPosition">The position of the keyframe in the timeline.</param>
+		/// <param name="newPosition">The position to move the keyframe to.</param>
+		/// <returns>A boolean indicating whether or not the operation was a success.</returns>
+		/// <exception cref="System.ArgumentOutOfRangeException">
+		/// oldPosition argument must be >= 0
+		/// or
+		/// newPosition argument must be >= 0
+		/// </exception>
 		public bool MoveKeyFrameAtTo(int oldPosition, int newPosition)
 		{
 			if (oldPosition < 0)

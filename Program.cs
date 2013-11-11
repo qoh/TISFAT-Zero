@@ -9,13 +9,13 @@ namespace NewKeyFrames
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine(s0());
-			Console.ReadKey(true);
-		}
+			Layer x = new StickLayer("nopenpeon");
 
-		public static decimal s0()
-		{
-			return -0;
+			x.Framesets.Add(new Frameset(new StickFrame(5), 30));
+			x.Framesets.Add(new Frameset(new StickFrame(5), 70));
+
+			Console.WriteLine(x.BinarySearch(29));
+			Console.ReadKey(true);
 		}
 	}
 }

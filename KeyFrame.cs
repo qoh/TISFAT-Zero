@@ -37,7 +37,12 @@ namespace NewKeyFrames
 
 		#region Constructors
 
-		public KeyFrame(KeyFrame original, int NewPosition = -1)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="KeyFrame"/> class equivalent to the inputted keyframe.
+		/// </summary>
+		/// <param name="original">The keyframe to copy properties from.</param>
+		/// <param name="NewPosition">A new position to give the new keyframe. Leave blank to keep the same position.</param>
+		protected KeyFrame(KeyFrame original, int NewPosition = -1)
 		{
 			KeyFrame New = original.createClone();
 
@@ -48,9 +53,13 @@ namespace NewKeyFrames
 			Properties = New.Properties;
 		}
 
-		public KeyFrame(int FramePosition)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="KeyFrame"/> class.
+		/// </summary>
+		/// <param name="framePosition">The position of the keyframe inside the timeline.</param>
+		protected KeyFrame(int framePosition)
 		{
-			FrameJoints = (List<StickJoint>)(((Type)(this.GetType().GetProperty("FrameType").GetValue(this, null))).GetProperty("DefaultPose").GetValue(this, null));
+			FrameJoints = (List<StickJoint>)(((Type)(this.GetType().GetProperty("ObjectType").GetValue(this, null))).GetProperty("DefaultPose").GetValue(this, null));
 
 			Properties = new Attributes();
 
@@ -63,7 +72,7 @@ namespace NewKeyFrames
 				}
 			}
 
-			Position = FramePosition;
+			Position = framePosition;
 		}
 
 		public KeyFrame() : this(0) {}
@@ -72,6 +81,10 @@ namespace NewKeyFrames
 
 		#region Methods
 
+		/// <summary>
+		/// Creates a clone of the current instance with all equivalent properties.
+		/// </summary>
+		/// <returns>A new KeyFrame instance.</returns>
 		public KeyFrame createClone()
 		{
 			//Honestly not sure how to use all this, it was given to me in a StackOverflow question that I asked.
@@ -106,26 +119,37 @@ namespace NewKeyFrames
 
 	class StickFrame : KeyFrame
 	{
-		new public static Type FrameType
+		new public static Type ObjectType
 		{
 			get { return typeof(StickFigure); }
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="StickFrame"/> class at the specified position.
+		/// </summary>
+		/// <param name="Position">The position of the KeyFrame inside the timeline.</param>
 		public StickFrame(int Position) : base(Position)
 		{
 			frameType = 0;
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="StickFrame"/> class at the position 0.
+		/// </summary>
 		public StickFrame() : base(0) { }
 	}
 
 	class LineFrame : KeyFrame
 	{
-		new public static Type FrameType
+		new public static Type ObjectType
 		{
 			get { return typeof(StickLine); }
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="LineFrame"/> class at the specified position.
+		/// </summary>
+		/// <param name="Position">The position of the KeyFrame inside the timeline.</param>
 		public LineFrame(int Position) : base(Position)
 		{
 			frameType = 2;
@@ -136,7 +160,7 @@ namespace NewKeyFrames
 
 	class RectFrame : KeyFrame
 	{
-		new public static Type FrameType
+		new public static Type ObjectType
 		{
 			get { return typeof(StickRect); }
 		}
@@ -148,6 +172,10 @@ namespace NewKeyFrames
 			set { Properties["isFilled"] = value; }
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="RectFrame"/> class at the specified position.
+		/// </summary>
+		/// <param name="Position">The position of the KeyFrame inside the timeline.</param>
 		public RectFrame(int Position) : base(Position)
 		{
 			frameType = 3;
@@ -166,11 +194,15 @@ namespace NewKeyFrames
 
 	class CustomFrame : KeyFrame
 	{
-		new public static Type FrameType
+		new public static Type ObjectType
 		{
 			get { return typeof(StickCustom); }
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="CustomFrame"/> class at the specified position.
+		/// </summary>
+		/// <param name="Position">The position of the KeyFrame inside the timeline.</param>
 		public CustomFrame(int Position) : base(Position)
 		{
 			frameType = 4;

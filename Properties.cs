@@ -267,7 +267,7 @@ namespace NewKeyFrames
 
 		#endregion Properties
 
-		public StickObject(bool setAsActive = true)
+		protected StickObject(bool setAsActive = true)
 		{
 			FigureJoints = DefaultPose;
 
