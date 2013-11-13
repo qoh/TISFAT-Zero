@@ -9,6 +9,7 @@ namespace NewKeyFrames
 {
 	abstract class Layer
 	{
+		//This list of framesets are always sorted, which makes searching through them much faster and easier to manage in general.
 		public List<Frameset> Framesets = new List<Frameset>();
 		public string LayerName;
 		protected ushort layerType;
@@ -80,9 +81,20 @@ namespace NewKeyFrames
 			Framesets.Add(frames);
 		}
 
-		//Searches for a frameset that encases the given position in the timeline.
+		/// <summary>
+		/// Performs a binary search to find the frameset that contains the given position.   ... and binaries the search according to ghostdoc
+		/// </summary>
+		/// <param name="position">The position at which to search for a frameset.</param>
+		/// <returns>
+		/// The index of the frameset that does or is closest to containing the given timeline position.
+		/// If the given position is not contained by any frameset it will give a negative result indicating the frameset that is closest to containing the given position.
+		/// </returns>
+		/// <exception cref="System.ArgumentOutOfRangeException">Position argument must be >= 0</exception>
 		public int BinarySearch(int position)
 		{
+			if (position < 0)
+				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
+
 			int bottom = 0;
 			int top = Framesets.Count - 1;
 			int middle = top >> 1;
@@ -106,8 +118,17 @@ namespace NewKeyFrames
 			return -middle - 1;
 		}
 
+		/// <summary>
+		/// Searches for a frameset at the given position, then searches for a keyframe inside that frameset if one is found.   ... and binaries the search DEEP according to ghostdoc.
+		/// </summary>
+		/// <param name="position">The position at which to search for a frameset/keyframe.</param>
+		/// <returns>The arguments needed to retrive a keyframe directly from the list of framesets</returns>
+		/// <exception cref="System.ArgumentOutOfRangeException">Position argument must be >= 0</exception>
 		public int[] BinarySearchDeep(int position)
 		{
+			if (position < 0)
+				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
+
 			int[] result = { -1, -1 };
 
 			result[0] = BinarySearch(position);
@@ -118,6 +139,137 @@ namespace NewKeyFrames
 			result[1] = Framesets[result[0]].BinarySearch(position);
 
 			return result;
+		}
+
+		/// <summary>
+		/// Gets the keyframe that has the specified position in the timeline.
+		/// </summary>
+		/// <param name="position">The position to search for a keyframe at.</param>
+		/// <returns></returns>
+		/// <exception cref="System.ArgumentOutOfRangeException">Position argument must be >= 0</exception>
+		public KeyFrame GetKeyframeAt(int position)
+		{
+			if (position < 0)
+				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
+
+			int[] framePosition = BinarySearchDeep(position);
+
+			if (framePosition[1] == -1)
+				return null;
+
+			return Framesets[framePosition[0]][framePosition[1]];
+		}
+
+
+		/// <summary>
+		/// Gets the number of empty frames starting from the given position to the position of the next frameset.
+		/// </summary>
+		/// <param name="position">The position.</param>
+		/// <returns>
+		/// -1 if given position is inside a frameset, -2 if given position is past the last frameset, a positive number if there is space from the given position to the nearest frameset.
+		/// </returns>
+		/// <exception cref="System.ArgumentOutOfRangeException">Position argument must be >= 0</exception>
+		public int getEmptyFramesCount(int position)
+		{
+			if (position < 0)
+				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
+
+			if (position > Framesets[Framesets.Count - 1].EndingPosition)
+				return -2;
+
+			int result = BinarySearch(position);
+
+			if (result > 0)
+				return -1;
+
+			return Framesets[result].StartingPosition - position;
+		}
+
+		/// <summary>
+		/// Gets the type of the frame at the given position in the timeline.
+		/// </summary>
+		/// <param name="position">The inputted position.</param>
+		/// <returns>
+		/// The type of frame at the given position.
+		/// 0: No frame
+		/// 1: Middle Keyframe
+		/// 2: First Keyframe of Frameset
+		/// 3: Last Keyframe of Frameset
+		/// 4: Tween frame
+		/// </returns>
+		/// <exception cref="System.ArgumentOutOfRangeException">Position argument must be >= 0</exception>
+		public int getFrameTypeAt(int position)
+		{
+			if (position < 0)
+				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
+
+			if (position > Framesets[Framesets.Count - 1].EndingPosition || position < Framesets[0].StartingPosition)
+				return 0;
+
+			int[] result = BinarySearchDeep(position);
+
+			if (result[0] < 0)
+				return 0;
+
+			Frameset set = Framesets[result[0]];
+
+			if (result[1] < 0)
+				return 4;
+
+			if (result[1] == 0)
+				return 2;
+			else if (result[1] == set.FrameCount - 1)
+				return 3;
+
+			return 1;
+		}
+
+		public bool insertFrameset(Frameset item)
+		{
+			if (item == null)
+				throw new ArgumentNullException("item");
+
+			//Check if the frameset will actually fit in it's current spot
+			if (!framesetWillFit(item))
+				return false;
+
+			//Get the position to insert at
+			int result = -BinarySearch(item.StartingPosition) - 1;
+
+			//Insert the frameset
+			Framesets.Insert(result, item);
+
+			return true;
+		}
+
+		public bool insertFramesetAt(Frameset item,)
+		{
+			if (item == null)
+				throw new ArgumentNullException("item");
+
+			//Check if the frameset will actually fit in it's current spot
+			if (!framesetWillFit(item))
+				return false;
+
+			//Get the position to insert at
+			int result = -BinarySearch(item.StartingPosition) - 1;
+
+			//Insert the frameset
+			Framesets.Insert(result, item);
+
+			return true;
+		}
+
+		public bool framesetWillFit(Frameset item)
+		{
+			int result = -BinarySearch(item.StartingPosition) - 1;
+
+			if (result < 0)
+				return false;
+
+			int space = Framesets[result].StartingPosition - item.EndingPosition;
+
+			return space > 0;
 		}
 	}
 
