@@ -230,7 +230,7 @@ namespace NewKeyFrames
 				throw new ArgumentNullException("item");
 
 			//Check if the frameset will actually fit in it's current spot
-			if (!framesetWillFit(item))
+			if (!canBeInserted(item))
 				return false;
 
 			//Get the position to insert at
@@ -242,13 +242,13 @@ namespace NewKeyFrames
 			return true;
 		}
 
-		public bool insertFramesetAt(Frameset item,)
+		public bool insertFramesetAt(Frameset item, int position)
 		{
 			if (item == null)
 				throw new ArgumentNullException("item");
 
 			//Check if the frameset will actually fit in it's current spot
-			if (!framesetWillFit(item))
+			if (!canBeInserted(item))
 				return false;
 
 			//Get the position to insert at
@@ -260,7 +260,12 @@ namespace NewKeyFrames
 			return true;
 		}
 
-		public bool framesetWillFit(Frameset item)
+		/// <summary>
+		/// Determines whether the given frameset can be inserted without causing problems.
+		/// </summary>
+		/// <param name="item">The item.</param>
+		/// <returns>True if it can be inserted into the layer with no problems and false if it won't fit. That's what she told me. Go ahead, ask her.</returns>
+		public bool canBeInserted(Frameset item)
 		{
 			int result = -BinarySearch(item.StartingPosition) - 1;
 

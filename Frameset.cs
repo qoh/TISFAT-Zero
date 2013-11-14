@@ -28,16 +28,26 @@ namespace NewKeyFrames
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Frameset"/> class.
+		/// Initializes a new instance of the <see cref="Frameset" /> class.
 		/// </summary>
 		/// <param name="SetType">The type of keyframes in the set.</param>
 		/// <param name="startingPosition">The starting position of the frameset.</param>
 		/// <param name="extent">The length of the set.</param>
 		/// <exception cref="System.ArgumentException">SetType must be a derived type of KeyFrame;SetType</exception>
+		/// <exception cref="System.ArgumentOutOfRangeException">
+		/// startingPosition argument must be >= 0
+		/// or
+		/// extent argument must be >= 2
+		/// </exception>
 		public Frameset(Type SetType, int startingPosition = 0, int extent = 20)
 		{
 			if (SetType.BaseType != typeof(KeyFrame))
 				throw new ArgumentException("SetType must be a derived type of KeyFrame", "SetType");
+
+			if (startingPosition < 0)
+				throw new ArgumentOutOfRangeException("startingPosition", "Argument must be >= 0");
+			else if (extent < 2)
+				throw new ArgumentOutOfRangeException("extent", "Argument must be >= 2");
 
 			ConstructorInfo KFConstructor = SetType.GetConstructor(new Type[] { typeof(int)});
 
@@ -49,7 +59,7 @@ namespace NewKeyFrames
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Frameset"/> class from two existing keyframes.
+		/// Initializes a new instance of the <see cref="Frameset" /> class from two existing keyframes.
 		/// </summary>
 		/// <param name="First">The first keyframe in the set.</param>
 		/// <param name="Last">The last keyframe in the set.</param>
@@ -57,18 +67,22 @@ namespace NewKeyFrames
 		{ }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Frameset"/> class from a set of keyframes sorted by timeline position.
+		/// Initializes a new instance of the <see cref="Frameset" /> class from a set of keyframes sorted by timeline position.
 		/// </summary>
 		/// <param name="Frames">The set of frames to use in the frameset.</param>
 		public Frameset(List<KeyFrame> Frames) : this(Frames.ToArray())
 		{ }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Frameset"/> class from a set of keyframes sorted by timeline position.
+		/// Initializes a new instance of the <see cref="Frameset" /> class from a set of keyframes sorted by timeline position.
 		/// </summary>
 		/// <param name="Frames">The set of frames to use in the frameset.</param>
+		/// <exception cref="System.ArgumentException">Frames parameter must have at least 2 elements</exception>
 		public Frameset(KeyFrame[] Frames)
 		{
+			if (Frames.Length < 2)
+				throw new ArgumentException("Parameter must have at least 2 elements", "Frames");
+
 			KeyFrames.AddRange(Frames);
 
 			startPos = Frames[0].Position;
@@ -76,13 +90,23 @@ namespace NewKeyFrames
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Frameset"/> class from a single keyframe.
+		/// Initializes a new instance of the <see cref="Frameset" /> class from a single keyframe.
 		/// </summary>
 		/// <param name="Base">The base.</param>
 		/// <param name="startingPosition">The starting position.</param>
 		/// <param name="extent">The extent.</param>
+		/// <exception cref="System.ArgumentOutOfRangeException">
+		/// startingPosition argument must be >= 0
+		/// or
+		/// extent argument must be >= 2
+		/// </exception>
 		public Frameset(KeyFrame Base, int startingPosition = 0, int extent = 20)
 		{
+			if (startingPosition < 0)
+				throw new ArgumentOutOfRangeException("startingPosition", "Argument must be >= 0");
+			else if (extent < 2)
+				throw new ArgumentOutOfRangeException("extent", "Argument must be >= 2");
+
 			startPos = startingPosition;
 			endPos = startingPosition + extent;
 
@@ -91,7 +115,6 @@ namespace NewKeyFrames
 
 			KeyFrame end = Base.createClone();
 			end.Position = endPos;
-
 
 			KeyFrames.AddRange(new KeyFrame[] { start, end });
 		}
@@ -232,6 +255,9 @@ namespace NewKeyFrames
 		/// <returns>A positive number giving the index of the keyframe inside the frameset if it is found, and a negative number if one was not found.</returns>
 		public int BinarySearch(int position)
 		{
+			if (position < 0)
+				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
+
 			int bottom = 0;
 			int top = frameCount;
 			int middle = top >> 1;
@@ -356,6 +382,19 @@ namespace NewKeyFrames
 				return false;
 
 			return MoveKeyFrameTo(index, newPosition);
+		}
+
+		public bool shiftFrames(int amount)
+		{
+			if (startPos + amount < 0)
+				return false;
+
+			startPos += amount; endPos += amount;
+
+			foreach (KeyFrame f in KeyFrames)
+				f.Position += amount;
+
+			return true;
 		}
 
 		public IEnumerator<KeyFrame> GetEnumerator()
