@@ -9,12 +9,8 @@ namespace NewKeyFrames
 	{
 		static void Main(string[] args)
 		{
-			Layer x = new StickLayer("nopenpeon");
-
-			x.Framesets.Add(new Frameset(new StickFrame(5), 30));
-			x.Framesets.Add(new Frameset(new StickFrame(5), 70));
-
-			Console.WriteLine(x.BinarySearch(29));
+			Frameset x = new Frameset(typeof(StickFrame), 0, 20);
+			x.InsertKeyFrameAt(new StickFrame(), 5);
 			Console.ReadKey(true);
 		}
 	}

@@ -233,11 +233,8 @@ namespace NewKeyFrames
 			if (!canBeInserted(item))
 				return false;
 
-			//Get the position to insert at
-			int result = -BinarySearch(item.StartingPosition) - 1;
-
-			//Insert the frameset
-			Framesets.Insert(result, item);
+			//Insert the frameset in the correct spot
+			Framesets.Insert(-BinarySearch(item.StartingPosition), item);
 
 			return true;
 		}
@@ -247,17 +244,9 @@ namespace NewKeyFrames
 			if (item == null)
 				throw new ArgumentNullException("item");
 
-			//Check if the frameset will actually fit in it's current spot
-			if (!canBeInserted(item))
-				return false;
+			bool result = item.shiftFrames(position - item.StartingPosition);
 
-			//Get the position to insert at
-			int result = -BinarySearch(item.StartingPosition) - 1;
-
-			//Insert the frameset
-			Framesets.Insert(result, item);
-
-			return true;
+			return result ? insertFrameset(item) : false;
 		}
 
 		/// <summary>
@@ -275,6 +264,61 @@ namespace NewKeyFrames
 			int space = Framesets[result].StartingPosition - item.EndingPosition;
 
 			return space > 0;
+		}
+
+		public bool removeFrameset(Frameset item)
+		{
+			if(item == null)
+				return false;
+
+			int index = Framesets.IndexOf(item);
+
+			if (index == -1)
+				return false;
+
+			Framesets.RemoveAt(index);
+			return true;
+		}
+
+		public bool removeFramesetAt(int position)
+		{
+			if (position < 0)
+				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
+
+			if (position > Framesets[Framesets.Count - 1].EndingPosition || position < Framesets[0].StartingPosition)
+				return false;
+
+			int result = BinarySearch(position);
+
+			if (result < 0)
+				return false;
+
+			Framesets.RemoveAt(result);
+			return true;
+		}
+
+		public bool insertNewFramesetAt(int position)
+		{
+			if (position < 0)
+				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
+
+			int result = -BinarySearch(position) - 1;
+
+			if (result < 0)
+				return false;
+
+			int space = getEmptyFramesCount(position);
+
+			if (space == -2)
+				space = 21;
+			else if (space == 1)
+				return false;
+
+			int extent = Math.Min(space - 1, 20);
+
+			Framesets.Insert(result, new Frameset(Framesets[0].KeyFrames[0].GetType(), position, extent));
+
+			return true;
 		}
 	}
 

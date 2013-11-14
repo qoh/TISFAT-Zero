@@ -85,6 +85,8 @@ namespace NewKeyFrames
 
 			KeyFrames.AddRange(Frames);
 
+			frameCount = Frames.Length;
+
 			startPos = Frames[0].Position;
 			endPos = Frames[Frames.Length - 1].Position;
 		}
@@ -146,7 +148,7 @@ namespace NewKeyFrames
 			if(item.Position < 0)
 				throw new ArgumentOutOfRangeException("Item", "Item's Position must be >= 0");
 
-			int insertPosition = -BinarySearch(item.Position) - 1;
+			int insertPosition = -BinarySearch(item.Position);
 
 			if(copyBeforeInsert)
 				item = item.createClone();
@@ -336,7 +338,7 @@ namespace NewKeyFrames
 			if(index < 0 || index > frameCount)
 				throw new ArgumentOutOfRangeException("index", "Argument must be >= 0 and < " + frameCount);
 
-			int insertPosition = -BinarySearch(position) - 1;
+			int insertPosition = -BinarySearch(position) ;
 
 			if(insertPosition < 0)
 				return false;
