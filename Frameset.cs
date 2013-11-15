@@ -409,5 +409,13 @@ namespace NewKeyFrames
 		{
 			return GetEnumerator();
 		}
+
+		public override string ToString ()
+		{
+			string x = "";
+			foreach(KeyFrame f in KeyFrames)
+				x += "\n" + f.Position;
+			return x;
+		}
 	}
 }

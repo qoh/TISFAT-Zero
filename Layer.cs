@@ -17,7 +17,7 @@ namespace NewKeyFrames
 		public int SelectedKeyframe_Pos = -1; //The position in the timeline of the selected keyframe.
 		public int SelectedFrameset_Loc = -1; //The index of the selected frameset in the list of framesets.
 
-		public StickObject LayerFigure, LayerTweenFigure;
+		public StickObject LayerFigure;
 
 		//Dynamic properties that can be used if need be. Generally, use this if it isn't a shared property between layer types.
 		public Attributes Properties = new Attributes();
@@ -28,6 +28,7 @@ namespace NewKeyFrames
 		}
 
 		//Properties that must be overridden by derived classes
+		//This property must 
 		public static Type FrameType
 		{
 			get { return null; }
@@ -40,19 +41,8 @@ namespace NewKeyFrames
 		/// <param name="layerType">The type of keyframes the layer will contain. Must be a type derived from the KeyFrame type.</param>
 		/// <param name="type">The type number associated with the layerType parameter.</param>
 		/// <param name="startingOffset">Optionally offset the position of all the frames by this amount.</param>
-		protected Layer(string layerName, Type frameType, ushort type, int startingOffset = 0)
-		{
-			LayerName = layerName;
-			layerType = type;
-
-			Framesets.Add(new Frameset(frameType, startingOffset));
-
-			//I use reflection here to fetch and invoke the constructor for the specific type of StickObject that we want to create for out figs.
-			ConstructorInfo constructor = ((Type)((PropertyInfo)(frameType.GetMember("ObjectType").GetValue(0))).GetValue(this, null)).GetConstructor(new Type[] { typeof(bool) });
-
-			LayerFigure = (StickObject)constructor.Invoke(new object[] { false });
-			LayerTweenFigure = (StickObject)constructor.Invoke(new object[] { false });
-		}
+		public Layer(string layerName, Type frameType, ushort type, int startingOffset = 0) : this(layerName, new Frameset(frameType, startingOffset), type, startingOffset)
+		{ }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Layer"/> class using the given frameset.
@@ -60,23 +50,17 @@ namespace NewKeyFrames
 		/// <param name="layerName">The name of the layer.</param>
 		/// <param name="frames">The frameset to use in the</param>
 		/// <param name="startingOffset">Optionally offset the position of all the frames by this amount.</param>
-		protected Layer(string layerName, Frameset frames, int startingOffset = 0)
+		public Layer(string layerName, Frameset frames, ushort type, int startingOffset = 0)
 		{
 			LayerName = layerName;
+			layerType = type;
+			Type fType = frames[0].GetType();
 
-			if (startingOffset > 0)
-				for (int a = frames.FrameCount - 1; a >= 0; a--)
-					frames.MoveKeyFrameTo(a, frames[a].Position + startingOffset);
-			else
-				foreach (KeyFrame f in frames)
-					frames.MoveKeyFrameTo(f, f.Position + startingOffset);
+			frames.shiftFrames(startingOffset);
 
-			Type frameType = frames[0].GetType();
-
-			ConstructorInfo constructor = frameType.GetConstructor(new Type[] { typeof(bool) });
+			ConstructorInfo constructor = ((Type)((PropertyInfo)(fType.GetMember("ObjectType").GetValue(0))).GetValue(this, null)).GetConstructor(new Type[] { typeof(bool) });
 
 			LayerFigure = (StickObject)constructor.Invoke(new object[] { false });
-			LayerTweenFigure = (StickObject)constructor.Invoke(new object[] { false });
 
 			Framesets.Add(frames);
 		}
@@ -139,6 +123,16 @@ namespace NewKeyFrames
 			result[1] = Framesets[result[0]].BinarySearch(position);
 
 			return result;
+		}
+
+		public Frameset GetFramesetAt (int position)
+		{
+			if(position < 0)
+				throw new ArgumentOutOfRangeException("position", "Argument must be >=0");
+
+			int result = BinarySearch(position);
+
+			return result >= 0 ? Framesets[result] : null;
 		}
 
 		/// <summary>
@@ -215,8 +209,7 @@ namespace NewKeyFrames
 
 			if (result[1] < 0)
 				return 4;
-
-			if (result[1] == 0)
+			else if (result[1] == 0)
 				return 2;
 			else if (result[1] == set.FrameCount - 1)
 				return 3;
@@ -256,14 +249,22 @@ namespace NewKeyFrames
 		/// <returns>True if it can be inserted into the layer with no problems and false if it won't fit. That's what she told me. Go ahead, ask her.</returns>
 		public bool canBeInserted(Frameset item)
 		{
-			int result = -BinarySearch(item.StartingPosition) - 1;
+			return canBeInserted(item.StartingPosition, item.EndingPosition - item.StartingPosition);
+		}
 
-			if (result < 0)
+		private bool canBeInserted(int position, int extent)
+		{
+			if(position < 0)
+				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
+			if(extent < 2)
+				throw new ArgumentOutOfRangeException("extent", "Argument must be >= 2");
+
+			int result = -BinarySearch(position);
+
+			if(result < 0)
 				return false;
 
-			int space = Framesets[result].StartingPosition - item.EndingPosition;
-
-			return space > 0;
+			return Framesets[result].StartingPosition - position - extent > 0;
 		}
 
 		public bool removeFrameset(Frameset item)
@@ -302,7 +303,7 @@ namespace NewKeyFrames
 			if (position < 0)
 				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
 
-			int result = -BinarySearch(position) - 1;
+			int result = -BinarySearch(position);
 
 			if (result < 0)
 				return false;
@@ -316,9 +317,68 @@ namespace NewKeyFrames
 
 			int extent = Math.Min(space - 1, 20);
 
-			Framesets.Insert(result, new Frameset(Framesets[0].KeyFrames[0].GetType(), position, extent));
+			Framesets.Insert(result, new Frameset(Framesets[0][0].GetType(), position, extent));
 
 			return true;
+		}
+
+		public bool moveFramesetTo(Frameset item, int position)
+		{
+			if(item == null)
+				throw new ArgumentNullException("item");
+
+			if(position < 0)
+				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
+
+			int index = BinarySearch(item.StartingPosition);
+
+			if(index < 0)
+				return false;
+
+			Framesets.RemoveAt(index);
+
+			if(!canBeInserted(position, item.EndingPosition - item.StartingPosition))
+				return false;
+
+			item.shiftFrames(position - item.StartingPosition);
+
+			index = BinarySearch(position);
+
+			Framesets.Insert(index, item);
+
+			return true;
+		}
+
+		public bool insertNewKeyFrameAt(int position)
+		{
+			int[] result = BinarySearchDeep(position);
+
+			if(result[0] < 0 || result[1] >= 0)
+				return false;
+
+			KeyFrame item = (KeyFrame)(getFrameType().GetConstructor(new Type[0]).Invoke(new object[0]));
+			Framesets[result[0]].InsertKeyFrameAt(item, position);
+			return true;
+		}
+
+		public override string ToString ()
+		{
+			string result = "Layer Name: " + this.LayerName + "\tFrameset Count: " + this.Framesets.Count;
+
+			int max = this.Framesets.Count;
+			for(int a = 0; a < max; a++)
+			{
+				Frameset s = this.Framesets[a];
+				result += "\nFrameset #" + (a+1) + ":\tS:" + s.StartingPosition + "\tE:" + s.EndingPosition + "\tL:" + (s.EndingPosition - s.StartingPosition);
+				result += s.ToString();
+			}
+
+			return result;
+		}
+
+		public Type getFrameType()
+		{
+			return (Type)(this.GetType().GetProperty("FrameType").GetValue(this, null));
 		}
 	}
 
@@ -326,7 +386,7 @@ namespace NewKeyFrames
 	{
 		new public static Type FrameType
 		{
-			get { return typeof(StickFigure); }
+			get { return typeof(StickFrame); }
 		}
 
 		public StickLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(StickFrame), 0, startingOffset)
@@ -337,7 +397,7 @@ namespace NewKeyFrames
 	{
 		new public static Type FrameType
 		{
-			get { return typeof(StickLine); }
+			get { return typeof(LineFrame); }
 		}
 
 		public LineLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(LineFrame), 1, startingOffset)
@@ -348,7 +408,7 @@ namespace NewKeyFrames
 	{
 		new public static Type FrameType
 		{
-			get { return typeof(StickRect); }
+			get { return typeof(RectFrame); }
 		}
 
 		public RectLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(RectFrame), 2, startingOffset)
@@ -359,7 +419,7 @@ namespace NewKeyFrames
 	{
 		new public static Type FrameType
 		{
-			get { return typeof(StickCustom); }
+			get { return typeof(CustomFrame); }
 		}
 
 		public CustomLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(StickCustom), 3, startingOffset)

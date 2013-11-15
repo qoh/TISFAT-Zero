@@ -9,9 +9,16 @@ namespace NewKeyFrames
 	{
 		static void Main(string[] args)
 		{
-			Frameset x = new Frameset(typeof(StickFrame), 0, 20);
-			x.InsertKeyFrameAt(new StickFrame(), 5);
+			Layer x = new StickLayer("asdfasdf");
+			w (x.ToString());
+			x.insertNewKeyFrameAt(5);
+			w (x.ToString());
 			Console.ReadKey(true);
+		}
+
+		static void w(object x)
+		{
+			Console.WriteLine(x);
 		}
 	}
 }
