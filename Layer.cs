@@ -28,7 +28,7 @@ namespace NewKeyFrames
 		}
 
 		//Properties that must be overridden by derived classes
-		//This property must 
+		//This property must derived from the KeyFrame type
 		public static Type FrameType
 		{
 			get { return null; }
@@ -125,7 +125,13 @@ namespace NewKeyFrames
 			return result;
 		}
 
-		public Frameset GetFramesetAt (int position)
+		/// <summary>
+		/// Gets the frameset that contains the given position on the timeline.
+		/// </summary>
+		/// <param name="position">The position at which to search for a frameset.</param>
+		/// <returns>The frameset that contains the given timeline position.</returns>
+		/// <exception cref="System.ArgumentOutOfRangeException">Position argument must be >=0</exception>
+		public Frameset GetFramesetAt(int position)
 		{
 			if(position < 0)
 				throw new ArgumentOutOfRangeException("position", "Argument must be >=0");
@@ -171,12 +177,12 @@ namespace NewKeyFrames
 			if (position > Framesets[Framesets.Count - 1].EndingPosition)
 				return -2;
 
-			int result = BinarySearch(position);
+			int result = -BinarySearch(position);
 
-			if (result > 0)
+			if (result < 0)
 				return -1;
 
-			return Framesets[result].StartingPosition - position;
+			return Framesets[result].StartingPosition - position - 1;
 		}
 
 		/// <summary>
@@ -217,6 +223,12 @@ namespace NewKeyFrames
 			return 1;
 		}
 
+		/// <summary>
+		/// Inserts the given frameset into the layer
+		/// </summary>
+		/// <param name="item">The frameset to insert.</param>
+		/// <returns>A boolean indicating whether or not the operation was a success.</returns>
+		/// <exception cref="System.ArgumentNullException">Item</exception>
 		public bool insertFrameset(Frameset item)
 		{
 			if (item == null)
@@ -232,6 +244,13 @@ namespace NewKeyFrames
 			return true;
 		}
 
+		/// <summary>
+		/// Inserts the given frameset at the given position.
+		/// </summary>
+		/// <param name="item">The frameset to insert into the layer.</param>
+		/// <param name="position">The position at which to insert the frameset.</param>
+		/// <returns>A boolean indicating whether or not the operation was a success.</returns>
+		/// <exception cref="System.ArgumentNullException">Item</exception>
 		public bool insertFramesetAt(Frameset item, int position)
 		{
 			if (item == null)
@@ -246,12 +265,23 @@ namespace NewKeyFrames
 		/// Determines whether the given frameset can be inserted without causing problems.
 		/// </summary>
 		/// <param name="item">The item.</param>
-		/// <returns>True if it can be inserted into the layer with no problems and false if it won't fit. That's what she told me. Go ahead, ask her.</returns>
+		/// <returns>True if the given frameset can be inserted into the layer with no problems and false if it won't fit. That's what she told me. Go ahead, ask her.</returns>
 		public bool canBeInserted(Frameset item)
 		{
 			return canBeInserted(item.StartingPosition, item.EndingPosition - item.StartingPosition);
 		}
 
+		/// <summary>
+		/// Determines whether a frameset with the given starting position and extent can be successfully inserted into the layer.
+		/// </summary>
+		/// <param name="position">The starting position of the frameset.</param>
+		/// <param name="extent">The extent of the frameset.</param>
+		/// <returns>A boolean indicating whether or not a frameset with the given position and extent can be inserted into the layer.</returns>
+		/// <exception cref="System.ArgumentOutOfRangeException">
+		/// Position argument must be >= 0
+		/// or
+		/// Extent argument must be >= 2
+		/// </exception>
 		private bool canBeInserted(int position, int extent)
 		{
 			if(position < 0)
@@ -259,14 +289,24 @@ namespace NewKeyFrames
 			if(extent < 2)
 				throw new ArgumentOutOfRangeException("extent", "Argument must be >= 2");
 
+			if (Framesets.Count == 0)
+				return true;
+
 			int result = -BinarySearch(position);
 
-			if(result < 0)
+			if (result < 0)
 				return false;
+			else if (result >= Framesets.Count)
+				return true;
 
 			return Framesets[result].StartingPosition - position - extent > 0;
 		}
 
+		/// <summary>
+		/// Removes the given frameset from the layer
+		/// </summary>
+		/// <param name="item">The frameset to remove.</param>
+		/// <returns>A boolean indicating whether or not the operation was a success.</returns>
 		public bool removeFrameset(Frameset item)
 		{
 			if(item == null)
@@ -281,6 +321,12 @@ namespace NewKeyFrames
 			return true;
 		}
 
+		/// <summary>
+		/// Removes the frameset at the given position.
+		/// </summary>
+		/// <param name="position">The position at which to search for a frameset.</param>
+		/// <returns>A boolean indicating whether or not the operation was a success.</returns>
+		/// <exception cref="System.ArgumentOutOfRangeException">Position argument must be >= 0</exception>
 		public bool removeFramesetAt(int position)
 		{
 			if (position < 0)
@@ -298,6 +344,12 @@ namespace NewKeyFrames
 			return true;
 		}
 
+		/// <summary>
+		/// Attempts to insert a new frameset based on the layer type at the given position.
+		/// </summary>
+		/// <param name="position">The position to insert the frameset at.</param>
+		/// <returns>A boolean indicating whether or not the operation was a success.</returns>
+		/// <exception cref="System.ArgumentOutOfRangeException">Position argument must be >= 0</exception>
 		public bool insertNewFramesetAt(int position)
 		{
 			if (position < 0)
@@ -312,7 +364,9 @@ namespace NewKeyFrames
 
 			if (space == -2)
 				space = 21;
-			else if (space == 1)
+			else if (space == 2)
+				space = 3;
+			else if (space < 2)
 				return false;
 
 			int extent = Math.Min(space - 1, 20);
@@ -322,6 +376,14 @@ namespace NewKeyFrames
 			return true;
 		}
 
+		/// <summary>
+		/// Attempts to move the given frameset to a new position.
+		/// </summary>
+		/// <param name="item">The frameset to move.</param>
+		/// <param name="position">The position to move the frameset to.</param>
+		/// <returns>A boolean indicating whether or not the operation was a success.</returns>
+		/// <exception cref="System.ArgumentNullException">Item</exception>
+		/// <exception cref="System.ArgumentOutOfRangeException">Position argument must be >= 0</exception>
 		public bool moveFramesetTo(Frameset item, int position)
 		{
 			if(item == null)
@@ -349,10 +411,20 @@ namespace NewKeyFrames
 			return true;
 		}
 
+		/// <summary>
+		/// Attempts to insert a new keyframe based on the type of the layer at the given position
+		/// </summary>
+		/// <param name="position">The position at which to insert the keyframe..</param>
+		/// <returns>A boolean indicating whether or not the operation was a success.</returns>
+		/// <exception cref="System.ArgumentOutOfRangeException">Position argument must be >= 0</exception>
 		public bool insertNewKeyFrameAt(int position)
 		{
+			if (position < 0)
+				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
+
 			int[] result = BinarySearchDeep(position);
 
+			//This equates to "If there's no frameset at the given position or if there's a keyframe at the given spot, return false"
 			if(result[0] < 0 || result[1] >= 0)
 				return false;
 
@@ -361,7 +433,13 @@ namespace NewKeyFrames
 			return true;
 		}
 
-		public override string ToString ()
+		/// <summary>
+		/// Returns a <see cref="System.String" /> that represents this instance.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="System.String" /> that represents this instance.
+		/// </returns>
+		public override string ToString()
 		{
 			string result = "Layer Name: " + this.LayerName + "\tFrameset Count: " + this.Framesets.Count;
 
@@ -376,6 +454,10 @@ namespace NewKeyFrames
 			return result;
 		}
 
+		/// <summary>
+		/// Gets the type of the frames used in the current layer.
+		/// </summary>
+		/// <returns>The type of frames used in the current layer instance.</returns>
 		public Type getFrameType()
 		{
 			return (Type)(this.GetType().GetProperty("FrameType").GetValue(this, null));
@@ -389,6 +471,11 @@ namespace NewKeyFrames
 			get { return typeof(StickFrame); }
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="StickLayer"/> class.
+		/// </summary>
+		/// <param name="layerName">The name to be given to the layer.</param>
+		/// <param name="startingOffset">The starting position of the first frameset. Defaults to 0.</param>
 		public StickLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(StickFrame), 0, startingOffset)
 		{ }
 	}
@@ -400,6 +487,11 @@ namespace NewKeyFrames
 			get { return typeof(LineFrame); }
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="LineLayer"/> class.
+		/// </summary>
+		/// <param name="layerName">The name to be given to the layer.</param>
+		/// <param name="startingOffset">The starting position of the first frameset. Defaults to 0.</param>
 		public LineLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(LineFrame), 1, startingOffset)
 		{ }
 	}
@@ -411,6 +503,11 @@ namespace NewKeyFrames
 			get { return typeof(RectFrame); }
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="RectLayer"/> class.
+		/// </summary>
+		/// <param name="layerName">The name to be given to the layer.</param>
+		/// <param name="startingOffset">The starting position of the first frameset. Defaults to 0.</param>
 		public RectLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(RectFrame), 2, startingOffset)
 		{ }
 	}
@@ -422,6 +519,11 @@ namespace NewKeyFrames
 			get { return typeof(CustomFrame); }
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="CustomLayer"/> class.
+		/// </summary>
+		/// <param name="layerName">The name to be given to the layer.</param>
+		/// <param name="startingOffset">The starting position of the first frameset. Defaults to 0.</param>
 		public CustomLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(StickCustom), 3, startingOffset)
 		{ }
 	}
