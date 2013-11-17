@@ -43,15 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Frameset.cs" />
-    <Compile Include="Drawable.cs" />
-    <Compile Include="KeyFrame.cs" />
+    <Compile Include="Classes\Frameset.cs" />
+    <Compile Include="Classes\Drawable.cs" />
+    <Compile Include="Classes\KeyFrame.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Attributes.cs" />
+    <Compile Include="Classes\Attributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Layer.cs" />
-    <Compile Include="StickJoint.cs" />
-    <Compile Include="StickObject.cs" />
+    <Compile Include="Classes\Layer.cs" />
+    <Compile Include="Classes\StickJoint.cs" />
+    <Compile Include="Classes\StickObject.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
