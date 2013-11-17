@@ -36,15 +36,15 @@
 			this.GLGraphics.BackColor = System.Drawing.Color.Black;
 			this.GLGraphics.Location = new System.Drawing.Point(0, 0);
 			this.GLGraphics.Name = "GLGraphics";
-			this.GLGraphics.Size = new System.Drawing.Size(150, 150);
+			this.GLGraphics.Size = new System.Drawing.Size(100, 100);
 			this.GLGraphics.TabIndex = 0;
-			this.GLGraphics.VSync = true;
+			this.GLGraphics.VSync = false;
 			// 
 			// Timeline
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(150, 150);
+			this.ClientSize = new System.Drawing.Size(100, 100);
 			this.ControlBox = false;
 			this.Controls.Add(this.GLGraphics);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -55,6 +55,8 @@
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "TIMELINE";
+			this.Paint += new System.Windows.Forms.PaintEventHandler(this.Timeline_Paint);
+			this.Resize += new System.EventHandler(this.Timeline_Resize);
 			this.ResumeLayout(false);
 
 		}
