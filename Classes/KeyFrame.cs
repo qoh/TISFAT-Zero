@@ -5,7 +5,7 @@ using System.Text;
 using System.Drawing;
 using System.Reflection;
 
-namespace NewKeyFrames
+namespace TISFAT_Zero
 {
 	abstract class KeyFrame
 	{
@@ -115,6 +115,7 @@ namespace NewKeyFrames
 		}
 
 		#endregion Methods
+
 	}
 
 	class StickFrame : KeyFrame

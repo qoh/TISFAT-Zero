@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NewKeyFrames")]
+[assembly: AssemblyTitle("TISFAT-Zero")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NewKeyFrames")]
+[assembly: AssemblyProduct("TISFAT-Zero")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("5edbe277-b98f-464e-b0d0-b1c2ca3f4a83")]
+[assembly: Guid("6cb0e878-8b87-4dd1-9ab8-d3e2180e081d")]
 
 // Version information for an assembly consists of the following four values:
 //

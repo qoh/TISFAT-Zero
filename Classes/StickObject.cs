@@ -4,8 +4,9 @@ using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using OpenTK;
 
-namespace NewKeyFrames
+namespace TISFAT_Zero
 {
 	abstract class StickObject : IEnumerable<StickJoint>
 	{

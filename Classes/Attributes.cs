@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 
-namespace NewKeyFrames
+namespace TISFAT_Zero
 {
 	class Attributes
 	{

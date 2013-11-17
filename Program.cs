@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Windows.Forms;
 
-namespace NewKeyFrames
+namespace TISFAT_Zero
 {
-	class Program
+	static class Program
 	{
-		static void Main(string[] args)
+		/// <summary>
+		/// The main entry point for the application.
+		/// </summary>
+		[STAThread]
+		static void Main()
 		{
-			Console.ReadKey(true);
-		}
-
-		static void w(object x)
-		{
-			Console.WriteLine(x);
-			Console.WriteLine();
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
+			Application.Run(new MainF());
 		}
 	}
 }
