@@ -221,17 +221,24 @@ namespace NewKeyFrames
 		/// <param name="index">The index at which to remove.</param>
 		/// <returns>A boolean indicating whether or not the operation was a success.</returns>
 		/// <exception cref="System.ArgumentOutOfRangeException">Index argument must be >= 0</exception>
-		public bool RemoveKeyFrame(int index)
+		public bool RemoveKeyFrame (int index)
 		{
-			if(index < startPos)
+			if (index < startPos)
 			{
-				if(index < 0)
-					throw new ArgumentOutOfRangeException("Index", "Argument must be >= 0");
+				if (index < 0)
+					throw new ArgumentOutOfRangeException ("Index", "Argument must be >= 0");
 
 				return false;
 			}
-			else if(index > endPos)
+			else if (index > endPos || frameCount < 2)
 				return false;
+
+			KeyFrame x = KeyFrames [index];
+
+			if (x.Position == startPos)
+				startPos = KeyFrames [index + 1].Position;
+			else if (x.Position == endPos)
+				endPos = KeyFrames [index - 1].Position;
 
 			KeyFrames.RemoveAt(index);
 			frameCount--;
@@ -259,6 +266,9 @@ namespace NewKeyFrames
 		{
 			if (position < 0)
 				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
+
+			if(position > endPos)
+				return -frameCount;
 
 			int bottom = 0;
 			int top = frameCount;
@@ -338,7 +348,7 @@ namespace NewKeyFrames
 			if(index < 0 || index > frameCount)
 				throw new ArgumentOutOfRangeException("index", "Argument must be >= 0 and < " + frameCount);
 
-			int insertPosition = -BinarySearch(position) ;
+			int insertPosition = -BinarySearch(position);
 
 			if(insertPosition < 0)
 				return false;
@@ -347,6 +357,12 @@ namespace NewKeyFrames
 				insertPosition--;
 
 			KeyFrame item = KeyFrames[index];
+			item.Position = position;
+
+			if(position < startPos)
+				startPos = position;
+			else if(position > endPos)
+				endPos = position;
 
 			KeyFrames.RemoveAt(index);
 			KeyFrames.Insert(insertPosition, item);

@@ -47,9 +47,11 @@
     <Compile Include="Drawable.cs" />
     <Compile Include="KeyFrame.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Properties.cs" />
+    <Compile Include="Attributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Layer.cs" />
+    <Compile Include="StickJoint.cs" />
+    <Compile Include="StickObject.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

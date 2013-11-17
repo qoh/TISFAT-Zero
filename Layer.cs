@@ -13,6 +13,7 @@ namespace NewKeyFrames
 		public List<Frameset> Framesets = new List<Frameset>();
 		public string LayerName;
 		protected ushort layerType;
+		public bool layerIsSelected = false;
 		public int SelectedKeyframe_Loc = -1; //The position of the selected keyframe in it's respective frameset
 		public int SelectedKeyframe_Pos = -1; //The position in the timeline of the selected keyframe.
 		public int SelectedFrameset_Loc = -1; //The index of the selected frameset in the list of framesets.
@@ -461,6 +462,60 @@ namespace NewKeyFrames
 		public Type getFrameType()
 		{
 			return (Type)(this.GetType().GetProperty("FrameType").GetValue(this, null));
+		}
+
+		/// <summary>
+		/// Updates the joints of the layer figure as if someone had just selected the given frame.
+		/// </summary>
+		/// <param name="position">The frame position.</param>
+		public void updateFigure(int position)
+		{
+			if (position < 0)
+				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
+
+			Frameset s = GetFramesetAt(position);
+
+			if (s == null)
+			{
+				LayerFigure.isDrawn = false;
+				return;
+			}
+
+			int result = s.BinarySearch(position);
+
+			if (result >= 0)
+			{
+				LayerFigure.isDrawn = true;
+
+				if(!layerIsSelected)
+					LayerFigure.drawHandles = false;
+
+				KeyFrame f = s[result];
+
+				foreach (StickJoint j in LayerFigure)
+					j.parentFigure = null;
+
+				LayerFigure.FigureJoints = f.FrameJoints;
+
+				foreach (StickJoint j in LayerFigure)
+					j.parentFigure = LayerFigure;
+
+				LayerFigure.figColor = f.figColor;
+			}
+			else
+			{
+				LayerFigure.drawFig = true;
+				LayerFigure.drawHandles = false;
+
+				KeyFrame S = s[-result-1], E = s[-result];
+
+				float percent = (float)(position - S.Position) / (E.Position - S.Position);
+
+				LayerFigure.FigureJoints = StickObject.copyJoints(E.FrameJoints);
+
+				for (int a = 0; a < LayerFigure.FigureJoints.Count; a++)
+					LayerFigure.FigureJoints[a].Tween(S.FrameJoints[a], LayerFigure.FigureJoints[a], percent);
+			}
 		}
 	}
 

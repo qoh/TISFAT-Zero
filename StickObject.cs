@@ -7,232 +7,6 @@ using System.Drawing;
 
 namespace NewKeyFrames
 {
-
-	class Attributes
-	{
-		private List<dynamic> attributes;
-		private List<string> attributeNames;
-
-		public Attributes()
-		{
-			attributes = new List<dynamic>();
-			attributeNames = new List<string>();
-		}
-
-		public void addAttribute(dynamic value, string name)
-		{
-			if (attributeCount == 0)
-			{
-				attributes.Add(value);
-				attributeNames.Add(name);
-				return;
-			}
-
-			int bottom = 0;
-			int top = attributeCount;
-			int middle = top >> 1;
-
-			//I had to make this binary search algorithm custom because I need it to store the middle index if the target is not found.
-			while (top >= bottom)
-			{
-				int x = attributeNames[middle].CompareTo(name);
-
-				if (x > 0)
-					top = middle - 1;
-				else if (x < 0)
-					bottom = middle + 1;
-				else
-					throw new ArgumentException("Attribute already exists");
-
-				middle = (bottom + top) >> 1;
-			}
-
-			attributes.Insert(middle, value);
-			attributeNames.Insert(middle, name);
-		}
-
-		public void removeAttribute(string name)
-		{
-			int index = attributeNames.BinarySearch(name);
-
-			if (index == -1)
-				throw new ArgumentException("Attribute with specified name not found.");
-
-			attributes.RemoveAt(index);
-			attributeNames.RemoveAt(index);
-		}
-
-		public void removeAttribute(dynamic value)
-		{
-			int index = attributes.IndexOf(value);
-
-			if (index == -1)
-				throw new ArgumentException("Attribute with specified value not found.");
-
-			attributes.RemoveAt(index);
-			attributeNames.RemoveAt(index);
-		}
-
-		public int attributeCount
-		{
-			get { return attributes.Count; }
-		}
-
-		public dynamic this[string name]
-		{
-			get { return attributes[attributeNames.BinarySearch(name)]; }
-
-			set { attributes[attributeNames.BinarySearch(name)] = value; }
-		}
-	}
-
-	//STICKJOINT CLASS IS DONE
-	class StickJoint
-	{
-
-		#region Variables
-
-		public string jointName;
-
-		public int jointState; // 0 = Normal, 1 = Locked, 2 = Adjust to parent, 3 = Adjust to parent locked
-
-		public int drawOrder;
-		public int drawType; // 0 = Line, 1 = Circle, 2 = Bitmap
-		
-		public Point location;
-		public double length;
-		public int thickness;
-
-		public bool isVisible;
-
-		public StickJoint parentJoint;
-		public StickObject parentFigure;
-		public List<StickJoint> childJoints = new List<StickJoint>();
-
-		public bool isSelectedJoint;
-		public bool handleDrawn;
-
-		public uint bitmapID;
-
-		private Double AngleToParent; //Used in IK posing, I'm just going to leave this here.
-
-		public Color jointColor;
-		public Color handleColor;
-		public Color defaultHandleColor;
-
-		#endregion
-
-		#region Constructors
-
-		public StickJoint(string newname, Point newLocation, int newThickness, Color newColor, Color newHandleColor, int newState = 0, int newDrawState = 0, StickJoint newParent = null, bool newHandleDrawn = true)
-		{
-			jointName = newname;
-			location = newLocation;
-			thickness = newThickness;
-			jointColor = newColor;
-			handleColor = newHandleColor;
-			defaultHandleColor = newHandleColor;
-			jointState = newState;
-			drawType = newDrawState;
-			parentJoint = newParent;
-			handleDrawn = newHandleDrawn;
-		}
-
-		public StickJoint(StickJoint obj, StickJoint newParent = null)
-		{
-			jointName = obj.jointName;
-			location = obj.location;
-			thickness = obj.thickness;
-			jointColor = obj.jointColor;
-			handleColor = obj.handleColor;
-			defaultHandleColor = obj.defaultHandleColor;
-			jointState = obj.jointState;
-			drawType = obj.drawType;
-			parentJoint = newParent;
-			parentFigure = obj.parentFigure;
-			handleDrawn = obj.handleDrawn;
-		}
-
-		#endregion Constructors
-
-		#region Methods
-
-		public double CalcLength(StickJoint start = null)
-		{
-			if (start == null)
-				start = this;
-
-			if (start.parentJoint != null)
-				start.length = Math.Round(Math.Sqrt(((start.parentJoint.location.X - start.location.X) * (start.parentJoint.location.X - start.location.X)) + ((start.parentJoint.location.Y - start.location.Y) * (start.parentJoint.location.Y - start.location.Y))));
-
-			return start.length;
-		}
-
-		public void Tween(StickJoint pStart, StickJoint pEnd, Single sPercent)
-		{
-			location.X = (int)Math.Round(pStart.location.X + ((pEnd.location.X - pStart.location.X) * sPercent));
-			location.Y = (int)Math.Round(pStart.location.Y + ((pEnd.location.Y - pStart.location.Y) * sPercent));
-
-			length = (int)Math.Round(pStart.length + ((pEnd.length - pStart.length) * sPercent));
-			thickness = (int)Math.Round(pStart.thickness + ((pEnd.thickness - pStart.thickness) * sPercent));
-
-			if (pStart.parentFigure.figureType == 3 && ((StickRect)parentFigure).isFilled)
-			{
-				/*Color tmp0 = pStart.parentFigure.parentLayer.adjacentBack.figColor;
-				Color tmp1 = pEnd.parentFigure.parentLayer.adjacentFront.figColor;
-
-				int r2 = tmp0.R + (int)Math.Round(sPercent * (tmp1.R - tmp0.R));
-				int g2 = tmp0.G + (int)Math.Round(sPercent * (tmp1.G - tmp0.G));
-				int b2 = tmp0.B + (int)Math.Round(sPercent * (tmp1.B - tmp0.B));
-				int a2 = tmp0.A + (int)Math.Round(sPercent * (tmp1.A - tmp0.A));
-
-				parentFigure.figColor = Color.FromArgb(a2, r2, g2, b2);*/
-			}
-
-			Color tmp2 = pStart.jointColor, tmp3 = pEnd.jointColor;
-
-			int r = tmp2.R + (int)Math.Round(sPercent * (tmp3.R - tmp2.R));
-			int g = tmp2.G + (int)Math.Round(sPercent * (tmp3.G - tmp2.G));
-			int b = tmp2.B + (int)Math.Round(sPercent * (tmp3.B - tmp2.B));
-			int a = tmp2.A + (int)Math.Round(sPercent * (tmp3.A - tmp2.A));
-
-			jointColor = Color.FromArgb(a, r, g, b);
-		}
-
-		public void removeChildren()
-		{
-			for (int i = childJoints.Count; i > 0; i--)
-			{
-				childJoints[i - 1].removeChildren();
-				parentFigure.FigureJoints.Remove(childJoints[i - 1]);
-				childJoints.RemoveAt(i - 1);
-			}
-		}
-
-		#endregion Methods
-
-		#region Positioning
-
-		public void SetPosAbs(double vx, double vy)
-		{
-			location.X = Convert.ToInt32(vx);
-			location.Y = Convert.ToInt32(vy);
-		}
-
-		private void Recalc(StickJoint pStart = null)
-		{
-			//TO-DO: Copy in recalc method
-		}
-
-		public void setPos(int vx, int vy)
-		{
-			//TO-DO: Copy in setpos method
-		}
-
-		#endregion
-
-	}
-
 	abstract class StickObject : IEnumerable<StickJoint>
 	{
 
@@ -242,7 +16,7 @@ namespace NewKeyFrames
 		public bool isActiveFig, drawFig, drawHandles;
 		public Color figColor = Color.Black;
 		public byte figureType; //This is used to identify what kind of figure it is. For example, 3 is a line, and 1 is a stickman.
-		//public Layer parentLayer;
+		public Layer parentLayer;
 
 		public static List<StickJoint> DefaultPose
 		{
@@ -374,7 +148,7 @@ namespace NewKeyFrames
 
 		public void setJointsColor(Color NewColor)
 		{
-			foreach(StickJoint j in FigureJoints)
+			foreach (StickJoint j in FigureJoints)
 				j.jointColor = NewColor;
 
 			if (figureType != 3)
@@ -490,15 +264,13 @@ namespace NewKeyFrames
 			}
 
 			for (int a = 0; a < listCount; a++)
-				if (parentPositions[a] != -1)
-					newList[a].parentJoint = newList[parentPositions[a]];
-
-			for (int i = 0; i < listCount; i++)
 			{
-				if (newList[i].parentJoint != null)
+				if (parentPositions[a] != -1)
 				{
-					newList[i].CalcLength();
-					newList[i].parentJoint.childJoints.Add(newList[i]);
+					StickJoint j = newList[a];
+					j.parentJoint = newList[parentPositions[a]];
+					j.CalcLength();
+					j.parentJoint.childJoints.Add(j);
 				}
 			}
 
@@ -511,17 +283,15 @@ namespace NewKeyFrames
 
 			int listCount = original.Count;
 
-			foreach(StickJoint j in original)
+			foreach (StickJoint j in original)
 				newList.Add(new StickJoint(j));
 
 			for (int a = 0; a < listCount; a++)
-				if (parentPositions[a] != -1)
-					newList[a].parentJoint = newList[parentPositions[a]];
-
-			foreach (StickJoint j in newList)
 			{
-				if (j != null)
+				if (parentPositions[a] != -1)
 				{
+					StickJoint j = newList[a];
+					j.parentJoint = newList[parentPositions[a]];
 					j.CalcLength();
 					j.parentJoint.childJoints.Add(j);
 				}
@@ -584,7 +354,8 @@ namespace NewKeyFrames
 
 		#endregion
 
-		public StickFigure( bool setAsActive = true) : base(setAsActive)
+		public StickFigure(bool setAsActive = true)
+			: base(setAsActive)
 		{
 			figureType = 1;
 		}
@@ -645,7 +416,8 @@ namespace NewKeyFrames
 
 		#endregion Properties
 
-		public StickLine(bool setAsActive = true) : base(setAsActive)
+		public StickLine(bool setAsActive = true)
+			: base(setAsActive)
 		{
 			figureType = 2;
 		}
@@ -689,7 +461,8 @@ namespace NewKeyFrames
 
 		#endregion Properties
 
-		public StickRect(bool setAsActive = true) : base(setAsActive)
+		public StickRect(bool setAsActive = true)
+			: base(setAsActive)
 		{
 			figureType = 3;
 
@@ -727,7 +500,8 @@ namespace NewKeyFrames
 
 	class StickCustom : StickObject
 	{
-		public StickCustom(bool setAsActive = true) : base(setAsActive)
+		public StickCustom(bool setAsActive = true)
+			: base(setAsActive)
 		{
 			figureType = 4;
 		}

@@ -9,19 +9,6 @@ namespace NewKeyFrames
 	{
 		static void Main(string[] args)
 		{
-			Layer x = new StickLayer("asdfasdf");
-
-			w(x.insertNewKeyFrameAt(5));
-			w(x);
-			w(x.insertNewKeyFrameAt(6));
-			w(x);
-			w(x.insertNewKeyFrameAt(21));
-			w(x);
-			w(x.insertNewKeyFrameAt(20));
-			w(x);
-			w(x.insertNewKeyFrameAt(1));
-			w(x);
-
 			Console.ReadKey(true);
 		}
 
