@@ -28,8 +28,25 @@ namespace TISFAT_Zero
 			timeline.StartPosition = FormStartPosition.Manual;
 			timeline.Location = new Point(0, 0);
 
+            timeline.LoadGraphics();
+
 			splitContainer1.Panel1.Controls.Add(timeline);
+
 			timeline.Show();
+
+            timeline.Width = splitContainer1.Panel1.Width - 2;
+            timeline.Height = splitContainer1.Panel1.Height - 2;
 		}
+
+        private void splitContainer1_Panel1_Resize(object sender, EventArgs e)
+        {
+            if (timeline == null)
+            {
+                return;
+            }
+
+            timeline.Width = splitContainer1.Panel1.Width - 2;
+            timeline.Height = splitContainer1.Panel1.Height - 2;
+        }
 	}
 }
