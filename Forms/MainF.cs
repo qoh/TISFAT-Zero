@@ -46,7 +46,13 @@ namespace TISFAT_Zero
             }
 
             timeline.Width = splitContainer1.Panel1.Width - 2;
-            timeline.Height = splitContainer1.Panel1.Height - 2;
+			timeline.Height = splitContainer1.Panel1.Height - 5;
+			timeline.Height+=3;
         }
+
+		private void splitContainer1_SplitterMoving(object sender, SplitterCancelEventArgs e)
+		{
+			timeline.Invalidate();
+		}
 	}
 }

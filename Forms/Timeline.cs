@@ -46,7 +46,7 @@ namespace TISFAT_Zero
 
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.ClearColor(Colors[2]);
-            GL.Viewport(0, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height - Height, Width, Height);
+            GL.Viewport(0, Screen.PrimaryScreen.Bounds.Height - Height, Width, Height);
             GL.Ortho(0, Width, Height, 0, 0, 1);
 
             this.Invalidate();
@@ -84,15 +84,15 @@ namespace TISFAT_Zero
 
         public void LoadGraphics()
         {
-            GLGraphics.Width = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width;
-            GLGraphics.Height = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height;
+            GLGraphics.Width = Screen.PrimaryScreen.Bounds.Width;
+            GLGraphics.Height = Screen.PrimaryScreen.Bounds.Height;
 
             GLGraphics = new OpenTK.GLControl(new OpenTK.Graphics.GraphicsMode(32, 0, 1, 4), 3, 0, OpenTK.Graphics.GraphicsContextFlags.Default);
             GLGraphics.MakeCurrent();
 
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
-            GL.Viewport(0, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height - Height, Width, Height);
+            GL.Viewport(0, Screen.PrimaryScreen.Bounds.Height - Height, Width, Height);
             GL.Ortho(0, Width, Height, 0, 0, 1);
 
             GL.Disable(EnableCap.DepthTest);
