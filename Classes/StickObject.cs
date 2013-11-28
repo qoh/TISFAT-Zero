@@ -4,11 +4,11 @@ using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Drawing;
-using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
 namespace TISFAT_Zero
 {
-	abstract class StickObject : IEnumerable<StickJoint>
+	abstract class StickObject : IEnumerable<StickJoint>, IGLDrawable
 	{
 
 		#region Properties
@@ -67,7 +67,12 @@ namespace TISFAT_Zero
 
 		#region Drawing
 
-		public void drawFigure(IDrawable Canvas)
+		public void Draw(ICanDraw Canvas, Point position = new Point())
+		{
+			drawFigure(Canvas);
+		}
+
+		public void drawFigure(ICanDraw Canvas)
 		{
 			if (!drawFig)
 				return;
@@ -75,7 +80,7 @@ namespace TISFAT_Zero
 			drawJoints(Canvas);
 		}
 
-		private void drawJoints(IDrawable Canvas)
+		private void drawJoints(ICanDraw Canvas)
 		{
 			bool useStencil = false;
 
@@ -92,15 +97,15 @@ namespace TISFAT_Zero
 				}
 			}
 
-			//GL.Disable(EnableCap.StencilTest);
+			GL.Disable(EnableCap.StencilTest);
 
 			if (useStencil)
 			{
-				/*GL.Clear(ClearBufferMask.StencilBufferBit);
+				GL.Clear(ClearBufferMask.StencilBufferBit);
 				GL.Enable(EnableCap.StencilTest);
 				GL.StencilMask(0xFFFFFF);
 				GL.StencilFunc(StencilFunction.Equal, 0, 0xFFFFFF);
-				GL.StencilOp(StencilOp.Keep, StencilOp.Keep, StencilOp.Incr);*/
+				GL.StencilOp(StencilOp.Keep, StencilOp.Keep, StencilOp.Incr);
 			}
 
 			//If the figure is of the rectangle type and it's filled, then draw in the fill. (Thank goodness for short-circuiting!)
@@ -119,10 +124,10 @@ namespace TISFAT_Zero
 				}
 			}
 
-			//GL.Disable(EnableCap.StencilTest);
+			GL.Disable(EnableCap.StencilTest);
 		}
 
-		public void drawFigHandles(IDrawable Canvas)
+		public void drawFigHandles(ICanDraw Canvas)
 		{
 			if (!drawHandles)
 				return;

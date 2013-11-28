@@ -28,11 +28,10 @@ namespace TISFAT_Zero
 			timeline.StartPosition = FormStartPosition.Manual;
 			timeline.Location = new Point(0, 0);
 
-            timeline.LoadGraphics();
-
 			splitContainer1.Panel1.Controls.Add(timeline);
 
 			timeline.Show();
+			timeline.Invalidate();
 
             timeline.Width = splitContainer1.Panel1.Width - 2;
             timeline.Height = splitContainer1.Panel1.Height - 2;
@@ -46,12 +45,13 @@ namespace TISFAT_Zero
             }
 
             timeline.Width = splitContainer1.Panel1.Width - 2;
-			timeline.Height = splitContainer1.Panel1.Height - 5;
-			timeline.Height+=3;
+			timeline.Height = splitContainer1.Panel1.Height - 3;
+			timeline.Height++;
         }
 
 		private void splitContainer1_SplitterMoving(object sender, SplitterCancelEventArgs e)
 		{
+			timeline.Height = splitContainer1.Panel1.Height - 3;
 			timeline.Invalidate();
 		}
 	}

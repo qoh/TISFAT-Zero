@@ -57,12 +57,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Attributes.cs" />
-    <Compile Include="Classes\Drawable.cs" />
+    <Compile Include="Classes\Interfaces.cs" />
     <Compile Include="Classes\Frameset.cs" />
     <Compile Include="Classes\KeyFrame.cs" />
     <Compile Include="Classes\Layer.cs" />
     <Compile Include="Classes\StickJoint.cs" />
     <Compile Include="Classes\StickObject.cs" />
+    <Compile Include="Classes\T0Bitmap.cs" />
     <Compile Include="Forms\MainF.cs">
       <SubType>Form</SubType>
     </Compile>
