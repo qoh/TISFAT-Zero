@@ -57,8 +57,9 @@ namespace TISFAT_Zero
 		/// Initializes a new instance of the <see cref="KeyFrame"/> class.
 		/// </summary>
 		/// <param name="framePosition">The position of the keyframe inside the timeline.</param>
-		protected KeyFrame(int framePosition)
+		protected KeyFrame(int framePosition, ushort ftype = 0)
 		{
+			frameType = ftype;
 			FrameJoints = (List<StickJoint>)(((Type)(this.GetType().GetProperty("ObjectType").GetValue(this, null))).GetProperty("DefaultPose").GetValue(this, null));
 
 			Properties = new Attributes();
@@ -129,15 +130,13 @@ namespace TISFAT_Zero
 		/// Initializes a new instance of the <see cref="StickFrame"/> class at the specified position.
 		/// </summary>
 		/// <param name="Position">The position of the KeyFrame inside the timeline.</param>
-		public StickFrame(int Position) : base(Position)
-		{
-			frameType = 0;
-		}
+		public StickFrame(int Position) : base(Position, 0)
+		{ }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="StickFrame"/> class at the position 0.
 		/// </summary>
-		public StickFrame() : base(0) { }
+		public StickFrame() : this(0) { }
 	}
 
 	class LineFrame : KeyFrame
@@ -151,12 +150,10 @@ namespace TISFAT_Zero
 		/// Initializes a new instance of the <see cref="LineFrame"/> class at the specified position.
 		/// </summary>
 		/// <param name="Position">The position of the KeyFrame inside the timeline.</param>
-		public LineFrame(int Position) : base(Position)
-		{
-			frameType = 2;
-		}
+		public LineFrame(int Position) : base(Position, 1)
+		{ }
 
-		public LineFrame() : base(0) { }
+		public LineFrame() : this(0) { }
 	}
 
 	class RectFrame : KeyFrame
@@ -177,14 +174,12 @@ namespace TISFAT_Zero
 		/// Initializes a new instance of the <see cref="RectFrame"/> class at the specified position.
 		/// </summary>
 		/// <param name="Position">The position of the KeyFrame inside the timeline.</param>
-		public RectFrame(int Position) : base(Position)
+		public RectFrame(int Position) : base(Position, 2)
 		{
-			frameType = 3;
-
 			Properties.addAttribute(true, "isFilled");
 		}
 
-		public RectFrame() : base(0) { }
+		public RectFrame() : this(0) { }
 
 		protected override void copyKeyFrameStep2(Attributes oldAttributes)
 		{
@@ -204,11 +199,65 @@ namespace TISFAT_Zero
 		/// Initializes a new instance of the <see cref="CustomFrame"/> class at the specified position.
 		/// </summary>
 		/// <param name="Position">The position of the KeyFrame inside the timeline.</param>
-		public CustomFrame(int Position) : base(Position)
+		public CustomFrame(int Position) : base(Position, 3)
+		{ }
+
+		public CustomFrame() : this(0) { }
+	}
+
+	class BitmapFrame : KeyFrame
+	{
+		new public static Type ObjectType
 		{
-			frameType = 4;
+			get { return typeof(StickCustom); }
 		}
 
-		public CustomFrame() : base(0) { }
+		public int BitmapID
+		{
+			get
+			{
+				return (int)Properties["BitmapID"];
+			}
+			set
+			{
+				Properties["BitmapID"] = value;
+			}
+		}
+
+		public BitmapFrame(int Position) : base(Position, 4)
+		{
+			Properties.addAttribute(-1, "BitmapID");
+		}
+
+		public BitmapFrame() : this(0)
+		{ }
+	}
+
+	class TextFrame : KeyFrame
+	{
+		new public static Type ObjectType
+		{
+			get { return typeof(StickCustom); }
+		}
+
+		public string FrameText
+		{
+			get
+			{
+				return (string)Properties["FrameText"];
+			}
+			set
+			{
+				Properties["FrameText"] = value;
+			}
+		}
+
+		public TextFrame(int Position) : base(Position, 5)
+		{
+			Properties.addAttribute("Your Text Here", "FrameText");
+		}
+
+		public TextFrame() : this(0)
+		{ }
 	}
 }

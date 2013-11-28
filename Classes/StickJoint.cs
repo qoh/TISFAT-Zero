@@ -33,7 +33,7 @@ namespace TISFAT_Zero
 		public bool isSelectedJoint;
 		public bool handleDrawn;
 
-		public uint bitmapID;
+		public int bitmapID;
 
 		private Double AngleToParent; //Used in IK posing, I'm just going to leave this here.
 
