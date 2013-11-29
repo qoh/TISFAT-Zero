@@ -579,7 +579,18 @@ namespace TISFAT_Zero
 		/// </summary>
 		/// <param name="layerName">The name to be given to the layer.</param>
 		/// <param name="startingOffset">The starting position of the first frameset. Defaults to 0.</param>
-		public CustomLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(StickCustom), 3, startingOffset)
+		public CustomLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(CustomFrame), 3, startingOffset)
+		{ }
+	}
+
+	class BitmapLayer : Layer
+	{
+		new public static Type FrameType
+		{
+			get { return typeof(BitmapFrame); }
+		}
+
+		public BitmapLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(BitmapFrame), 4, startingOffset)
 		{ }
 	}
 }
