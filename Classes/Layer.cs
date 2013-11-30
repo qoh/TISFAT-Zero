@@ -4,7 +4,7 @@ using System.Collections;
 using System.Reflection;
 using System.Text;
 using System.Linq;
-
+using TISFAT_Zero.Properties;
 namespace TISFAT_Zero
 {
 	abstract class Layer

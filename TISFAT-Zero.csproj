@@ -109,6 +109,18 @@
     <None Include="COPYRIGHT.html" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\stub_x_l.png" />
+    <None Include="Resources\stub_x_r.png" />
+    <None Include="Resources\stub_y_b.png" />
+    <None Include="Resources\stub_y_t.png" />
+    <None Include="Resources\stub_x_l_a.png" />
+    <None Include="Resources\stub_x_r_a.png" />
+    <None Include="Resources\stub_y_b_a.png" />
+    <None Include="Resources\stub_y_t_a.png" />
+    <None Include="Resources\stub_x_l_c.png" />
+    <None Include="Resources\stub_x_r_c.png" />
+    <None Include="Resources\stub_y_b_c.png" />
+    <None Include="Resources\stub_y_t_c.png" />
     <Content Include="T0.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

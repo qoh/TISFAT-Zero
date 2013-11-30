@@ -31,11 +31,11 @@
 			this.glgraphics = new OpenTK.GLControl();
 			this.SuspendLayout();
 			// 
-			// GLGraphics
+			// glgraphics
 			// 
 			this.glgraphics.BackColor = System.Drawing.Color.Black;
 			this.glgraphics.Location = new System.Drawing.Point(0, 0);
-			this.glgraphics.Name = "GLGraphics";
+			this.glgraphics.Name = "glgraphics";
 			this.glgraphics.Size = new System.Drawing.Size(127, 129);
 			this.glgraphics.TabIndex = 0;
 			this.glgraphics.VSync = false;
@@ -57,6 +57,9 @@
 			this.Text = "TIMELINE";
 			this.Load += new System.EventHandler(this.Timeline_Load);
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.Timeline_Paint);
+			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseDown);
+			this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseMove);
+			this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseUp);
 			this.Resize += new System.EventHandler(this.Timeline_Resize);
 			this.ResumeLayout(false);
 

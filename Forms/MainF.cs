@@ -51,7 +51,6 @@ namespace TISFAT_Zero
 
 		private void splitContainer1_SplitterMoving(object sender, SplitterCancelEventArgs e)
 		{
-			timeline.Height = splitContainer1.Panel1.Height - 3;
 			timeline.Invalidate();
 		}
 	}
