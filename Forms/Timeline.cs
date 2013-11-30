@@ -19,7 +19,7 @@ namespace TISFAT_Zero
 		private bool GLLoaded = false;
 
 		public double Scrollbar_eX, Scrollbar_eY = 0.3;
-		public int Scrollbar_lX, Scrollbar_lY;
+		private Rectangle ScrollX = new Rectangle(), ScrollY = new Rectangle();
 		public int cursorStart;
 		public bool isScrolling, isScrollingY;
 
@@ -54,13 +54,16 @@ namespace TISFAT_Zero
 				{
 					g.Clear(Color.Empty);
 					g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-					g.DrawString("" + a, new Font(this.Font.FontFamily, 10), Brushes.Black, y);
+					g.DrawString("" + a, new Font(this.Font.FontFamily, 12), Brushes.Black, y);
 
 					zerotonine[a] = new T0Bitmap(raw);
 				}
 			}
 
-			Layers.Add(new StickLayer("Layer 1"));
+			ScrollY.Width = 8;
+			ScrollX.Height = 8;
+
+			addNewLayer(typeof(StickLayer), "Layer 1");
 		}
 
 		public void Timeline_Resize(object sender, EventArgs e)
@@ -80,13 +83,16 @@ namespace TISFAT_Zero
 			int height = 16 * 16;
 			int width = timelineLength * 9;
 
-			int scrollbarHeight = Height - 30;
+			int scrollAreaY = Height - 40, scrollAreaX = Width - 100;
+			int containerY = Height - 26, containerX = scrollAreaX + 10;
 
-			float viewRatioY = (float)(Height - 31) / height, viewRatioX = (float)(Width - 95) / width;
+			float viewRatioY = (float)containerY / height, viewRatioX = (float)containerX / width;
+			
+			ScrollY.Height = viewRatioY < 1 ? Math.Max((int)(scrollAreaY * viewRatioY), 16) : -1;
+			ScrollY.Location = ScrollY.Height != -1 ? new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 10)) : new Point(-1, -1);
 
-			int offsetY = 0, offsetX = 0;
-
-			Scrollbar_lY = viewRatioY < 1 ? Math.Max((int)(scrollbarHeight * viewRatioY), 16) : -1;
+			ScrollX.Width = viewRatioX < 1 ? Math.Max((int)(scrollAreaX * viewRatioX), 16) : -1;
+			ScrollX.Location = ScrollX.Width != -1 ? new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 90), Height - 10) : new Point(-1, -1);
 
 			this.Invalidate();
 		}
@@ -100,7 +106,7 @@ namespace TISFAT_Zero
 		{
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 
-			int scrollbarHeight = Height - 30;
+			int scrollbarHeight = Height - 45;
 
 			//float viewRatioY = (float)(Height - 31) / height, viewRatioX = (float)(Width - 95) / width;
 
@@ -114,13 +120,23 @@ namespace TISFAT_Zero
 			//	offsetY = (int)((height * Scrollbar_eY * (scrollbarHeight - Scrollbar_lY)) / scrollbarHeight);
 			//}
 
-			int drawStartY = (int)((scrollbarHeight - Scrollbar_lY) * Scrollbar_eY);
-
+			GL.Color4(Color.Gray);
 			GL.Begin(BeginMode.Quads);
-			GL.Vertex2(Width - 11, 15 + drawStartY);
-			GL.Vertex2(Width - 11, 15 + drawStartY + Scrollbar_lY);
-			GL.Vertex2(Width - 3, 15 + drawStartY + Scrollbar_lY);
-			GL.Vertex2(Width - 3, 15 + drawStartY);
+
+			int x1 = ScrollY.Location.X, x2 = x1 + ScrollY.Width;
+			int y1 = ScrollY.Location.Y, y2 = y1 + ScrollY.Height;
+			GL.Vertex2(x1, y1);
+			GL.Vertex2(x1, y2);
+			GL.Vertex2(x2, y2);
+			GL.Vertex2(x2, y1);
+
+			x1 = ScrollX.Location.X; x2 = x1 + ScrollX.Width;
+			y1 = ScrollX.Location.Y; y2 = y1 + ScrollX.Height;
+			GL.Vertex2(x1, y1);
+			GL.Vertex2(x1, y2);
+			GL.Vertex2(x2, y2);
+			GL.Vertex2(x2, y1);
+
 			GL.End();
 
 			//Determine the number of frames (x) we need to draw
@@ -174,7 +190,7 @@ namespace TISFAT_Zero
 			//Add the layer
 			Layers.Add(newLayer);
 
-			//Construct the name 
+			//Construct the name (will do later because lazy)
 
 			return newLayer;
 		}
@@ -194,34 +210,33 @@ namespace TISFAT_Zero
 
 				GL.End();
 			}
-			else if (type == 1) //Rectangle
+			else if (type == 1 || type == 2) //Rectangle
 			{
 				GL.Color4(color);
-				GL.Begin(BeginMode.Quads);
+				if (type == 1)
+					GL.Begin(BeginMode.Quads);
+				else
+					GL.Begin(BeginMode.LineLoop);
 
-				GL.Vertex2(one.X, one.Y);
-				GL.Vertex2(one.X + width, one.Y);
-				GL.Vertex2(one.X + width, one.Y + height);
-				GL.Vertex2(one.X, one.Y + height);
+				if (width != 0 && height != 0)
+				{
+					GL.Vertex2(one.X, one.Y);
+					GL.Vertex2(one.X + width, one.Y);
+					GL.Vertex2(one.X + width, one.Y + height);
+					GL.Vertex2(one.X, one.Y + height);
+				}
+				else
+				{
+					GL.Vertex2(one.X, one.Y);
+					GL.Vertex2(two.X, one.Y);
+					GL.Vertex2(two.X, two.Y);
+					GL.Vertex2(one.X, two.Y);
+				}
 
 				GL.End();
 			}
-			else if (type == 2) //Hollow Rectangle
-			{
-				GL.Disable(EnableCap.Multisample);
 
-				GL.Color4(color);
-				GL.Begin(BeginMode.LineLoop);
-
-				GL.Vertex2(one.X - 2.5, one.Y - 2.5);
-				GL.Vertex2(one.X + 2.5, one.Y - 2.5);
-				GL.Vertex2(one.X + 2.5, one.Y + 2.5);
-				GL.Vertex2(one.X - 2.5, one.Y + 2.5);
-
-				GL.End();
-
-				GL.Enable(EnableCap.Multisample);
-			}
+			GL.Disable(EnableCap.Blend);
 		}
 	}
 }

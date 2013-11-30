@@ -80,7 +80,7 @@ namespace TISFAT_Zero
 			drawJoints(Canvas);
 		}
 
-		private virtual void drawJoints(ICanDraw Canvas)
+		protected virtual void drawJoints(ICanDraw Canvas)
 		{
 			bool useStencil = false;
 
