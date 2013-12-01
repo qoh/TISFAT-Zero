@@ -25,7 +25,7 @@ namespace TISFAT_Zero
 		private Rectangle ScrollX = new Rectangle(), ScrollY = new Rectangle();
 		private Rectangle StubX = new Rectangle(), StubY = new Rectangle();
 
-		public int cursorStart;
+		public int cursorDiff;
 
 		//We also use a lot of bools >.>
 		public bool isScrolling, isScrollingY;
@@ -34,7 +34,7 @@ namespace TISFAT_Zero
 		//On the suggestion of Valcle, I'm using bit masks here so we don't flood this area with bools.
 		//bits 1-4: scrollbars
 		//1st bit:		is anything selected
-		//2nd bit:		mouse down or mouse over (0,1)
+		//2nd bit:		mouse over or mouse down (0,1)
 		//3rd-4th bit:	which is selected (3rd: 0:x, 1:y 4th: 0:top/left, 1:bottom/right)
 		//repeated for bits 5-8 for scrolling stubs
 		private byte selectedScrollItems = 0;
@@ -78,6 +78,7 @@ namespace TISFAT_Zero
 					zerotonine[a] = new T0Bitmap(raw);
 				}
 			}
+
 			//Fetch the scrollbar stub bitmaps
 			stubs[0] = new T0Bitmap(Properties.Resources.stub_x_l); stubs[1] = new T0Bitmap(Properties.Resources.stub_x_r);
 			stubs[2] = new T0Bitmap(Properties.Resources.stub_y_t); stubs[3] = new T0Bitmap(Properties.Resources.stub_y_b);
@@ -90,14 +91,9 @@ namespace TISFAT_Zero
 			ScrollX.Height = 8;
 
 			StubX.Height = 12;
-			StubX.Location = new Point(70, 0);
-
 			StubY.Width = 12;
-			StubY.Location = new Point(0, 6);
 
 			addNewLayer(typeof(StickLayer));
-
-			selectedScrollItems = 1 << 4 | 1 << 5;
 		}
 
 		public void Timeline_Resize(object sender, EventArgs e)
@@ -161,27 +157,24 @@ namespace TISFAT_Zero
 			renderRectangle(ScrollX, Color.Gray);
 			renderRectangle(ScrollY, Color.Gray);
 
-			byte stub = (byte)(selectedScrollItems & 0x0F);
+			byte stub = selectedScrollItems;
 
 			if (isBitSet(stub, 0))
 			{
-				Color x = isBitSet(stub, 1) ? Color.WhiteSmoke : Color.LightGray;
-				
+				Color x = isBitSet(stub, 1) ? Color.LightGray : Color.DimGray;
+
+				Rectangle toDraw = isBitSet(stub, 2) ? ScrollY : ScrollX;
+				renderRectangle(toDraw, x);
 			}
 
-			stubs[0].Draw(this);
-			stubs[1].Draw(this);
-			stubs[2].Draw(this);
-			stubs[3].Draw(this);
+			for(int a = 0; a < 4; a++)
+				stubs[a].Draw(this);
 
-			stub = (byte)((selectedScrollItems & 0xF0) >> 4);
+			stub >>= 4;
 
+			//This formula is used to determine which stub to draw, since I ordered them so neatly in the array this is possible.
 			if (isBitSet(stub, 0))
-			{
-				//This formula is used to determine which stub to draw, since I ordered them so neatly in the array this is possible.
-				int ind = 4 + 2 * (stub & 2) + ((stub & 4) >> 1) + ((stub & 8) >> 3);
-				stubs[ind].Draw(this);
-			}
+				stubs[4 + 2 * (stub & 2) + ((stub & 4) >> 1) + ((stub & 8) >> 3)].Draw(this);
 
 			currentnum = (currentnum + 1) % 10;
 			zerotonine[currentnum].Draw(this);
@@ -291,17 +284,100 @@ namespace TISFAT_Zero
 
 		private void Timeline_MouseMove(object sender, MouseEventArgs e)
 		{
+			byte old = selectedScrollItems;
 
+			int x = e.X, y = e.Y;
+			int dx = Width - x, dy = Height - y;
+
+			if (dx < 12 || dy < 12)
+			{
+				byte cast = (byte)(!mouseDown ? 0 : 2 | 1 << 5);
+				if (dx < 12)
+				{
+					if (y < 6)
+						selectedScrollItems = 0;
+
+					if (y > 15)
+					{
+						if (dy > 12)
+						{
+							Rectangle ScrollerAreaY = new Rectangle(new Point(ScrollY.X - 2, ScrollY.Y), new Size(ScrollY.Width + 4, ScrollY.Height));
+							selectedScrollItems = (byte)(ScrollerAreaY.Contains(e.Location) ? cast | 1 | 4 : 0);
+						}
+						else
+							selectedScrollItems = (byte)(cast | 1 << 4 | 1 << 6 | 1 << 7);
+					}
+					else
+						selectedScrollItems = (byte)(cast | 1 << 4 | 1 << 6);
+				}
+				else
+				{
+					if (dx < 22)
+						selectedScrollItems = (byte)(dy < 12 ? cast | 1 << 4 | 1 << 7 : 0);
+					else if (x > 70)
+					{
+						if (x > 80)
+						{
+							Rectangle ScrollerAreaX = new Rectangle(new Point(ScrollX.X, ScrollX.Y - 2), new Size(ScrollX.Width, ScrollX.Height + 4));
+							selectedScrollItems = (byte)(ScrollerAreaX.Contains(e.Location) ? cast | 1 | 1 << 3 : 0);
+						}
+						else
+							selectedScrollItems = (byte)(cast | 1 << 4);
+					}
+					else
+						selectedScrollItems = 0;
+				}
+			}
+			else
+				selectedScrollItems = 0;
+			
+
+			if (!mouseDown)
+			{
+				if (cursorDiff != -1)
+				{
+					cursorDiff = -1;
+					isScrolling = false;
+					isScrollingY = false;
+				}
+			}
+			else
+			{
+				if ((selectedScrollItems & 1) == 1 && !isScrolling)
+				{
+					isScrolling = true;
+					isScrollingY = !isBitSet(selectedScrollItems, 3);
+
+					cursorDiff = isScrollingY ? y - ScrollY.Top : x - ScrollX.Left;
+				}
+				else if (isScrolling)
+				{
+					int scrollAreaY = Height - 28, scrollAreaX = Width - 100;
+
+
+					if (isScrollingY)
+					{
+						Scrollbar_eY = Math.Min(1, Math.Max(0, (double)(y - cursorDiff) / (scrollAreaY - ScrollY.Height)));
+						ScrollY.Location = new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 16));
+					}
+				}
+			}
+
+			//Only refresh if the state has changed
+			if(old != selectedScrollItems || isScrolling)
+				Timeline_Refresh();
 		}
 
 		private void Timeline_MouseDown(object sender, MouseEventArgs e)
 		{
-
+			mouseDown = true;
+			Timeline_MouseMove(sender, e);
 		}
 
 		private void Timeline_MouseUp(object sender, MouseEventArgs e)
 		{
-
+			mouseDown = false;
+			Timeline_MouseMove(sender, e);
 		}
 
 		private bool isBitSet(byte x, byte n)

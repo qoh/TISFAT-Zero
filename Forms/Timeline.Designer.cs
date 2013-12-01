@@ -39,6 +39,9 @@
 			this.glgraphics.Size = new System.Drawing.Size(127, 129);
 			this.glgraphics.TabIndex = 0;
 			this.glgraphics.VSync = false;
+			this.glgraphics.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseDown);
+			this.glgraphics.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseMove);
+			this.glgraphics.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseUp);
 			// 
 			// Timeline
 			// 
@@ -57,9 +60,6 @@
 			this.Text = "TIMELINE";
 			this.Load += new System.EventHandler(this.Timeline_Load);
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.Timeline_Paint);
-			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseDown);
-			this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseMove);
-			this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseUp);
 			this.Resize += new System.EventHandler(this.Timeline_Resize);
 			this.ResumeLayout(false);
 
