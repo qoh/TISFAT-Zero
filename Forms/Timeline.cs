@@ -134,7 +134,7 @@ namespace TISFAT_Zero
 			StubY.Location = new Point(Width - 12, 6);
 
 			stubs[0].texPos = new Point(StubX.Left + 2, StubX.Top + 1);
-			stubs[1].texPos = new Point(StubX.Right - 10, StubX.Top + 1);
+			stubs[1].texPos = new Point(StubX.Right - 8, StubX.Top + 1);
 			stubs[2].texPos = new Point(StubY.Left + 1, StubY.Top + 2);
 			stubs[3].texPos = new Point(StubY.Left + 1, StubY.Bottom - 9);
 			for(int a = 4; a < 12; a++)
@@ -285,21 +285,22 @@ namespace TISFAT_Zero
 		private void Timeline_MouseMove(object sender, MouseEventArgs e)
 		{
 			byte old = selectedScrollItems;
+			Point old1 = ScrollY.Location, old2 = ScrollX.Location;
 
 			int x = e.X, y = e.Y;
 			int dx = Width - x, dy = Height - y;
 
-			if (dx < 12 || dy < 12)
+			if (dx <= 12 || dy <= 12)
 			{
 				byte cast = (byte)(!mouseDown ? 0 : 2 | 1 << 5);
-				if (dx < 12)
+				if (dx <= 12)
 				{
-					if (y < 6)
+					if (y <= 6)
 						selectedScrollItems = 0;
 
-					if (y > 15)
+					if (y >= 15)
 					{
-						if (dy > 12)
+						if (dy >= 12)
 						{
 							Rectangle ScrollerAreaY = new Rectangle(new Point(ScrollY.X - 2, ScrollY.Y), new Size(ScrollY.Width + 4, ScrollY.Height));
 							selectedScrollItems = (byte)(ScrollerAreaY.Contains(e.Location) ? cast | 1 | 4 : 0);
@@ -312,11 +313,11 @@ namespace TISFAT_Zero
 				}
 				else
 				{
-					if (dx < 22)
+					if (dx <= 22)
 						selectedScrollItems = (byte)(dy < 12 ? cast | 1 << 4 | 1 << 7 : 0);
-					else if (x > 70)
+					else if (x >= 70)
 					{
-						if (x > 80)
+						if (x >= 80)
 						{
 							Rectangle ScrollerAreaX = new Rectangle(new Point(ScrollX.X, ScrollX.Y - 2), new Size(ScrollX.Width, ScrollX.Height + 4));
 							selectedScrollItems = (byte)(ScrollerAreaX.Contains(e.Location) ? cast | 1 | 1 << 3 : 0);
@@ -354,17 +355,21 @@ namespace TISFAT_Zero
 				{
 					int scrollAreaY = Height - 28, scrollAreaX = Width - 100;
 
-
 					if (isScrollingY)
 					{
-						Scrollbar_eY = Math.Min(1, Math.Max(0, (double)(y - cursorDiff) / (scrollAreaY - ScrollY.Height)));
+						Scrollbar_eY = Math.Min(1, Math.Max(0, (double)((y - 16) - cursorDiff) / (scrollAreaY - ScrollY.Height)));
 						ScrollY.Location = new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 16));
+					}
+					else
+					{
+						Scrollbar_eX = Math.Min(1, Math.Max(0, (double)((x - 80) - cursorDiff) / (scrollAreaX - ScrollX.Width)));
+						ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 80), Height - 10);
 					}
 				}
 			}
 
 			//Only refresh if the state has changed
-			if(old != selectedScrollItems || isScrolling)
+			if(old != selectedScrollItems || ScrollY.Location != old1 || ScrollX.Location != old2)
 				Timeline_Refresh();
 		}
 
