@@ -37,9 +37,11 @@ namespace TISFAT_Zero
 		//2nd bit:		mouse over or mouse down (0,1)
 		//3rd-4th bit:	which is selected (3rd: 0:x, 1:y 4th: 0:top/left, 1:bottom/right)
 		//repeated for bits 5-8 for scrolling stubs
-		private byte selectedScrollItems = 0;
+		public byte selectedScrollItems = 0;
 
-		public int timelineLength = 150;
+		public int timelineFrameLength = 150;
+		public int timelineRealLength;
+		public int timelineHeight = 16 * 16;
 
 		//We also use a lot of bitmaps.. ^ ^'
 		private T0Bitmap[] zerotonine = new T0Bitmap[10];
@@ -94,6 +96,7 @@ namespace TISFAT_Zero
 			StubY.Width = 12;
 
 			addNewLayer(typeof(StickLayer));
+			timelineRealLength = 9 * timelineFrameLength;
 		}
 
 		public void Timeline_Resize(object sender, EventArgs e)
@@ -110,13 +113,12 @@ namespace TISFAT_Zero
 			GL.Viewport(0, Screen.PrimaryScreen.Bounds.Height - Height, Width, Height);
 			GL.Ortho(0, Width, Height, 0, 0, 1);
 
-			int height = 16 * 16;
-			int width = timelineLength * 9;
+			int width = timelineFrameLength * 9;
 
 			int scrollAreaY = Height - 28, scrollAreaX = Width - 100;
 			int containerX = scrollAreaX + 10;
 
-			float viewRatioY = (float)scrollAreaY / height, viewRatioX = (float)containerX / width;
+			float viewRatioY = (float)scrollAreaY / timelineHeight, viewRatioX = (float)containerX / width;
 			
 			ScrollY.Height = viewRatioY < 1 ? Math.Max((int)(scrollAreaY * viewRatioY), 16) : -1;
 			ScrollY.Location = ScrollY.Height != -1 ? new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 16)) : new Point(-1, -1);
@@ -125,7 +127,7 @@ namespace TISFAT_Zero
 			ScrollX.Location = ScrollX.Width != -1 ? new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 80), Height - 10) : new Point(-1, -1);
 
 			pxOffsetX = (int)(Scrollbar_eX * width);
-			pxOffsetY = (int)(Scrollbar_eY * height);
+			pxOffsetY = (int)(Scrollbar_eY * timelineHeight);
 
 			StubX.Width = Width - 80;
 			StubX.Location = new Point(70, Height - 12);
@@ -150,6 +152,10 @@ namespace TISFAT_Zero
 
 		public void Timeline_Refresh()
 		{
+			if(!GLLoaded)
+				return;
+			
+			glgraphics.MakeCurrent();
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 
 			renderRectangle(StubX, Color.DarkGray);
@@ -163,7 +169,7 @@ namespace TISFAT_Zero
 			{
 				Color x = isBitSet(stub, 1) ? Color.LightGray : Color.DimGray;
 
-				Rectangle toDraw = isBitSet(stub, 2) ? ScrollY : ScrollX;
+				Rectangle toDraw = !isBitSet(stub, 3) ? ScrollY : ScrollX;
 				renderRectangle(toDraw, x);
 			}
 
@@ -286,86 +292,102 @@ namespace TISFAT_Zero
 		{
 			byte old = selectedScrollItems;
 			Point old1 = ScrollY.Location, old2 = ScrollX.Location;
-
+			bool updateScrollLocation = false;
 			int x = e.X, y = e.Y;
 			int dx = Width - x, dy = Height - y;
 
-			if (dx <= 12 || dy <= 12)
+			int scrollAreaY = Height - 28, scrollAreaX = Width - 100;
+
+            if (!mouseDown)
+            {
+                cursorDiff = -1;
+                isScrolling = false;
+                isScrollingY = false;
+                selectedScrollItems &= 0xfd;
+            }
+
+			//Only start checking the massive monolithic conditional tree if dx or dy is <= 12. This is because all the scrollers
+			//are 12 pixels out from their respective sides. It also checks if the first bit of selectedScrollItems is 0,
+			//this is so that it doesn't update the selected scroll items while the mouse is clicked down.
+			if ((dx <= 12 || dy <= 12) && !isBitSet(selectedScrollItems, 1))
 			{
-				byte cast = (byte)(!mouseDown ? 0 : 2 | 1 << 5);
+				selectedScrollItems = (byte)(!mouseDown ? 0 : 2 | 1 << 5);
 				if (dx <= 12)
 				{
 					if (y <= 6)
 						selectedScrollItems = 0;
-
-					if (y >= 15)
+					else if (y >= 15)
 					{
 						if (dy >= 12)
 						{
 							Rectangle ScrollerAreaY = new Rectangle(new Point(ScrollY.X - 2, ScrollY.Y), new Size(ScrollY.Width + 4, ScrollY.Height));
-							selectedScrollItems = (byte)(ScrollerAreaY.Contains(e.Location) ? cast | 1 | 4 : 0);
+							selectedScrollItems |= (byte)(ScrollerAreaY.Contains(e.Location) ? 1 : 0);
 						}
 						else
-							selectedScrollItems = (byte)(cast | 1 << 4 | 1 << 6 | 1 << 7);
+						{
+							selectedScrollItems |= 1 << 4 | 1 << 6 | 1 << 7;
+							if (mouseDown)
+							{
+								Scrollbar_eY = Math.Min(1, 16 * ((pxOffsetY / 16) + 1) / (double)timelineHeight);
+								updateScrollLocation = true;
+							}
+						}
 					}
 					else
-						selectedScrollItems = (byte)(cast | 1 << 4 | 1 << 6);
+					{
+						selectedScrollItems |= 1 << 4 | 1 << 6;
+						if (mouseDown)
+						{
+							Scrollbar_eY = Math.Max(0, 16 * ((pxOffsetY / 16) - 1) / (double)timelineHeight);
+							updateScrollLocation = true;
+						}
+					}
 				}
 				else
 				{
 					if (dx <= 22)
-						selectedScrollItems = (byte)(dy < 12 ? cast | 1 << 4 | 1 << 7 : 0);
+						selectedScrollItems |= (byte)(dy < 12 ? 1 << 4 | 1 << 7 : 0);
 					else if (x >= 70)
 					{
 						if (x >= 80)
 						{
 							Rectangle ScrollerAreaX = new Rectangle(new Point(ScrollX.X, ScrollX.Y - 2), new Size(ScrollX.Width, ScrollX.Height + 4));
-							selectedScrollItems = (byte)(ScrollerAreaX.Contains(e.Location) ? cast | 1 | 1 << 3 : 0);
+							selectedScrollItems |= (byte)(ScrollerAreaX.Contains(e.Location) ?  1 | 1 << 3: 0);
 						}
 						else
-							selectedScrollItems = (byte)(cast | 1 << 4);
+							selectedScrollItems |= 1 << 4;
 					}
-					else
-						selectedScrollItems = 0;
 				}
 			}
-			else
+			else if(!isBitSet(selectedScrollItems, 1))
 				selectedScrollItems = 0;
-			
 
-			if (!mouseDown)
-			{
-				if (cursorDiff != -1)
-				{
-					cursorDiff = -1;
-					isScrolling = false;
-					isScrollingY = false;
-				}
-			}
-			else
+			if(mouseDown)
 			{
 				if ((selectedScrollItems & 1) == 1 && !isScrolling)
 				{
 					isScrolling = true;
 					isScrollingY = !isBitSet(selectedScrollItems, 3);
+                    selectedScrollItems |= 2;
 
 					cursorDiff = isScrollingY ? y - ScrollY.Top : x - ScrollX.Left;
 				}
 				else if (isScrolling)
 				{
-					int scrollAreaY = Height - 28, scrollAreaX = Width - 100;
-
 					if (isScrollingY)
-					{
 						Scrollbar_eY = Math.Min(1, Math.Max(0, (double)((y - 16) - cursorDiff) / (scrollAreaY - ScrollY.Height)));
-						ScrollY.Location = new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 16));
-					}
 					else
-					{
 						Scrollbar_eX = Math.Min(1, Math.Max(0, (double)((x - 80) - cursorDiff) / (scrollAreaX - ScrollX.Width)));
-						ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 80), Height - 10);
-					}
+					updateScrollLocation = true;
 				}
+			}
+
+			if (updateScrollLocation)
+			{
+				ScrollY.Location = new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 16));
+				ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 80), Height - 10);
+				pxOffsetX = (int)(Scrollbar_eX * timelineRealLength);
+				pxOffsetY = (int)(Scrollbar_eY * timelineHeight);
 			}
 
 			//Only refresh if the state has changed
@@ -379,7 +401,7 @@ namespace TISFAT_Zero
 			Timeline_MouseMove(sender, e);
 		}
 
-		private void Timeline_MouseUp(object sender, MouseEventArgs e)
+		public void Timeline_MouseUp(object sender, MouseEventArgs e)
 		{
 			mouseDown = false;
 			Timeline_MouseMove(sender, e);
