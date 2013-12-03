@@ -152,10 +152,10 @@ namespace TISFAT_Zero
 
 		public void Timeline_Refresh()
 		{
-			if(!GLLoaded)
-				return;
+			//if(!GLLoaded)
+			//	return;
 			
-			glgraphics.MakeCurrent();
+			//glgraphics.MakeCurrent();
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 
 			renderRectangle(StubX, Color.DarkGray);
@@ -410,6 +410,36 @@ namespace TISFAT_Zero
 		private bool isBitSet(byte x, byte n)
 		{
 			return (x & (1 << n)) >> n == 1;
+		}
+
+		private void OnMouseWheel(object sender, MouseEventArgs e)
+		{
+			int scrollAreaY = Height - 28, scrollAreaX = Width - 100;
+
+			if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift && ScrollX.Location.X != -1)
+			{
+				int old = pxOffsetX;
+				pxOffsetX = Math.Max(0, Math.Min(pxOffsetX - e.Delta, timelineRealLength));
+
+				if (old == pxOffsetX)
+					return;
+
+				Scrollbar_eX = Math.Min(1, Math.Max(0, pxOffsetX / (double)timelineRealLength));
+				ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 80), Height - 10);
+			}
+			else
+			{
+				int old = pxOffsetY;
+				pxOffsetY = Math.Max(0, Math.Min(pxOffsetY - e.Delta, timelineHeight));
+
+				if (old == pxOffsetY)
+					return;
+
+				Scrollbar_eY = Math.Min(1, Math.Max(0, pxOffsetY / (double)timelineHeight));
+				ScrollY.Location = new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 16));
+			}
+
+			Timeline_Refresh();
 		}
 	}
 }

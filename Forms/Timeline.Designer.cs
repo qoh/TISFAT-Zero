@@ -42,6 +42,7 @@
 			this.glgraphics.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseDown);
 			this.glgraphics.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseMove);
 			this.glgraphics.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseUp);
+			this.glgraphics.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.OnMouseWheel);
 			// 
 			// Timeline
 			// 
@@ -67,7 +68,7 @@
 
 		#endregion
 
-        private OpenTK.GLControl glgraphics;
+		private OpenTK.GLControl glgraphics;
 
 	}
 }

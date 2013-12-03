@@ -362,7 +362,6 @@ namespace TISFAT_Zero
 			// 
 			// splitContainer1.Panel1
 			// 
-			this.splitContainer1.Panel1.AutoScroll = true;
 			this.splitContainer1.Panel1.BackColor = System.Drawing.Color.White;
 			this.splitContainer1.Panel1.Resize += new System.EventHandler(this.splitContainer1_Panel1_Resize);
 			// 
