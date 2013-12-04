@@ -40,9 +40,7 @@ namespace TISFAT_Zero
         private void splitContainer1_Panel1_Resize(object sender, EventArgs e)
         {
             if (timeline == null)
-            {
                 return;
-            }
 
             timeline.Width = splitContainer1.Panel1.Width - 2;
 			timeline.Height = splitContainer1.Panel1.Height - 2;

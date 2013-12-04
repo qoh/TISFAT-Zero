@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Text;
 using System.Linq;
 using TISFAT_Zero.Properties;
+using OpenTK.Graphics.OpenGL;
+
 namespace TISFAT_Zero
 {
 	abstract class Layer
@@ -468,7 +470,7 @@ namespace TISFAT_Zero
 		/// Updates the joints of the layer figure as if someone had just selected the given frame.
 		/// </summary>
 		/// <param name="position">The frame position.</param>
-		public void updateFigure(int position)
+		public virtual void updateFigure(int position)
 		{
 			if (position < 0)
 				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
@@ -516,6 +518,12 @@ namespace TISFAT_Zero
 				for (int a = 0; a < LayerFigure.FigureJoints.Count; a++)
 					LayerFigure.FigureJoints[a].Tween(S.FrameJoints[a], LayerFigure.FigureJoints[a], percent);
 			}
+		}
+
+		public virtual void renderLayer(ICanDraw Canvas)
+		{
+			
+			LayerFigure.Draw(Canvas);
 		}
 	}
 
@@ -591,6 +599,17 @@ namespace TISFAT_Zero
 		}
 
 		public BitmapLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(BitmapFrame), 4, startingOffset)
+		{ }
+	}
+
+	class TextLayer : Layer
+	{
+		new public static Type FrameType
+		{
+			get { return typeof(BitmapFrame); }
+		}
+
+		public TextLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(BitmapFrame), 5, startingOffset)
 		{ }
 	}
 }

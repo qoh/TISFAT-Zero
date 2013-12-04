@@ -9,7 +9,6 @@ namespace TISFAT_Zero
 {
 	abstract class KeyFrame
 	{
-
 		#region Properties
 
 		//Default properties
@@ -116,7 +115,6 @@ namespace TISFAT_Zero
 		}
 
 		#endregion Methods
-
 	}
 
 	class StickFrame : KeyFrame
@@ -136,7 +134,8 @@ namespace TISFAT_Zero
 		/// <summary>
 		/// Initializes a new instance of the <see cref="StickFrame"/> class at the position 0.
 		/// </summary>
-		public StickFrame() : this(0) { }
+		public StickFrame() : this(0)
+		{ }
 	}
 
 	class LineFrame : KeyFrame
@@ -153,7 +152,8 @@ namespace TISFAT_Zero
 		public LineFrame(int Position) : base(Position, 1)
 		{ }
 
-		public LineFrame() : this(0) { }
+		public LineFrame() : this(0)
+		{ }
 	}
 
 	class RectFrame : KeyFrame
@@ -179,7 +179,8 @@ namespace TISFAT_Zero
 			Properties.addAttribute(true, "isFilled");
 		}
 
-		public RectFrame() : this(0) { }
+		public RectFrame() : this(0)
+		{ }
 
 		protected override void copyKeyFrameStep2(Attributes oldAttributes)
 		{
@@ -202,26 +203,21 @@ namespace TISFAT_Zero
 		public CustomFrame(int Position) : base(Position, 3)
 		{ }
 
-		public CustomFrame() : this(0) { }
+		public CustomFrame() : this(0)
+		{ }
 	}
 
 	class BitmapFrame : KeyFrame
 	{
 		new public static Type ObjectType
 		{
-			get { return typeof(StickCustom); }
+			get { return typeof(StickRect); }
 		}
 
-		public int BitmapID
+		public uint BitmapID
 		{
-			get
-			{
-				return (int)Properties["BitmapID"];
-			}
-			set
-			{
-				Properties["BitmapID"] = value;
-			}
+			get { return (uint)Properties["BitmapID"]; }
+			set { Properties["BitmapID"] = value; }
 		}
 
 		public BitmapFrame(int Position) : base(Position, 4)
@@ -230,34 +226,6 @@ namespace TISFAT_Zero
 		}
 
 		public BitmapFrame() : this(0)
-		{ }
-	}
-
-	class TextFrame : KeyFrame
-	{
-		new public static Type ObjectType
-		{
-			get { return typeof(StickCustom); }
-		}
-
-		public string FrameText
-		{
-			get
-			{
-				return (string)Properties["FrameText"];
-			}
-			set
-			{
-				Properties["FrameText"] = value;
-			}
-		}
-
-		public TextFrame(int Position) : base(Position, 5)
-		{
-			Properties.addAttribute("Your Text Here", "FrameText");
-		}
-
-		public TextFrame() : this(0)
 		{ }
 	}
 }

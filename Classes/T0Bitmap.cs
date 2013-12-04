@@ -8,7 +8,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace TISFAT_Zero
 {
-	class T0Bitmap : IGLDrawable
+	struct T0Bitmap : IGLDrawable
 	{
 		public int texID;
 		public Size texSize;
@@ -34,8 +34,12 @@ namespace TISFAT_Zero
 
 			texPos = position;
 		}
+
 		public void Draw(ICanDraw Canvas, Point position = new Point())
 		{
+			if (texSize == new Size())
+				return;
+
 			//Yes I know, if texPos isn't at 0,0 then it's impossible to draw the bitmap at 0,0, it's unavoidable
 			if (position == new Point())
 				position = texPos;
