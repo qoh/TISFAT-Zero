@@ -598,6 +598,11 @@ namespace TISFAT_Zero
 			get { return typeof(BitmapFrame); }
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="BitmapLayer"/> class.
+		/// </summary>
+		/// <param name="layerName">The name to be given to the layer.</param>
+		/// <param name="startingOffset">The starting position of the first frameset. Defaults to 0.</param>
 		public BitmapLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(BitmapFrame), 4, startingOffset)
 		{ }
 	}
@@ -609,6 +614,11 @@ namespace TISFAT_Zero
 			get { return typeof(BitmapFrame); }
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="TextLayer"/> class.
+		/// </summary>
+		/// <param name="layerName">The name to be given to the layer.</param>
+		/// <param name="startingOffset">The starting position of the first frameset. Defaults to 0.</param>
 		public TextLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(BitmapFrame), 5, startingOffset)
 		{ }
 	}

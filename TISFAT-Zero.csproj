@@ -24,7 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -36,6 +36,8 @@
     <ApplicationIcon>T0.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\OpenTK.dll</HintPath>
@@ -57,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Attributes.cs" />
+    <Compile Include="Classes\CanvasManager.cs" />
     <Compile Include="Classes\Interfaces.cs" />
     <Compile Include="Classes\Frameset.cs" />
     <Compile Include="Classes\KeyFrame.cs" />
@@ -64,6 +67,12 @@
     <Compile Include="Classes\StickJoint.cs" />
     <Compile Include="Classes\StickObject.cs" />
     <Compile Include="Classes\T0Bitmap.cs" />
+    <Compile Include="Forms\LoadingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoadingForm.Designer.cs">
+      <DependentUpon>LoadingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\MainF.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +87,9 @@
     <Compile Include="Forms\Timeline.Designer.cs">
       <DependentUpon>Timeline.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\LoadingForm.resx">
+      <DependentUpon>LoadingForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainF.resx">
       <DependentUpon>MainF.cs</DependentUpon>
     </EmbeddedResource>
@@ -121,6 +133,7 @@
     <None Include="Resources\stub_x_r_c.png" />
     <None Include="Resources\stub_y_b_c.png" />
     <None Include="Resources\stub_y_t_c.png" />
+    <None Include="Resources\loading.png" />
     <Content Include="T0.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -17,14 +17,14 @@ namespace TISFAT_Zero
 		//Construct a new T0Bitmap from a bitmap object
 		public T0Bitmap(Bitmap original, Point position = new Point())
 		{
-			BitmapData rawData = original.LockBits(new Rectangle(0, 0, original.Width, original.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+			BitmapData rawData = original.LockBits(new Rectangle(0, 0, original.Width, original.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
 
 			texSize = original.Size;
 			texID = GL.GenTexture();
 
 			GL.BindTexture(TextureTarget.Texture2D, texID);
 
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, rawData.Width, rawData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, rawData.Scan0);
+			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, rawData.Width, rawData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, rawData.Scan0);
 			original.UnlockBits(rawData);
 
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.LinearMipmapLinear);

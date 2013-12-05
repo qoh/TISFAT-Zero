@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("TISFAT-Zero")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A free, open-source 2d animation program.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("0xPRODUCTIONS")]
 [assembly: AssemblyProduct("TISFAT-Zero")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright ©0xPRODUCTIONS 2013")]
+[assembly: AssemblyTrademark("0xPRODUCTIONS")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

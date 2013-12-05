@@ -13,14 +13,13 @@ namespace TISFAT_Zero
 	{
 		public MainF MainForm;
 		public static List<Layer> Layers = new List<Layer>();
-		private Color[] Colors;
-		private Point[] Points = new Point[] { new Point(79, 0), new Point(79, 15), new Point(0, 15) };
+		private static Color[] Colors;
 
 		private bool GLLoaded = false;
 
 		private double Scrollbar_eX = 0.0, Scrollbar_eY = 0.0;
-		public int pxOffsetX = 0, pxOffsetY = 0;
-		int scrollAreaY, scrollAreaX;
+		public int pxOffsetX, pxOffsetY;
+		int scrollAreaY, scrollAreaX, maxFrames, maxLayers;
 
 		//We need a lot of rectangles...
 		private Rectangle ScrollX = new Rectangle(), ScrollY = new Rectangle();
@@ -28,7 +27,6 @@ namespace TISFAT_Zero
 
 		public int cursorDiff;
 
-		//We also use a lot of bools >.>
 		public bool isScrolling, isScrollingY;
 		public bool mouseDown;
 
@@ -48,6 +46,7 @@ namespace TISFAT_Zero
 		private T0Bitmap[] zerotonine = new T0Bitmap[10];
 		private static List<T0Bitmap> layerNames = new List<T0Bitmap>();
 		private T0Bitmap[] stubs = new T0Bitmap[12];
+		private T0Bitmap TIMELINE;
 
 		public int currentnum = -1;
 
@@ -62,7 +61,7 @@ namespace TISFAT_Zero
 			LoadGraphics();
 			
 			MainForm = f;
-			Colors = new Color[] { Color.FromArgb(220, 220, 220), Color.FromArgb(140, 140, 140), Color.FromArgb(0, 0, 0), Color.FromArgb(70, 120, 255), Color.FromArgb(40, 230, 255) };
+			Colors = new Color[] { Color.FromArgb(220, 220, 220), Color.FromArgb(140, 140, 140), Color.FromArgb(0, 0, 0), Color.FromArgb(70, 120, 255), Color.FromArgb(40, 230, 255), Color.FromArgb(30, 100, 255) };
 
 			//Render the 0-9 text lablels for use in rendering the timeline
 			Point y = new Point(-2, -1);
@@ -82,7 +81,19 @@ namespace TISFAT_Zero
 				}
 			}
 
+			F = new Font("Arial", 10);
+			y.X += 9;
+			
+			
+			using (Bitmap raw = new Bitmap(78, 15))
+			using (Graphics g = Graphics.FromImage(raw))
+			{
+				g.Clear(Colors[5]);
+				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+				g.DrawString("TIMELINE", F, Brushes.Black, y);
 
+				TIMELINE = new T0Bitmap(raw, new Point(1, 1));
+			}
 
 			//Fetch the scrollbar stub bitmaps
 			stubs[0] = new T0Bitmap(Properties.Resources.stub_x_l); stubs[1] = new T0Bitmap(Properties.Resources.stub_x_r);
@@ -99,6 +110,7 @@ namespace TISFAT_Zero
 			StubY.Width = 12;
 
 			addNewLayer(typeof(StickLayer));
+			addNewLayer(typeof(BitmapLayer), "sdfasdggae");
 			timelineRealLength = 9 * timelineFrameLength;
 		}
 
@@ -138,12 +150,17 @@ namespace TISFAT_Zero
 			StubY.Height = Height - 6;
 			StubY.Location = new Point(Width - 12, 6);
 
+			maxFrames = (int)Math.Ceiling(scrollAreaX / 9d);
+			maxLayers = (int)Math.Ceiling((Height - 12) / 16d);
+
 			stubs[0].texPos = new Point(StubX.Left + 2, StubX.Top + 1);
 			stubs[1].texPos = new Point(StubX.Right - 8, StubX.Top + 1);
 			stubs[2].texPos = new Point(StubY.Left + 1, StubY.Top + 2);
 			stubs[3].texPos = new Point(StubY.Left + 1, StubY.Bottom - 9);
-			for(int a = 4; a < 12; a++)
-				stubs[a].texPos = stubs[a % 4].texPos;
+			stubs[4].texPos = stubs[0].texPos; stubs[5].texPos = stubs[1].texPos;
+			stubs[6].texPos = stubs[2].texPos; stubs[7].texPos = stubs[3].texPos;
+			stubs[8].texPos = stubs[0].texPos; stubs[9].texPos = stubs[1].texPos;
+			stubs[10].texPos = stubs[2].texPos; stubs[11].texPos = stubs[3].texPos;
 
 			this.Invalidate();
 		}
@@ -156,8 +173,6 @@ namespace TISFAT_Zero
 		public void Timeline_Refresh()
 		{
 			GL.Clear(ClearBufferMask.ColorBufferBit);
-
-			GL.Begin(BeginMode.Lines);
 
 			renderRectangle(StubX, Color.DarkGray);
 			renderRectangle(StubY, Color.DarkGray);
@@ -181,10 +196,47 @@ namespace TISFAT_Zero
 
 			//This formula is used to determine which stub to draw, since I ordered them so neatly in the array this is possible.
 			if (isBitSet(stub, 0))
-				stubs[4 + 2 * (stub & 2) + ((stub & 4) >> 1) + ((stub & 8) >> 3)].Draw(this);
+				stubs[4 + ((stub & 2) << 1) + ((stub & 4) >> 1) + ((stub & 8) >> 3)].Draw(this);
 
-			currentnum = (currentnum + 1) % 10;
-			zerotonine[currentnum].Draw(this);
+			GL.Color3(Color.Black);
+
+			GL.Begin(BeginMode.LineStrip);
+			GL.Vertex2(70, StubX.Top);
+			GL.Vertex2(1, StubX.Top+1);
+			GL.Vertex2(1, 0);
+			GL.Vertex2(80, 0);
+			GL.Vertex2(80, StubX.Top);
+
+			GL.End();
+			
+			int ind_L = (int)Math.Ceiling((pxOffsetY+1) / 16d - 1), ind_F = (int)Math.Ceiling((pxOffsetX+1) / 9d - 1);
+			int start_L = 32 - (pxOffsetY % 16), start_F = 9 - (pxOffsetX % 9);
+
+			if (ind_L == -1)
+				ind_L = 0;
+			if (ind_F == -1)
+				ind_F = 0;
+
+			for (int p = start_L, a = ind_L; p < StubX.Top && a < Layers.Count; p += 16, a++)
+			{
+				GL.Color3(Color.Black);
+				GL.Begin(BeginMode.Lines);
+				GL.Vertex2(79, p);
+				GL.Vertex2(0, p);
+				GL.End();
+
+				layerNames[a].Draw(this, new Point(1, p - 15));
+			}
+
+			GL.Color3(Color.Black);
+			GL.Begin(BeginMode.Lines);
+			GL.Vertex2(0, 16); GL.Vertex2(Width - 12, 16);
+			GL.End();
+
+			TIMELINE.Draw(this);
+
+			//currentnum = (currentnum + 1) % 10;
+			//zerotonine[currentnum].Draw(this);
 
 			glgraphics.SwapBuffers();
 		}
@@ -229,15 +281,14 @@ namespace TISFAT_Zero
 
 			//Construct the name (will do later because lazy)
 			
-			Point y = new Point(-2, -1);
-			Font F = new Font("Arial", 12);
+			Point y = new Point(0, -1);
+			Font F = new Font("Arial", 10);
 
-			using (Bitmap raw = new Bitmap(79, 15))
+			using (Bitmap raw = new Bitmap(78, 15))
 			using (Graphics g = Graphics.FromImage(raw))
 			{
-				g.Clear(Color.Empty);
-				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-				g.TextContrast = 10;
+				g.Clear(Colors[3]);
+				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
 				g.DrawString(name, F, Brushes.Black, y);
 
 				layerNames.Add(new T0Bitmap(raw));
@@ -306,7 +357,7 @@ namespace TISFAT_Zero
 		private void drawFrame(Point p, Color i)
 		{
 			GL.Color3(Color.Black);
-			GL.Begin(BeginMode.LinesAdjacency);
+			GL.Begin(BeginMode.LineStrip);
 
 			int a = p.Y + 16, b = p.X + 9;
 			GL.Vertex2(p.X, a);
@@ -383,7 +434,7 @@ namespace TISFAT_Zero
 							selectedScrollItems |= 208;
 							if (mouseDown)
 							{
-								Scrollbar_eY = Math.Min(1, 16 * ((pxOffsetY / 16) + 1) / (double)timelineHeight);
+								Scrollbar_eY = Math.Min(1, (pxOffsetY + 1) / (double)timelineHeight);
 								updateScrollLocation = true;
 							}
 						}
@@ -394,7 +445,7 @@ namespace TISFAT_Zero
 
 						if (mouseDown)
 						{
-							Scrollbar_eY = Math.Max(0, 16 * ((pxOffsetY / 16) - 1) / (double)timelineHeight);
+							Scrollbar_eY = Math.Max(0, (pxOffsetY - 1) / (double)timelineHeight);
 							updateScrollLocation = true;
 						}
 					}

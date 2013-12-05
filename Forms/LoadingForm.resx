@@ -117,44 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="loading" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\loading.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="stub_x_l" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\stub_x_l.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="stub_x_l_a" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\stub_x_l_a.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="stub_x_l_c" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\stub_x_l_c.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="stub_x_r" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\stub_x_r.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="stub_x_r_a" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\stub_x_r_a.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="stub_x_r_c" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\stub_x_r_c.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="stub_y_b" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\stub_y_b.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="stub_y_b_a" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\stub_y_b_a.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="stub_y_b_c" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\stub_y_b_c.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="stub_y_t" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\stub_y_t.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="stub_y_t_a" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\stub_y_t_a.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="stub_y_t_c" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\stub_y_t_c.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
 </root>
