@@ -134,6 +134,16 @@
     <None Include="Resources\stub_y_b_c.png" />
     <None Include="Resources\stub_y_t_c.png" />
     <None Include="Resources\loading.png" />
+    <None Include="Resources\NUMBERS\0.png" />
+    <None Include="Resources\NUMBERS\1.png" />
+    <None Include="Resources\NUMBERS\2.png" />
+    <None Include="Resources\NUMBERS\3.png" />
+    <None Include="Resources\NUMBERS\4.png" />
+    <None Include="Resources\NUMBERS\5.png" />
+    <None Include="Resources\NUMBERS\6.png" />
+    <None Include="Resources\NUMBERS\7.png" />
+    <None Include="Resources\NUMBERS\8.png" />
+    <None Include="Resources\NUMBERS\9.png" />
     <Content Include="T0.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,7 +1,0 @@
-l + s = p(a - s) + 80
-l + s = pa - ps + 80
-l = pa - (ps + s) + 80
-l = pa - s(p + 1) + 80
--pa = -s(p + 1) - l + 80
-pa = s(p + 1) + l + 80
-p = (s(p+1)+l)/a

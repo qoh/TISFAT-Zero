@@ -63,27 +63,14 @@ namespace TISFAT_Zero
 			MainForm = f;
 			Colors = new Color[] { Color.FromArgb(220, 220, 220), Color.FromArgb(140, 140, 140), Color.FromArgb(0, 0, 0), Color.FromArgb(70, 120, 255), Color.FromArgb(40, 230, 255), Color.FromArgb(30, 100, 255) };
 
-			//Render the 0-9 text lablels for use in rendering the timeline
-			Point y = new Point(-2, -1);
-			Font F = new Font("Arial", 12);
-			
-			for (int a = 0; a < 10; a++)
-			{
-				using(Bitmap raw = new Bitmap(9, 16))
-				using(Graphics g = Graphics.FromImage(raw))
-				{
-					g.Clear(Color.Empty);
-					g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-					g.TextContrast = 10;
-					g.DrawString("" + a, F, Brushes.Black, y);
+			zerotonine[0] = new T0Bitmap(Properties.Resources._0); zerotonine[1] = new T0Bitmap(Properties.Resources._1);
+			zerotonine[2] = new T0Bitmap(Properties.Resources._2); zerotonine[3] = new T0Bitmap(Properties.Resources._3);
+			zerotonine[4] = new T0Bitmap(Properties.Resources._4); zerotonine[5] = new T0Bitmap(Properties.Resources._5);
+			zerotonine[6] = new T0Bitmap(Properties.Resources._6); zerotonine[7] = new T0Bitmap(Properties.Resources._7);
+			zerotonine[8] = new T0Bitmap(Properties.Resources._8); zerotonine[9] = new T0Bitmap(Properties.Resources._9);
 
-					zerotonine[a] = new T0Bitmap(raw);
-				}
-			}
-
-			F = new Font("Arial", 10);
-			y.X += 9;
-			
+			Point y = new Point(7, -1);
+			Font F = new Font("Arial", 10);
 			
 			using (Bitmap raw = new Bitmap(78, 15))
 			using (Graphics g = Graphics.FromImage(raw))
@@ -150,11 +137,11 @@ namespace TISFAT_Zero
 			StubY.Height = Height - 6;
 			StubY.Location = new Point(Width - 12, 6);
 
-			maxFrames = (int)Math.Ceiling(scrollAreaX / 9d);
-			maxLayers = (int)Math.Ceiling((Height - 12) / 16d);
+			maxFrames = (int)Math.Ceiling(scrollAreaX / 9d + 1);
+			maxLayers = (int)Math.Ceiling((Height - 12) / 16d + 1);
 
 			stubs[0].texPos = new Point(StubX.Left + 2, StubX.Top + 1);
-			stubs[1].texPos = new Point(StubX.Right - 8, StubX.Top + 1);
+			stubs[1].texPos = new Point(StubX.Right - 10, StubX.Top + 1);
 			stubs[2].texPos = new Point(StubY.Left + 1, StubY.Top + 2);
 			stubs[3].texPos = new Point(StubY.Left + 1, StubY.Bottom - 9);
 			stubs[4].texPos = stubs[0].texPos; stubs[5].texPos = stubs[1].texPos;
@@ -173,6 +160,72 @@ namespace TISFAT_Zero
 		public void Timeline_Refresh()
 		{
 			GL.Clear(ClearBufferMask.ColorBufferBit);
+
+			//Draw outline around the layers boxes
+			GL.Color3(Color.Black);
+
+			GL.Begin(BeginMode.LineStrip);
+			GL.Vertex2(70, StubX.Top);
+			GL.Vertex2(1, StubX.Top + 1);
+			GL.Vertex2(1, 0);
+			GL.Vertex2(80, 0);
+			GL.Vertex2(80, StubX.Top);
+
+			GL.End();
+
+			int ind_L = (int)Math.Ceiling((pxOffsetY + 1) / 16d - 1), ind_F = (int)Math.Ceiling((pxOffsetX + 1) / 9d - 1);
+			int start_L = 32 - (pxOffsetY % 16), start_F = 80 - (pxOffsetX % 9);
+
+			if (ind_L == -1)
+				ind_L = 0;
+			if (ind_F == -1)
+				ind_F = 0;
+
+			int endL_ind = Math.Min(Layers.Count, ind_L + maxLayers), endF_ind = ind_F + maxFrames;
+
+			for (int p = start_F, a = ind_F; a < endF_ind; p += 9, a++)
+			{
+				Point x = new Point(p, 0);
+
+				Color c = Color.Empty;
+				if (a % 100 == 0)
+					c = Color.Pink;
+				else if (a % 10 == 0)
+					c = Color.FromArgb(40, 230, 255);
+
+				if (c != Color.Empty)
+				{
+					GL.Color3(c);
+					GL.Begin(BeginMode.Quads);
+					GL.Vertex2(x.X, 0);
+					GL.Vertex2(x.X, Height);
+					GL.Vertex2(x.X + 9, Height);
+					GL.Vertex2(x.X + 9, 0);
+					GL.End();
+				}
+
+				drawFrame(x, Color.Transparent);
+
+				zerotonine[a % 10].Draw(this, x);
+			}
+
+			GL.Color3(Color.Black);
+			GL.Begin(BeginMode.Lines);
+			GL.Vertex2(0, 16); GL.Vertex2(Width - 12, 16);
+			GL.End();
+
+			for (int p = start_L, a = ind_L; p < StubX.Top && a < endL_ind; p += 16, a++)
+			{
+				GL.Color3(Color.Black);
+				GL.Begin(BeginMode.Lines);
+				GL.Vertex2(79, p);
+				GL.Vertex2(0, p);
+				GL.End();
+
+				layerNames[a].Draw(this, new Point(1, p - 15));
+			}
+
+			TIMELINE.Draw(this);
 
 			renderRectangle(StubX, Color.DarkGray);
 			renderRectangle(StubY, Color.DarkGray);
@@ -197,46 +250,6 @@ namespace TISFAT_Zero
 			//This formula is used to determine which stub to draw, since I ordered them so neatly in the array this is possible.
 			if (isBitSet(stub, 0))
 				stubs[4 + ((stub & 2) << 1) + ((stub & 4) >> 1) + ((stub & 8) >> 3)].Draw(this);
-
-			GL.Color3(Color.Black);
-
-			GL.Begin(BeginMode.LineStrip);
-			GL.Vertex2(70, StubX.Top);
-			GL.Vertex2(1, StubX.Top+1);
-			GL.Vertex2(1, 0);
-			GL.Vertex2(80, 0);
-			GL.Vertex2(80, StubX.Top);
-
-			GL.End();
-			
-			int ind_L = (int)Math.Ceiling((pxOffsetY+1) / 16d - 1), ind_F = (int)Math.Ceiling((pxOffsetX+1) / 9d - 1);
-			int start_L = 32 - (pxOffsetY % 16), start_F = 9 - (pxOffsetX % 9);
-
-			if (ind_L == -1)
-				ind_L = 0;
-			if (ind_F == -1)
-				ind_F = 0;
-
-			for (int p = start_L, a = ind_L; p < StubX.Top && a < Layers.Count; p += 16, a++)
-			{
-				GL.Color3(Color.Black);
-				GL.Begin(BeginMode.Lines);
-				GL.Vertex2(79, p);
-				GL.Vertex2(0, p);
-				GL.End();
-
-				layerNames[a].Draw(this, new Point(1, p - 15));
-			}
-
-			GL.Color3(Color.Black);
-			GL.Begin(BeginMode.Lines);
-			GL.Vertex2(0, 16); GL.Vertex2(Width - 12, 16);
-			GL.End();
-
-			TIMELINE.Draw(this);
-
-			//currentnum = (currentnum + 1) % 10;
-			//zerotonine[currentnum].Draw(this);
 
 			glgraphics.SwapBuffers();
 		}
@@ -359,7 +372,7 @@ namespace TISFAT_Zero
 			GL.Color3(Color.Black);
 			GL.Begin(BeginMode.LineStrip);
 
-			int a = p.Y + 16, b = p.X + 9;
+			int a = p.Y + 15, b = p.X + 9;
 			GL.Vertex2(p.X, a);
 			GL.Vertex2(b, a);
 			GL.Vertex2(b, p.Y);
