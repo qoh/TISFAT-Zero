@@ -163,8 +163,10 @@ namespace TISFAT_Zero
 
 		public void Timeline_Refresh()
 		{
+            GL.Disable(EnableCap.Multisample);
+
 			glgraphics.MakeCurrent();
-			//GL.LoadIdentity();
+
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 
 			GL.Color4(Color.Black);
@@ -222,19 +224,12 @@ namespace TISFAT_Zero
 
 			for (int p = start_L, a = ind_L; p < StubX.Top && a < endL_ind; p += 16, a++)
 			{
-				GL.Color3(Color.Black);
-				GL.Begin(PrimitiveType.Lines);
-				GL.Vertex2(79, p);
-				GL.Vertex2(0, p);
-				GL.End();
+                renderQuadLine(new Point(79, p), new Point(0, p), 1, Color.Black);
 
 				layerNames[a].Draw(this, new Point(1, p - 15));
 			}
 
-			GL.Color3(Color.Black);
-			GL.Begin(PrimitiveType.Lines);
-			GL.Vertex2(0, 16); GL.Vertex2(Width - 12, 16);
-			GL.End();
+            renderQuadLine(new Point(0, 16), new Point(Width - 12, 16), 1, Color.Black);
 
 			TIMELINE.Draw(this);
 
@@ -261,7 +256,9 @@ namespace TISFAT_Zero
 			//This formula is used to determine which stub to draw, since I ordered them so neatly in the array this is possible.
 			if (isBitSet(stub, 0))
 				stubs[4 + ((stub & 2) << 1) + ((stub & 4) >> 1) + ((stub & 8) >> 3)].Draw(this);
-			
+
+            GL.Enable(EnableCap.Multisample);
+
 			glgraphics.SwapBuffers();
 		}
 
@@ -327,13 +324,7 @@ namespace TISFAT_Zero
 
 			if (type == 0) //Line
 			{
-				GL.Color4(color);
-				GL.Begin(PrimitiveType.Lines);
-
-				GL.Vertex2(one.X, one.Y);
-				GL.Vertex2(two.X, two.Y);
-
-				GL.End();
+                renderQuadLine(one, two, width, color);
 			}
 			else if (type == 1 || type == 2) //Rectangle
 			{
@@ -363,6 +354,26 @@ namespace TISFAT_Zero
 
 			GL.Disable(EnableCap.Blend);
 		}
+
+        private void renderQuadLine(Point one, Point two, float thickness, Color color)
+        {
+            GL.Color4(color);
+
+            float dist = (float)Math.Sqrt(Math.Pow((two.X - one.X), 2) + Math.Pow((two.Y - one.Y), 2));
+
+            GL.Begin(PrimitiveType.Quads);
+
+            float normX = ((one.Y - two.Y) / dist) * thickness / 2;
+            float normY = -((one.X - two.X) / dist) * thickness / 2;
+
+            GL.Vertex2((one.X - normX), (one.Y - normY));
+            GL.Vertex2((one.X + normX), (one.Y + normY));
+
+            GL.Vertex2((two.X + normX), (two.Y + normY));
+            GL.Vertex2((two.X - normX), (two.Y - normY));
+
+            GL.End();
+        }
 
 		private void renderRectangle(Rectangle rect, Color color)
 		{
