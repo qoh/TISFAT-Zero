@@ -1,5 +1,9 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using OpenTK.Graphics;
+using OpenTK.Platform;
+using OpenTK.Graphics.OpenGL;
 using OpenTK;
+using Config = OpenTK.Configuration;
+using Utilities = OpenTK.Platform.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -107,14 +111,13 @@ namespace TISFAT_Zero
 				return;
 
 			GL.MatrixMode(MatrixMode.Projection);
-
 			GL.LoadIdentity();
-
 			GL.Clear(ClearBufferMask.ColorBufferBit);
-			GL.ClearColor(Colors[0]);
+			GL.ClearColor(Color.White);
 			GL.Viewport(0, Screen.PrimaryScreen.Bounds.Height - Height, Width, Height);
 			GL.Ortho(0, Width, Height, 0, 0, 1);
 
+			//LEAVE THESE
 			int width = timelineFrameLength * 9;
 
 			scrollAreaY = Height - 28; scrollAreaX = Width - 100;
@@ -150,6 +153,7 @@ namespace TISFAT_Zero
 			stubs[10].texPos = stubs[2].texPos; stubs[11].texPos = stubs[3].texPos;
 
 			this.Invalidate();
+			//LEAVE THESE
 		}
 
 		private void Timeline_Paint(object sender, PaintEventArgs e)
@@ -159,16 +163,23 @@ namespace TISFAT_Zero
 
 		public void Timeline_Refresh()
 		{
+			glgraphics.MakeCurrent();
+			//GL.LoadIdentity();
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 
-			//Draw outline around the layers boxes
-			GL.Color3(Color.Black);
+			GL.Color4(Color.Black);
 
-			GL.Begin(BeginMode.LineStrip);
-			GL.Vertex2(70, StubX.Top);
-			GL.Vertex2(1, StubX.Top + 1);
-			GL.Vertex2(1, 0);
+			GL.Begin(PrimitiveType.QuadStrip);
+
+			GL.Vertex2(69, StubX.Top - 1);
+			GL.Vertex2(69, StubX.Top - 1);
+			GL.Vertex2(0, StubX.Top);
+			GL.Vertex2(0, StubX.Top);
+			GL.Vertex2(0, 0);
+			GL.Vertex2(0, 0);
 			GL.Vertex2(80, 0);
+			GL.Vertex2(80, 0);
+			GL.Vertex2(80, StubX.Top);
 			GL.Vertex2(80, StubX.Top);
 
 			GL.End();
@@ -188,15 +199,15 @@ namespace TISFAT_Zero
 				Point x = new Point(p, 0);
 
 				Color c = Color.Empty;
-				if (a % 100 == 0)
+				if ((a+1) % 100 == 0)
 					c = Color.Pink;
-				else if (a % 10 == 0)
+				else if ((a+1) % 10 == 0)
 					c = Color.FromArgb(40, 230, 255);
 
 				if (c != Color.Empty)
 				{
 					GL.Color3(c);
-					GL.Begin(BeginMode.Quads);
+					GL.Begin(PrimitiveType.Quads);
 					GL.Vertex2(x.X, 0);
 					GL.Vertex2(x.X, Height);
 					GL.Vertex2(x.X + 9, Height);
@@ -206,24 +217,24 @@ namespace TISFAT_Zero
 
 				drawFrame(x, Color.Transparent);
 
-				zerotonine[a % 10].Draw(this, x);
+				zerotonine[(a+1) % 10].Draw(this, x);
 			}
-
-			GL.Color3(Color.Black);
-			GL.Begin(BeginMode.Lines);
-			GL.Vertex2(0, 16); GL.Vertex2(Width - 12, 16);
-			GL.End();
 
 			for (int p = start_L, a = ind_L; p < StubX.Top && a < endL_ind; p += 16, a++)
 			{
 				GL.Color3(Color.Black);
-				GL.Begin(BeginMode.Lines);
+				GL.Begin(PrimitiveType.Lines);
 				GL.Vertex2(79, p);
 				GL.Vertex2(0, p);
 				GL.End();
 
 				layerNames[a].Draw(this, new Point(1, p - 15));
 			}
+
+			GL.Color3(Color.Black);
+			GL.Begin(PrimitiveType.Lines);
+			GL.Vertex2(0, 16); GL.Vertex2(Width - 12, 16);
+			GL.End();
 
 			TIMELINE.Draw(this);
 
@@ -250,21 +261,20 @@ namespace TISFAT_Zero
 			//This formula is used to determine which stub to draw, since I ordered them so neatly in the array this is possible.
 			if (isBitSet(stub, 0))
 				stubs[4 + ((stub & 2) << 1) + ((stub & 4) >> 1) + ((stub & 8) >> 3)].Draw(this);
-
+			
 			glgraphics.SwapBuffers();
 		}
 
 		public void LoadGraphics()
 		{
-			glgraphics.Width = Screen.PrimaryScreen.Bounds.Width;
-			glgraphics.Height = Screen.PrimaryScreen.Bounds.Height;
-
-			glgraphics = new OpenTK.GLControl(new OpenTK.Graphics.GraphicsMode(32, 0, 1, 4), 3, 0, OpenTK.Graphics.GraphicsContextFlags.Default);
 			glgraphics.MakeCurrent();
 
 			GL.MatrixMode(MatrixMode.Projection);
+
 			GL.LoadIdentity();
+
 			GL.Viewport(0, Screen.PrimaryScreen.Bounds.Height - Height, Width, Height);
+
 			GL.Ortho(0, Width, Height, 0, 0, 1);
 
 			GL.Disable(EnableCap.DepthTest);
@@ -318,7 +328,7 @@ namespace TISFAT_Zero
 			if (type == 0) //Line
 			{
 				GL.Color4(color);
-				GL.Begin(BeginMode.Lines);
+				GL.Begin(PrimitiveType.Lines);
 
 				GL.Vertex2(one.X, one.Y);
 				GL.Vertex2(two.X, two.Y);
@@ -329,9 +339,9 @@ namespace TISFAT_Zero
 			{
 				GL.Color4(color);
 				if (type == 1)
-					GL.Begin(BeginMode.Quads);
+					GL.Begin(PrimitiveType.Quads);
 				else
-					GL.Begin(BeginMode.LineLoop);
+					GL.Begin(PrimitiveType.LineLoop);
 
 				if (width != 0 && height != 0)
 				{
@@ -357,7 +367,7 @@ namespace TISFAT_Zero
 		private void renderRectangle(Rectangle rect, Color color)
 		{
 			GL.Color4(color);
-			GL.Begin(BeginMode.Quads);
+			GL.Begin(PrimitiveType.Quads);
 
 			int x1 = rect.Left, x2 = rect.Right;
 			int y1 = rect.Top, y2 = rect.Bottom;
@@ -370,7 +380,7 @@ namespace TISFAT_Zero
 		private void drawFrame(Point p, Color i)
 		{
 			GL.Color3(Color.Black);
-			GL.Begin(BeginMode.LineStrip);
+			GL.Begin(PrimitiveType.LineStrip);
 
 			int a = p.Y + 15, b = p.X + 9;
 			GL.Vertex2(p.X, a);
@@ -381,7 +391,7 @@ namespace TISFAT_Zero
 			if (i != Color.Transparent)
 			{
 				GL.Color3(i);
-				GL.Begin(BeginMode.Quads);
+				GL.Begin(PrimitiveType.Quads);
 
 				GL.Vertex2(p.X, p.Y);
 				GL.Vertex2(p.X, --a);

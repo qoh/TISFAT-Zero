@@ -1,4 +1,7 @@
-﻿namespace TISFAT_Zero
+﻿using System.Windows.Forms;
+using System.Threading;
+
+namespace TISFAT_Zero
 {
 	partial class Timeline
 	{
@@ -28,7 +31,8 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.glgraphics = new OpenTK.GLControl();
+			this.glgraphics = new OpenTK.GLControl(new OpenTK.Graphics.GraphicsMode(32, 0, 1, 4));
+			if (glgraphics.GraphicsMode == null) ;
 			this.SuspendLayout();
 			// 
 			// glgraphics
@@ -36,7 +40,8 @@
 			this.glgraphics.BackColor = System.Drawing.Color.Black;
 			this.glgraphics.Location = new System.Drawing.Point(0, 0);
 			this.glgraphics.Name = "glgraphics";
-			this.glgraphics.Size = new System.Drawing.Size(127, 129);
+			this.glgraphics.Width = Screen.PrimaryScreen.Bounds.Width;
+			this.glgraphics.Height = Screen.PrimaryScreen.Bounds.Height;
 			this.glgraphics.TabIndex = 0;
 			this.glgraphics.VSync = false;
 			this.glgraphics.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseDown);
