@@ -76,14 +76,14 @@ namespace TISFAT_Zero
 			Point y = new Point(7, -1);
 			Font F = new Font("Arial", 10);
 			
-			using (Bitmap raw = new Bitmap(78, 15))
+			using (Bitmap raw = new Bitmap(78, 16))
 			using (Graphics g = Graphics.FromImage(raw))
 			{
 				g.Clear(Colors[5]);
 				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
 				g.DrawString("TIMELINE", F, Brushes.Black, y);
 
-				TIMELINE = new T0Bitmap(raw, new Point(1, 1));
+				TIMELINE = new T0Bitmap(raw, new Point(1, 0));
 			}
 
 			//Fetch the scrollbar stub bitmaps
@@ -110,50 +110,54 @@ namespace TISFAT_Zero
 			if (!GLLoaded)
 				return;
 
+			GL.Viewport(0, Screen.PrimaryScreen.Bounds.Height - Height, Width, Height);
 			GL.MatrixMode(MatrixMode.Projection);
 			GL.LoadIdentity();
+
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 			GL.ClearColor(Color.White);
-			GL.Viewport(0, Screen.PrimaryScreen.Bounds.Height - Height, Width, Height);
+
 			GL.Ortho(0, Width, Height, 0, 0, 1);
 
-			//LEAVE THESE
+			//Hax to make sure that everything renders where it should
+			GL.MatrixMode(MatrixMode.Modelview);
+			GL.LoadIdentity();
+			GL.Translate(0.375, 0, 0);
+
 			int width = timelineFrameLength * 9;
 
-			scrollAreaY = Height - 28; scrollAreaX = Width - 100;
-			int containerX = scrollAreaX + 10;
+			scrollAreaY = Height - 49; scrollAreaX = Width - 113;
 
-			float viewRatioY = (float)scrollAreaY / timelineHeight, viewRatioX = (float)containerX / width;
+			float viewRatioY = (float)scrollAreaY / timelineHeight, viewRatioX = (float)scrollAreaX / width;
 			
 			ScrollY.Height = viewRatioY < 1 ? Math.Max((int)(scrollAreaY * viewRatioY), 16) : -1;
-			ScrollY.Location = ScrollY.Height != -1 ? new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 16)) : new Point(-1, -1);
+			ScrollY.Location = ScrollY.Height != -1 ? new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 26)) : new Point(-1, -1);
 
 			ScrollX.Width = viewRatioX < 1 ? Math.Max((int)(scrollAreaX * viewRatioX), 16) : -1;
-			ScrollX.Location = ScrollX.Width != -1 ? new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 80), Height - 10) : new Point(-1, -1);
+			ScrollX.Location = ScrollX.Width != -1 ? new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 90), Height - 10) : new Point(-1, -1);
 
 			pxOffsetX = (int)(Scrollbar_eX * width);
 			pxOffsetY = (int)(Scrollbar_eY * timelineHeight);
 
-			StubX.Width = Width - 80;
-			StubX.Location = new Point(70, Height - 12);
+			StubX.Width = Width - 91;
+			StubX.Location = new Point(79, Height - 12);
 
-			StubY.Height = Height - 6;
-			StubY.Location = new Point(Width - 12, 6);
+			StubY.Height = Height - 16;
+			StubY.Location = new Point(Width - 12, 16);
 
-			maxFrames = (int)Math.Ceiling(scrollAreaX / 9d + 1);
+			maxFrames = (int)Math.Ceiling((Width - 80) / 9d + 1);
 			maxLayers = (int)Math.Ceiling((Height - 12) / 16d + 1);
 
-			stubs[0].texPos = new Point(StubX.Left + 2, StubX.Top + 1);
-			stubs[1].texPos = new Point(StubX.Right - 10, StubX.Top + 1);
-			stubs[2].texPos = new Point(StubY.Left + 1, StubY.Top + 2);
-			stubs[3].texPos = new Point(StubY.Left + 1, StubY.Bottom - 9);
+			stubs[0].texPos = new Point(StubX.Left + 3, StubX.Top + 2);
+			stubs[1].texPos = new Point(StubX.Right - 8, StubX.Top + 2);
+			stubs[2].texPos = new Point(StubY.Left + 2, StubY.Top + 3);
+			stubs[3].texPos = new Point(StubY.Left + 2, StubY.Bottom - 20);
 			stubs[4].texPos = stubs[0].texPos; stubs[5].texPos = stubs[1].texPos;
 			stubs[6].texPos = stubs[2].texPos; stubs[7].texPos = stubs[3].texPos;
 			stubs[8].texPos = stubs[0].texPos; stubs[9].texPos = stubs[1].texPos;
 			stubs[10].texPos = stubs[2].texPos; stubs[11].texPos = stubs[3].texPos;
 
 			this.Invalidate();
-			//LEAVE THESE
 		}
 
 		private void Timeline_Paint(object sender, PaintEventArgs e)
@@ -163,27 +167,26 @@ namespace TISFAT_Zero
 
 		public void Timeline_Refresh()
 		{
-            GL.Disable(EnableCap.Multisample);
-
 			glgraphics.MakeCurrent();
 
+            GL.Disable(EnableCap.Multisample);
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 
-			GL.Color4(Color.Black);
+			GL.Color3(Color.Black);
+			GL.Begin(PrimitiveType.LineStrip);
 
-			GL.Begin(PrimitiveType.QuadStrip);
-
-			GL.Vertex2(69, StubX.Top - 1);
-			GL.Vertex2(69, StubX.Top - 1);
 			GL.Vertex2(0, StubX.Top);
-			GL.Vertex2(0, StubX.Top);
-			GL.Vertex2(0, 0);
-			GL.Vertex2(0, 0);
-			GL.Vertex2(80, 0);
-			GL.Vertex2(80, 0);
-			GL.Vertex2(80, StubX.Top);
-			GL.Vertex2(80, StubX.Top);
+			GL.Vertex2(0, -1);
+			GL.Vertex2(79, -1);
+			GL.Vertex2(79, StubX.Top);
 
+			GL.End();
+
+			GL.Begin(PrimitiveType.Quads);
+			GL.Vertex2(0, Height - 12);
+			GL.Vertex2(79, Height - 12);
+			GL.Vertex2(79, Height);
+			GL.Vertex2(0, Height);
 			GL.End();
 
 			int ind_L = (int)Math.Ceiling((pxOffsetY + 1) / 16d - 1), ind_F = (int)Math.Ceiling((pxOffsetX + 1) / 9d - 1);
@@ -208,30 +211,48 @@ namespace TISFAT_Zero
 
 				if (c != Color.Empty)
 				{
+					x.X++;
 					GL.Color3(c);
 					GL.Begin(PrimitiveType.Quads);
 					GL.Vertex2(x.X, 0);
 					GL.Vertex2(x.X, Height);
-					GL.Vertex2(x.X + 9, Height);
-					GL.Vertex2(x.X + 9, 0);
+					GL.Vertex2(x.X + 8, Height);
+					GL.Vertex2(x.X + 8, 0);
 					GL.End();
+					x.X--;
 				}
 
 				drawFrame(x, Color.Transparent);
+
+				x.X++;
 
 				zerotonine[(a+1) % 10].Draw(this, x);
 			}
 
 			for (int p = start_L, a = ind_L; p < StubX.Top && a < endL_ind; p += 16, a++)
 			{
-                renderQuadLine(new Point(79, p), new Point(0, p), 1, Color.Black);
+				GL.Color4(Color.Black);
+				GL.Begin(PrimitiveType.Lines);
+
+				GL.Vertex2(79, p);
+				GL.Vertex2(0, p);
+
+				GL.End();
 
 				layerNames[a].Draw(this, new Point(1, p - 15));
 			}
 
-            renderQuadLine(new Point(0, 16), new Point(Width - 12, 16), 1, Color.Black);
-
 			TIMELINE.Draw(this);
+
+			GL.Color4(Color.Black);
+			GL.Begin(PrimitiveType.Lines);
+
+			GL.Vertex2(1, 16);
+			GL.Vertex2(Width - 12, 16);
+			GL.Vertex2(1, 15);
+			GL.Vertex2(79, 15);
+
+			GL.End();
 
 			renderRectangle(StubX, Color.DarkGray);
 			renderRectangle(StubY, Color.DarkGray);
@@ -256,9 +277,7 @@ namespace TISFAT_Zero
 			//This formula is used to determine which stub to draw, since I ordered them so neatly in the array this is possible.
 			if (isBitSet(stub, 0))
 				stubs[4 + ((stub & 2) << 1) + ((stub & 4) >> 1) + ((stub & 8) >> 3)].Draw(this);
-
-            GL.Enable(EnableCap.Multisample);
-
+			
 			glgraphics.SwapBuffers();
 		}
 
@@ -267,11 +286,9 @@ namespace TISFAT_Zero
 			glgraphics.MakeCurrent();
 
 			GL.MatrixMode(MatrixMode.Projection);
-
 			GL.LoadIdentity();
 
 			GL.Viewport(0, Screen.PrimaryScreen.Bounds.Height - Height, Width, Height);
-
 			GL.Ortho(0, Width, Height, 0, 0, 1);
 
 			GL.Disable(EnableCap.DepthTest);
@@ -324,7 +341,7 @@ namespace TISFAT_Zero
 
 			if (type == 0) //Line
 			{
-                renderQuadLine(one, two, width, color);
+                //renderQuadLine(one, two, width, color);
 			}
 			else if (type == 1 || type == 2) //Rectangle
 			{
@@ -355,7 +372,8 @@ namespace TISFAT_Zero
 			GL.Disable(EnableCap.Blend);
 		}
 
-        private void renderQuadLine(Point one, Point two, float thickness, Color color)
+       /* Not needed for the timeline (at the moment)
+	    * private void renderQuadLine(Point one, Point two, float thickness, Color color)
         {
             GL.Color4(color);
 
@@ -373,7 +391,7 @@ namespace TISFAT_Zero
             GL.Vertex2((two.X - normX), (two.Y - normY));
 
             GL.End();
-        }
+        } */ 
 
 		private void renderRectangle(Rectangle rect, Color color)
 		{
@@ -393,8 +411,8 @@ namespace TISFAT_Zero
 			GL.Color3(Color.Black);
 			GL.Begin(PrimitiveType.LineStrip);
 
-			int a = p.Y + 15, b = p.X + 9;
-			GL.Vertex2(p.X, a);
+			int a = p.Y + 16, b = p.X + 9;
+			GL.Vertex2(p.X, a - 1);
 			GL.Vertex2(b, a);
 			GL.Vertex2(b, p.Y);
 			GL.End();
@@ -444,20 +462,22 @@ namespace TISFAT_Zero
 				selectedScrollItems = (byte)(!mouseDown ? 0 : 34);
 				if (dx <= 12)
 				{
-					if (y <= 6)
+					if (y < 16)
 						selectedScrollItems = 0;
-					else if (y >= 15)
+					else if (y >= 26)
 					{
-						if (dy >= 12)
+						if (dy <= 12)
+							selectedScrollItems = 0;
+						else if(dy >= 24)
 						{
 							updateScrollLocation = mouseDown;
 
 							if (mouseDown)
 							{
 								if (y < ScrollY.Top)
-									Scrollbar_eY = Math.Max(0, (double)(ScrollY.Top - 16 - ScrollY.Height) / (scrollAreaY - ScrollY.Height));
+									Scrollbar_eY = Math.Max(0, (double)(ScrollY.Top - 26 - ScrollY.Height) / (scrollAreaY - ScrollY.Height));
 								else if (y >= ScrollY.Bottom)
-									Scrollbar_eY = Math.Min(1, (double)(ScrollY.Top - 16 + ScrollY.Height) / (scrollAreaY - ScrollY.Height));
+									Scrollbar_eY = Math.Min(1, (double)(ScrollY.Top - 26 + ScrollY.Height) / (scrollAreaY - ScrollY.Height));
 							}
 
 							if (y >= ScrollY.Top && y < ScrollY.Bottom)
@@ -486,7 +506,7 @@ namespace TISFAT_Zero
 				}
 				else
 				{
-					if (dx <= 22)
+					if (dx <= 23)
 					{
 						selectedScrollItems |= (byte)(dy < 12 ? 144 : 0);
 						if (mouseDown && selectedScrollItems != old)
@@ -495,18 +515,18 @@ namespace TISFAT_Zero
 							updateScrollLocation = true;
 						}
 					}
-					else if (x >= 70)
+					else if (x >= 79)
 					{
-						if (x >= 80)
+						if (x >= 90)
 						{
 							updateScrollLocation = mouseDown;
 
 							if (mouseDown)
 							{
 								if (x < ScrollX.Left)
-									Scrollbar_eX = Math.Max(0, (double)(ScrollX.Left - 80 - ScrollX.Width) / (scrollAreaX - ScrollX.Width));
+									Scrollbar_eX = Math.Max(0, (double)(ScrollX.Left - 90 - ScrollX.Width) / (scrollAreaX - ScrollX.Width));
 								else if (x >= ScrollX.Right)
-									Scrollbar_eX = Math.Min(1, (double)(ScrollX.Left - 80 + ScrollX.Width) / (scrollAreaX - ScrollX.Width));
+									Scrollbar_eX = Math.Min(1, (double)(ScrollX.Left - 90 + ScrollX.Width) / (scrollAreaX - ScrollX.Width));
 							}
 
 							if (x >= ScrollX.Left && x < ScrollX.Right)
@@ -541,17 +561,17 @@ namespace TISFAT_Zero
 				else if (isScrolling)
 				{
 					if (isScrollingY)
-						Scrollbar_eY = Math.Min(1, Math.Max(0, (double)((y - 16) - cursorDiff) / (scrollAreaY - ScrollY.Height)));
+						Scrollbar_eY = Math.Min(1, Math.Max(0, (double)((y - 26) - cursorDiff) / (scrollAreaY - ScrollY.Height)));
 					else
-						Scrollbar_eX = Math.Min(1, Math.Max(0, (double)((x - 80) - cursorDiff) / (scrollAreaX - ScrollX.Width)));
+						Scrollbar_eX = Math.Min(1, Math.Max(0, (double)((x - 90) - cursorDiff) / (scrollAreaX - ScrollX.Width)));
 					updateScrollLocation = true;
 				}
 			}
 
 			if (updateScrollLocation)
 			{
-				ScrollY.Location = new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 16));
-				ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 80), Height - 10);
+				ScrollY.Location = new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 26));
+				ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 90), Height - 10);
 				pxOffsetX = (int)(Scrollbar_eX * timelineRealLength);
 				pxOffsetY = (int)(Scrollbar_eY * timelineHeight);
 			}
@@ -591,7 +611,7 @@ namespace TISFAT_Zero
 					return;
 
 				Scrollbar_eX = Math.Min(1, Math.Max(0, pxOffsetX / (double)timelineRealLength));
-				ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 80), Height - 10);
+				ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 90), Height - 10);
 			}
 			else
 			{
@@ -602,7 +622,7 @@ namespace TISFAT_Zero
 					return;
 
 				Scrollbar_eY = Math.Min(1, Math.Max(0, pxOffsetY / (double)timelineHeight));
-				ScrollY.Location = new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 16));
+				ScrollY.Location = new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 26));
 			}
 
 			Timeline_Refresh();

@@ -23,12 +23,11 @@ namespace TISFAT_Zero
 			texID = GL.GenTexture();
 
 			GL.BindTexture(TextureTarget.Texture2D, texID);
-
 			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, rawData.Width, rawData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, rawData.Scan0);
 			original.UnlockBits(rawData);
 
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.LinearMipmapLinear);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 
 			GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
 
@@ -44,6 +43,8 @@ namespace TISFAT_Zero
 			if (position == new Point())
 				position = texPos;
 
+			Canvas.GLGraphics.MakeCurrent();
+
 			GL.Color4(Color.White);
 			GL.Enable(EnableCap.Blend);
 			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
@@ -51,18 +52,18 @@ namespace TISFAT_Zero
 			GL.Enable(EnableCap.Texture2D);
 
 			GL.BindTexture(TextureTarget.Texture2D, texID);
-			GL.Begin(BeginMode.Quads);
+			GL.Begin(PrimitiveType.Quads);
 
-			GL.TexCoord2(0.0, 0.0);
+			GL.TexCoord2(0, 0);
 			GL.Vertex2(position.X, position.Y);
 
-			GL.TexCoord2(0.0, 1.0);
+			GL.TexCoord2(0, 1);
 			GL.Vertex2(position.X, position.Y + texSize.Height);
 
-			GL.TexCoord2(1.0, 1.0);
+			GL.TexCoord2(1, 1);
 			GL.Vertex2(position.X + texSize.Width, position.Y + texSize.Height);
 
-			GL.TexCoord2(1.0, 0.0);
+			GL.TexCoord2(1, 0);
 			GL.Vertex2(position.X + texSize.Width, position.Y);
 
 			GL.End();
