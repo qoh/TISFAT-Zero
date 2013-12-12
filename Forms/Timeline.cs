@@ -1,15 +1,9 @@
-﻿using OpenTK.Graphics;
-using OpenTK.Platform;
+﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using OpenTK;
-using Config = OpenTK.Configuration;
-using Utilities = OpenTK.Platform.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Windows.Forms;
-using System.Reflection;
 
 namespace TISFAT_Zero
 {
@@ -42,17 +36,17 @@ namespace TISFAT_Zero
 		//repeated for bits 5-8 for scrolling stubs
 		public byte selectedScrollItems = 0;
 
-		public int timelineFrameLength = 1024;
+		public int timelineFrameLength = 512;
 		public int timelineRealLength;
-		public int timelineHeight = 16 * 16;
+		public static int timelineHeight;
+
+		public int selectedLayer_Ind = 0;
 
 		//We also use a lot of bitmaps.. ^ ^'
 		private T0Bitmap[] zerotonine = new T0Bitmap[10];
 		private static List<T0Bitmap> layerNames = new List<T0Bitmap>();
 		private T0Bitmap[] stubs = new T0Bitmap[12];
 		private T0Bitmap TIMELINE;
-
-		public int currentnum = -1;
 
 		public GLControl GLGraphics
 		{
@@ -65,7 +59,7 @@ namespace TISFAT_Zero
 			LoadGraphics();
 			
 			MainForm = f;
-			Colors = new Color[] { Color.FromArgb(220, 220, 220), Color.FromArgb(140, 140, 140), Color.FromArgb(0, 0, 0), Color.FromArgb(70, 120, 255), Color.FromArgb(40, 230, 255), Color.FromArgb(30, 100, 255) };
+			Colors = new Color[] { Color.FromArgb(220, 220, 220), Color.FromArgb(140, 140, 140), Color.FromArgb(200, 200, 200), Color.FromArgb(70, 120, 255), Color.FromArgb(40, 230, 255), Color.FromArgb(30, 100, 255) };
 
 			zerotonine[0] = new T0Bitmap(Properties.Resources._0); zerotonine[1] = new T0Bitmap(Properties.Resources._1);
 			zerotonine[2] = new T0Bitmap(Properties.Resources._2); zerotonine[3] = new T0Bitmap(Properties.Resources._3);
@@ -76,14 +70,14 @@ namespace TISFAT_Zero
 			Point y = new Point(7, -1);
 			Font F = new Font("Arial", 10);
 			
-			using (Bitmap raw = new Bitmap(78, 16))
+			using (Bitmap raw = new Bitmap(79, 15))
 			using (Graphics g = Graphics.FromImage(raw))
 			{
 				g.Clear(Colors[5]);
 				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
 				g.DrawString("TIMELINE", F, Brushes.Black, y);
 
-				TIMELINE = new T0Bitmap(raw, new Point(1, 0));
+				TIMELINE = new T0Bitmap(raw, new Point(0, 0));
 			}
 
 			//Fetch the scrollbar stub bitmaps
@@ -102,6 +96,9 @@ namespace TISFAT_Zero
 
 			addNewLayer(typeof(StickLayer));
 			addNewLayer(typeof(BitmapLayer), "sdfasdggae");
+			for (int a = 0; a < 1000; a++)
+				addNewLayer(typeof(RectLayer), "stuff " + (a + 1));
+
 			timelineRealLength = 9 * timelineFrameLength;
 		}
 
@@ -115,7 +112,7 @@ namespace TISFAT_Zero
 			GL.LoadIdentity();
 
 			GL.Clear(ClearBufferMask.ColorBufferBit);
-			GL.ClearColor(Color.White);
+			GL.ClearColor(Colors[0]);
 
 			GL.Ortho(0, Width, Height, 0, 0, 1);
 
@@ -126,7 +123,7 @@ namespace TISFAT_Zero
 
 			int width = timelineFrameLength * 9;
 
-			scrollAreaY = Height - 49; scrollAreaX = Width - 113;
+			scrollAreaY = Height - 49; scrollAreaX = Width - 114;
 
 			float viewRatioY = (float)scrollAreaY / timelineHeight, viewRatioX = (float)scrollAreaX / width;
 			
@@ -134,13 +131,13 @@ namespace TISFAT_Zero
 			ScrollY.Location = ScrollY.Height != -1 ? new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 26)) : new Point(-1, -1);
 
 			ScrollX.Width = viewRatioX < 1 ? Math.Max((int)(scrollAreaX * viewRatioX), 16) : -1;
-			ScrollX.Location = ScrollX.Width != -1 ? new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 90), Height - 10) : new Point(-1, -1);
+			ScrollX.Location = ScrollX.Width != -1 ? new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 91), Height - 10) : new Point(-1, -1);
 
 			pxOffsetX = (int)(Scrollbar_eX * width);
 			pxOffsetY = (int)(Scrollbar_eY * timelineHeight);
 
-			StubX.Width = Width - 91;
-			StubX.Location = new Point(79, Height - 12);
+			StubX.Width = Width - 92;
+			StubX.Location = new Point(80, Height - 12);
 
 			StubY.Height = Height - 16;
 			StubY.Location = new Point(Width - 12, 16);
@@ -167,30 +164,15 @@ namespace TISFAT_Zero
 
 		public void Timeline_Refresh()
 		{
+			#region Init. stuff
+
 			glgraphics.MakeCurrent();
 
             GL.Disable(EnableCap.Multisample);
 			GL.Clear(ClearBufferMask.ColorBufferBit);
-
-			GL.Color3(Color.Black);
-			GL.Begin(PrimitiveType.LineStrip);
-
-			GL.Vertex2(0, StubX.Top);
-			GL.Vertex2(0, -1);
-			GL.Vertex2(79, -1);
-			GL.Vertex2(79, StubX.Top);
-
-			GL.End();
-
-			GL.Begin(PrimitiveType.Quads);
-			GL.Vertex2(0, Height - 12);
-			GL.Vertex2(79, Height - 12);
-			GL.Vertex2(79, Height);
-			GL.Vertex2(0, Height);
-			GL.End();
-
+			
 			int ind_L = (int)Math.Ceiling((pxOffsetY + 1) / 16d - 1), ind_F = (int)Math.Ceiling((pxOffsetX + 1) / 9d - 1);
-			int start_L = 32 - (pxOffsetY % 16), start_F = 80 - (pxOffsetX % 9);
+			int start_L = 16 - (pxOffsetY % 16), start_F = 80 - (pxOffsetX % 9);
 
 			if (ind_L == -1)
 				ind_L = 0;
@@ -199,58 +181,216 @@ namespace TISFAT_Zero
 
 			int endL_ind = Math.Min(Layers.Count, ind_L + maxLayers), endF_ind = ind_F + maxFrames;
 
+			#endregion Init. stuff
+
+			#region Selected layer hilighting
+
+			if (selectedLayer_Ind >= ind_L && selectedLayer_Ind < endL_ind)
+			{
+				GL.Color3(Colors[2]);
+				GL.Begin(PrimitiveType.Quads);
+
+				int y = 16 * (selectedLayer_Ind - ind_L) + start_L;
+
+				GL.Vertex2(80, y); GL.Vertex2(80, y + 16);
+				GL.Vertex2(Width, y + 16); GL.Vertex2(Width, y);
+
+				GL.End();
+			}
+
+			#endregion Selected layer hilighting
+
+			#region Colored bars and such
+
+			GL.Color4(Colors[1]);
+			GL.Begin(PrimitiveType.Lines);
+
+			GL.Vertex2(80, 15); GL.Vertex2(Width, 15);
+
+			GL.End();
+
 			for (int p = start_F, a = ind_F; a < endF_ind; p += 9, a++)
 			{
 				Point x = new Point(p, 0);
 
 				Color c = Color.Empty;
+
+				if ((a + 1) % 100 == 0)
+					c = Color.Pink;
+				else if ((a + 1) % 10 == 0)
+					c = Color.Cyan;
+
+				if (c != Color.Empty)
+				{
+					GL.Color3(c);
+					GL.Begin(PrimitiveType.Quads);
+
+					GL.Vertex2(x.X, 16); GL.Vertex2(x.X, Height);
+					GL.Vertex2(x.X + 8, Height); GL.Vertex2(x.X + 8, 16);
+
+					GL.End();
+
+					drawFrame(x, c, true);
+				}
+
+				GL.Color3(Colors[1]);
+				GL.Begin(PrimitiveType.Lines);
+
+				GL.Vertex2(p - 1, 0); GL.Vertex2(p - 1, Height);
+
+				GL.End();
+			}
+
+			#endregion Colored bars and such
+
+			for (int p1 = start_F, p2 = start_L, a = ind_L; a < endL_ind; p2 += 16, a++)
+			{
+				Layer current = Layers[a];
+
+				//Get the first frameset we need to render
+				int[] pos = current.BinarySearchDeep(ind_F);
+
+				int framesetpos = -1, framepos = -1;
+
+				if (pos[0] < 0)
+				{
+					framesetpos = -pos[0] - 1;
+					framepos = 0;
+				}
+				else
+				{
+					framesetpos = pos[0];
+
+					if(pos[1] < 0)
+						framepos = -pos[1] - 1;
+					else
+						framepos = pos[1];
+				}
+
+				for (Frameset fs = current[framesetpos]; fs.StartingPosition < endF_ind && framesetpos < current.Framesets.Count; fs = current[framesetpos++])
+				{
+					int max = fs.FrameCount - 1;
+
+					if (max == 1 && framepos == 1)
+						framepos = 0;
+
+					int renderingpos1 = 9 * (fs[framepos].Position - ind_F) + p1, renderingpos2 = 9 * (fs[framepos+1].Position - ind_F) + p1;
+
+					for (KeyFrame f1 = fs[framepos], f2 = fs[framepos + 1]; framepos < max; renderingpos1 = renderingpos2, framepos++, renderingpos2 = framepos + 1 <= max ? 9 * (fs[framepos + 1].Position - ind_F) + p1 : renderingpos2)
+					{
+						Color x = Color.Gold;
+
+						if (framepos == 0)
+							x = Color.DarkGray;
+
+						drawFrame(renderingpos1, p2, x);
+
+						renderingpos1 += 9;
+
+						if (renderingpos1 != renderingpos2)
+						{
+							GL.Color3(Color.White);
+							GL.Begin(PrimitiveType.Quads);
+
+							GL.Vertex2(renderingpos1, p2);
+							GL.Vertex2(renderingpos1, p2 + 15);
+							GL.Vertex2(renderingpos2, p2 + 15);
+							GL.Vertex2(renderingpos2, p2);
+
+							GL.End();
+
+							p2 += 11;
+
+							GL.Color3(Color.Black);
+							GL.Begin(PrimitiveType.LineStrip);
+
+							GL.Vertex2(renderingpos1 + 3, p2);
+							GL.Vertex2(renderingpos2 - 3, p2);
+							GL.Vertex2(renderingpos2 - 5, p2 - 2);
+
+							GL.End();
+
+							GL.Begin(PrimitiveType.Lines);
+
+							GL.Vertex2(renderingpos2 - 3, p2);
+							GL.Vertex2(renderingpos2 - 5, p2 + 3);
+							p2 -= 11;
+
+							GL.Color3(Colors[1]);
+							GL.Vertex2(renderingpos2 - 1, p2);
+							GL.Vertex2(renderingpos2 - 1, p2 + 16);
+
+							GL.End();
+						}
+					}
+
+					drawFrame(renderingpos2, p2, Color.DarkGray);
+				}
+			}
+
+			#region Timeline numbers section
+
+			for (int p = start_F, a = ind_F; a < endF_ind; p += 9, a++)
+			{
+				Point x = new Point(p, 0);
+
+				Color c = Color.Empty;
+
 				if ((a+1) % 100 == 0)
 					c = Color.Pink;
 				else if ((a+1) % 10 == 0)
 					c = Color.FromArgb(40, 230, 255);
 
-				if (c != Color.Empty)
-				{
-					x.X++;
-					GL.Color3(c);
-					GL.Begin(PrimitiveType.Quads);
-					GL.Vertex2(x.X, 0);
-					GL.Vertex2(x.X, Height);
-					GL.Vertex2(x.X + 8, Height);
-					GL.Vertex2(x.X + 8, 0);
-					GL.End();
-					x.X--;
-				}
-
-				drawFrame(x, Color.Transparent);
-
-				x.X++;
+				if(c == Color.Empty)
+					if (selectedLayer_Ind != -1)
+						drawFrame(x, Colors[0], true);
+					else
+						drawFrame(x, Colors[1], true);
+				else
+					drawFrame(x, c, true);
 
 				zerotonine[(a+1) % 10].Draw(this, x);
 			}
+			
+			#endregion Timeline numbers section
 
-			for (int p = start_L, a = ind_L; p < StubX.Top && a < endL_ind; p += 16, a++)
+			#region Horiz. Lines
+
+			for (int p = start_L + 15, a = ind_L; a < endL_ind; p += 16, a++)
 			{
 				GL.Color4(Color.Black);
 				GL.Begin(PrimitiveType.Lines);
 
-				GL.Vertex2(79, p);
-				GL.Vertex2(0, p);
+				GL.Vertex2(0, p); GL.Vertex2(79, p);
+
+				GL.Color3(Colors[1]);
+				GL.Vertex2(80, p); GL.Vertex2(Width, p);
 
 				GL.End();
 
-				layerNames[a].Draw(this, new Point(1, p - 15));
+				layerNames[a].Draw(this, new Point(0, p - 15));
 			}
+
+			#endregion Horiz. Lines
+
+			#region Misc other stuff
 
 			TIMELINE.Draw(this);
 
-			GL.Color4(Color.Black);
+
+			GL.Color3(Color.Black);
 			GL.Begin(PrimitiveType.Lines);
 
-			GL.Vertex2(1, 16);
-			GL.Vertex2(Width - 12, 16);
-			GL.Vertex2(1, 15);
-			GL.Vertex2(79, 15);
+			GL.Vertex2(0, 15); GL.Vertex2(79, 15);
+
+			GL.Vertex2(79, 0); GL.Vertex2(79, Height);
+
+			GL.End();
+
+			GL.Begin(PrimitiveType.Quads);
+
+			GL.Vertex2(0, Height - 12); GL.Vertex2(79, Height - 12);
+			GL.Vertex2(79, Height); GL.Vertex2(0, Height);
 
 			GL.End();
 
@@ -277,7 +417,9 @@ namespace TISFAT_Zero
 			//This formula is used to determine which stub to draw, since I ordered them so neatly in the array this is possible.
 			if (isBitSet(stub, 0))
 				stubs[4 + ((stub & 2) << 1) + ((stub & 4) >> 1) + ((stub & 8) >> 3)].Draw(this);
-			
+
+			#endregion Misc other stuff
+
 			glgraphics.SwapBuffers();
 		}
 
@@ -311,7 +453,7 @@ namespace TISFAT_Zero
 			if(name == null)
 				name = "Layer " + (Layers.Count + 1);
 
-			Layer newLayer = (Layer)layerType.GetConstructor(new Type[] { typeof(string), typeof(int) } ).Invoke(new object[] { name, 0 } );
+			Layer newLayer = (Layer)layerType.GetConstructor(new Type[] { typeof(string), typeof(int) } ).Invoke(new object[] { name, 2 } );
 
 			//Add the layer
 			Layers.Add(newLayer);
@@ -321,7 +463,7 @@ namespace TISFAT_Zero
 			Point y = new Point(0, -1);
 			Font F = new Font("Arial", 10);
 
-			using (Bitmap raw = new Bitmap(78, 15))
+			using (Bitmap raw = new Bitmap(79, 15))
 			using (Graphics g = Graphics.FromImage(raw))
 			{
 				g.Clear(Colors[3]);
@@ -330,6 +472,8 @@ namespace TISFAT_Zero
 
 				layerNames.Add(new T0Bitmap(raw));
 			}
+
+			timelineHeight += 16;
 
 			return newLayer;
 		}
@@ -372,7 +516,7 @@ namespace TISFAT_Zero
 			GL.Disable(EnableCap.Blend);
 		}
 
-       /* Not needed for the timeline (at the moment)
+       /* Not needed for the timeline, saving it for when the canvas is redone
 	    * private void renderQuadLine(Point one, Point two, float thickness, Color color)
         {
             GL.Color4(color);
@@ -406,26 +550,50 @@ namespace TISFAT_Zero
 			GL.End();
 		}
 
-		private void drawFrame(Point p, Color i)
+		private void drawFrame(Point p, Color i, bool nofancy = false)
 		{
-			GL.Color3(Color.Black);
-			GL.Begin(PrimitiveType.LineStrip);
-
-			int a = p.Y + 16, b = p.X + 9;
-			GL.Vertex2(p.X, a - 1);
-			GL.Vertex2(b, a);
-			GL.Vertex2(b, p.Y);
-			GL.End();
-
+			GL.Enable(EnableCap.Blend);
+			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+			
 			if (i != Color.Transparent)
 			{
-				GL.Color3(i);
+				int a = p.Y + 16, b = p.X + 8;
+
+				GL.Color4(i);
 				GL.Begin(PrimitiveType.Quads);
 
 				GL.Vertex2(p.X, p.Y);
-				GL.Vertex2(p.X, --a);
-				GL.Vertex2(--b, a);
+				GL.Vertex2(p.X, a-1);
+				GL.Vertex2(b, a-1);
 				GL.Vertex2(b, p.Y);
+
+				if (!nofancy)
+				{
+					GL.Color4(Color.FromArgb(127, 0, 0, 0));
+
+					GL.Vertex2(p.X, p.Y);
+					GL.Vertex2(p.X, p.Y + 2);
+					GL.Vertex2(b, p.Y + 2);
+					GL.Vertex2(b, p.Y);
+
+					GL.Color3(Color.Black);
+
+					a -= 7;
+					p.X += 2;
+					GL.Vertex2(p.X, a);
+					GL.Vertex2(p.X, a + 4);
+					GL.Vertex2(p.X + 4, a + 4);
+					GL.Vertex2(p.X + 4, a);
+
+					GL.Color3(Color.White);
+
+					a++;
+					p.X++;
+					GL.Vertex2(p.X, a);
+					GL.Vertex2(p.X, a + 2);
+					GL.Vertex2(p.X + 2, a + 2);
+					GL.Vertex2(p.X + 2, a);
+				}
 
 				GL.End();
 			}
@@ -511,13 +679,13 @@ namespace TISFAT_Zero
 						selectedScrollItems |= (byte)(dy < 12 ? 144 : 0);
 						if (mouseDown && selectedScrollItems != old)
 						{
-							Scrollbar_eX = Math.Min(1, 12 * ((pxOffsetX / 12) + 1) / (double)timelineRealLength);
+							Scrollbar_eX = Math.Min(1, 9 * ((pxOffsetX / 9) + 1) / (double)timelineRealLength);
 							updateScrollLocation = true;
 						}
 					}
-					else if (x >= 79)
+					else if (x >= 80)
 					{
-						if (x >= 90)
+						if (x >= 91)
 						{
 							updateScrollLocation = mouseDown;
 
@@ -538,7 +706,7 @@ namespace TISFAT_Zero
 
 							if (mouseDown)
 							{
-								Scrollbar_eX = Math.Max(0, 12 * ((pxOffsetX / 12) - 1) / (double)timelineRealLength);
+								Scrollbar_eX = Math.Max(0, 9 * ((pxOffsetX / 9) - 1) / (double)timelineRealLength);
 								updateScrollLocation = true;
 							}
 						}
@@ -571,7 +739,7 @@ namespace TISFAT_Zero
 			if (updateScrollLocation)
 			{
 				ScrollY.Location = new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 26));
-				ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 90), Height - 10);
+				ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 91), Height - 10);
 				pxOffsetX = (int)(Scrollbar_eX * timelineRealLength);
 				pxOffsetY = (int)(Scrollbar_eY * timelineHeight);
 			}
@@ -611,7 +779,7 @@ namespace TISFAT_Zero
 					return;
 
 				Scrollbar_eX = Math.Min(1, Math.Max(0, pxOffsetX / (double)timelineRealLength));
-				ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 90), Height - 10);
+				ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 91), Height - 10);
 			}
 			else
 			{

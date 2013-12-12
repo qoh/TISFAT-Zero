@@ -37,6 +37,12 @@ namespace TISFAT_Zero
 			get { return null; }
 		}
 
+		public Frameset this[int ind]
+		{
+			get { return Framesets[ind]; }
+			set { Framesets[ind] = value; }
+		}
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Layer"/> class.
 		/// </summary>
@@ -58,8 +64,6 @@ namespace TISFAT_Zero
 			LayerName = layerName;
 			layerType = type;
 			Type fType = frames[0].GetType();
-
-			frames.shiftFrames(startingOffset);
 
 			ConstructorInfo constructor = ((Type)((PropertyInfo)(fType.GetMember("ObjectType").GetValue(0))).GetValue(this, null)).GetConstructor(new Type[] { typeof(bool) });
 
