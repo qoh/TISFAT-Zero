@@ -69,6 +69,8 @@ namespace TISFAT_Zero
 
 			LayerFigure = (StickObject)constructor.Invoke(new object[] { false });
 
+			LayerFigure.parentLayer = this;
+
 			Framesets.Add(frames);
 		}
 

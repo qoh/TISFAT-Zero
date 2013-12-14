@@ -69,6 +69,8 @@ namespace TISFAT_Zero
 
 		public void Draw(ICanDraw Canvas, Point position = new Point())
 		{
+			Canvas.GLGraphics.MakeCurrent();
+
 			drawFigure(Canvas);
 		}
 
@@ -76,6 +78,8 @@ namespace TISFAT_Zero
 		{
 			if (!drawFig)
 				return;
+
+			Canvas.GLGraphics.MakeCurrent();
 
 			drawJoints(Canvas);
 		}
@@ -327,7 +331,6 @@ namespace TISFAT_Zero
 
 	class StickFigure : StickObject
 	{
-
 		#region Variables
 
 		new public static List<StickJoint> DefaultPose
@@ -360,8 +363,7 @@ namespace TISFAT_Zero
 
 		#endregion
 
-		public StickFigure(bool setAsActive = true)
-			: base(setAsActive)
+		public StickFigure(bool setAsActive = true) : base(setAsActive)
 		{
 			figureType = 1;
 		}
@@ -400,7 +402,6 @@ namespace TISFAT_Zero
 
 	class StickLine : StickObject
 	{
-
 		#region Properties
 
 		new public static List<StickJoint> DefaultPose
@@ -422,8 +423,7 @@ namespace TISFAT_Zero
 
 		#endregion Properties
 
-		public StickLine(bool setAsActive = true)
-			: base(setAsActive)
+		public StickLine(bool setAsActive = true) : base(setAsActive)
 		{
 			figureType = 2;
 		}
@@ -441,7 +441,6 @@ namespace TISFAT_Zero
 
 	class StickRect : StickObject
 	{
-
 		#region Properties
 
 		public bool isFilled;
@@ -467,8 +466,7 @@ namespace TISFAT_Zero
 
 		#endregion Properties
 
-		public StickRect(bool setAsActive = true)
-			: base(setAsActive)
+		public StickRect(bool setAsActive = true) : base(setAsActive)
 		{
 			figureType = 3;
 
@@ -506,8 +504,7 @@ namespace TISFAT_Zero
 
 	class StickCustom : StickObject
 	{
-		public StickCustom(bool setAsActive = true)
-			: base(setAsActive)
+		public StickCustom(bool setAsActive = true) : base(setAsActive)
 		{
 			figureType = 4;
 		}

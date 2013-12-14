@@ -40,6 +40,7 @@ namespace TISFAT_Zero
 		public int timelineRealLength;
 		public static int timelineHeight;
 
+		//If this value is -1 that means the timeline is selected
 		public int selectedLayer_Ind = 0;
 
 		//We also use a lot of bitmaps.. ^ ^'
@@ -47,7 +48,7 @@ namespace TISFAT_Zero
 		private static List<T0Bitmap> layerNames = new List<T0Bitmap>();
 		private T0Bitmap[] stubs = new T0Bitmap[12];
 		private T0Bitmap TIMELINE;
-
+		
 		public GLControl GLGraphics
 		{
 			get { return glgraphics; }
@@ -96,7 +97,8 @@ namespace TISFAT_Zero
 
 			addNewLayer(typeof(StickLayer));
 			addNewLayer(typeof(BitmapLayer), "sdfasdggae");
-			for (int a = 0; a < 1000; a++)
+
+			for (int a = 0; a < 200; a++)
 				addNewLayer(typeof(RectLayer), "stuff " + (a + 1));
 
 			timelineRealLength = 9 * timelineFrameLength;
@@ -243,6 +245,8 @@ namespace TISFAT_Zero
 
 			#endregion Colored bars and such
 
+			#region Layer Frames rendering
+
 			for (int p1 = start_F, p2 = start_L, a = ind_L; a < endL_ind; p2 += 16, a++)
 			{
 				Layer current = Layers[a];
@@ -328,6 +332,8 @@ namespace TISFAT_Zero
 				}
 			}
 
+			#endregion Layer Frames rendering
+
 			#region Timeline numbers section
 
 			for (int p = start_F, a = ind_F; a < endF_ind; p += 9, a++)
@@ -350,11 +356,28 @@ namespace TISFAT_Zero
 					drawFrame(x, c, true);
 
 				zerotonine[(a+1) % 10].Draw(this, x);
+
+				GL.Color3(Colors[1]);
+				GL.Begin(PrimitiveType.Lines);
+
+				GL.Vertex2(p - 1, 0);
+				GL.Vertex2(p - 1, 15);
+
+				GL.End();
 			}
 			
 			#endregion Timeline numbers section
 
 			#region Horiz. Lines
+
+			//I don't have to do color3 here again because it was already done at the end of the previous loop
+
+			GL.Begin(PrimitiveType.Lines);
+
+			GL.Vertex2(79, 15);
+			GL.Vertex2(Width, 15);
+
+			GL.End();
 
 			for (int p = start_L + 15, a = ind_L; a < endL_ind; p += 16, a++)
 			{
@@ -455,10 +478,11 @@ namespace TISFAT_Zero
 
 			Layer newLayer = (Layer)layerType.GetConstructor(new Type[] { typeof(string), typeof(int) } ).Invoke(new object[] { name, 2 } );
 
-			//Add the layer
+			//Add the layer to the list
 			Layers.Add(newLayer);
 
-			//Construct the name (will do later because lazy)
+
+			//Construct the name bitmap
 			
 			Point y = new Point(0, -1);
 			Font F = new Font("Arial", 10);
@@ -606,14 +630,13 @@ namespace TISFAT_Zero
 
 		private void Timeline_MouseMove(object sender, MouseEventArgs e)
 		{
-			#region Scrollbar Checks
-
 			byte old = selectedScrollItems;
 			Point old1 = ScrollY.Location, old2 = ScrollX.Location;
 			bool updateScrollLocation = false;
 			int x = e.X, y = e.Y;
 			int dx = Width - x, dy = Height - y;
 
+			//If you don't understand all the bitmasking stuff, don't blame yourself. I barely understand it :v
             if (!mouseDown)
             {
                 cursorDiff = -1;
@@ -622,9 +645,12 @@ namespace TISFAT_Zero
                 selectedScrollItems &= 0xfd;
 			}
 
+			#region Clicker hilighting
+
 			//Only start checking the massive monolithic conditional tree if dx or dy is <= 12. This is because all the scrollers
 			//are 12 pixels out from their respective sides. It also checks if the first bit of selectedScrollItems is 0,
 			//this is so that it doesn't update the selected scroll items while the mouse is clicked down.
+			
 			if ((dx <= 12 || dy <= 12) && !isBitSet(selectedScrollItems, 1))
 			{
 				selectedScrollItems = (byte)(!mouseDown ? 0 : 34);
@@ -656,7 +682,7 @@ namespace TISFAT_Zero
 							selectedScrollItems |= 208;
 							if (mouseDown)
 							{
-								Scrollbar_eY = Math.Min(1, (pxOffsetY + 1) / (double)timelineHeight);
+								Scrollbar_eY = Math.Min(1, (16 * ((pxOffsetY+1) / 16)+16) / (double)timelineHeight);
 								updateScrollLocation = true;
 							}
 						}
@@ -667,7 +693,7 @@ namespace TISFAT_Zero
 
 						if (mouseDown)
 						{
-							Scrollbar_eY = Math.Max(0, (pxOffsetY - 1) / (double)timelineHeight);
+							Scrollbar_eY = Math.Max(0, 16 * ((pxOffsetY / 16) - 1) / (double)timelineHeight);
 							updateScrollLocation = true;
 						}
 					}
@@ -716,7 +742,11 @@ namespace TISFAT_Zero
 			else if(!isBitSet(selectedScrollItems, 1))
 				selectedScrollItems = 0;
 
-			if(mouseDown)
+			#endregion Clicker hilighting
+
+			#region Scrollbar updating
+
+			if (mouseDown)
 			{
 				if ((selectedScrollItems & 1) == 1 && !isScrolling)
 				{
@@ -744,8 +774,17 @@ namespace TISFAT_Zero
 				pxOffsetY = (int)(Scrollbar_eY * timelineHeight);
 			}
 
-			#endregion Scrollbar Checks
+			#endregion Scrollbar updating
 
+			bool doRefresh = false;
+
+			if (!(dx <= 12 || dy <= 12) && !isBitSet(selectedScrollItems, 1))
+			{
+				
+			}
+
+			doRefresh = doRefresh || old != selectedScrollItems || updateScrollLocation;
+			
 			//Only refresh if the state has changed
 			if(old != selectedScrollItems || updateScrollLocation)
 				Timeline_Refresh();
@@ -765,7 +804,7 @@ namespace TISFAT_Zero
 
 		private bool isBitSet(byte x, byte n)
 		{
-			return (x & (1 << n)) >> n == 1;
+			return (x & (1 << n)) >> n != 0;
 		}
 
 		private void OnMouseWheel(object sender, MouseEventArgs e)
