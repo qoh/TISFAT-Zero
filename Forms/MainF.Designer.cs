@@ -342,7 +342,7 @@ namespace TISFAT_Zero
 			this.mnu_strip1.Location = new System.Drawing.Point(0, 0);
 			this.mnu_strip1.Name = "mnu_strip1";
 			this.mnu_strip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-			this.mnu_strip1.Size = new System.Drawing.Size(738, 24);
+			this.mnu_strip1.Size = new System.Drawing.Size(734, 24);
 			this.mnu_strip1.TabIndex = 0;
 			this.mnu_strip1.Text = "menuStrip1";
 			// 
@@ -364,13 +364,14 @@ namespace TISFAT_Zero
 			// 
 			this.splitContainer1.Panel1.BackColor = System.Drawing.Color.White;
 			this.splitContainer1.Panel1.Resize += new System.EventHandler(this.splitContainer1_Panel1_Resize);
+			this.splitContainer1.Panel1MinSize = 100;
 			// 
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.AutoScroll = true;
 			this.splitContainer1.Panel2.BackColor = System.Drawing.Color.LightGray;
-			this.splitContainer1.Size = new System.Drawing.Size(738, 494);
-			this.splitContainer1.SplitterDistance = 105;
+			this.splitContainer1.Size = new System.Drawing.Size(734, 488);
+			this.splitContainer1.SplitterDistance = 125;
 			this.splitContainer1.TabIndex = 1;
 			this.splitContainer1.SplitterMoving += new System.Windows.Forms.SplitterCancelEventHandler(this.splitContainer1_SplitterMoving);
 			// 
@@ -387,13 +388,13 @@ namespace TISFAT_Zero
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(738, 518);
+			this.ClientSize = new System.Drawing.Size(734, 512);
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.mnu_strip1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.mnu_strip1;
 			this.MaximumSize = new System.Drawing.Size(2000, 2000);
-			this.MinimumSize = new System.Drawing.Size(650, 450);
+			this.MinimumSize = new System.Drawing.Size(630, 450);
 			this.Name = "MainF";
 			this.Text = "TISFAT : Zero";
 			this.Load += new System.EventHandler(this.MainF_Load);

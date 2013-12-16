@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using OpenTK;
 using System.Drawing;
-using OpenTK.Graphics;
-using OpenTK;
+using System.IO;
 
 namespace TISFAT_Zero
 {
-	interface ICanDraw
+	internal interface ICanDraw
 	{
 		GLControl GLGraphics
 		{
@@ -18,8 +14,13 @@ namespace TISFAT_Zero
 		void drawGraphics(int type, Color color, Point one, int width, int height, Point two);
 	}
 
-	interface IGLDrawable
+	internal interface IGLDrawable
 	{
 		void Draw(ICanDraw Canvas, Point position = new Point());
+	}
+
+	internal interface ISavable
+	{
+		void saveObjectToStream(Stream saveTo);
 	}
 }

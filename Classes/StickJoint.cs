@@ -10,7 +10,6 @@ namespace TISFAT_Zero
 {
 	class StickJoint
 	{
-
 		#region Variables
 
 		public string jointName;
@@ -214,6 +213,5 @@ namespace TISFAT_Zero
 		}
 
 		#endregion
-
 	}
 }

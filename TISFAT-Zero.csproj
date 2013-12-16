@@ -59,7 +59,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Attributes.cs" />
-    <Compile Include="Classes\CanvasManager.cs" />
     <Compile Include="Classes\Interfaces.cs" />
     <Compile Include="Classes\Frameset.cs" />
     <Compile Include="Classes\KeyFrame.cs" />

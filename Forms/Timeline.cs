@@ -9,6 +9,8 @@ namespace TISFAT_Zero
 {
 	partial class Timeline : Form, ICanDraw
 	{
+		#region Buttload of variables
+
 		public MainF MainForm;
 		public static List<Layer> Layers = new List<Layer>();
 		private static Color[] Colors;
@@ -27,6 +29,7 @@ namespace TISFAT_Zero
 
 		public bool isScrolling, isScrollingY;
 		public bool mouseDown;
+		private bool forceRefresh = false;
 
 		//On the suggestion of Valcle, I'm using bit masks here so we don't flood this area with bools.
 		//bits 1-4: scrollbars
@@ -42,6 +45,8 @@ namespace TISFAT_Zero
 
 		//If this value is -1 that means the timeline is selected
 		public int selectedLayer_Ind = 0;
+		public int selectedFrame_Ind = 0;
+		private byte selectedFrame_Type = 0; //0: plain  1: keyframe  2: tween
 
 		//We also use a lot of bitmaps.. ^ ^'
 		private T0Bitmap[] zerotonine = new T0Bitmap[10];
@@ -53,6 +58,8 @@ namespace TISFAT_Zero
 		{
 			get { return glgraphics; }
 		}
+
+		#endregion Buttload of variables
 
 		public Timeline(MainF f)
 		{
@@ -123,11 +130,9 @@ namespace TISFAT_Zero
 			GL.LoadIdentity();
 			GL.Translate(0.375, 0, 0);
 
-			int width = timelineFrameLength * 9;
-
 			scrollAreaY = Height - 49; scrollAreaX = Width - 114;
 
-			float viewRatioY = (float)scrollAreaY / timelineHeight, viewRatioX = (float)scrollAreaX / width;
+			float viewRatioY = (float)scrollAreaY / timelineHeight, viewRatioX = (float)scrollAreaX / timelineRealLength;
 			
 			ScrollY.Height = viewRatioY < 1 ? Math.Max((int)(scrollAreaY * viewRatioY), 16) : -1;
 			ScrollY.Location = ScrollY.Height != -1 ? new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 26)) : new Point(-1, -1);
@@ -135,7 +140,7 @@ namespace TISFAT_Zero
 			ScrollX.Width = viewRatioX < 1 ? Math.Max((int)(scrollAreaX * viewRatioX), 16) : -1;
 			ScrollX.Location = ScrollX.Width != -1 ? new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 91), Height - 10) : new Point(-1, -1);
 
-			pxOffsetX = (int)(Scrollbar_eX * width);
+			pxOffsetX = (int)(Scrollbar_eX * timelineRealLength);
 			pxOffsetY = (int)(Scrollbar_eY * timelineHeight);
 
 			StubX.Width = Width - 92;
@@ -247,6 +252,10 @@ namespace TISFAT_Zero
 
 			#region Layer Frames rendering
 
+			bool renderSelected = selectedFrame_Ind >= ind_F && selectedFrame_Ind < endF_ind && selectedLayer_Ind >= ind_L && selectedLayer_Ind < endL_ind;
+			bool rendered = false, renderinloop = renderSelected && selectedFrame_Type == 2;
+			Point rendpoint = new Point(9 * (selectedFrame_Ind - ind_F) + start_F, 16 * (selectedLayer_Ind - ind_L) + start_L);
+
 			for (int p1 = start_F, p2 = start_L, a = ind_L; a < endL_ind; p2 += 16, a++)
 			{
 				Layer current = Layers[a];
@@ -270,6 +279,8 @@ namespace TISFAT_Zero
 					else
 						framepos = pos[1];
 				}
+
+				bool rendernow = renderinloop && !rendered && a == selectedLayer_Ind;
 
 				for (Frameset fs = current[framesetpos]; fs.StartingPosition < endF_ind && framesetpos < current.Framesets.Count; fs = current[framesetpos++])
 				{
@@ -303,6 +314,13 @@ namespace TISFAT_Zero
 
 							GL.End();
 
+							if (rendernow && selectedFrame_Ind >= framepos)
+							{
+								drawFrame(rendpoint, Color.Red, true);
+								
+								rendered = true;
+							}
+
 							p2 += 11;
 
 							GL.Color3(Color.Black);
@@ -330,6 +348,11 @@ namespace TISFAT_Zero
 
 					drawFrame(renderingpos2, p2, Color.DarkGray);
 				}
+			}
+
+			if (!renderinloop)
+			{
+				drawFrame(rendpoint, Color.Red, selectedFrame_Type == 0);
 			}
 
 			#endregion Layer Frames rendering
@@ -399,7 +422,6 @@ namespace TISFAT_Zero
 			#region Misc other stuff
 
 			TIMELINE.Draw(this);
-
 
 			GL.Color3(Color.Black);
 			GL.Begin(PrimitiveType.Lines);
@@ -623,9 +645,9 @@ namespace TISFAT_Zero
 			}
 		}
 
-		private void drawFrame(int x, int y, Color i)
+		private void drawFrame(int x, int y, Color i, bool nofancy = false)
 		{
-			drawFrame(new Point(x, y), i);
+			drawFrame(new Point(x, y), i, nofancy);
 		}
 
 		private void Timeline_MouseMove(object sender, MouseEventArgs e)
@@ -650,98 +672,100 @@ namespace TISFAT_Zero
 			//Only start checking the massive monolithic conditional tree if dx or dy is <= 12. This is because all the scrollers
 			//are 12 pixels out from their respective sides. It also checks if the first bit of selectedScrollItems is 0,
 			//this is so that it doesn't update the selected scroll items while the mouse is clicked down.
-			
-			if ((dx <= 12 || dy <= 12) && !isBitSet(selectedScrollItems, 1))
+
+			if (!isBitSet(selectedScrollItems, 1))
 			{
-				selectedScrollItems = (byte)(!mouseDown ? 0 : 34);
-				if (dx <= 12)
+				if (dx <= 12 || dy <= 12)
 				{
-					if (y < 16)
-						selectedScrollItems = 0;
-					else if (y >= 26)
+					selectedScrollItems = (byte)(!mouseDown ? 0 : 34);
+					if (dx <= 12)
 					{
-						if (dy <= 12)
+						if (y < 16)
 							selectedScrollItems = 0;
-						else if(dy >= 24)
+						else if (y >= 26)
 						{
-							updateScrollLocation = mouseDown;
-
-							if (mouseDown)
+							if (dy <= 12)
+								selectedScrollItems = 0;
+							else if (dy >= 24)
 							{
-								if (y < ScrollY.Top)
-									Scrollbar_eY = Math.Max(0, (double)(ScrollY.Top - 26 - ScrollY.Height) / (scrollAreaY - ScrollY.Height));
-								else if (y >= ScrollY.Bottom)
-									Scrollbar_eY = Math.Min(1, (double)(ScrollY.Top - 26 + ScrollY.Height) / (scrollAreaY - ScrollY.Height));
-							}
+								updateScrollLocation = mouseDown;
 
-							if (y >= ScrollY.Top && y < ScrollY.Bottom)
-								selectedScrollItems |= 1;
+								if (mouseDown)
+								{
+									if (y < ScrollY.Top)
+										Scrollbar_eY = Math.Max(0, (double)(ScrollY.Top - 26 - ScrollY.Height) / (scrollAreaY - ScrollY.Height));
+									else if (y >= ScrollY.Bottom)
+										Scrollbar_eY = Math.Min(1, (double)(ScrollY.Top - 26 + ScrollY.Height) / (scrollAreaY - ScrollY.Height));
+								}
+
+								if (y >= ScrollY.Top && y < ScrollY.Bottom)
+									selectedScrollItems |= 1;
+							}
+							else
+							{
+								selectedScrollItems |= 208;
+								if (mouseDown)
+								{
+									Scrollbar_eY = Math.Min(1, (16 * ((pxOffsetY + 1) / 16) + 16) / (double)timelineHeight);
+									updateScrollLocation = true;
+								}
+							}
 						}
 						else
 						{
-							selectedScrollItems |= 208;
+							selectedScrollItems |= 80;
+
 							if (mouseDown)
 							{
-								Scrollbar_eY = Math.Min(1, (16 * ((pxOffsetY+1) / 16)+16) / (double)timelineHeight);
+								Scrollbar_eY = Math.Max(0, 16 * ((pxOffsetY / 16) - 1) / (double)timelineHeight);
 								updateScrollLocation = true;
 							}
 						}
 					}
 					else
 					{
-						selectedScrollItems |= 80;
-
-						if (mouseDown)
+						if (dx <= 23)
 						{
-							Scrollbar_eY = Math.Max(0, 16 * ((pxOffsetY / 16) - 1) / (double)timelineHeight);
-							updateScrollLocation = true;
+							selectedScrollItems |= (byte)(dy < 12 ? 144 : 0);
+							if (mouseDown && selectedScrollItems != old)
+							{
+								Scrollbar_eX = Math.Min(1, 9 * ((pxOffsetX / 9) + 1) / (double)timelineRealLength);
+								updateScrollLocation = true;
+							}
+						}
+						else if (x >= 80)
+						{
+							if (x >= 91)
+							{
+								updateScrollLocation = mouseDown;
+
+								if (mouseDown)
+								{
+									if (x < ScrollX.Left)
+										Scrollbar_eX = Math.Max(0, (double)(ScrollX.Left - 90 - ScrollX.Width) / (scrollAreaX - ScrollX.Width));
+									else if (x >= ScrollX.Right)
+										Scrollbar_eX = Math.Min(1, (double)(ScrollX.Left - 90 + ScrollX.Width) / (scrollAreaX - ScrollX.Width));
+								}
+
+								if (x >= ScrollX.Left && x < ScrollX.Right)
+									selectedScrollItems |= 9;
+							}
+							else
+							{
+								selectedScrollItems |= 16;
+
+								if (mouseDown)
+								{
+									Scrollbar_eX = Math.Max(0, 9 * ((pxOffsetX / 9) - 1) / (double)timelineRealLength);
+									updateScrollLocation = true;
+								}
+							}
 						}
 					}
 				}
 				else
-				{
-					if (dx <= 23)
-					{
-						selectedScrollItems |= (byte)(dy < 12 ? 144 : 0);
-						if (mouseDown && selectedScrollItems != old)
-						{
-							Scrollbar_eX = Math.Min(1, 9 * ((pxOffsetX / 9) + 1) / (double)timelineRealLength);
-							updateScrollLocation = true;
-						}
-					}
-					else if (x >= 80)
-					{
-						if (x >= 91)
-						{
-							updateScrollLocation = mouseDown;
-
-							if (mouseDown)
-							{
-								if (x < ScrollX.Left)
-									Scrollbar_eX = Math.Max(0, (double)(ScrollX.Left - 90 - ScrollX.Width) / (scrollAreaX - ScrollX.Width));
-								else if (x >= ScrollX.Right)
-									Scrollbar_eX = Math.Min(1, (double)(ScrollX.Left - 90 + ScrollX.Width) / (scrollAreaX - ScrollX.Width));
-							}
-
-							if (x >= ScrollX.Left && x < ScrollX.Right)
-								selectedScrollItems |= 9;
-						}
-						else
-						{
-							selectedScrollItems |= 16;
-
-							if (mouseDown)
-							{
-								Scrollbar_eX = Math.Max(0, 9 * ((pxOffsetX / 9) - 1) / (double)timelineRealLength);
-								updateScrollLocation = true;
-							}
-						}
-					}
-				}
+					selectedScrollItems = 0;
 			}
-			else if(!isBitSet(selectedScrollItems, 1))
-				selectedScrollItems = 0;
-
 			#endregion Clicker hilighting
 
 			#region Scrollbar updating
@@ -775,23 +799,48 @@ namespace TISFAT_Zero
 			}
 
 			#endregion Scrollbar updating
-
-			bool doRefresh = false;
-
-			if (!(dx <= 12 || dy <= 12) && !isBitSet(selectedScrollItems, 1))
-			{
-				
-			}
-
-			doRefresh = doRefresh || old != selectedScrollItems || updateScrollLocation;
 			
-			//Only refresh if the state has changed
-			if(old != selectedScrollItems || updateScrollLocation)
+			//Only refresh if we need to! Saves precious processing power, and you money on your electrical bill!
+			if (forceRefresh || old != selectedScrollItems || updateScrollLocation)
 				Timeline_Refresh();
 		}
 
 		private void Timeline_MouseDown(object sender, MouseEventArgs e)
 		{
+			int x = e.X, y = e.Y;
+			int dx = Width - x, dy = Height - y;
+
+			if (!(dx <= 12 || dy <= 12))
+			{
+				if (x > 79)
+				{
+					//User is clicking inside the keyframes area
+					if (y > 15)
+					{
+						//Set selected layer index and frame index
+						selectedLayer_Ind = (pxOffsetY + (y - 16)) / 16; selectedFrame_Ind = (pxOffsetX + (x - 80)) / 9;
+						forceRefresh = true;
+
+						if (selectedLayer_Ind >= Layers.Count)
+						{
+							forceRefresh = false;
+							return;
+						}
+
+						int temp = Layers[selectedLayer_Ind].getFrameTypeAt(selectedFrame_Ind);
+						selectedFrame_Type = (byte)(temp == 4 ? 2 : temp == 0 ? 0 : 1);
+					}
+					else //User clicked on the timeline
+					{
+						
+					}
+				}
+				else //User clicked in layers
+				{
+					//Nothing here at the moment, but layer rearranging is planned for the future. Shouldn't be THAT hard to implement.
+				}
+			}
+
 			mouseDown = true;
 			Timeline_MouseMove(sender, e);
 		}

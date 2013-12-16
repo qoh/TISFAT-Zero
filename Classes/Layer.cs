@@ -11,6 +11,8 @@ namespace TISFAT_Zero
 {
 	abstract class Layer
 	{
+		#region Properties
+
 		//This list of framesets are always sorted, which makes searching through them much faster and easier to manage in general.
 		public List<Frameset> Framesets = new List<Frameset>();
 		public string LayerName;
@@ -43,6 +45,10 @@ namespace TISFAT_Zero
 			set { Framesets[ind] = value; }
 		}
 
+		#endregion Properties
+
+		#region Constructors
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Layer"/> class.
 		/// </summary>
@@ -73,6 +79,10 @@ namespace TISFAT_Zero
 
 			Framesets.Add(frames);
 		}
+
+		#endregion Constructors
+
+		#region Accessor Helpers
 
 		/// <summary>
 		/// Performs a binary search to find the frameset that contains the given position.   ... and binaries the search according to ghostdoc
@@ -207,7 +217,7 @@ namespace TISFAT_Zero
 		/// 4: Tween frame
 		/// </returns>
 		/// <exception cref="System.ArgumentOutOfRangeException">Position argument must be >= 0</exception>
-		public int getFrameTypeAt(int position)
+		public byte getFrameTypeAt(int position)
 		{
 			if (position < 0)
 				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
@@ -231,6 +241,49 @@ namespace TISFAT_Zero
 
 			return 1;
 		}
+
+		/// <summary>
+		/// Determines whether the given frameset can be inserted without causing problems.
+		/// </summary>
+		/// <param name="item">The item.</param>
+		/// <returns>True if the given frameset can be inserted into the layer with no problems and false if it won't fit. That's what she told me. Go ahead, ask her.</returns>
+		public bool canBeInserted(Frameset item)
+		{
+			return canBeInserted(item.StartingPosition, item.EndingPosition - item.StartingPosition);
+		}
+
+		/// <summary>
+		/// Determines whether a frameset with the given starting position and extent can be successfully inserted into the layer.
+		/// </summary>
+		/// <param name="position">The starting position of the frameset.</param>
+		/// <param name="extent">The extent of the frameset.</param>
+		/// <returns>A boolean indicating whether or not a frameset with the given position and extent can be inserted into the layer.</returns>
+		/// <exception cref="System.ArgumentOutOfRangeException">
+		/// Position argument must be >= 0
+		/// or
+		/// Extent argument must be >= 2
+		/// </exception>
+		private bool canBeInserted(int position, int extent)
+		{
+			if (position < 0)
+				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
+			if (extent < 2)
+				throw new ArgumentOutOfRangeException("extent", "Argument must be >= 2");
+
+			if (Framesets.Count == 0)
+				return true;
+
+			int result = -BinarySearch(position);
+
+			if (result < 0)
+				return false;
+			else if (result >= Framesets.Count)
+				return true;
+
+			return Framesets[result].StartingPosition - position - extent > 0;
+		}
+
+		#endregion Accessor Helpers
 
 		/// <summary>
 		/// Inserts the given frameset into the layer
@@ -268,47 +321,6 @@ namespace TISFAT_Zero
 			bool result = item.shiftFrames(position - item.StartingPosition);
 
 			return result ? insertFrameset(item) : false;
-		}
-
-		/// <summary>
-		/// Determines whether the given frameset can be inserted without causing problems.
-		/// </summary>
-		/// <param name="item">The item.</param>
-		/// <returns>True if the given frameset can be inserted into the layer with no problems and false if it won't fit. That's what she told me. Go ahead, ask her.</returns>
-		public bool canBeInserted(Frameset item)
-		{
-			return canBeInserted(item.StartingPosition, item.EndingPosition - item.StartingPosition);
-		}
-
-		/// <summary>
-		/// Determines whether a frameset with the given starting position and extent can be successfully inserted into the layer.
-		/// </summary>
-		/// <param name="position">The starting position of the frameset.</param>
-		/// <param name="extent">The extent of the frameset.</param>
-		/// <returns>A boolean indicating whether or not a frameset with the given position and extent can be inserted into the layer.</returns>
-		/// <exception cref="System.ArgumentOutOfRangeException">
-		/// Position argument must be >= 0
-		/// or
-		/// Extent argument must be >= 2
-		/// </exception>
-		private bool canBeInserted(int position, int extent)
-		{
-			if(position < 0)
-				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
-			if(extent < 2)
-				throw new ArgumentOutOfRangeException("extent", "Argument must be >= 2");
-
-			if (Framesets.Count == 0)
-				return true;
-
-			int result = -BinarySearch(position);
-
-			if (result < 0)
-				return false;
-			else if (result >= Framesets.Count)
-				return true;
-
-			return Framesets[result].StartingPosition - position - extent > 0;
 		}
 
 		/// <summary>
@@ -528,7 +540,6 @@ namespace TISFAT_Zero
 
 		public virtual void renderLayer(ICanDraw Canvas)
 		{
-			
 			LayerFigure.Draw(Canvas);
 		}
 	}

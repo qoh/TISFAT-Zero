@@ -28,11 +28,14 @@ namespace TISFAT_Zero
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
+		/// if (glgraphics.GraphicsMode == null) ;
+		/// new OpenTK.GLControl(new OpenTK.Graphics.GraphicsMode(32, 0, 1, 4));
 		/// </summary>
 		private void InitializeComponent()
 		{
 			this.glgraphics = new OpenTK.GLControl(new OpenTK.Graphics.GraphicsMode(32, 0, 1, 4));
 			if (glgraphics.GraphicsMode == null) ;
+			this.textBox1 = new System.Windows.Forms.TextBox(); //Dummy text box for later
 			this.SuspendLayout();
 			// 
 			// glgraphics
@@ -40,8 +43,7 @@ namespace TISFAT_Zero
 			this.glgraphics.BackColor = System.Drawing.Color.Black;
 			this.glgraphics.Location = new System.Drawing.Point(0, 0);
 			this.glgraphics.Name = "glgraphics";
-			this.glgraphics.Width = Screen.PrimaryScreen.Bounds.Width;
-			this.glgraphics.Height = Screen.PrimaryScreen.Bounds.Height;
+			this.glgraphics.Size = new System.Drawing.Size(1920, 1080);
 			this.glgraphics.TabIndex = 0;
 			this.glgraphics.VSync = false;
 			this.glgraphics.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseDown);
@@ -49,12 +51,20 @@ namespace TISFAT_Zero
 			this.glgraphics.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseUp);
 			this.glgraphics.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.OnMouseWheel);
 			// 
+			// textBox1
+			// 
+			this.textBox1.Location = new System.Drawing.Point(16, 36);
+			this.textBox1.Name = "textBox1";
+			this.textBox1.Size = new System.Drawing.Size(100, 20);
+			this.textBox1.TabIndex = 1;
+			// 
 			// Timeline
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(128, 128);
 			this.ControlBox = false;
+			this.Controls.Add(this.textBox1);
 			this.Controls.Add(this.glgraphics);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.MaximizeBox = false;
@@ -68,12 +78,14 @@ namespace TISFAT_Zero
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.Timeline_Paint);
 			this.Resize += new System.EventHandler(this.Timeline_Resize);
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
 		#endregion
 
 		private OpenTK.GLControl glgraphics;
+		private TextBox textBox1;
 
 	}
 }
