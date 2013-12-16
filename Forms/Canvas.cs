@@ -5,8 +5,10 @@ using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Graphics;
+using OpenTK;
 using System.Diagnostics;
 using System.Drawing.Imaging;
+using System.IO;
 
 namespace TISFAT_ZERO
 {
@@ -14,32 +16,44 @@ namespace TISFAT_ZERO
 	{
 
 		#region Variables
-		public static MainF mainForm;
-		public static Toolbox theToolbox;
-		public static Canvas theCanvas;
-		public static Graphics theCanvasGraphics; //We need a list of objects to draw.
-		public static bool GLLoaded = false; //we can't touch GL until its fully loaded, this is a guard variable
-		public static int GL_WIDTH;
-		public static int GL_HEIGHT;
-		private static int maxaa;
+        private static List<Point> lights = new List<Point>();
+        public readonly float lightSize = 400.0f;
 
-		public static List<StickObject> figureList = new List<StickObject>();
-		public static List<StickObject> tweenFigs = new List<StickObject>();
+        public static MainF mainForm;
+        public static Toolbox theToolbox;
+        public static Canvas theCanvas;
+        public static Graphics theCanvasGraphics; //We need a list of objects to draw.
+        public static bool GLLoaded = false; //we can't touch GL until its fully loaded, this is a guard variable
+        public static int GL_WIDTH;
+        public static int GL_HEIGHT;
+        private static int maxaa;
+
+        public static List<StickObject> figureList = new List<StickObject>();
+        public static List<StickObject> tweenFigs = new List<StickObject>();
         public static List<int> textures = new List<int>();
 
-		//Now we need a method to add figures to these lists.
+        //Now we need a method to add figures to these lists.
 
-		public static StickObject activeFigure;
-		public static StickJoint selectedJoint = new StickJoint("null", new Point(0, 0), 0, Color.Transparent, Color.Transparent);
-		public bool draw;
+        public static StickObject activeFigure;
+        public static StickJoint selectedJoint = new StickJoint("null", new Point(0, 0), 0, Color.Transparent, Color.Transparent);
+        public bool draw;
 
-		public bool mousemoved, hasLockedJoint = false;
-		private int ox;
-		private int oy;
+        public bool mousemoved, hasLockedJoint = false;
+        private int ox;
+        private int oy;
 
-		private List<int> fx, fy;
+        private uint OccludersTexture;
+        private uint ShadowsTexture;
 
-		public OpenTK.GLControl glGraphics;
+        private uint OccluderFBO;
+        private uint ShadowsFBO;
+
+        private int Shader_pass, Shader_shadowMap, Shader_shadowRender;
+        private int Program_passAndMap, Program_passAndRender;
+
+        private List<int> fx, fy;
+
+        public OpenTK.GLControl glGraphics;
 		#endregion
 
 		//Instantiate the class
@@ -383,24 +397,28 @@ namespace TISFAT_ZERO
                 GL.Color4(color);
 
                 GL.Enable(EnableCap.Texture2D);
+                GL.Enable(EnableCap.Blend);
+                GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
                 GL.BindTexture(TextureTarget.Texture2D, textureID);
+
                 GL.Begin(BeginMode.Quads);
 
-                GL.TexCoord2(0.0, 0.0);
+                GL.TexCoord2(0.0, 1.0);
                 GL.Vertex2(one.X, one.Y);
 
-                GL.TexCoord2(0.0, 1.0);
+                GL.TexCoord2(0.0, 0.0);
                 GL.Vertex2(one.X, one.Y - height);
 
-                GL.TexCoord2(1.0, 1.0);
+                GL.TexCoord2(1.0, 0.0);
                 GL.Vertex2(one.X + width, one.Y - height);
 
-                GL.TexCoord2(1.0, 0.0);
+                GL.TexCoord2(1.0, 1.0);
                 GL.Vertex2(one.X + width, one.Y);
 
                 GL.End();
 
+                GL.Disable(EnableCap.Blend);
                 GL.Disable(EnableCap.Texture2D);
             }
 
@@ -522,36 +540,195 @@ namespace TISFAT_ZERO
             return gl_id;
         }
 
-		private void Canvas_Load(object sender, EventArgs e)
-		{
-			glGraphics = GL_GRAPHICS;
-			glGraphics.MakeCurrent();
+        private void Canvas_Load(object sender, EventArgs e)
+        {
+            glGraphics = GL_GRAPHICS;
+            glGraphics.MakeCurrent();
 
-            //Using subsequent calls to back out of the bin directory to get to the images directory to grab texture.png... I'm sure this can be done better
-            //textures.Add(GL_Create_TextureID(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath("texture.png")))) + "//Images/texture.png"));
+            //GLControl's load event is never fired, so we have to piggyback off the canvas's load function instead
+            GLLoaded = true;
 
-			//GLControl's load event is never fired, so we have to piggyback off the canvas's load function instead
-			GLLoaded = true;
+            //If you are going to be resizing the canvas later or changing the background color,
+            //make sure to re-do these so the GLControl will work properly
+            GL_HEIGHT = GL_GRAPHICS.Height;
+            GL_WIDTH = GL_GRAPHICS.Width;
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadIdentity();
+            GL.Viewport(0, 0, GL_WIDTH, GL_HEIGHT);
+            GL.Ortho(0, GL_WIDTH, 0, GL_HEIGHT, -1, 1);
+            GL.ClearColor(Color.White);
 
-			//If you are going to be resizing the canvas later or changing the background color,
-			//make sure to re-do these so the GLControl will work properly
-			GL_HEIGHT = GL_GRAPHICS.Height;
-			GL_WIDTH = GL_GRAPHICS.Width;
-			GL.MatrixMode(MatrixMode.Projection);
-			GL.LoadIdentity();
-			GL.Viewport(0, 0, GL_WIDTH, GL_HEIGHT);
-			GL.Ortho(0, GL_WIDTH, 0, GL_HEIGHT, -1, 1);
-			GL.ClearColor(Color.White);
+            //Since we are 2d, we don't need the depth test
+            GL.Disable(EnableCap.DepthTest);
 
-			//Since we are 2d, we don't need the depth test
-			GL.Disable(EnableCap.DepthTest);
-		}
+            //We need to generate a texture here so we can write what we're drawing to the FBO, and then we can sample it with a shader
+            GL.GenTextures(1, out OccludersTexture);
+            GL.BindTexture(TextureTarget.Texture2D, OccludersTexture);
+
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+
+            //make it the size of our lights
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, (int)lightSize, (int)lightSize, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
+
+            //This texture will be used with the shadowMap
+            GL.GenTextures(1, out ShadowsTexture);
+            GL.BindTexture(TextureTarget.Texture2D, ShadowsTexture);
+
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+            //GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
+            //GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, (int)lightSize, 1, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
+
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+
+            //Generate a FBO for writing to the sampling texture
+            GL.GenFramebuffers(1, out OccluderFBO);
+
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, OccluderFBO);
+            GL.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, OccludersTexture, 0);
+
+            DrawBuffersEnum[] buf = new DrawBuffersEnum[1] { (DrawBuffersEnum)FramebufferAttachment.ColorAttachment0 };
+            GL.DrawBuffers(buf.Length, buf);
+
+            //and for our shadowMap, which is going to be 1xlightSize...
+            GL.GenFramebuffers(1, out ShadowsFBO);
+
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, ShadowsFBO);
+            GL.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, ShadowsTexture, 0);
+
+            DrawBuffersEnum[] bufferEnum = new DrawBuffersEnum[1] { (DrawBuffersEnum)FramebufferAttachment.ColorAttachment0 };
+            GL.DrawBuffers(bufferEnum.Length, bufferEnum);
+
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+
+            //Create our shaders for drawing shadows
+            Shader_pass = GL.CreateShader(ShaderType.VertexShader);
+            Shader_shadowMap = GL.CreateShader(ShaderType.FragmentShader);
+            Shader_shadowRender = GL.CreateShader(ShaderType.FragmentShader);
+
+            Program_passAndMap = GL.CreateProgram();
+            Program_passAndRender = GL.CreateProgram();
+
+            //pass will fill in the needed variables that are not accessable in fragment shaders (but only in vertex shaders)
+            //uniforms: u_projTrans
+            GL.ShaderSource(Shader_pass, readShader("pass_vert.glsl"));
+            GL.CompileShader(Shader_pass);
+
+            int status;
+            GL.GetShader(Shader_pass, ShaderParameter.CompileStatus, out status);
+
+            if (status != 1)
+                Console.WriteLine("Shader_pass failed to compile:\n" + GL.GetShaderInfoLog(Shader_pass));
+
+            //shadowMap will "map" the shadows onto a 1D texture
+            //uniforms: u_texture, resolution
+            GL.ShaderSource(Shader_shadowMap, readShader("shadowMap_frag.glsl"));
+            GL.CompileShader(Shader_shadowMap);
+
+            GL.GetShader(Shader_shadowMap, ShaderParameter.CompileStatus, out status);
+
+            if (status != 1)
+                Console.WriteLine("Shader_shadowMap failed to compile:\n" + GL.GetShaderInfoLog(Shader_shadowMap));
+
+            //and finally, shadowRender will take this map and render it onto the screen
+            //uniforms: u_texture, resolution, softShadows
+            GL.ShaderSource(Shader_shadowRender, readShader("shadowRender_frag.glsl"));
+            GL.CompileShader(Shader_shadowRender);
+
+            GL.GetShader(Shader_shadowRender, ShaderParameter.CompileStatus, out status);
+
+            if (status != 1)
+                Console.WriteLine("Shader_shadowRender failed to compile:\n" + GL.GetShaderInfoLog(Shader_shadowRender));
+
+            GL.AttachShader(Program_passAndMap, Shader_pass);
+            GL.AttachShader(Program_passAndMap, Shader_shadowMap);
+
+            GL.AttachShader(Program_passAndRender, Shader_pass);
+            GL.AttachShader(Program_passAndRender, Shader_shadowRender);
+
+            GL.LinkProgram(Program_passAndMap);
+            GL.LinkProgram(Program_passAndRender);
+
+            //lights.Add(new Point(100, 250));
+            lights.Add(new Point(200, 200));
+            //lights.Add(new Point(300, 250));
+        }
 
 		public void setBackgroundColor(Color c)
 		{
 			GL.ClearColor(c);
 			GL_GRAPHICS.Invalidate();
 		}
+
+        private void createOccluderMap(Point pos)
+        {
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, OccluderFBO);
+
+            GL.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+
+            GL.ColorMask(false, false, false, true);
+
+            GL.PushMatrix();
+
+            GL.Translate(-pos.X, -(GL_HEIGHT - pos.Y - (int)lightSize), 0.0);
+
+            for (int i = figureList.Count; i > 0; i--)
+                figureList[i - 1].drawFigure();
+
+            for (int i = tweenFigs.Count; i > 0; i--)
+                tweenFigs[i - 1].drawFigure();
+
+            GL.PopMatrix();
+
+            GL.ColorMask(true, true, true, true);
+
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+
+            GL.ClearColor(Color.DarkGray);
+        }
+
+        private void DrawShadows(Point pos)
+        {
+            drawGraphics(5, Color.FromArgb(255, 0, 255, 255), new Point(pos.X - 3, pos.Y - 3), 0, 0, new Point(pos.X + 3, pos.Y + 3));
+
+            createOccluderMap(new Point(pos.X - (int)lightSize / 2, pos.Y - (int)lightSize / 2));
+
+            GL.UseProgram(Program_passAndMap);
+
+            GL.Uniform1(GL.GetUniformLocation(Program_passAndMap, "u_s2DTexture"), 0);
+            GL.Uniform2(GL.GetUniformLocation(Program_passAndMap, "u_vResolution"), new Vector2(lightSize, lightSize));
+
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, ShadowsFBO);
+
+            GL.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+
+            GL.PushMatrix();
+
+            GL.Translate(-pos.X, -(GL_HEIGHT - pos.Y - (int)lightSize) - ((int)lightSize - 1), 0.0);
+            drawGraphics(6, Color.FromArgb(255, 255, 255, 255), new Point(pos.X, pos.Y), (int)lightSize, 1, pos, (int)OccludersTexture);
+
+            GL.PopMatrix();
+
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+
+            GL.UseProgram(0);
+
+            GL.ClearColor(Color.DarkGray);
+
+            GL.UseProgram(Program_passAndRender);
+
+            GL.Uniform1(GL.GetUniformLocation(Program_passAndRender, "u_s2DTexture"), 0);
+            GL.Uniform2(GL.GetUniformLocation(Program_passAndRender, "u_vResolution"), new Vector2(lightSize, lightSize));
+
+            drawGraphics(6, Color.FromArgb(255, 255, 255, 255), new Point(pos.X - (int)lightSize / 2, (pos.Y - (int)lightSize / 2)), (int)lightSize, (int)lightSize, pos, (int)ShadowsTexture);
+
+            GL.UseProgram(0);
+        }
 
 		private void GL_GRAPHICS_OnRender(object sender, EventArgs e)
 		{
@@ -564,31 +741,37 @@ namespace TISFAT_ZERO
 			GL_GRAPHICS.Invalidate();
 		}
 
-		private void GL_GRAPHICS_Paint(object sender, PaintEventArgs e)
-		{
-			if (!GLLoaded)
-			{
-				return;
-			}
+        private void GL_GRAPHICS_Paint(object sender, PaintEventArgs e)
+        {
+            if (!GLLoaded)
+            {
+                return;
+            }
 
-			GL_GRAPHICS.MakeCurrent();
+            GL_GRAPHICS.MakeCurrent();
 
-			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.StencilBufferBit);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.StencilBufferBit);
 
-			for (int i = figureList.Count; i > 0; i--)
-				figureList[i-1].drawFigure();
+            for (int i = lights.Count; i > 0; i--)
+                DrawShadows(lights[i - 1]);
 
-			for (int i = tweenFigs.Count; i > 0; i--)
-				tweenFigs[i-1].drawFigure();
+            for (int i = figureList.Count; i > 0; i--)
+                figureList[i - 1].drawFigure();
 
-			for (int i = figureList.Count; i > 0; i--)
-				figureList[i-1].drawFigHandles();
+            for (int i = tweenFigs.Count; i > 0; i--)
+                tweenFigs[i - 1].drawFigure();
 
-            for (int i = textures.Count; i > 0; i--)
-                drawGraphics(6, Color.White, new Point(50, 100), 100, 200, new Point(0, 0), textures[i-1]);
+            for (int i = figureList.Count; i > 0; i--)
+                figureList[i - 1].drawFigHandles();
 
-			GL_GRAPHICS.SwapBuffers();
-		}
+            GL_GRAPHICS.SwapBuffers();
+        }
+
+        //"shader" being a shader inside the /shaders folder
+        private string readShader(string shader)
+        {
+            return File.ReadAllText(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(shader)))) + "\\Shaders\\" + shader);
+        }
 
 		public void recieveStickFigure(StickCustom figure)
 		{
