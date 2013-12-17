@@ -15,21 +15,20 @@ namespace TISFAT_Zero
 		public static List<Layer> Layers = new List<Layer>();
 		private static Color[] Colors;
 
-		private bool GLLoaded = false;
-
 		private double Scrollbar_eX = 0.0, Scrollbar_eY = 0.0;
 		public int pxOffsetX, pxOffsetY;
 		int scrollAreaY, scrollAreaX, maxFrames, maxLayers;
 
-		//We need a lot of rectangles...
 		private Rectangle ScrollX = new Rectangle(), ScrollY = new Rectangle();
 		private Rectangle StubX = new Rectangle(), StubY = new Rectangle();
 
 		public int cursorDiff;
 
+		//Yeah, there are a lot of booleans. I'm far too lazy to make this into a bitmask.
 		public bool isScrolling, isScrollingY;
 		public bool mouseDown;
-		private bool forceRefresh = false;
+		private bool GLLoaded = false, forceRefresh = false;
+		private bool cancelTimerOnMouseUp = false;
 
 		//On the suggestion of Valcle, I'm using bit masks here so we don't flood this area with bools.
 		//bits 1-4: scrollbars
@@ -59,11 +58,16 @@ namespace TISFAT_Zero
 			get { return glgraphics; }
 		}
 
+		//For use with the timer
+		public delegate void timerDel();
+		timerDel timerDelegate;
+
 		#endregion Buttload of variables
 
 		public Timeline(MainF f)
 		{
 			InitializeComponent();
+
 			LoadGraphics();
 			
 			MainForm = f;
@@ -181,9 +185,9 @@ namespace TISFAT_Zero
 			int ind_L = (int)Math.Ceiling((pxOffsetY + 1) / 16d - 1), ind_F = (int)Math.Ceiling((pxOffsetX + 1) / 9d - 1);
 			int start_L = 16 - (pxOffsetY % 16), start_F = 80 - (pxOffsetX % 9);
 
-			if (ind_L == -1)
+			if (ind_L < 0)
 				ind_L = 0;
-			if (ind_F == -1)
+			if (ind_F < 0)
 				ind_F = 0;
 
 			int endL_ind = Math.Min(Layers.Count, ind_L + maxLayers), endF_ind = ind_F + maxFrames;
@@ -704,22 +708,16 @@ namespace TISFAT_Zero
 							else
 							{
 								selectedScrollItems |= 208;
-								if (mouseDown)
-								{
-									Scrollbar_eY = Math.Min(1, (16 * ((pxOffsetY + 1) / 16) + 16) / (double)timelineHeight);
-									updateScrollLocation = true;
-								}
+								if (mouseDown && selectedScrollItems != old)
+									startScrolling(false, false);
 							}
 						}
 						else
 						{
 							selectedScrollItems |= 80;
 
-							if (mouseDown)
-							{
-								Scrollbar_eY = Math.Max(0, 16 * ((pxOffsetY / 16) - 1) / (double)timelineHeight);
-								updateScrollLocation = true;
-							}
+							if (mouseDown && selectedScrollItems != old)
+								startScrolling(false, true);
 						}
 					}
 					else
@@ -728,10 +726,7 @@ namespace TISFAT_Zero
 						{
 							selectedScrollItems |= (byte)(dy < 12 ? 144 : 0);
 							if (mouseDown && selectedScrollItems != old)
-							{
-								Scrollbar_eX = Math.Min(1, 9 * ((pxOffsetX / 9) + 1) / (double)timelineRealLength);
-								updateScrollLocation = true;
-							}
+								startScrolling(true, true);
 						}
 						else if (x >= 80)
 						{
@@ -754,11 +749,8 @@ namespace TISFAT_Zero
 							{
 								selectedScrollItems |= 16;
 
-								if (mouseDown)
-								{
-									Scrollbar_eX = Math.Max(0, 9 * ((pxOffsetX / 9) - 1) / (double)timelineRealLength);
-									updateScrollLocation = true;
-								}
+								if (mouseDown && selectedScrollItems != old)
+									startScrolling(true, false);
 							}
 						}
 					}
@@ -847,7 +839,10 @@ namespace TISFAT_Zero
 
 		public void Timeline_MouseUp(object sender, MouseEventArgs e)
 		{
-			mouseDown = false;
+			if (cancelTimerOnMouseUp)
+				TimelineTimer.Stop();
+
+			mouseDown = cancelTimerOnMouseUp = false;
 			Timeline_MouseMove(sender, e);
 		}
 
@@ -882,6 +877,61 @@ namespace TISFAT_Zero
 			}
 
 			Timeline_Refresh();
+		}
+
+		private void TimelineTimer_Tick(object sender, EventArgs e)
+		{
+			//Call the method in the timer delegate (That way we aren't restricted to one task per timer!)
+			timerDelegate();
+		}
+
+		private void startScrolling(bool x, bool up)
+		{
+			if (!x)
+			{
+				pxOffsetY = 16 * (((pxOffsetY + 0) / 16) + (up ? -1 : 1));
+				Scrollbar_eY = Math.Max(0, Math.Min(1, pxOffsetY / (double)timelineHeight));
+				ScrollY.Location = new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 26));
+			}
+			else
+			{
+				pxOffsetX = 9 * ((pxOffsetX / 9) + (up ? 1 : -1));
+				Scrollbar_eX = Math.Max(0, Math.Min(1, pxOffsetX / (double)timelineRealLength));
+				ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 91), Height - 10);
+			}
+			
+			cancelTimerOnMouseUp = true;
+
+			timerDelegate = () =>
+			{
+				if (!cancelTimerOnMouseUp)
+					return;
+
+				TimelineTimer.Interval = 50;
+
+				timerDelegate = () =>
+				{
+					if (!x)
+					{
+						pxOffsetY = 16 * (((pxOffsetY + 0) / 16) + (up ? -1 : 1));
+						Scrollbar_eY = Math.Max(0, Math.Min(1, pxOffsetY / (double)timelineHeight));
+						ScrollY.Location = new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 26));
+					}
+					else
+					{
+						pxOffsetX = 9 * ((pxOffsetX / 9) + (up ? 1 : -1));
+						Scrollbar_eX = Math.Max(0, Math.Min(1, pxOffsetX / (double)timelineRealLength));
+						ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 91), Height - 10);
+					}
+
+					Timeline_Refresh();
+				};
+
+				TimelineTimer.Start();
+			};
+
+			TimelineTimer.Interval = 300;
+			TimelineTimer.Start();
 		}
 	}
 }
