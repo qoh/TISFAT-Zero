@@ -475,6 +475,25 @@ namespace TISFAT_Zero
 			return result;
 		}
 
+		public bool moveKeyframeAtTo(int position, int newPosition)
+		{
+			//Check to make sure there's a keyframe at the given spot
+			int[] result = BinarySearchDeep(position);
+
+			if (result.Min() < 0)
+				return false;
+
+			Frameset selected = Framesets[result[0]];
+
+			//Check to make sure the spot isn't >= the next frameset's starting position
+			if (Framesets.Count != result[0] + 1 && newPosition >= Framesets[result[0] + 1].StartingPosition)
+				return false;
+
+			selected.MoveKeyFrameTo(result[1], newPosition);
+			
+			return true;
+		}
+
 		/// <summary>
 		/// Gets the type of the frames used in the current layer.
 		/// </summary>

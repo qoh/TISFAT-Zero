@@ -33,45 +33,45 @@ namespace TISFAT_Zero
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainF));
-			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.newMovieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.openMovieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.saveMovieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.closeMovieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.movieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-			this.exitTISFATToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-			this.copyFramesetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.pasteFramesetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-			this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.insertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.layerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.framesetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.keyframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.keyframeWithCurrentPoseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.layerToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.framesetToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.keyframeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.mnu_strip1 = new System.Windows.Forms.MenuStrip();
-			this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-			this.dlg_saveFile = new System.Windows.Forms.SaveFileDialog();
-			this.dlg_openFile = new System.Windows.Forms.OpenFileDialog();
+			this.fileToolStripMenuItem = new ToolStripMenuItem();
+			this.newMovieToolStripMenuItem = new ToolStripMenuItem();
+			this.openMovieToolStripMenuItem = new ToolStripMenuItem();
+			this.saveMovieToolStripMenuItem = new ToolStripMenuItem();
+			this.saveAsToolStripMenuItem = new ToolStripMenuItem();
+			this.closeMovieToolStripMenuItem = new ToolStripMenuItem();
+			this.toolStripSeparator1 = new ToolStripSeparator();
+			this.exportToolStripMenuItem = new ToolStripMenuItem();
+			this.toolStripSeparator2 = new ToolStripSeparator();
+			this.movieToolStripMenuItem = new ToolStripMenuItem();
+			this.toolStripSeparator3 = new ToolStripSeparator();
+			this.exitTISFATToolStripMenuItem = new ToolStripMenuItem();
+			this.editToolStripMenuItem = new ToolStripMenuItem();
+			this.undoToolStripMenuItem = new ToolStripMenuItem();
+			this.redoToolStripMenuItem = new ToolStripMenuItem();
+			this.toolStripSeparator4 = new ToolStripSeparator();
+			this.copyFramesetToolStripMenuItem = new ToolStripMenuItem();
+			this.pasteFramesetToolStripMenuItem = new ToolStripMenuItem();
+			this.toolStripSeparator6 = new ToolStripSeparator();
+			this.preferencesToolStripMenuItem = new ToolStripMenuItem();
+			this.insertToolStripMenuItem = new ToolStripMenuItem();
+			this.layerToolStripMenuItem = new ToolStripMenuItem();
+			this.framesetToolStripMenuItem = new ToolStripMenuItem();
+			this.keyframeToolStripMenuItem = new ToolStripMenuItem();
+			this.keyframeWithCurrentPoseToolStripMenuItem = new ToolStripMenuItem();
+			this.removeToolStripMenuItem = new ToolStripMenuItem();
+			this.layerToolStripMenuItem1 = new ToolStripMenuItem();
+			this.framesetToolStripMenuItem1 = new ToolStripMenuItem();
+			this.keyframeToolStripMenuItem1 = new ToolStripMenuItem();
+			this.helpToolStripMenuItem = new ToolStripMenuItem();
+			this.helpToolStripMenuItem1 = new ToolStripMenuItem();
+			this.toolStripSeparator5 = new ToolStripSeparator();
+			this.aboutToolStripMenuItem = new ToolStripMenuItem();
+			this.checkForUpdatesToolStripMenuItem = new ToolStripMenuItem();
+			this.mnu_strip1 = new MenuStrip();
+			this.debugToolStripMenuItem = new ToolStripMenuItem();
+			this.splitContainer1 = new SplitContainer();
+			this.dlg_saveFile = new SaveFileDialog();
+			this.dlg_openFile = new OpenFileDialog();
 			this.mnu_strip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.SuspendLayout();
@@ -79,7 +79,7 @@ namespace TISFAT_Zero
 			// 
 			// fileToolStripMenuItem
 			// 
-			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] {
             this.newMovieToolStripMenuItem,
             this.openMovieToolStripMenuItem,
             this.saveMovieToolStripMenuItem,
@@ -168,7 +168,7 @@ namespace TISFAT_Zero
 			// 
 			// editToolStripMenuItem
 			// 
-			this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.editToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] {
             this.undoToolStripMenuItem,
             this.redoToolStripMenuItem,
             this.toolStripSeparator4,
@@ -227,7 +227,7 @@ namespace TISFAT_Zero
 			// 
 			// insertToolStripMenuItem
 			// 
-			this.insertToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.insertToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] {
             this.layerToolStripMenuItem,
             this.framesetToolStripMenuItem,
             this.keyframeToolStripMenuItem,
@@ -265,7 +265,7 @@ namespace TISFAT_Zero
 			// 
 			// removeToolStripMenuItem
 			// 
-			this.removeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.removeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] {
             this.layerToolStripMenuItem1,
             this.framesetToolStripMenuItem1,
             this.keyframeToolStripMenuItem1});
@@ -295,7 +295,7 @@ namespace TISFAT_Zero
 			// 
 			// helpToolStripMenuItem
 			// 
-			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] {
             this.helpToolStripMenuItem1,
             this.toolStripSeparator5,
             this.aboutToolStripMenuItem,
@@ -332,7 +332,7 @@ namespace TISFAT_Zero
 			// mnu_strip1
 			// 
 			this.mnu_strip1.BackColor = System.Drawing.Color.White;
-			this.mnu_strip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.mnu_strip1.Items.AddRange(new ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.editToolStripMenuItem,
             this.insertToolStripMenuItem,
@@ -341,7 +341,7 @@ namespace TISFAT_Zero
             this.debugToolStripMenuItem});
 			this.mnu_strip1.Location = new System.Drawing.Point(0, 0);
 			this.mnu_strip1.Name = "mnu_strip1";
-			this.mnu_strip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+			this.mnu_strip1.RenderMode = ToolStripRenderMode.Professional;
 			this.mnu_strip1.Size = new System.Drawing.Size(734, 24);
 			this.mnu_strip1.TabIndex = 0;
 			this.mnu_strip1.Text = "menuStrip1";
@@ -354,11 +354,11 @@ namespace TISFAT_Zero
 			// 
 			// splitContainer1
 			// 
-			this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.splitContainer1.BorderStyle = BorderStyle.FixedSingle;
+			this.splitContainer1.Dock = DockStyle.Fill;
 			this.splitContainer1.Location = new System.Drawing.Point(0, 24);
 			this.splitContainer1.Name = "splitContainer1";
-			this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+			this.splitContainer1.Orientation = Orientation.Horizontal;
 			// 
 			// splitContainer1.Panel1
 			// 
@@ -373,7 +373,7 @@ namespace TISFAT_Zero
 			this.splitContainer1.Size = new System.Drawing.Size(734, 488);
 			this.splitContainer1.SplitterDistance = 125;
 			this.splitContainer1.TabIndex = 1;
-			this.splitContainer1.SplitterMoving += new System.Windows.Forms.SplitterCancelEventHandler(this.splitContainer1_SplitterMoving);
+			this.splitContainer1.SplitterMoving += new SplitterCancelEventHandler(this.splitContainer1_SplitterMoving);
 			// 
 			// dlg_saveFile
 			// 
@@ -387,7 +387,7 @@ namespace TISFAT_Zero
 			// MainF
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoScaleMode = AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(734, 512);
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.mnu_strip1);
@@ -409,41 +409,41 @@ namespace TISFAT_Zero
 
 		#endregion
 
-		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem newMovieToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem openMovieToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem saveMovieToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem closeMovieToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-		private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.ToolStripMenuItem movieToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-		private System.Windows.Forms.ToolStripMenuItem exitTISFATToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-		private System.Windows.Forms.ToolStripMenuItem copyFramesetToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem pasteFramesetToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem insertToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem layerToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem framesetToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem keyframeToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem keyframeWithCurrentPoseToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem layerToolStripMenuItem1;
-		private System.Windows.Forms.ToolStripMenuItem framesetToolStripMenuItem1;
-		private System.Windows.Forms.ToolStripMenuItem keyframeToolStripMenuItem1;
-		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem1;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-		private System.Windows.Forms.MenuStrip mnu_strip1;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
-		private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
-		public System.Windows.Forms.SplitContainer splitContainer1;
+		private ToolStripMenuItem fileToolStripMenuItem;
+		private ToolStripMenuItem newMovieToolStripMenuItem;
+		private ToolStripMenuItem openMovieToolStripMenuItem;
+		private ToolStripMenuItem saveMovieToolStripMenuItem;
+		private ToolStripMenuItem saveAsToolStripMenuItem;
+		private ToolStripMenuItem closeMovieToolStripMenuItem;
+		private ToolStripSeparator toolStripSeparator1;
+		private ToolStripMenuItem exportToolStripMenuItem;
+		private ToolStripSeparator toolStripSeparator2;
+		private ToolStripMenuItem movieToolStripMenuItem;
+		private ToolStripSeparator toolStripSeparator3;
+		private ToolStripMenuItem exitTISFATToolStripMenuItem;
+		private ToolStripMenuItem editToolStripMenuItem;
+		private ToolStripMenuItem undoToolStripMenuItem;
+		private ToolStripSeparator toolStripSeparator4;
+		private ToolStripMenuItem copyFramesetToolStripMenuItem;
+		private ToolStripMenuItem pasteFramesetToolStripMenuItem;
+		private ToolStripMenuItem insertToolStripMenuItem;
+		private ToolStripMenuItem layerToolStripMenuItem;
+		private ToolStripMenuItem framesetToolStripMenuItem;
+		private ToolStripMenuItem keyframeToolStripMenuItem;
+		private ToolStripMenuItem keyframeWithCurrentPoseToolStripMenuItem;
+		private ToolStripMenuItem removeToolStripMenuItem;
+		private ToolStripMenuItem layerToolStripMenuItem1;
+		private ToolStripMenuItem framesetToolStripMenuItem1;
+		private ToolStripMenuItem keyframeToolStripMenuItem1;
+		private ToolStripMenuItem helpToolStripMenuItem;
+		private ToolStripMenuItem helpToolStripMenuItem1;
+		private ToolStripSeparator toolStripSeparator5;
+		private ToolStripMenuItem aboutToolStripMenuItem;
+		private MenuStrip mnu_strip1;
+		private ToolStripSeparator toolStripSeparator6;
+		private ToolStripMenuItem preferencesToolStripMenuItem;
+		private ToolStripMenuItem debugToolStripMenuItem;
+		public SplitContainer splitContainer1;
 		private ToolStripMenuItem redoToolStripMenuItem;
 		private SaveFileDialog dlg_saveFile;
 		private OpenFileDialog dlg_openFile;

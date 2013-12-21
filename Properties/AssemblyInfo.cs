@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("TISFAT-Zero")]
-[assembly: AssemblyDescription("A free, open-source 2d animation program.")]
+[assembly: AssemblyDescription("A free, open-source 2D animation program.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("0xPRODUCTIONS")]
 [assembly: AssemblyProduct("TISFAT-Zero")]

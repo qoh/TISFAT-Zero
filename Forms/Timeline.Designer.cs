@@ -37,12 +37,21 @@ namespace TISFAT_Zero
 			this.components = new System.ComponentModel.Container();
 			this.glgraphics = new OpenTK.GLControl(new OpenTK.Graphics.GraphicsMode(new OpenTK.Graphics.ColorFormat(32), 0, 1, 0));
 			if (glgraphics.GraphicsMode == null) ; //For some reason the graphicsmode variable only shows up when it's accessed in some way.. so if we don't do this it'll screw up.
-			
-			this.renameBox = new System.Windows.Forms.TextBox();
+
+			this.renameBox = new TextBox();
 			this.TimelineTimer = new System.Windows.Forms.Timer(this.components);
-			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.aSDFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.fDSAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.contextMenuStrip1 = new ContextMenuStrip(this.components);
+			this.insertKeyframeToolStripMenuItem = new ToolStripMenuItem();
+			this.insertKeyframeWithPoseToolStripMenuItem = new ToolStripMenuItem();
+			this.removeKeyframeToolStripMenuItem = new ToolStripMenuItem();
+			this.setPoseToPreviousKeyframeToolStripMenuItem = new ToolStripMenuItem();
+			this.setPoseToNextKeyframeToolStripMenuItem = new ToolStripMenuItem();
+			this.onionSkinningToolStripMenuItem = new ToolStripMenuItem();
+			this.deleteLayerToolStripMenuItem = new ToolStripMenuItem();
+			this.renameLayerToolStripMenuItem = new ToolStripMenuItem();
+			this.moveLayerUpToolStripMenuItem = new ToolStripMenuItem();
+			this.moveLayerDownToolStripMenuItem = new ToolStripMenuItem();
+			this.gotoFrameToolStripMenuItem = new ToolStripMenuItem();
 			this.contextMenuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -54,10 +63,10 @@ namespace TISFAT_Zero
 			this.glgraphics.Size = new System.Drawing.Size(1920, 1080);
 			this.glgraphics.TabIndex = 0;
 			this.glgraphics.VSync = false;
-			this.glgraphics.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseDown);
-			this.glgraphics.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseMove);
-			this.glgraphics.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseUp);
-			this.glgraphics.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.OnMouseWheel);
+			this.glgraphics.MouseDown += new MouseEventHandler(this.Timeline_MouseDown);
+			this.glgraphics.MouseMove += new MouseEventHandler(this.Timeline_MouseMove);
+			this.glgraphics.MouseUp += new MouseEventHandler(this.Timeline_MouseUp);
+			this.glgraphics.MouseWheel += new MouseEventHandler(this.OnMouseWheel);
 			// 
 			// renameBox
 			// 
@@ -75,43 +84,107 @@ namespace TISFAT_Zero
 			// 
 			// contextMenuStrip1
 			// 
-			this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aSDFToolStripMenuItem,
-            this.fDSAToolStripMenuItem});
+			this.contextMenuStrip1.Items.AddRange(new ToolStripItem[] {
+            this.insertKeyframeToolStripMenuItem,
+            this.insertKeyframeWithPoseToolStripMenuItem,
+            this.removeKeyframeToolStripMenuItem,
+            this.setPoseToPreviousKeyframeToolStripMenuItem,
+            this.setPoseToNextKeyframeToolStripMenuItem,
+            this.onionSkinningToolStripMenuItem,
+            this.deleteLayerToolStripMenuItem,
+            this.renameLayerToolStripMenuItem,
+            this.moveLayerUpToolStripMenuItem,
+            this.moveLayerDownToolStripMenuItem,
+            this.gotoFrameToolStripMenuItem});
 			this.contextMenuStrip1.Name = "contextMenuStrip1";
-			this.contextMenuStrip1.Size = new System.Drawing.Size(103, 48);
+			this.contextMenuStrip1.Size = new System.Drawing.Size(234, 268);
+			this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
 			// 
-			// aSDFToolStripMenuItem
+			// insertKeyframeToolStripMenuItem
 			// 
-			this.aSDFToolStripMenuItem.Name = "aSDFToolStripMenuItem";
-			this.aSDFToolStripMenuItem.Size = new System.Drawing.Size(102, 22);
-			this.aSDFToolStripMenuItem.Text = "ASDF";
+			this.insertKeyframeToolStripMenuItem.Name = "insertKeyframeToolStripMenuItem";
+			this.insertKeyframeToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+			this.insertKeyframeToolStripMenuItem.Text = "Insert Keyframe";
 			// 
-			// fDSAToolStripMenuItem
+			// insertKeyframeWithPoseToolStripMenuItem
 			// 
-			this.fDSAToolStripMenuItem.Name = "fDSAToolStripMenuItem";
-			this.fDSAToolStripMenuItem.Size = new System.Drawing.Size(102, 22);
-			this.fDSAToolStripMenuItem.Text = "FDSA";
+			this.insertKeyframeWithPoseToolStripMenuItem.Name = "insertKeyframeWithPoseToolStripMenuItem";
+			this.insertKeyframeWithPoseToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+			this.insertKeyframeWithPoseToolStripMenuItem.Text = "Insert Keyframe With Pose";
+			// 
+			// removeKeyframeToolStripMenuItem
+			// 
+			this.removeKeyframeToolStripMenuItem.Name = "removeKeyframeToolStripMenuItem";
+			this.removeKeyframeToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+			this.removeKeyframeToolStripMenuItem.Text = "Remove Keyframe";
+			// 
+			// setPoseToPreviousKeyframeToolStripMenuItem
+			// 
+			this.setPoseToPreviousKeyframeToolStripMenuItem.Name = "setPoseToPreviousKeyframeToolStripMenuItem";
+			this.setPoseToPreviousKeyframeToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+			this.setPoseToPreviousKeyframeToolStripMenuItem.Text = "Set Pose to Previous Keyframe";
+			// 
+			// setPoseToNextKeyframeToolStripMenuItem
+			// 
+			this.setPoseToNextKeyframeToolStripMenuItem.Name = "setPoseToNextKeyframeToolStripMenuItem";
+			this.setPoseToNextKeyframeToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+			this.setPoseToNextKeyframeToolStripMenuItem.Text = "Set Pose to Next Keyframe";
+			// 
+			// onionSkinningToolStripMenuItem
+			// 
+			this.onionSkinningToolStripMenuItem.Name = "onionSkinningToolStripMenuItem";
+			this.onionSkinningToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+			this.onionSkinningToolStripMenuItem.Text = "Onion Skinning ..";
+			// 
+			// deleteLayerToolStripMenuItem
+			// 
+			this.deleteLayerToolStripMenuItem.Name = "deleteLayerToolStripMenuItem";
+			this.deleteLayerToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+			this.deleteLayerToolStripMenuItem.Text = "Delete Layer";
+			// 
+			// renameLayerToolStripMenuItem
+			// 
+			this.renameLayerToolStripMenuItem.Name = "renameLayerToolStripMenuItem";
+			this.renameLayerToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+			this.renameLayerToolStripMenuItem.Text = "Rename Layer";
+			// 
+			// moveLayerUpToolStripMenuItem
+			// 
+			this.moveLayerUpToolStripMenuItem.Name = "moveLayerUpToolStripMenuItem";
+			this.moveLayerUpToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+			this.moveLayerUpToolStripMenuItem.Text = "Move Layer Up";
+			// 
+			// moveLayerDownToolStripMenuItem
+			// 
+			this.moveLayerDownToolStripMenuItem.Name = "moveLayerDownToolStripMenuItem";
+			this.moveLayerDownToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+			this.moveLayerDownToolStripMenuItem.Text = "Move Layer Down";
+			// 
+			// gotoFrameToolStripMenuItem
+			// 
+			this.gotoFrameToolStripMenuItem.Name = "gotoFrameToolStripMenuItem";
+			this.gotoFrameToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+			this.gotoFrameToolStripMenuItem.Text = "Goto Frame #";
 			// 
 			// Timeline
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoScaleMode = AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(128, 128);
 			this.ContextMenuStrip = this.contextMenuStrip1;
 			this.ControlBox = false;
 			this.Controls.Add(this.renameBox);
 			this.Controls.Add(this.glgraphics);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+			this.FormBorderStyle = FormBorderStyle.None;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "Timeline";
 			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
-			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+			this.StartPosition = FormStartPosition.Manual;
 			this.Text = "TIMELINE";
 			this.Load += new System.EventHandler(this.Timeline_Load);
-			this.Paint += new System.Windows.Forms.PaintEventHandler(this.Timeline_Paint);
+			this.Paint += new PaintEventHandler(this.Timeline_Paint);
 			this.Resize += new System.EventHandler(this.Timeline_Resize);
 			this.contextMenuStrip1.ResumeLayout(false);
 			this.ResumeLayout(false);
@@ -125,8 +198,17 @@ namespace TISFAT_Zero
 		private TextBox renameBox;
 		private System.Windows.Forms.Timer TimelineTimer;
 		private ContextMenuStrip contextMenuStrip1;
-		private ToolStripMenuItem aSDFToolStripMenuItem;
-		private ToolStripMenuItem fDSAToolStripMenuItem;
+		private ToolStripMenuItem insertKeyframeToolStripMenuItem;
+		private ToolStripMenuItem insertKeyframeWithPoseToolStripMenuItem;
+		private ToolStripMenuItem removeKeyframeToolStripMenuItem;
+		private ToolStripMenuItem setPoseToPreviousKeyframeToolStripMenuItem;
+		private ToolStripMenuItem setPoseToNextKeyframeToolStripMenuItem;
+		private ToolStripMenuItem onionSkinningToolStripMenuItem;
+		private ToolStripMenuItem deleteLayerToolStripMenuItem;
+		private ToolStripMenuItem renameLayerToolStripMenuItem;
+		private ToolStripMenuItem moveLayerUpToolStripMenuItem;
+		private ToolStripMenuItem moveLayerDownToolStripMenuItem;
+		private ToolStripMenuItem gotoFrameToolStripMenuItem;
 
 	}
 }
