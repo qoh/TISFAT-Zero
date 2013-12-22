@@ -57,7 +57,7 @@ namespace TISFAT_Zero
 		private static List<T0Bitmap> layerNames = new List<T0Bitmap>();
 		private T0Bitmap[] stubs = new T0Bitmap[12];
 		private T0Bitmap TIMELINE;
-		
+
 		public GLControl GLGraphics
 		{
 			get { return glgraphics; }
@@ -74,7 +74,7 @@ namespace TISFAT_Zero
 			InitializeComponent();
 
 			LoadGraphics();
-			
+
 			MainForm = f;
 			Colors = new Color[] { Color.FromArgb(220, 220, 220), Color.FromArgb(140, 140, 140), Color.FromArgb(200, 200, 200), Color.FromArgb(70, 120, 255), Color.FromArgb(40, 230, 255), Color.FromArgb(30, 100, 255) };
 
@@ -86,7 +86,7 @@ namespace TISFAT_Zero
 
 			Point y = new Point(7, -1);
 			Font F = new Font("Arial", 10);
-			
+
 			using (Bitmap raw = new Bitmap(79, 15))
 			using (Graphics g = Graphics.FromImage(raw))
 			{
@@ -102,7 +102,7 @@ namespace TISFAT_Zero
 			stubs[2] = new T0Bitmap(Properties.Resources.stub_y_t); stubs[3] = new T0Bitmap(Properties.Resources.stub_y_b);
 			stubs[4] = new T0Bitmap(Properties.Resources.stub_x_l_a); stubs[5] = new T0Bitmap(Properties.Resources.stub_x_r_a);
 			stubs[6] = new T0Bitmap(Properties.Resources.stub_y_t_a); stubs[7] = new T0Bitmap(Properties.Resources.stub_y_b_a);
-			stubs[8]  = new T0Bitmap(Properties.Resources.stub_x_l_c); stubs[9]  = new T0Bitmap(Properties.Resources.stub_x_r_c);
+			stubs[8] = new T0Bitmap(Properties.Resources.stub_x_l_c); stubs[9] = new T0Bitmap(Properties.Resources.stub_x_r_c);
 			stubs[10] = new T0Bitmap(Properties.Resources.stub_y_t_c); stubs[11] = new T0Bitmap(Properties.Resources.stub_y_b_c);
 
 			ScrollY.Width = 8;
@@ -137,12 +137,12 @@ namespace TISFAT_Zero
 			//Hax to make sure that everything renders where it should
 			GL.MatrixMode(MatrixMode.Modelview);
 			GL.LoadIdentity();
-			GL.Translate(0.375, 0, 0);
+			GL.Translate(0.375, 0.375, 0);
 
 			scrollAreaY = Height - 49; scrollAreaX = Width - 114;
 
 			float viewRatioY = (float)scrollAreaY / timelineHeight, viewRatioX = (float)scrollAreaX / timelineRealLength;
-			
+
 			ScrollY.Height = viewRatioY < 1 ? Math.Max((int)(scrollAreaY * viewRatioY), 16) : -1;
 			ScrollY.Location = ScrollY.Height != -1 ? new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 26)) : new Point(-1, -1);
 
@@ -184,9 +184,9 @@ namespace TISFAT_Zero
 
 			glgraphics.MakeCurrent();
 
-            GL.Disable(EnableCap.Multisample);
+			GL.Disable(EnableCap.Multisample);
 			GL.Clear(ClearBufferMask.ColorBufferBit);
-			
+
 			int ind_L = (int)Math.Ceiling((pxOffsetY + 1) / 16d - 1), ind_F = (int)Math.Ceiling((pxOffsetX + 1) / 9d - 1);
 			int start_L = 16 - (pxOffsetY % 16), start_F = 80 - (pxOffsetX % 9);
 
@@ -285,7 +285,7 @@ namespace TISFAT_Zero
 				{
 					framesetpos = pos[0];
 
-					if(pos[1] < 0)
+					if (pos[1] < 0)
 						framepos = -pos[1] - 1;
 					else
 						framepos = pos[1];
@@ -303,19 +303,18 @@ namespace TISFAT_Zero
 					if (max == 1 && framepos == 1)
 						framepos = 0;
 
-					int renderingpos1 = 9 * (fs[framepos].Position - ind_F) + p1, renderingpos2 = 9 * (fs[framepos+1].Position - ind_F) + p1;
+					int renderingpos1 = 9 * (fs[framepos].Position - ind_F) + p1, renderingpos2 = 9 * (fs[framepos + 1].Position - ind_F) + p1;
 
 					bool rendernow = renderselectedthislayer && !rendered && fs.EndingPosition >= selectedFrame_Ind;
 
 					for (KeyFrame f1 = fs[framepos], f2 = fs[framepos + 1]; framepos < max; )
 					{
-						Color x = Color.DarkGray;
+						Color c = Color.DarkGray;
 
 						if (framepos == 0)
-							x = Color.FromArgb(200, 190, 245);
+							c = Color.FromArgb(255, 200, 190, 245);
 
-						drawFrame(renderingpos1, p2, x);
-
+						drawFrame(renderingpos1, p2, c);
 						renderingpos1 += 9;
 
 						if (renderingpos1 != renderingpos2)
@@ -331,7 +330,7 @@ namespace TISFAT_Zero
 							if (rendernow && selectedFrame_Ind > f1.Position && selectedFrame_Ind < f2.Position)
 							{
 								drawFrame(rendpoint, Color.Red, true);
-								
+
 								rendered = true;
 							}
 
@@ -341,7 +340,7 @@ namespace TISFAT_Zero
 							GL.Begin(PrimitiveType.LineStrip);
 
 							GL.Vertex2(renderingpos1 + 2, p2); GL.Vertex2(renderingpos2 - 3, p2);
-							GL.Vertex2(renderingpos2 - 5, p2 - 2);
+							GL.Vertex2(renderingpos2 - 6, p2 - 3);
 
 							GL.End();
 
@@ -357,8 +356,8 @@ namespace TISFAT_Zero
 						}
 
 						renderingpos1 = renderingpos2;
-						
-						if(++framepos >= max)
+
+						if (++framepos >= max)
 							break;
 
 						f1 = f2;
@@ -384,12 +383,12 @@ namespace TISFAT_Zero
 
 				Color c = Color.Empty;
 
-				if ((a+1) % 100 == 0)
+				if ((a + 1) % 100 == 0)
 					c = Color.Pink;
-				else if ((a+1) % 10 == 0)
+				else if ((a + 1) % 10 == 0)
 					c = Color.FromArgb(40, 230, 255);
 
-				if(c == Color.Empty)
+				if (c == Color.Empty)
 					if (selectedLayer_Ind != -1)
 						drawFrame(x, Colors[0], true);
 					else
@@ -397,7 +396,7 @@ namespace TISFAT_Zero
 				else
 					drawFrame(x, c, true);
 
-				zerotonine[(a+1) % 10].Draw(this, x);
+				zerotonine[(a + 1) % 10].Draw(this, x);
 
 				GL.Color3(Colors[1]);
 				GL.Begin(PrimitiveType.Lines);
@@ -407,7 +406,7 @@ namespace TISFAT_Zero
 
 				GL.End();
 			}
-			
+
 			#endregion Timeline numbers section
 
 			#region Horiz. Lines
@@ -501,7 +500,7 @@ namespace TISFAT_Zero
 				renderRectangle(toDraw, x);
 			}
 
-			for(int a = 0; a < 4; a++)
+			for (int a = 0; a < 4; a++)
 				stubs[a].Draw(this);
 
 			stub >>= 4;
@@ -542,10 +541,10 @@ namespace TISFAT_Zero
 				return null;
 
 			//Construct the name of the layer and use reflection to call the constructor of the type and get the result
-			if(name == null)
+			if (name == null)
 				name = "Layer " + (Layers.Count + 1);
 
-			Layer newLayer = (Layer)layerType.GetConstructor(new Type[] { typeof(string), typeof(int) } ).Invoke(new object[] { name, 2 } );
+			Layer newLayer = (Layer)layerType.GetConstructor(new Type[] { typeof(string), typeof(int) }).Invoke(new object[] { name, 2 });
 			newLayer.insertNewKeyFrameAt(6);
 			newLayer.insertNewKeyFrameAt(20);
 			newLayer.insertNewKeyFrameAt(7);
@@ -579,7 +578,7 @@ namespace TISFAT_Zero
 
 			if (type == 0) //Line
 			{
-                //renderQuadLine(one, two, width, color);
+				//renderQuadLine(one, two, width, color);
 			}
 			else if (type == 1 || type == 2) //Rectangle
 			{
@@ -610,26 +609,26 @@ namespace TISFAT_Zero
 			GL.Disable(EnableCap.Blend);
 		}
 
-       /* Not needed for the timeline, saving it for when the canvas is redone
-	    * private void renderQuadLine(Point one, Point two, float thickness, Color color)
-        {
-            GL.Color4(color);
+		/* Not needed for the timeline, saving it for when the canvas is redone
+		 * private void renderQuadLine(Point one, Point two, float thickness, Color color)
+		 {
+			 GL.Color4(color);
 
-            float dist = (float)Math.Sqrt(Math.Pow((two.X - one.X), 2) + Math.Pow((two.Y - one.Y), 2));
+			 float dist = (float)Math.Sqrt(Math.Pow((two.X - one.X), 2) + Math.Pow((two.Y - one.Y), 2));
 
-            GL.Begin(PrimitiveType.Quads);
+			 GL.Begin(PrimitiveType.Quads);
 
-            float normX = ((one.Y - two.Y) / dist) * thickness / 2;
-            float normY = -((one.X - two.X) / dist) * thickness / 2;
+			 float normX = ((one.Y - two.Y) / dist) * thickness / 2;
+			 float normY = -((one.X - two.X) / dist) * thickness / 2;
 
-            GL.Vertex2((one.X - normX), (one.Y - normY));
-            GL.Vertex2((one.X + normX), (one.Y + normY));
+			 GL.Vertex2((one.X - normX), (one.Y - normY));
+			 GL.Vertex2((one.X + normX), (one.Y + normY));
 
-            GL.Vertex2((two.X + normX), (two.Y + normY));
-            GL.Vertex2((two.X - normX), (two.Y - normY));
+			 GL.Vertex2((two.X + normX), (two.Y + normY));
+			 GL.Vertex2((two.X - normX), (two.Y - normY));
 
-            GL.End();
-        } */ 
+			 GL.End();
+		 } */
 
 		private void renderRectangle(Rectangle rect, Color color)
 		{
@@ -648,7 +647,7 @@ namespace TISFAT_Zero
 		{
 			GL.Enable(EnableCap.Blend);
 			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-			
+
 			if (i != Color.Transparent)
 			{
 				int a = p.Y + 16, b = p.X + 8;
@@ -657,8 +656,8 @@ namespace TISFAT_Zero
 				GL.Begin(PrimitiveType.Quads);
 
 				GL.Vertex2(p.X, p.Y);
-				GL.Vertex2(p.X, a-1);
-				GL.Vertex2(b, a-1);
+				GL.Vertex2(p.X, a - 1);
+				GL.Vertex2(b, a - 1);
 				GL.Vertex2(b, p.Y);
 
 				if (!nofancy)
@@ -670,7 +669,7 @@ namespace TISFAT_Zero
 					GL.Vertex2(b, p.Y + 2);
 					GL.Vertex2(b, p.Y);
 
-					GL.Color3(Color.Black);
+					GL.Color4(Color.Black);
 
 					a -= 7;
 					p.X += 2;
@@ -679,7 +678,7 @@ namespace TISFAT_Zero
 					GL.Vertex2(p.X + 4, a + 4);
 					GL.Vertex2(p.X + 4, a);
 
-					GL.Color3(Color.White);
+					GL.Color4(Color.White);
 
 					a++;
 					p.X++;
@@ -706,12 +705,12 @@ namespace TISFAT_Zero
 			int x = e.X, y = e.Y;
 			int dx = Width - x, dy = Height - y;
 
-            if (!mouseDown)
-            {
-                cursorDiff = -1;
-                isScrolling = false;
-                isScrollingY = false;
-                selectedScrollItems &= 0xfd; //Get rid of the 2nd bit
+			if (!mouseDown)
+			{
+				cursorDiff = -1;
+				isScrolling = false;
+				isScrollingY = false;
+				selectedScrollItems &= 0xfd; //Get rid of the 2nd bit
 			}
 
 			#region Clicker hilighting
@@ -811,7 +810,7 @@ namespace TISFAT_Zero
 				{
 					isScrolling = true;
 					isScrollingY = !isBitSet(selectedScrollItems, 3);
-                    selectedScrollItems |= 2;
+					selectedScrollItems |= 2;
 
 					cursorDiff = isScrollingY ? y - ScrollY.Top : x - ScrollX.Left;
 				}
@@ -844,7 +843,7 @@ namespace TISFAT_Zero
 			}
 
 			#endregion Scrollbar updating
-			
+
 			//Only refresh if we need to! Saves precious processing power, and you money on your electrical bill!
 			if (forceRefresh || old != selectedScrollItems || updateScrollLocation)
 				Timeline_Refresh();
@@ -854,7 +853,7 @@ namespace TISFAT_Zero
 		{
 			int x = e.X, y = e.Y;
 			int dx = Width - x, dy = Height - y;
-			
+
 			if (!(dx <= 12 || dy <= 12))
 			{
 				if (x > 79)
@@ -992,7 +991,7 @@ namespace TISFAT_Zero
 				Scrollbar_eX = clamp(pxOffsetX / (double)timelineRealLength, 0, 1);
 				ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 91), Height - 10);
 			}
-			
+
 			cancelTimerOnMouseUp = true;
 
 			timerDelegate = () =>
@@ -1026,7 +1025,7 @@ namespace TISFAT_Zero
 
 			TimelineTimer.Interval = 300;
 			TimelineTimer.Start();
-			
+
 		}
 
 		private static int clamp(int num, int min, int max)
