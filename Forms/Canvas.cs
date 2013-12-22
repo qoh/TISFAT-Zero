@@ -24,8 +24,8 @@ namespace TISFAT_ZERO
         public static Canvas theCanvas;
         public static Graphics theCanvasGraphics; //We need a list of objects to draw.
         public static bool GLLoaded = false; //we can't touch GL until its fully loaded, this is a guard variable
-        public static int GL_WIDTH;
-        public static int GL_HEIGHT;
+        public static int GL_WIDTH, GL_HEIGHT;
+
         private static int maxaa;
 
         public static List<StickObject> figureList = new List<StickObject>();
@@ -36,20 +36,13 @@ namespace TISFAT_ZERO
 
         public static StickObject activeFigure;
         public static StickJoint selectedJoint = new StickJoint("null", new Point(0, 0), 0, Color.Transparent, Color.Transparent);
-        public bool draw;
 
-        public bool mousemoved, hasLockedJoint = false;
-        private int ox;
-        private int oy;
+        public bool mousemoved, draw, hasLockedJoint = false;
+        private int ox, oy;
 
-        private uint OccludersTexture;
-        private uint ShadowsTexture;
+		private uint OccludersTexture, ShadowsTexture, OccluderFBO, ShadowsFBO;
 
-        private uint OccluderFBO;
-        private uint ShadowsFBO;
-
-        private int Shader_pass, Shader_shadowMap, Shader_shadowRender;
-        private int Program_passAndMap, Program_passAndRender;
+        private int Shader_pass, Shader_shadowMap, Shader_shadowRender, Program_passAndMap, Program_passAndRender;
 
         private List<int> fx, fy;
 
@@ -110,13 +103,12 @@ namespace TISFAT_ZERO
 					selectedJoint.SetPosAbs(e.X, e.Y);
 					((StickRect)selectedJoint.ParentFigure).onRectJointMoved(selectedJoint);
 				}
+
 				//This prevents any other figures from becoming active as you are dragging a joint.
 				foreach (StickObject fig in figureList)
 				{
 					if (!(fig == activeFigure))
-					{
 						fig.isActiveFig = false;
-					}
 				}
 			}
 			else if (draw & e.Button == MouseButtons.Right)
@@ -159,13 +151,9 @@ namespace TISFAT_ZERO
 			if (!(activeFigure == null) & !draw)
 			{
 				if (activeFigure.getPointAt(new Point(e.X, e.Y), 6) != -1)
-				{
 					this.Cursor = Cursors.Hand;
-				}
 				else
-				{
 					this.Cursor = Cursors.Default;
-				}
 			}
 		}
 
@@ -267,9 +255,7 @@ namespace TISFAT_ZERO
 			if (e.Button == MouseButtons.Right)
 			{
 				if (!mousemoved)
-				{
 					contextMenuStrip1.Show(new Point(e.X + contextMenuStrip1.Height, e.Y + contextMenuStrip1.Width));
-				}
 				mousemoved = false;
 				draw = false;
 			} 
@@ -290,9 +276,7 @@ namespace TISFAT_ZERO
 		public static void drawGraphics(int type, Color color, Point one, int width, int height, Point two, int textureID = 0)
 		{
 			if (!GLLoaded)
-			{
 				return;
-			}
 
 			//Invert the y so OpenGL can draw it right-side up
 			one.Y = GL_HEIGHT - one.Y;
@@ -458,37 +442,25 @@ namespace TISFAT_ZERO
 		/// Adds the figure.
 		/// </summary>
 		/// <param name="figure">The figure.</param>
-		public static void addFigure(StickObject figure)
-		{
-			figureList.Add(figure);
-		}
+		public static void addFigure(StickObject figure) { figureList.Add(figure);}
 
 		/// <summary>
 		/// Adds the tween figure.
 		/// </summary>
 		/// <param name="figure">The figure.</param>
-		public static void addTweenFigure(StickObject figure)
-		{
-			tweenFigs.Add(figure);
-		}
+		public static void addTweenFigure(StickObject figure){ tweenFigs.Add(figure);}
 
 		/// <summary>
 		/// Removes the figure.
 		/// </summary>
 		/// <param name="figure">The figure.</param>
-		public static void removeFigure(StickObject figure)
-		{
-			figureList.Remove(figure);
-		}
+		public static void removeFigure(StickObject figure){ figureList.Remove(figure);}
 
 		/// <summary>
 		/// Removes the specified tween figure from the tween figures list.
 		/// </summary>
 		/// <param name="figure">The figure.</param>
-		public static void removeTweenFigure(StickObject figure)
-		{
-			tweenFigs.Remove(figure);
-		}
+		public static void removeTweenFigure(StickObject figure){ tweenFigs.Remove(figure);}
 
 		/// <summary>
 		/// Activates the figure.
@@ -497,9 +469,7 @@ namespace TISFAT_ZERO
 		public static void activateFigure(StickObject fig)
 		{
 			for (int i = 0; i < figureList.Count; i++)
-			{
 				figureList[i].isActiveFig = false;
-			}
 
 			fig.isActiveFig = true;
 		}
@@ -733,9 +703,7 @@ namespace TISFAT_ZERO
 		private void GL_GRAPHICS_OnRender(object sender, EventArgs e)
 		{
 			if(!GLLoaded)
-			{
 				return;
-			}
 
 			//Todo: make a better rendering loop
 			GL_GRAPHICS.Invalidate();
@@ -744,9 +712,7 @@ namespace TISFAT_ZERO
         private void GL_GRAPHICS_Paint(object sender, PaintEventArgs e)
         {
             if (!GLLoaded)
-            {
                 return;
-            }
 
             GL_GRAPHICS.MakeCurrent();
 
