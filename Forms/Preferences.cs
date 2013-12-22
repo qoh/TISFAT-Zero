@@ -6,6 +6,7 @@ using TISFAT_ZERO.Properties;
 using System.Net;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace TISFAT_ZERO
 {
@@ -48,8 +49,8 @@ namespace TISFAT_ZERO
 			}
 
 			txt_defaultSavePath.Text = Properties.User.Default.DefaultSavePath;
-			pic_colorBox.BackColor = Properties.User.Default.CanvasColor;
-			lbl_backgroundColorPic.Text = Properties.User.Default.CanvasColor.Name;
+			pic_ColorBox.BackColor = Properties.User.Default.CanvasColor;
+			lbl_ColorBox.Text = Properties.User.Default.CanvasColor.Name;
 
 			num_Width.Value = Properties.User.Default.CanvasSize.Width;
 			num_Height.Value = Properties.User.Default.CanvasSize.Height;
@@ -66,23 +67,6 @@ namespace TISFAT_ZERO
 			checkBox1.Checked = Properties.User.Default.autoCheck;
 		}
 
-		private void pnl_colorButtonHitbox_MouseClick(object sender, MouseEventArgs e)
-		{
-			if(!(dlg_colorDialog.ShowDialog() == DialogResult.OK))
-				return;
-
-			pic_colorBox.BackColor = dlg_colorDialog.Color;
-			lbl_backgroundColorPic.Text = dlg_colorDialog.Color.Name;
-		}
-
-		private void pnl_colorButtonHitbox_MouseClick(object sender, EventArgs e)
-		{
-			if(!(dlg_colorDialog.ShowDialog() == DialogResult.OK))
-				return;
-			pic_colorBox.BackColor = dlg_colorDialog.Color;
-			lbl_backgroundColorPic.Text = dlg_colorDialog.Color.Name;
-		}
-
 		private void btn_defSavPathBrowse_Click(object sender, EventArgs e)
 		{
 			if(!(dlg_folderBrowser.ShowDialog() == DialogResult.OK))
@@ -94,7 +78,7 @@ namespace TISFAT_ZERO
 		private void btn_submitButton_Click(object sender, EventArgs e)
 		{
 			Properties.User.Default.DefaultSavePath = txt_defaultSavePath.Text;
-			Properties.User.Default.CanvasColor = pic_colorBox.BackColor;
+			Properties.User.Default.CanvasColor = pic_ColorBox.BackColor;
 			Properties.User.Default.CanvasSize = new System.Drawing.Size((int)num_Width.Value, (int)num_Height.Value);
 
 			if (comboBox1.SelectedIndex != currentBuild)
@@ -122,6 +106,8 @@ namespace TISFAT_ZERO
 				pnl_Updates.BringToFront();
 				checkBox1_CheckedChanged(new object(), new EventArgs());
 			}
+			if (listView1.Items[2].Selected)
+				pnl_TimelineTheme.BringToFront();
 		}
 
 		private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -130,16 +116,28 @@ namespace TISFAT_ZERO
 			Properties.User.Default.autoCheck = checkBox1.Checked;
 		}
 
-		private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-		{
-		}
-
 		private void Downloader_Done(object sender, AsyncCompletedEventArgs e)
 		{
 			Process x = new Process();
 			x.StartInfo = new ProcessStartInfo("T0Updater.exe", "\"" + Path.GetFileName(Application.ExecutablePath) + "\" " + buildNames[comboBox1.SelectedIndex] + " " + Program.Version + " True");
 			x.Start();
 			Application.Exit();
+		}
+
+		private void ColorBoxItem_Click(object sender, EventArgs e)
+		{
+			if (!(sender.GetType() == typeof(PictureBox)))
+				return;
+			PictureBox thisBox = (PictureBox)sender;
+			Label thisLabel = (Label)(Controls.Find("lbl_" + thisBox.Name.TrimStart('p', 'i', 'c', '_'), true))[0];
+
+			if (!(dlg_colorDialog.ShowDialog() == DialogResult.OK))
+				return;
+
+			thisBox.BackColor = dlg_colorDialog.Color;
+			thisLabel.Text = "(" + thisBox.BackColor.R + "," + thisBox.BackColor.G + "," + thisBox.BackColor.B + ")";
+
+			//The tag of the picture box is the name of the preferences property to save; Save those in the submit function.
 		}
 	}
 
