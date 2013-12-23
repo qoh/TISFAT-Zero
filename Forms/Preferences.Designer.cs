@@ -114,6 +114,8 @@
 			this.pnl_Submit = new System.Windows.Forms.Panel();
 			this.btn_submitButton = new System.Windows.Forms.Button();
 			this.dlg_colorDialog = new System.Windows.Forms.ColorDialog();
+			this.btn_loadTheme = new System.Windows.Forms.Button();
+			this.btn_saveTheme = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -163,9 +165,9 @@
 			// 
 			// splitContainer1.Panel1
 			// 
+			this.splitContainer1.Panel1.Controls.Add(this.pnl_TimelineTheme);
 			this.splitContainer1.Panel1.Controls.Add(this.pnl_Updates);
 			this.splitContainer1.Panel1.Controls.Add(this.pnl_General);
-			this.splitContainer1.Panel1.Controls.Add(this.pnl_TimelineTheme);
 			// 
 			// splitContainer1.Panel2
 			// 
@@ -467,12 +469,10 @@
 			// 
 			// pnl_TimelineTheme
 			// 
-			this.pnl_TimelineTheme.Controls.Add(this.label32);
+			this.pnl_TimelineTheme.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pnl_TimelineTheme.Controls.Add(this.btn_saveTheme);
+			this.pnl_TimelineTheme.Controls.Add(this.btn_loadTheme);
 			this.pnl_TimelineTheme.Controls.Add(this.pnl_themeScrollPanel);
-			this.pnl_TimelineTheme.Controls.Add(this.pnl_gridLineColor);
-			this.pnl_TimelineTheme.Controls.Add(this.label10);
-			this.pnl_TimelineTheme.Controls.Add(this.panel1);
-			this.pnl_TimelineTheme.Controls.Add(this.label6);
 			this.pnl_TimelineTheme.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnl_TimelineTheme.Location = new System.Drawing.Point(0, 0);
 			this.pnl_TimelineTheme.Name = "pnl_TimelineTheme";
@@ -482,7 +482,7 @@
 			// label32
 			// 
 			this.label32.AutoSize = true;
-			this.label32.Location = new System.Drawing.Point(203, 48);
+			this.label32.Location = new System.Drawing.Point(105, 278);
 			this.label32.Name = "label32";
 			this.label32.Size = new System.Drawing.Size(76, 13);
 			this.label32.TabIndex = 27;
@@ -493,17 +493,23 @@
 			this.pnl_themeScrollPanel.AutoScroll = true;
 			this.pnl_themeScrollPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.pnl_themeScrollPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pnl_themeScrollPanel.Controls.Add(this.label32);
 			this.pnl_themeScrollPanel.Controls.Add(this.pnl_keyframeColorGeneral);
 			this.pnl_themeScrollPanel.Controls.Add(this.pnl_layerNameColor);
+			this.pnl_themeScrollPanel.Controls.Add(this.pnl_gridLineColor);
+			this.pnl_themeScrollPanel.Controls.Add(this.label10);
 			this.pnl_themeScrollPanel.Controls.Add(this.lbl_layerNameColor);
+			this.pnl_themeScrollPanel.Controls.Add(this.panel1);
 			this.pnl_themeScrollPanel.Controls.Add(this.lbl_keyframeColor);
+			this.pnl_themeScrollPanel.Controls.Add(this.label6);
 			this.pnl_themeScrollPanel.Controls.Add(this.lbl_blankFrameColor);
 			this.pnl_themeScrollPanel.Controls.Add(this.pnl_blankFrameColor);
 			this.pnl_themeScrollPanel.Controls.Add(this.lbl_BKeyframeTopBarColor);
 			this.pnl_themeScrollPanel.Controls.Add(this.pnl_keyframeTopBarColor);
-			this.pnl_themeScrollPanel.Location = new System.Drawing.Point(0, 135);
+			this.pnl_themeScrollPanel.Dock = System.Windows.Forms.DockStyle.Top;
+			this.pnl_themeScrollPanel.Location = new System.Drawing.Point(0, 0);
 			this.pnl_themeScrollPanel.Name = "pnl_themeScrollPanel";
-			this.pnl_themeScrollPanel.Size = new System.Drawing.Size(398, 156);
+			this.pnl_themeScrollPanel.Size = new System.Drawing.Size(396, 259);
 			this.pnl_themeScrollPanel.TabIndex = 26;
 			// 
 			// pnl_keyframeColorGeneral
@@ -872,7 +878,7 @@
 			this.pnl_gridLineColor.Controls.Add(this.lbl_tGridLineColor);
 			this.pnl_gridLineColor.Controls.Add(this.pic_tGridLineColor);
 			this.pnl_gridLineColor.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.pnl_gridLineColor.Location = new System.Drawing.Point(281, 39);
+			this.pnl_gridLineColor.Location = new System.Drawing.Point(184, 269);
 			this.pnl_gridLineColor.Name = "pnl_gridLineColor";
 			this.pnl_gridLineColor.Size = new System.Drawing.Size(113, 32);
 			this.pnl_gridLineColor.TabIndex = 21;
@@ -902,7 +908,7 @@
 			// label10
 			// 
 			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(201, 110);
+			this.label10.Location = new System.Drawing.Point(99, 340);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(78, 13);
 			this.label10.TabIndex = 20;
@@ -916,7 +922,7 @@
 			this.panel1.Controls.Add(this.lbl_tTimelineColor);
 			this.panel1.Controls.Add(this.pic_tTimelineColor);
 			this.panel1.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.panel1.Location = new System.Drawing.Point(281, 74);
+			this.panel1.Location = new System.Drawing.Point(184, 304);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(113, 58);
 			this.panel1.TabIndex = 17;
@@ -968,7 +974,7 @@
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(205, 83);
+			this.label6.Location = new System.Drawing.Point(108, 313);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(73, 13);
 			this.label6.TabIndex = 0;
@@ -1035,6 +1041,24 @@
 			this.btn_submitButton.UseVisualStyleBackColor = true;
 			this.btn_submitButton.Click += new System.EventHandler(this.btn_submitButton_Click);
 			// 
+			// btn_loadTheme
+			// 
+			this.btn_loadTheme.Location = new System.Drawing.Point(3, 262);
+			this.btn_loadTheme.Name = "btn_loadTheme";
+			this.btn_loadTheme.Size = new System.Drawing.Size(94, 23);
+			this.btn_loadTheme.TabIndex = 27;
+			this.btn_loadTheme.Text = "Load Theme";
+			this.btn_loadTheme.UseVisualStyleBackColor = true;
+			// 
+			// btn_saveTheme
+			// 
+			this.btn_saveTheme.Location = new System.Drawing.Point(300, 264);
+			this.btn_saveTheme.Name = "btn_saveTheme";
+			this.btn_saveTheme.Size = new System.Drawing.Size(94, 23);
+			this.btn_saveTheme.TabIndex = 28;
+			this.btn_saveTheme.Text = "Save Theme";
+			this.btn_saveTheme.UseVisualStyleBackColor = true;
+			// 
 			// Preferences
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1067,7 +1091,6 @@
 			this.pnl_colorButtonHitbox.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pic_ColorBox)).EndInit();
 			this.pnl_TimelineTheme.ResumeLayout(false);
-			this.pnl_TimelineTheme.PerformLayout();
 			this.pnl_themeScrollPanel.ResumeLayout(false);
 			this.pnl_themeScrollPanel.PerformLayout();
 			this.pnl_keyframeColorGeneral.ResumeLayout(false);
@@ -1177,5 +1200,7 @@
 		private System.Windows.Forms.PictureBox pic_keyframeTopBarColorSelected;
 		private System.Windows.Forms.Label lbl_keyframeTopBarColorGeneral;
 		private System.Windows.Forms.PictureBox pic_keyframeTopBarColorGeneral;
+		private System.Windows.Forms.Button btn_saveTheme;
+		private System.Windows.Forms.Button btn_loadTheme;
 	}
 }
