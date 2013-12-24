@@ -275,7 +275,7 @@ namespace TISFAT_Zero
 			int middle = top >> 1;
 
 			//I had to make this binary search algorithm custom because I need it to store the middle index if the target is not found.
-			while (top >= bottom)
+			while (top >= bottom && middle < frameCount)
 			{
 				int x = KeyFrames[middle].Position;
 
@@ -365,7 +365,7 @@ namespace TISFAT_Zero
 				endPos = position;
 
 			KeyFrames.RemoveAt(index);
-			KeyFrames.Insert(insertPosition, item);
+			KeyFrames.Insert(Timeline.clamp(insertPosition, 0, KeyFrames.Count), item);
 
 			return true;
 		}

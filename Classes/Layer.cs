@@ -489,9 +489,7 @@ namespace TISFAT_Zero
 			if (Framesets.Count != result[0] + 1 && newPosition >= Framesets[result[0] + 1].StartingPosition)
 				return false;
 
-			selected.MoveKeyFrameTo(result[1], newPosition);
-			
-			return true;
+			return selected.MoveKeyFrameTo(result[1], newPosition);
 		}
 
 		/// <summary>

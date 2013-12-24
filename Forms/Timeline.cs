@@ -51,6 +51,7 @@ namespace TISFAT_Zero
 
 		public KeyFrame selectedKeyFrame;
 		public Layer selectedLayer;
+		public Frameset selectedFrameset;
 
 		//We also use a lot of bitmaps.. ^ ^'
 		private T0Bitmap[] zerotonine = new T0Bitmap[10];
@@ -296,8 +297,12 @@ namespace TISFAT_Zero
 
 				bool renderselectedthislayer = renderinloop && !rendered && a == selectedLayer_Ind;
 
-				for (Frameset fs = current[framesetpos]; fs.StartingPosition < endF_ind && framesetpos < current.Framesets.Count; fs = current[framesetpos++])
+				for (Frameset fs = current[framesetpos]; fs.StartingPosition < endF_ind && framesetpos < current.Framesets.Count; fs = current[++framesetpos], framepos = 0)
 				{
+					if (framesetpos == 1)
+					{
+						int asdasdx = 1;
+					}
 					int max = fs.FrameCount - 1;
 
 					if (max == 1 && framepos == 1)
@@ -320,6 +325,8 @@ namespace TISFAT_Zero
 						if (renderingpos1 != renderingpos2)
 						{
 							GL.Color3(Color.White);
+
+							
 							GL.Begin(PrimitiveType.Quads);
 
 							GL.Vertex2(renderingpos1, p2); GL.Vertex2(renderingpos1, p2 + 15);
@@ -548,6 +555,9 @@ namespace TISFAT_Zero
 			newLayer.insertNewKeyFrameAt(6);
 			newLayer.insertNewKeyFrameAt(20);
 			newLayer.insertNewKeyFrameAt(7);
+
+			newLayer.insertNewFramesetAt(30);
+
 
 			//Add the layer to the list
 			Layers.Add(newLayer);
@@ -825,11 +835,28 @@ namespace TISFAT_Zero
 
 				if (!isScrolling && x != originalPos)
 				{
+					int newSelected = clamp((pxOffsetX + (x - 80)) / 9, 0, timelineFrameLength);
+					if (newSelected < 0)
+						newSelected = 0;
+					
 					if (selectedLayer_Ind == -1)
-						selectedFrame_Ind = clamp((pxOffsetX + (x - 80)) / 9, 0, timelineFrameLength);
-					else
+						selectedFrame_Ind = newSelected;
+					else if(selectedFrame_Type != 0)
 					{
+						if (selectedFrame_RType == 1)
+						{
+							if (selectedLayer.moveKeyframeAtTo(selectedFrame_Ind, newSelected))
+								selectedFrame_Ind = newSelected;
+						}
+						else if (selectedFrame_RType == 2)
+						{
+							int tmp1 = newSelected - (selectedFrame_Ind - selectedFrameset.StartingPosition);
+							int tmp2 = clamp(tmp1, 0, timelineRealLength);
+							if(tmp1 == tmp2)
+								selectedFrame_Ind = newSelected;
 
+							selectedLayer.moveFramesetTo(selectedFrameset, tmp2);
+						}
 					}
 				}
 			}
@@ -863,6 +890,7 @@ namespace TISFAT_Zero
 					{
 						//Set selected layer index and frame index
 						selectedLayer_Ind = (pxOffsetY + (y - 16)) / 16; selectedFrame_Ind = (pxOffsetX + (x - 80)) / 9;
+						
 						forceRefresh = true;
 
 						if (selectedLayer_Ind >= Layers.Count)
@@ -870,9 +898,18 @@ namespace TISFAT_Zero
 							forceRefresh = false;
 							return;
 						}
+						else
+							selectedLayer = Layers[selectedLayer_Ind];
 
 						selectedFrame_Type = Layers[selectedLayer_Ind].getFrameTypeAt(selectedFrame_Ind);
 						selectedFrame_RType = (byte)(selectedFrame_Type == 4 ? 2 : selectedFrame_Type == 0 ? 0 : 1);
+
+						if (selectedFrame_RType != 0)
+						{
+							selectedFrameset = selectedLayer.GetFramesetAt(selectedFrame_Ind);
+							if (selectedFrame_RType == 1)
+								selectedKeyFrame = selectedFrameset.GetKeyFrameAt(selectedFrame_Ind);
+						}
 					}
 					else //User clicked on the timeline
 					{
@@ -994,6 +1031,7 @@ namespace TISFAT_Zero
 
 			cancelTimerOnMouseUp = true;
 
+			//This basically changes what happens when the timer gets ticked.
 			timerDelegate = () =>
 			{
 				if (!cancelTimerOnMouseUp)
@@ -1028,7 +1066,7 @@ namespace TISFAT_Zero
 
 		}
 
-		private static int clamp(int num, int min, int max)
+		public static int clamp(int num, int min, int max)
 		{
 			return Math.Min(max, Math.Max(min, num));
 		}
