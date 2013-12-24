@@ -348,6 +348,9 @@ namespace TISFAT_Zero
 			if(index < 0 || index > frameCount)
 				throw new ArgumentOutOfRangeException("index", "Argument must be >= 0 and < " + frameCount);
 
+			if (position == startPos)
+				return false;
+
 			int insertPosition = -BinarySearch(position);
 
 			if(insertPosition < 0)
@@ -359,13 +362,12 @@ namespace TISFAT_Zero
 			KeyFrame item = KeyFrames[index];
 			item.Position = position;
 
-			if(position < startPos)
-				startPos = position;
-			else if(position > endPos)
-				endPos = position;
 
 			KeyFrames.RemoveAt(index);
 			KeyFrames.Insert(Timeline.clamp(insertPosition, 0, KeyFrames.Count), item);
+
+			startPos = KeyFrames[0].Position;
+			endPos = KeyFrames[KeyFrames.Count - 1].Position;
 
 			return true;
 		}

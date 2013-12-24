@@ -1,5 +1,6 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -23,13 +24,15 @@ namespace TISFAT_Zero
 		private Rectangle ScrollX = new Rectangle(), ScrollY = new Rectangle();
 		private Rectangle StubX = new Rectangle(), StubY = new Rectangle();
 
+		private Point relativePos;
+
 		public int cursorDiff, originalPos;
 
 		//Yeah, there are a lot of booleans. I'm far too lazy to make this into a bitmask.
 		public bool isScrolling, isScrollingY;
 		public bool mouseDown;
 		private bool GLLoaded = false, forceRefresh = false;
-		private bool cancelTimerOnMouseUp = false;
+		private bool cancelTimerOnMouseUp = false, cancelevent = false;
 
 		//I'm using bit masks here so we don't flood this area with (8 more) bools. I said I was too lazy to make the OTHER ones a bitmask!
 		//bits 1-4: scrollbars
@@ -297,12 +300,8 @@ namespace TISFAT_Zero
 
 				bool renderselectedthislayer = renderinloop && !rendered && a == selectedLayer_Ind;
 
-				for (Frameset fs = current[framesetpos]; fs.StartingPosition < endF_ind && framesetpos < current.Framesets.Count; fs = current[++framesetpos], framepos = 0)
+				for (Frameset fs = current[framesetpos]; fs.StartingPosition < endF_ind && framesetpos < current.Framesets.Count; )
 				{
-					if (framesetpos == 1)
-					{
-						int asdasdx = 1;
-					}
 					int max = fs.FrameCount - 1;
 
 					if (max == 1 && framepos == 1)
@@ -374,6 +373,12 @@ namespace TISFAT_Zero
 					}
 
 					drawFrame(renderingpos2, p2, Color.FromArgb(200, 190, 245));
+
+					framesetpos++;
+					if(framesetpos < current.Framesets.Count)
+						fs = current[framesetpos];
+
+					framepos = 0;
 				}
 			}
 
@@ -709,6 +714,7 @@ namespace TISFAT_Zero
 
 		private void Timeline_MouseMove(object sender, MouseEventArgs e)
 		{
+			relativePos = e.Location;
 			byte old = selectedScrollItems;
 			Point old1 = ScrollY.Location, old2 = ScrollX.Location;
 			bool updateScrollLocation = false;
@@ -845,6 +851,10 @@ namespace TISFAT_Zero
 					{
 						if (selectedFrame_RType == 1)
 						{
+							if (newSelected == 2)
+							{
+								int adfasf = 5;
+							}
 							if (selectedLayer.moveKeyframeAtTo(selectedFrame_Ind, newSelected))
 								selectedFrame_Ind = newSelected;
 						}
@@ -852,10 +862,8 @@ namespace TISFAT_Zero
 						{
 							int tmp1 = newSelected - (selectedFrame_Ind - selectedFrameset.StartingPosition);
 							int tmp2 = clamp(tmp1, 0, timelineRealLength);
-							if(tmp1 == tmp2)
+							if (tmp1 == tmp2 && selectedLayer.moveFramesetTo(selectedFrameset, tmp2))
 								selectedFrame_Ind = newSelected;
-
-							selectedLayer.moveFramesetTo(selectedFrameset, tmp2);
 						}
 					}
 				}
@@ -915,6 +923,7 @@ namespace TISFAT_Zero
 					{
 						selectedLayer_Ind = -1;
 						selectedFrame_Ind = (pxOffsetX + (x - 80)) / 9;
+						forceRefresh = true;
 					}
 				}
 				else //User clicked in layers
@@ -928,8 +937,48 @@ namespace TISFAT_Zero
 				mouseDown = true;
 				forceRefresh = true;
 				originalPos = x;
+			}
+			else if (e.Button == MouseButtons.Right)
+			{
+				//Figure out what area we're clicking so we know what context menu items to display
+				//-1: ???
+				//0: frame area
+				//1: layers area
+				//2: scrollbars (what do we use here?)
+				//3: timeline
+				//4: timeline controls area (what do we use here?)
 
-				selectedScrollItems |= 2;
+				sbyte selectedArea = -1;
+
+				if (x < 80 && y >= 16)
+				{
+					selectedArea = 1;
+					selectedLayer_Ind = (pxOffsetY + (y - 16)) / 16;
+
+					selectedFrame_Ind = 0;
+					selectedFrame_Type = Layers[selectedLayer_Ind].getFrameTypeAt(0);
+					selectedFrame_RType = (byte)(selectedFrame_Type == 4 ? 2 : selectedFrame_Type == 0 ? 0 : 1);
+				}
+				else if (x < 80 && y < 16) ; //Not mistaken empty statement; it prevents the right click menu from popping up when you right click on "TIMELINE"
+				else if (dx <= 12 ^ dy <= 12)
+					selectedArea = -1;
+				else if (y >= 16)
+					selectedArea = 0;
+				else if (y < 16)
+					selectedArea = 3;
+
+				if (selectedArea == -1)
+				{
+					cancelevent = true;
+				}
+				else
+				{
+					cancelevent = false;
+
+					//Loop through all the items in the context menu, and if their name contains the selected area then set it to visible.
+					foreach (ToolStripItem item in contextMenuStrip1.Items)
+						item.Visible = ((string)item.Tag).IndexOf("" + selectedArea) >= 0;
+				}
 			}
 
 			Timeline_MouseMove(sender, e);
@@ -947,32 +996,6 @@ namespace TISFAT_Zero
 				mouseDown = cancelTimerOnMouseUp = false;
 				Timeline_MouseMove(sender, e);
 			}
-
-			if (e.Button != MouseButtons.Right)
-				return;
-
-			//Figure out what area we're clicking so we know what context menu items to display
-			//-1: ???
-			//0: frame area
-			//1: layers area
-			//2: scrollbars (what do we use here?)
-			//3: timeline
-			//4: timeline controls area (what do we use here?)
-
-			int x = e.X, y = e.Y;
-			int dx = Width - x, dy = Height - y;
-			sbyte selectedArea = -1;
-
-			if (x < 80)
-				selectedArea = 1;
-			else if (dx <= 12 ^ dy <= 12)
-				selectedArea = 2;
-			else if (y >= 16)
-				selectedArea = 0;
-			else if (y < 16)
-				selectedArea = 3;
-
-			//To be finished later
 		}
 
 		private bool isBitSet(byte x, byte n)
@@ -1071,15 +1094,38 @@ namespace TISFAT_Zero
 			return Math.Min(max, Math.Max(min, num));
 		}
 
-		private static double clamp(double num, double min, double max)
+		public static double clamp(double num, double min, double max)
 		{
 			return Math.Min(max, Math.Max(min, num));
 		}
 
 		private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
 		{
-			//I need mouseup to be triggered before this, so I manually call it. Yeah it'll get called twice, so what x.x
-			Timeline_MouseUp(sender, new MouseEventArgs(MouseButtons.Right, 1, Cursor.Position.X, Cursor.Position.Y, 0));
+			//If cancelevent is true, that means we have nothing to do with the right click menu.
+			if (cancelevent)
+				e.Cancel = true;
+		}
+
+		private void contextMenuStrip1_Opened(object sender, EventArgs e)
+		{
+			//Get all the visible, non-seperator toolstrip items in a list
+			List<ToolStripItem> items = (from ToolStripItem item in contextMenuStrip1.Items where !item.Name.Contains("Separator") && item.Visible select item).ToList();
+
+			if (items[0].Name.Contains("insert"))
+			{
+				//We've clicked on the keyframe area.
+				items[0].Enabled = selectedFrame_RType == 2;
+				items[1].Enabled = items[0].Enabled;
+				items[2].Enabled = selectedFrame_RType == 1 && selectedFrameset.FrameCount > 2;
+				items[3].Enabled = selectedLayer.getEmptyFramesCount(selectedFrame_Ind) >= 2;
+				items[4].Enabled = selectedFrame_RType != 0;
+
+			}
+		}
+
+		private void YayyyToolStripItem_ClickEvent(object sender, EventArgs e)
+		{
+			
 		}
 	}
 }

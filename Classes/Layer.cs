@@ -420,12 +420,18 @@ namespace TISFAT_Zero
 
 			Framesets.RemoveAt(index);
 
-			if(!canBeInserted(position, item.EndingPosition - item.StartingPosition))
+			if (!canBeInserted(position, item.EndingPosition - item.StartingPosition))
+			{
+				Framesets.Insert(index, item);
 				return false;
+			}
 
 			item.shiftFrames(position - item.StartingPosition);
 
 			index = BinarySearch(position);
+
+			if (index == -1)
+				index = 1;
 
 			Framesets.Insert(index, item);
 
@@ -486,7 +492,7 @@ namespace TISFAT_Zero
 			Frameset selected = Framesets[result[0]];
 
 			//Check to make sure the spot isn't >= the next frameset's starting position
-			if (Framesets.Count != result[0] + 1 && newPosition >= Framesets[result[0] + 1].StartingPosition)
+			if ((Framesets.Count != result[0] + 1 && newPosition >= Framesets[result[0] + 1].StartingPosition) || (result[0] != 0 && newPosition <= Framesets[result[0] - 1].EndingPosition))
 				return false;
 
 			return selected.MoveKeyFrameTo(result[1], newPosition);
