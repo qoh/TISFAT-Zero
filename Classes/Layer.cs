@@ -414,6 +414,7 @@ namespace TISFAT_Zero
 				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
 
 			int index = BinarySearch(item.StartingPosition);
+			
 
 			if(index < 0)
 				return false;
@@ -428,10 +429,7 @@ namespace TISFAT_Zero
 
 			item.shiftFrames(position - item.StartingPosition);
 
-			index = BinarySearch(position);
-
-			if (index == -1)
-				index = 1;
+			index = -BinarySearch(position);
 
 			Framesets.Insert(index, item);
 

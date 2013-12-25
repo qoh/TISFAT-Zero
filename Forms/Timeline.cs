@@ -1117,7 +1117,8 @@ namespace TISFAT_Zero
 				items[0].Enabled = selectedFrame_RType == 2;
 				items[1].Enabled = items[0].Enabled;
 				items[2].Enabled = selectedFrame_RType == 1 && selectedFrameset.FrameCount > 2;
-				items[3].Enabled = selectedLayer.getEmptyFramesCount(selectedFrame_Ind) >= 2;
+				int space = selectedLayer.getEmptyFramesCount(selectedFrame_Ind);
+				items[3].Enabled = space == -2 || space >= 2;
 				items[4].Enabled = selectedFrame_RType != 0;
 
 			}
@@ -1125,7 +1126,50 @@ namespace TISFAT_Zero
 
 		private void YayyyToolStripItem_ClickEvent(object sender, EventArgs e)
 		{
-			
+			ToolStripItem theSender = ((ToolStripItem)sender);
+
+			switch (theSender.Tag.ToString())
+			{
+				case ("0;insertnorm"):
+					selectedLayer.insertNewKeyFrameAt(selectedFrame_Ind); break;
+				case ("0;insertpose"):
+					//Insert Keyframe with Current Pose goes here.
+					break;
+				case ("0;remove"):
+					selectedFrameset.RemoveKeyFrameAt(selectedFrame_Ind); break;
+				case ("0;insertset"):
+					selectedLayer.insertNewFramesetAt(selectedFrame_Ind);
+					break;
+				case("0;removeset"):
+					selectedLayer.removeFramesetAt(selectedFrame_Ind); break;
+				case("0;moveall"):
+					//Moving all framesets
+					break;
+				case("0;poseprevious"):
+					//Set to previous pose
+					break;
+				case("0;posenext"):
+					//Set to next pose
+					break;
+				case("01;deletelayer"):
+					Layers.Remove(selectedLayer); //This doesn't work.
+					break;
+				case("01;rename"):
+					//Layer renaming
+					break;
+				case("01;moveup"):
+					//Move layer up
+					break;
+				case("01;movedown"):
+					//Move layer down
+					break;
+				case("013;onion"):
+					//Onion skinning
+					break;
+				case("3;goto"):
+					//goto frame
+					break;
+			}
 		}
 	}
 }
