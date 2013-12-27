@@ -19,7 +19,6 @@ namespace TISFAT_Zero
         private static List<Point> lights = new List<Point>();
         public readonly float lightSize = 400.0f;
 
-        public static Graphics theCanvasGraphics; //We need a list of objects to draw.
         public static bool GLLoaded = false; //we can't touch GL until its fully loaded, this is a guard variable
         public static int GL_WIDTH, GL_HEIGHT;
 

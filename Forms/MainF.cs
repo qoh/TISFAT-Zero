@@ -50,7 +50,7 @@ namespace TISFAT_Zero
 
 			Program.TheTimeline.Width = splitContainer1.Panel1.Width - 2;
 			Program.TheTimeline.Height = splitContainer1.Panel1.Height - 2;
-
+			Program.TheCanvas.GL_GRAPHICS.Location = new System.Drawing.Point(0, 0);
 			Timeline.doRender();
         }
 

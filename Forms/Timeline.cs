@@ -903,7 +903,12 @@ namespace TISFAT_Zero
 							return;
 						}
 						else
+						{
 							selectedLayer = Layers[selectedLayer_Ind];
+							foreach (Layer l in Layers)
+								l.layerIsSelected = false;
+							Layers[selectedLayer_Ind].layerIsSelected = true;
+						}
 
 						selectedFrame_Type = Layers[selectedLayer_Ind].getFrameTypeAt(selectedFrame_Ind);
 						selectedFrame_RType = (byte)(selectedFrame_Type == 4 ? 2 : selectedFrame_Type == 0 ? 0 : 1);
@@ -959,6 +964,10 @@ namespace TISFAT_Zero
 				{
 					selectedArea = 1;
 					selectedLayer_Ind = (pxOffsetY + (y - 16)) / 16;
+
+					foreach (Layer l in Layers)
+						l.layerIsSelected = false;
+					Layers[clamp(selectedLayer_Ind, 0, Layers.Count - 1)].layerIsSelected = true;
 
 					selectedFrame_Ind = 0;
 					selectedFrame_Type = Layers[selectedLayer_Ind].getFrameTypeAt(0);
@@ -1195,6 +1204,10 @@ namespace TISFAT_Zero
 
 			foreach (Layer l in Layers)
 				l.renderLayer(Program.TheCanvas);
+			if (selectedLayer_Ind != -1 && selectedLayer_Ind < Layers.Count)
+			{
+				Layers[selectedLayer_Ind].LayerFigure.drawFigHandles(Program.TheCanvas);
+			}
 			Program.TheCanvas.GLGraphics.SwapBuffers();
 		}
 	}

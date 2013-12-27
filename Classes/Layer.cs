@@ -529,9 +529,16 @@ namespace TISFAT_Zero
 				LayerFigure.isDrawn = true;
 
 				if (!layerIsSelected)
+				{
 					LayerFigure.drawHandles = false;
+					LayerFigure.isActiveFig = false;
+				}
 				else
+				{
 					LayerFigure.isActiveFig = true;
+					LayerFigure.drawHandles = true;
+					Canvas.activeFigure = LayerFigure;
+				}
 
 				KeyFrame f = s[result];
 
