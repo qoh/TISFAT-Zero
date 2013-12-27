@@ -96,7 +96,7 @@ namespace TISFAT_Zero
 			length = (int)Math.Round(pStart.length + ((pEnd.length - pStart.length) * sPercent));
 			thickness = (int)Math.Round(pStart.thickness + ((pEnd.thickness - pStart.thickness) * sPercent));
 
-			if (pStart.parentFigure.figureType == 3 && ((StickRect)parentFigure).isFilled)
+			if (pEnd.parentFigure.figureType == 3 && ((StickRect)parentFigure).isFilled)
 			{
 				/*Color tmp0 = pStart.parentFigure.parentLayer.adjacentBack.figColor;
 				Color tmp1 = pEnd.parentFigure.parentLayer.adjacentFront.figColor;
@@ -179,6 +179,7 @@ namespace TISFAT_Zero
 			pThis = this;
 			pParent = parentJoint;
 			bContinue = true;
+
 			while (pParent != null)
 			{
 				if ((pParent.jointState != 0) & !(pParent.isSelectedJoint))

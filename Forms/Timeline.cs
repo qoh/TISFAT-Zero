@@ -47,8 +47,7 @@ namespace TISFAT_Zero
 		public static int timelineHeight;
 
 		//If this value is -1 that means the timeline is selected
-		public int selectedLayer_Ind = 0;
-		public int selectedFrame_Ind = 0;
+		public static int selectedLayer_Ind = 0, selectedFrame_Ind = 0;
 		private byte selectedFrame_Type = 0;
 		private byte selectedFrame_RType = 0; //0: plain  1: keyframe  2: tween
 
@@ -116,10 +115,7 @@ namespace TISFAT_Zero
 			StubY.Width = 12;
 
 			addNewLayer(typeof(StickLayer));
-			addNewLayer(typeof(BitmapLayer), "sdfasdggae");
-
-			for (int a = 0; a < 200; a++)
-				addNewLayer(typeof(RectLayer), "stuff " + (a + 1));
+			Layers[0].Framesets[0][0].FrameJoints[0].setPos(50, 50);
 
 			timelineRealLength = 9 * timelineFrameLength;
 		}
@@ -844,17 +840,17 @@ namespace TISFAT_Zero
 					int newSelected = clamp((pxOffsetX + (x - 80)) / 9, 0, timelineFrameLength);
 					if (newSelected < 0)
 						newSelected = 0;
-					
+
 					if (selectedLayer_Ind == -1)
+					{
 						selectedFrame_Ind = newSelected;
-					else if(selectedFrame_Type != 0)
+						setFrame();
+						doRender();
+					}
+					else if (selectedFrame_Type != 0)
 					{
 						if (selectedFrame_RType == 1)
 						{
-							if (newSelected == 2)
-							{
-								int adfasf = 5;
-							}
 							if (selectedLayer.moveKeyframeAtTo(selectedFrame_Ind, newSelected))
 								selectedFrame_Ind = newSelected;
 						}
@@ -918,12 +914,21 @@ namespace TISFAT_Zero
 							if (selectedFrame_RType == 1)
 								selectedKeyFrame = selectedFrameset.GetKeyFrameAt(selectedFrame_Ind);
 						}
+
+						setFrame();
+						doRender();
 					}
 					else //User clicked on the timeline
 					{
 						selectedLayer_Ind = -1;
 						selectedFrame_Ind = (pxOffsetX + (x - 80)) / 9;
+
+						Program.TheCanvas.GLGraphics.SwapBuffers();
+
 						forceRefresh = true;
+
+						setFrame();
+						doRender();
 					}
 				}
 				else //User clicked in layers
@@ -958,19 +963,20 @@ namespace TISFAT_Zero
 					selectedFrame_Ind = 0;
 					selectedFrame_Type = Layers[selectedLayer_Ind].getFrameTypeAt(0);
 					selectedFrame_RType = (byte)(selectedFrame_Type == 4 ? 2 : selectedFrame_Type == 0 ? 0 : 1);
+
+					setFrame();
+					doRender();
 				}
 				else if (x < 80 && y < 16) ; //Not mistaken empty statement; it prevents the right click menu from popping up when you right click on "TIMELINE"
 				else if (dx <= 12 ^ dy <= 12)
-					selectedArea = -1;
+					selectedArea = -1; //Scrollbars
 				else if (y >= 16)
 					selectedArea = 0;
 				else if (y < 16)
 					selectedArea = 3;
 
 				if (selectedArea == -1)
-				{
 					cancelevent = true;
-				}
 				else
 				{
 					cancelevent = false;
@@ -1130,46 +1136,66 @@ namespace TISFAT_Zero
 
 			switch (theSender.Tag.ToString())
 			{
-				case ("0;insertnorm"):
+				case "0;insertnorm":
 					selectedLayer.insertNewKeyFrameAt(selectedFrame_Ind); break;
-				case ("0;insertpose"):
+				case "0;insertpose":
 					//Insert Keyframe with Current Pose goes here.
 					break;
-				case ("0;remove"):
+				case "0;remove":
 					selectedFrameset.RemoveKeyFrameAt(selectedFrame_Ind); break;
-				case ("0;insertset"):
+				case "0;insertset":
 					selectedLayer.insertNewFramesetAt(selectedFrame_Ind);
 					break;
-				case("0;removeset"):
+				case "0;removeset":
 					selectedLayer.removeFramesetAt(selectedFrame_Ind); break;
-				case("0;moveall"):
+				case "0;moveall":
 					//Moving all framesets
 					break;
-				case("0;poseprevious"):
+				case "0;poseprevious":
 					//Set to previous pose
 					break;
-				case("0;posenext"):
+				case "0;posenext":
 					//Set to next pose
 					break;
-				case("01;deletelayer"):
-					Layers.Remove(selectedLayer); //This doesn't work.
+				case "01;deletelayer":
+					Layers.Remove(selectedLayer);
 					break;
-				case("01;rename"):
+				case "01;rename":
 					//Layer renaming
 					break;
-				case("01;moveup"):
+				case "01;moveup":
 					//Move layer up
 					break;
-				case("01;movedown"):
+				case "01;movedown":
 					//Move layer down
 					break;
-				case("013;onion"):
+				case "013;onion":
 					//Onion skinning
 					break;
-				case("3;goto"):
+				case "3;goto":
 					//goto frame
 					break;
 			}
+		}
+
+		public static void setFrame(int position = -1)
+		{
+			if (position == -1)
+				position = selectedFrame_Ind;
+
+			foreach (Layer l in Layers)
+				l.updateFigure(position);
+		}
+
+		public static void doRender()
+		{
+			Program.TheCanvas.GLGraphics.MakeCurrent();
+
+			GL.Clear(ClearBufferMask.ColorBufferBit);
+
+			foreach (Layer l in Layers)
+				l.renderLayer(Program.TheCanvas);
+			Program.TheCanvas.GLGraphics.SwapBuffers();
 		}
 	}
 }

@@ -69,8 +69,6 @@ namespace TISFAT_Zero
 
 		public void Draw(ICanDraw Canvas, Point position = new Point())
 		{
-			Canvas.GLGraphics.MakeCurrent();
-
 			drawFigure(Canvas);
 		}
 

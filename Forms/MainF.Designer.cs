@@ -388,13 +388,13 @@ namespace TISFAT_Zero
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(734, 512);
+			this.ClientSize = new System.Drawing.Size(750, 550);
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.mnu_strip1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.mnu_strip1;
 			this.MaximumSize = new System.Drawing.Size(2000, 2000);
-			this.MinimumSize = new System.Drawing.Size(630, 450);
+			this.MinimumSize = new System.Drawing.Size(630, 500);
 			this.Name = "MainF";
 			this.Text = "TISFAT : Zero";
 			this.Load += new System.EventHandler(this.MainF_Load);

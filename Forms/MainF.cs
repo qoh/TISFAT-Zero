@@ -11,8 +11,6 @@ namespace TISFAT_Zero
 {
 	partial class MainF : Form
 	{
-		public Timeline timeline;
-
 		public MainF()
 		{
 			InitializeComponent();
@@ -20,35 +18,45 @@ namespace TISFAT_Zero
 
 		private void MainF_Load(object sender, EventArgs e)
 		{
-			timeline = new Timeline(this);
+			Program.TheTimeline = new Timeline(this);
 
-			timeline.TopLevel = false;
-			timeline.Parent = splitContainer1.Panel1;
-			timeline.Size = new Size(splitContainer1.Panel1.Width - 2, splitContainer1.Panel1.Height - 2);
-			timeline.StartPosition = FormStartPosition.Manual;
-			timeline.Location = new Point(0, 0);
+			Program.TheTimeline.TopLevel = false;
+			Program.TheTimeline.Parent = splitContainer1.Panel1;
+			Program.TheTimeline.Size = new Size(splitContainer1.Panel1.Width - 2, splitContainer1.Panel1.Height - 2);
+			Program.TheTimeline.StartPosition = FormStartPosition.Manual;
+			Program.TheTimeline.Location = new Point(0, 0);
 
-			splitContainer1.Panel1.Controls.Add(timeline);
+			splitContainer1.Panel1.Controls.Add(Program.TheTimeline);
 
-			timeline.Show();
-			timeline.Invalidate();
+			Program.TheTimeline.Show();
+			Program.TheTimeline.Invalidate();
 
-            timeline.Width = splitContainer1.Panel1.Width - 2;
-            timeline.Height = splitContainer1.Panel1.Height - 2;
+			Program.TheTimeline.Width = splitContainer1.Panel1.Width - 2;
+			Program.TheTimeline.Height = splitContainer1.Panel1.Height - 2;
+
+			Program.TheCanvas = new Canvas();
+			Program.TheCanvas.TopLevel = false;
+			Program.TheCanvas.Size = new Size(460, 360);
+			splitContainer1.Panel2.Controls.Add(Program.TheCanvas);
+			Program.TheCanvas.Show();
+
+			Timeline.doRender();
 		}
 
         private void splitContainer1_Panel1_Resize(object sender, EventArgs e)
         {
-            if (timeline == null)
+			if (Program.TheTimeline == null)
                 return;
 
-            timeline.Width = splitContainer1.Panel1.Width - 2;
-			timeline.Height = splitContainer1.Panel1.Height - 2;
+			Program.TheTimeline.Width = splitContainer1.Panel1.Width - 2;
+			Program.TheTimeline.Height = splitContainer1.Panel1.Height - 2;
+
+			Timeline.doRender();
         }
 
 		private void splitContainer1_SplitterMoving(object sender, SplitterCancelEventArgs e)
 		{
-			timeline.Invalidate();
+			Program.TheTimeline.Invalidate();
 		}
 	}
 }

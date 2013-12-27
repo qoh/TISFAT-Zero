@@ -7,6 +7,11 @@ namespace TISFAT_Zero
 {
 	static class Program
 	{
+		public static MainF TheMainForm;
+		public static Timeline TheTimeline;
+		public static Canvas TheCanvas;
+		//public static Toolbox TheToolbox;
+
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
@@ -15,7 +20,10 @@ namespace TISFAT_Zero
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new MainF());
+
+			TheMainForm = new MainF();
+
+			Application.Run(TheMainForm);
 		}
 	}
 }

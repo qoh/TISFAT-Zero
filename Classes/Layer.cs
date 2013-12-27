@@ -528,8 +528,10 @@ namespace TISFAT_Zero
 			{
 				LayerFigure.isDrawn = true;
 
-				if(!layerIsSelected)
+				if (!layerIsSelected)
 					LayerFigure.drawHandles = false;
+				else
+					LayerFigure.isActiveFig = true;
 
 				KeyFrame f = s[result];
 
@@ -553,6 +555,9 @@ namespace TISFAT_Zero
 				float percent = (float)(position - S.Position) / (E.Position - S.Position);
 
 				LayerFigure.FigureJoints = StickObject.copyJoints(E.FrameJoints);
+
+				foreach (StickJoint j in LayerFigure)
+					j.parentFigure = LayerFigure;
 
 				for (int a = 0; a < LayerFigure.FigureJoints.Count; a++)
 					LayerFigure.FigureJoints[a].Tween(S.FrameJoints[a], LayerFigure.FigureJoints[a], percent);
