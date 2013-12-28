@@ -1,55 +1,52 @@
-﻿using System;
+﻿using OpenTK;
+using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
-using System.Drawing.Drawing2D;
-using OpenTK.Graphics.OpenGL;
-using OpenTK.Graphics;
-using OpenTK;
-using System.Diagnostics;
-using System.Drawing.Imaging;
 using System.IO;
+using System.Windows.Forms;
 
 namespace TISFAT_Zero
 {
 	partial class Canvas : Form, ICanDraw
 	{
-
 		#region Variables
-        private static List<Point> lights = new List<Point>();
-        public readonly float lightSize = 400.0f;
 
-        public static bool GLLoaded = false; //we can't touch GL until its fully loaded, this is a guard variable
-        public static int GL_WIDTH, GL_HEIGHT;
+		private static List<Point> lights = new List<Point>();
+		public readonly float lightSize = 400.0f;
 
-        private static int maxaa;
+		public static bool GLLoaded = false; //we can't touch GL until its fully loaded, this is a guard variable
+		public static int GL_WIDTH, GL_HEIGHT;
 
-        public static List<StickObject> figureList = new List<StickObject>();
-        public static List<StickObject> tweenFigs = new List<StickObject>();
-        public static List<int> textures = new List<int>();
+		private static int maxaa;
 
-        //Now we need a method to add figures to these lists.
+		public static List<StickObject> figureList = new List<StickObject>();
+		public static List<StickObject> tweenFigs = new List<StickObject>();
+		public static List<int> textures = new List<int>();
 
-        public static StickObject activeFigure;
-        public static StickJoint selectedJoint = new StickJoint("null", new Point(0, 0), 0, Color.Transparent, Color.Transparent);
+		//Now we need a method to add figures to these lists.
 
-        public bool mousemoved, draw, hasLockedJoint = false;
-        private int ox, oy;
+		public static StickObject activeFigure;
+		public static StickJoint selectedJoint = new StickJoint("null", new Point(0, 0), 0, Color.Transparent, Color.Transparent);
+
+		public bool mousemoved, draw, hasLockedJoint = false;
+		private int ox, oy;
 
 		private uint OccludersTexture, ShadowsTexture, OccluderFBO, ShadowsFBO;
 
-        private int Shader_pass, Shader_shadowMap, Shader_shadowRender, Program_passAndMap, Program_passAndRender;
+		private int Shader_pass, Shader_shadowMap, Shader_shadowRender, Program_passAndMap, Program_passAndRender;
 
-        private List<int> fx, fy;
+		private List<int> fx, fy;
 
-        public OpenTK.GLControl glGraphics;
+		public OpenTK.GLControl glGraphics;
 
 		public GLControl GLGraphics
 		{
 			get { return glGraphics; }
 		}
 
-		#endregion
+		#endregion Variables
 
 		//Instantiate the class
 		/// <summary>
@@ -59,20 +56,13 @@ namespace TISFAT_Zero
 		/// <param name="t">The toolbox object</param>
 		public Canvas()
 		{
-			int aa = 0;
-
-			do
-			{
-				var mode = new GraphicsMode(32, 0, 0, aa);
-				if (mode.Samples == aa)
-					maxaa = aa;
-				aa += 2;
-			} while (aa <= 32);
+			maxaa = 8;
 
 			InitializeComponent();
 		}
 
 		#region Mouse Events
+
 		//Note: These events are hooked with the GLControl and not the canvas
 		//Debug stuff, and dragging joints.
 		/// <summary>
@@ -101,6 +91,7 @@ namespace TISFAT_Zero
 				{
 					selectedJoint.SetPosAbs(e.X, e.Y);
 					((StickRect)selectedJoint.parentFigure).onRectJointMoved(selectedJoint);
+					Refresh();
 				}
 
 				//This prevents any other figures from becoming active as you are dragging a joint.
@@ -209,7 +200,7 @@ namespace TISFAT_Zero
 							hasLockedJoint = !hasLockedJoint;
 							GL_GRAPHICS.Invalidate();
 							selectedJoint = f;
-							activeFigure.setAsBase(f);
+							//activeFigure.setAsBase(f);
 						}
 					}
 					catch
@@ -257,9 +248,10 @@ namespace TISFAT_Zero
 					contextMenuStrip1.Show(new Point(e.X + contextMenuStrip1.Height, e.Y + contextMenuStrip1.Width));
 				mousemoved = false;
 				draw = false;
-			} 
-		} 
-		#endregion
+			}
+		}
+
+		#endregion Mouse Events
 
 		#region Graphics
 
@@ -338,10 +330,10 @@ namespace TISFAT_Zero
 				GL.Color4(color);
 				GL.Begin(PrimitiveType.Quads);
 
-				GL.Vertex2(one.X - 2.5, one.Y - 2.5);
-				GL.Vertex2(one.X + 2.5, one.Y - 2.5);
-				GL.Vertex2(one.X + 2.5, one.Y + 2.5);
-				GL.Vertex2(one.X - 2.5, one.Y + 2.5);
+				GL.Vertex2(one.X - 2, one.Y - 2);
+				GL.Vertex2(one.X + 2, one.Y - 2);
+				GL.Vertex2(one.X + 2, one.Y + 2);
+				GL.Vertex2(one.X - 2, one.Y + 2);
 
 				GL.End();
 
@@ -375,40 +367,40 @@ namespace TISFAT_Zero
 
 				GL.End();
 			}
-            else if (type == 6) //Texture
-            {
-                /*GL.Color4(color);
+			else if (type == 6) //Texture
+			{
+				/*GL.Color4(color);
 
-                GL.Enable(EnableCap.Texture2D);
-                GL.Enable(EnableCap.Blend);
-                GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+				GL.Enable(EnableCap.Texture2D);
+				GL.Enable(EnableCap.Blend);
+				GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
-                GL.BindTexture(TextureTarget.Texture2D, textureID);
+				GL.BindTexture(TextureTarget.Texture2D, textureID);
 
-                GL.Begin(BeginMode.Quads);
+				GL.Begin(BeginMode.Quads);
 
-                GL.TexCoord2(0.0, 1.0);
-                GL.Vertex2(one.X, one.Y);
+				GL.TexCoord2(0.0, 1.0);
+				GL.Vertex2(one.X, one.Y);
 
-                GL.TexCoord2(0.0, 0.0);
-                GL.Vertex2(one.X, one.Y - height);
+				GL.TexCoord2(0.0, 0.0);
+				GL.Vertex2(one.X, one.Y - height);
 
-                GL.TexCoord2(1.0, 0.0);
-                GL.Vertex2(one.X + width, one.Y - height);
+				GL.TexCoord2(1.0, 0.0);
+				GL.Vertex2(one.X + width, one.Y - height);
 
-                GL.TexCoord2(1.0, 1.0);
-                GL.Vertex2(one.X + width, one.Y);
+				GL.TexCoord2(1.0, 1.0);
+				GL.Vertex2(one.X + width, one.Y);
 
-                GL.End();
+				GL.End();
 
-                GL.Disable(EnableCap.Blend);
-                GL.Disable(EnableCap.Texture2D);*/
-            }
+				GL.Disable(EnableCap.Blend);
+				GL.Disable(EnableCap.Texture2D);*/
+			}
 
 			GL.Disable(EnableCap.Blend);
-		} 
+		}
 
-		private static void DrawCircle(float cx, float cy, float r) 
+		private static void DrawCircle(float cx, float cy, float r)
 		{
 			int num_segments = 6 * (int)Math.Sqrt(r);
 
@@ -417,12 +409,12 @@ namespace TISFAT_Zero
 
 			float radial_factor = (float)Math.Cos(theta);
 
-			float y = 0; 
-	
+			float y = 0;
+
 			GL.Begin(PrimitiveType.TriangleFan);
 
-			for(int ii = 0; ii < num_segments; ii++) 
-			{ 
+			for (int ii = 0; ii < num_segments; ii++)
+			{
 				GL.Vertex2(r + cx, y + cy);
 
 				float ty = r;
@@ -434,7 +426,7 @@ namespace TISFAT_Zero
 			GL.End();
 		}
 
-		#endregion
+		#endregion Graphics
 
 		#region Figures
 
@@ -449,9 +441,11 @@ namespace TISFAT_Zero
 
 			fig.isActiveFig = true;
 		}
-		#endregion
+
+		#endregion Figures
 
 		#region Right Click Menu
+
 		private void flipArmsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (activeFigure.figureType == 1)
@@ -464,29 +458,30 @@ namespace TISFAT_Zero
 			if (activeFigure.figureType == 1)
 				((StickFigure)activeFigure).flipLegs();
 			Refresh();
-		} 
-		#endregion
+		}
 
-        private void Canvas_Load(object sender, EventArgs e)
-        {
-            glGraphics = GL_GRAPHICS;
-            glGraphics.MakeCurrent();
+		#endregion Right Click Menu
 
-            //GLControl's load event is never fired, so we have to piggyback off the canvas's load function instead
-            GLLoaded = true;
+		private void Canvas_Load(object sender, EventArgs e)
+		{
+			glGraphics = GL_GRAPHICS;
+			glGraphics.MakeCurrent();
 
-            //If you are going to be resizing the canvas later or changing the background color,
-            //make sure to re-do these so the GLControl will work properly
-            GL_HEIGHT = GL_GRAPHICS.Height;
-            GL_WIDTH = GL_GRAPHICS.Width;
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadIdentity();
-            GL.Viewport(0, 0, GL_WIDTH, GL_HEIGHT);
-            GL.Ortho(0, GL_WIDTH, 0, GL_HEIGHT, -1, 1);
-            GL.ClearColor(Color.White);
+			//GLControl's load event is never fired, so we have to piggyback off the canvas's load function instead
+			GLLoaded = true;
 
-            //Since we are 2d, we don't need the depth test
-            GL.Disable(EnableCap.DepthTest);
+			//If you are going to be resizing the canvas later or changing the background color,
+			//make sure to re-do these so the GLControl will work properly
+			GL_HEIGHT = GL_GRAPHICS.Height;
+			GL_WIDTH = GL_GRAPHICS.Width;
+			GL.MatrixMode(MatrixMode.Projection);
+			GL.LoadIdentity();
+			GL.Viewport(0, 0, GL_WIDTH, GL_HEIGHT);
+			GL.Ortho(0, GL_WIDTH, 0, GL_HEIGHT, -1, 1);
+			GL.ClearColor(Color.White);
+
+			//Since we are 2d, we don't need the depth test
+			GL.Disable(EnableCap.DepthTest);
 
 			/*
             //We need to generate a texture here so we can write what we're drawing to the FBO, and then we can sample it with a shader
@@ -583,7 +578,7 @@ namespace TISFAT_Zero
             //lights.Add(new Point(100, 250));
             lights.Add(new Point(200, 200));
             //lights.Add(new Point(300, 250)); */
-        }
+		}
 
 		public void setBackgroundColor(Color c)
 		{
@@ -591,8 +586,8 @@ namespace TISFAT_Zero
 			GL_GRAPHICS.Invalidate();
 		}
 
-        private void createOccluderMap(Point pos)
-        {
+		private void createOccluderMap(Point pos)
+		{
 			//Dunno what to do with this
 			/*
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, OccluderFBO);
@@ -620,10 +615,10 @@ namespace TISFAT_Zero
 
             GL.ClearColor(Color.DarkGray);
 			 */
-        }
+		}
 
-        private void DrawShadows(Point pos)
-        {
+		private void DrawShadows(Point pos)
+		{
 			/* Shaders stuff needs to be redone anyways...
             drawGraphics(5, Color.FromArgb(255, 0, 255, 255), new Point(pos.X - 3, pos.Y - 3), 0, 0, new Point(pos.X + 3, pos.Y + 3));
 
@@ -660,30 +655,30 @@ namespace TISFAT_Zero
             drawGraphics(6, Color.FromArgb(255, 255, 255, 255), new Point(pos.X - (int)lightSize / 2, (pos.Y - (int)lightSize / 2)), (int)lightSize, (int)lightSize, pos, (int)ShadowsTexture);
 
             GL.UseProgram(0); */
-        }
+		}
 
 		private void GL_GRAPHICS_OnRender(object sender, EventArgs e)
 		{
-			if(!GLLoaded)
+			if (!GLLoaded)
 				return;
 
 			//Todo: make a better rendering loop
 			GL_GRAPHICS.Invalidate();
 		}
 
-        private void GL_GRAPHICS_Paint(object sender, PaintEventArgs e)
-        {
-            if (!GLLoaded)
-                return;
+		private void GL_GRAPHICS_Paint(object sender, PaintEventArgs e)
+		{
+			if (!GLLoaded)
+				return;
 
 			Timeline.doRender();
-        }
+		}
 
-        //"shader" being a shader inside the /shaders folder
-        private string readShader(string shader)
-        {
-            return File.ReadAllText(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetFullPath(shader)))) + "/Shaders/" + shader);
-        }
+		//"shader" being a shader inside the /shaders folder
+		private string readShader(string shader)
+		{
+			return File.ReadAllText(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetFullPath(shader)))) + "/Shaders/" + shader);
+		}
 
 		public void recieveStickFigure(StickCustom figure)
 		{

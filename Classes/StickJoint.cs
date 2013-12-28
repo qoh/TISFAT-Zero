@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using OpenTK;
 
 namespace TISFAT_Zero
 {
-	class StickJoint
+	internal class StickJoint
 	{
 		#region Variables
 
@@ -40,7 +36,7 @@ namespace TISFAT_Zero
 		public Color handleColor;
 		public Color defaultHandleColor;
 
-		#endregion
+		#endregion Variables
 
 		#region Constructors
 
@@ -213,6 +209,6 @@ namespace TISFAT_Zero
 			//this.parentFigure.onJointMoved();
 		}
 
-		#endregion
+		#endregion Positioning
 	}
 }

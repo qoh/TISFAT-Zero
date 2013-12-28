@@ -1,11 +1,11 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using System.Linq;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
 using System.ComponentModel;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace TISFAT_Zero
 {
@@ -19,7 +19,7 @@ namespace TISFAT_Zero
 
 		private double Scrollbar_eX = 0.0, Scrollbar_eY = 0.0;
 		public int pxOffsetX, pxOffsetY;
-		int scrollAreaY, scrollAreaX, maxFrames, maxLayers;
+		private int scrollAreaY, scrollAreaX, maxFrames, maxLayers;
 
 		private Rectangle ScrollX = new Rectangle(), ScrollY = new Rectangle();
 		private Rectangle StubX = new Rectangle(), StubY = new Rectangle();
@@ -30,6 +30,7 @@ namespace TISFAT_Zero
 
 		//Yeah, there are a lot of booleans. I'm far too lazy to make this into a bitmask.
 		public bool isScrolling, isScrollingY;
+
 		public bool mouseDown;
 		private bool GLLoaded = false, forceRefresh = false;
 		private bool cancelTimerOnMouseUp = false, cancelevent = false;
@@ -48,6 +49,7 @@ namespace TISFAT_Zero
 
 		//If this value is -1 that means the timeline is selected
 		public static int selectedLayer_Ind = 0, selectedFrame_Ind = 0;
+
 		private byte selectedFrame_Type = 0;
 		private byte selectedFrame_RType = 0; //0: plain  1: keyframe  2: tween
 
@@ -57,6 +59,7 @@ namespace TISFAT_Zero
 
 		//We also use a lot of bitmaps.. ^ ^'
 		private T0Bitmap[] zerotonine = new T0Bitmap[10];
+
 		private static List<T0Bitmap> layerNames = new List<T0Bitmap>();
 		private T0Bitmap[] stubs = new T0Bitmap[12];
 		private T0Bitmap TIMELINE;
@@ -68,7 +71,8 @@ namespace TISFAT_Zero
 
 		//For use with the timer
 		public delegate void timerDel();
-		timerDel timerDelegate;
+
+		private timerDel timerDelegate;
 
 		#endregion Buttload of variables
 
@@ -122,6 +126,8 @@ namespace TISFAT_Zero
 
 		public void Timeline_Resize(object sender, EventArgs e)
 		{
+			glgraphics.MakeCurrent();
+
 			if (!GLLoaded)
 				return;
 
@@ -321,7 +327,6 @@ namespace TISFAT_Zero
 						{
 							GL.Color3(Color.White);
 
-							
 							GL.Begin(PrimitiveType.Quads);
 
 							GL.Vertex2(renderingpos1, p2); GL.Vertex2(renderingpos1, p2 + 15);
@@ -371,7 +376,7 @@ namespace TISFAT_Zero
 					drawFrame(renderingpos2, p2, Color.FromArgb(200, 190, 245));
 
 					framesetpos++;
-					if(framesetpos < current.Framesets.Count)
+					if (framesetpos < current.Framesets.Count)
 						fs = current[framesetpos];
 
 					framepos = 0;
@@ -558,7 +563,6 @@ namespace TISFAT_Zero
 			newLayer.insertNewKeyFrameAt(7);
 
 			newLayer.insertNewFramesetAt(30);
-
 
 			//Add the layer to the list
 			Layers.Add(newLayer);
@@ -812,6 +816,7 @@ namespace TISFAT_Zero
 				else
 					selectedScrollItems = 0;
 			}
+
 			#endregion Clicker hilighting
 
 			#region Scrollbar updating
@@ -894,7 +899,7 @@ namespace TISFAT_Zero
 					{
 						//Set selected layer index and frame index
 						selectedLayer_Ind = (pxOffsetY + (y - 16)) / 16; selectedFrame_Ind = (pxOffsetX + (x - 80)) / 9;
-						
+
 						forceRefresh = true;
 
 						if (selectedLayer_Ind >= Layers.Count)
@@ -1101,7 +1106,6 @@ namespace TISFAT_Zero
 
 			TimelineTimer.Interval = 300;
 			TimelineTimer.Start();
-
 		}
 
 		public static int clamp(int num, int min, int max)
@@ -1135,7 +1139,6 @@ namespace TISFAT_Zero
 				int space = selectedLayer.getEmptyFramesCount(selectedFrame_Ind);
 				items[3].Enabled = space == -2 || space >= 2;
 				items[4].Enabled = selectedFrame_RType != 0;
-
 			}
 		}
 
@@ -1150,37 +1153,47 @@ namespace TISFAT_Zero
 				case "0;insertpose":
 					//Insert Keyframe with Current Pose goes here.
 					break;
+
 				case "0;remove":
 					selectedFrameset.RemoveKeyFrameAt(selectedFrame_Ind); break;
 				case "0;insertset":
 					selectedLayer.insertNewFramesetAt(selectedFrame_Ind);
 					break;
+
 				case "0;removeset":
 					selectedLayer.removeFramesetAt(selectedFrame_Ind); break;
 				case "0;moveall":
 					//Moving all framesets
 					break;
+
 				case "0;poseprevious":
 					//Set to previous pose
 					break;
+
 				case "0;posenext":
 					//Set to next pose
 					break;
+
 				case "01;deletelayer":
 					Layers.Remove(selectedLayer);
 					break;
+
 				case "01;rename":
 					//Layer renaming
 					break;
+
 				case "01;moveup":
 					//Move layer up
 					break;
+
 				case "01;movedown":
 					//Move layer down
 					break;
+
 				case "013;onion":
 					//Onion skinning
 					break;
+
 				case "3;goto":
 					//goto frame
 					break;

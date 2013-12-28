@@ -1,20 +1,17 @@
 using System;
 using System.Collections.Generic;
-using System.Collections;
-using System.Reflection;
-using System.Text;
 using System.Linq;
-using TISFAT_Zero.Properties;
-using OpenTK.Graphics.OpenGL;
+using System.Reflection;
 
 namespace TISFAT_Zero
 {
-	abstract class Layer
+	internal abstract class Layer
 	{
 		#region Properties
 
 		//This list of framesets are always sorted, which makes searching through them much faster and easier to manage in general.
 		public List<Frameset> Framesets = new List<Frameset>();
+
 		public string LayerName;
 		protected ushort layerType;
 		public bool layerIsSelected = false;
@@ -56,7 +53,8 @@ namespace TISFAT_Zero
 		/// <param name="layerType">The type of keyframes the layer will contain. Must be a type derived from the KeyFrame type.</param>
 		/// <param name="type">The type number associated with the layerType parameter.</param>
 		/// <param name="startingOffset">Optionally offset the position of all the frames by this amount.</param>
-		public Layer(string layerName, Type frameType, ushort type, int startingOffset = 0) : this(layerName, new Frameset(frameType, startingOffset), type, startingOffset)
+		public Layer(string layerName, Type frameType, ushort type, int startingOffset = 0)
+			: this(layerName, new Frameset(frameType, startingOffset), type, startingOffset)
 		{ }
 
 		/// <summary>
@@ -152,7 +150,7 @@ namespace TISFAT_Zero
 		/// <exception cref="System.ArgumentOutOfRangeException">Position argument must be >=0</exception>
 		public Frameset GetFramesetAt(int position)
 		{
-			if(position < 0)
+			if (position < 0)
 				throw new ArgumentOutOfRangeException("position", "Argument must be >=0");
 
 			int result = BinarySearch(position);
@@ -178,7 +176,6 @@ namespace TISFAT_Zero
 
 			return Framesets[framePosition[0]][framePosition[1]];
 		}
-
 
 		/// <summary>
 		/// Gets the number of empty frames starting from the given position to the position of the next frameset.
@@ -330,7 +327,7 @@ namespace TISFAT_Zero
 		/// <returns>A boolean indicating whether or not the operation was a success.</returns>
 		public bool removeFrameset(Frameset item)
 		{
-			if(item == null)
+			if (item == null)
 				return false;
 
 			int index = Framesets.IndexOf(item);
@@ -407,16 +404,15 @@ namespace TISFAT_Zero
 		/// <exception cref="System.ArgumentOutOfRangeException">Position argument must be >= 0</exception>
 		public bool moveFramesetTo(Frameset item, int position)
 		{
-			if(item == null)
+			if (item == null)
 				throw new ArgumentNullException("item");
 
-			if(position < 0)
+			if (position < 0)
 				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
 
 			int index = BinarySearch(item.StartingPosition);
-			
 
-			if(index < 0)
+			if (index < 0)
 				return false;
 
 			Framesets.RemoveAt(index);
@@ -450,7 +446,7 @@ namespace TISFAT_Zero
 			int[] result = BinarySearchDeep(position);
 
 			//This equates to "If there's no frameset at the given position or if there's a keyframe at the given spot, return false"
-			if(result[0] < 0 || result[1] >= 0)
+			if (result[0] < 0 || result[1] >= 0)
 				return false;
 
 			KeyFrame item = (KeyFrame)(getFrameType().GetConstructor(new Type[0]).Invoke(new object[0]));
@@ -469,10 +465,10 @@ namespace TISFAT_Zero
 			string result = "Layer Name: " + this.LayerName + "\tFrameset Count: " + this.Framesets.Count;
 
 			int max = this.Framesets.Count;
-			for(int a = 0; a < max; a++)
+			for (int a = 0; a < max; a++)
 			{
 				Frameset s = this.Framesets[a];
-				result += "\nFrameset #" + (a+1) + ":\tS:" + s.StartingPosition + "\tE:" + s.EndingPosition + "\tL:" + (s.EndingPosition - s.StartingPosition);
+				result += "\nFrameset #" + (a + 1) + ":\tS:" + s.StartingPosition + "\tE:" + s.EndingPosition + "\tL:" + (s.EndingPosition - s.StartingPosition);
 				result += s.ToString();
 			}
 
@@ -557,7 +553,7 @@ namespace TISFAT_Zero
 				LayerFigure.drawFig = true;
 				LayerFigure.drawHandles = false;
 
-				KeyFrame S = s[-result-1], E = s[-result];
+				KeyFrame S = s[-result - 1], E = s[-result];
 
 				float percent = (float)(position - S.Position) / (E.Position - S.Position);
 
@@ -577,7 +573,7 @@ namespace TISFAT_Zero
 		}
 	}
 
-	class StickLayer : Layer
+	internal class StickLayer : Layer
 	{
 		new public static Type FrameType
 		{
@@ -589,11 +585,12 @@ namespace TISFAT_Zero
 		/// </summary>
 		/// <param name="layerName">The name to be given to the layer.</param>
 		/// <param name="startingOffset">The starting position of the first frameset. Defaults to 0.</param>
-		public StickLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(StickFrame), 0, startingOffset)
+		public StickLayer(string layerName, int startingOffset = 0)
+			: base(layerName, typeof(StickFrame), 0, startingOffset)
 		{ }
 	}
 
-	class LineLayer : Layer
+	internal class LineLayer : Layer
 	{
 		new public static Type FrameType
 		{
@@ -605,11 +602,12 @@ namespace TISFAT_Zero
 		/// </summary>
 		/// <param name="layerName">The name to be given to the layer.</param>
 		/// <param name="startingOffset">The starting position of the first frameset. Defaults to 0.</param>
-		public LineLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(LineFrame), 1, startingOffset)
+		public LineLayer(string layerName, int startingOffset = 0)
+			: base(layerName, typeof(LineFrame), 1, startingOffset)
 		{ }
 	}
 
-	class RectLayer : Layer
+	internal class RectLayer : Layer
 	{
 		new public static Type FrameType
 		{
@@ -621,11 +619,12 @@ namespace TISFAT_Zero
 		/// </summary>
 		/// <param name="layerName">The name to be given to the layer.</param>
 		/// <param name="startingOffset">The starting position of the first frameset. Defaults to 0.</param>
-		public RectLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(RectFrame), 2, startingOffset)
+		public RectLayer(string layerName, int startingOffset = 0)
+			: base(layerName, typeof(RectFrame), 2, startingOffset)
 		{ }
 	}
 
-	class CustomLayer : Layer
+	internal class CustomLayer : Layer
 	{
 		new public static Type FrameType
 		{
@@ -637,11 +636,12 @@ namespace TISFAT_Zero
 		/// </summary>
 		/// <param name="layerName">The name to be given to the layer.</param>
 		/// <param name="startingOffset">The starting position of the first frameset. Defaults to 0.</param>
-		public CustomLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(CustomFrame), 3, startingOffset)
+		public CustomLayer(string layerName, int startingOffset = 0)
+			: base(layerName, typeof(CustomFrame), 3, startingOffset)
 		{ }
 	}
 
-	class BitmapLayer : Layer
+	internal class BitmapLayer : Layer
 	{
 		new public static Type FrameType
 		{
@@ -653,11 +653,12 @@ namespace TISFAT_Zero
 		/// </summary>
 		/// <param name="layerName">The name to be given to the layer.</param>
 		/// <param name="startingOffset">The starting position of the first frameset. Defaults to 0.</param>
-		public BitmapLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(BitmapFrame), 4, startingOffset)
+		public BitmapLayer(string layerName, int startingOffset = 0)
+			: base(layerName, typeof(BitmapFrame), 4, startingOffset)
 		{ }
 	}
 
-	class TextLayer : Layer
+	internal class TextLayer : Layer
 	{
 		new public static Type FrameType
 		{
@@ -669,7 +670,8 @@ namespace TISFAT_Zero
 		/// </summary>
 		/// <param name="layerName">The name to be given to the layer.</param>
 		/// <param name="startingOffset">The starting position of the first frameset. Defaults to 0.</param>
-		public TextLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(BitmapFrame), 5, startingOffset)
+		public TextLayer(string layerName, int startingOffset = 0)
+			: base(layerName, typeof(BitmapFrame), 5, startingOffset)
 		{ }
 	}
 }

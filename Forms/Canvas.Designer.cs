@@ -49,7 +49,7 @@ namespace TISFAT_Zero
 			this.flipVerticallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.flipLegsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.flipArmsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.GL_GRAPHICS = new OpenTK.GLControl(new GraphicsMode(32, 0, 1, 16), 3, 0, GraphicsContextFlags.Default);
+			this.GL_GRAPHICS = new OpenTK.GLControl(new GraphicsMode(32, 0, 1, maxaa), 4, 4, GraphicsContextFlags.Default);
 			this.contextMenuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 

@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using OpenTK.Graphics.OpenGL;
+using System;
 using System.Collections;
-using System.Linq;
-using System.Text;
+using System.Collections.Generic;
 using System.Drawing;
-using OpenTK.Graphics.OpenGL;
+using System.Linq;
 
 namespace TISFAT_Zero
 {
-	abstract class StickObject : IEnumerable<StickJoint>, IGLDrawable
+	internal abstract class StickObject : IEnumerable<StickJoint>, IGLDrawable
 	{
-
 		#region Properties
 
 		public List<StickJoint> FigureJoints;
@@ -110,9 +108,10 @@ namespace TISFAT_Zero
 				GL.StencilOp(StencilOp.Keep, StencilOp.Keep, StencilOp.Incr);
 			}
 
-			//If the figure is of the rectangle type and it's filled, then draw in the fill. (Thank goodness for short-circuiting!)
-			if (figureType == 3 && ((StickRect)this).isFilled)
+			if (figureType == 3)
+			{
 				Canvas.drawGraphics(5, figColor, FigureJoints[0].location, FigureJoints[0].thickness, FigureJoints[0].thickness, FigureJoints[2].location);
+			}
 
 			foreach (StickJoint i in FigureJoints)
 			{
@@ -327,7 +326,7 @@ namespace TISFAT_Zero
 		#endregion Methods
 	}
 
-	class StickFigure : StickObject
+	internal class StickFigure : StickObject
 	{
 		#region Variables
 
@@ -359,9 +358,10 @@ namespace TISFAT_Zero
 			get { return new int[] { 1, -1, 1, 2, 1, 4, 1, 6, 7, 6, 9, 0 }; }
 		}
 
-		#endregion
+		#endregion Variables
 
-		public StickFigure(bool setAsActive = true) : base(setAsActive)
+		public StickFigure(bool setAsActive = true)
+			: base(setAsActive)
 		{
 			figureType = 1;
 		}
@@ -395,10 +395,9 @@ namespace TISFAT_Zero
 		}
 
 		#endregion Custom Methods
-
 	}
 
-	class StickLine : StickObject
+	internal class StickLine : StickObject
 	{
 		#region Properties
 
@@ -421,7 +420,8 @@ namespace TISFAT_Zero
 
 		#endregion Properties
 
-		public StickLine(bool setAsActive = true) : base(setAsActive)
+		public StickLine(bool setAsActive = true)
+			: base(setAsActive)
 		{
 			figureType = 2;
 		}
@@ -437,7 +437,7 @@ namespace TISFAT_Zero
 		#endregion Custom Methods
 	}
 
-	class StickRect : StickObject
+	internal class StickRect : StickObject
 	{
 		#region Properties
 
@@ -462,13 +462,21 @@ namespace TISFAT_Zero
 			get { return new int[] { -1, 0, 1, 2 }; }
 		}
 
+		public Color fillColor
+		{
+			get { return figColor; }
+			set { figColor = value; }
+		}
+
 		#endregion Properties
 
-		public StickRect(bool setAsActive = true) : base(setAsActive)
+		public StickRect(bool setAsActive = true)
+			: base(setAsActive)
 		{
 			figureType = 3;
 
 			isFilled = true;
+			fillColor = Color.Black;
 		}
 
 		#region Custom Methods
@@ -500,9 +508,10 @@ namespace TISFAT_Zero
 		#endregion Custom Methods
 	}
 
-	class StickCustom : StickObject
+	internal class StickCustom : StickObject
 	{
-		public StickCustom(bool setAsActive = true) : base(setAsActive)
+		public StickCustom(bool setAsActive = true)
+			: base(setAsActive)
 		{
 			figureType = 4;
 		}

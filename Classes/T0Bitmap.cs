@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using OpenTK.Graphics.OpenGL;
 using System.Drawing;
 using System.Drawing.Imaging;
-using OpenTK.Graphics.OpenGL;
 
 namespace TISFAT_Zero
 {
-	struct T0Bitmap : IGLDrawable
+	internal struct T0Bitmap : IGLDrawable
 	{
 		public int texID;
 		public Size texSize;

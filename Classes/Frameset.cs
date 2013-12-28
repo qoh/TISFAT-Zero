@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections;
-using System.Linq;
-using System.Text;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace TISFAT_Zero
 {
-	class Frameset : IEnumerable<KeyFrame>
+	internal class Frameset : IEnumerable<KeyFrame>
 	{
 		public List<KeyFrame> KeyFrames = new List<KeyFrame>();
 		private int startPos, endPos, frameCount = 2;
@@ -49,7 +47,7 @@ namespace TISFAT_Zero
 			else if (extent < 2)
 				throw new ArgumentOutOfRangeException("extent", "Argument must be >= 2");
 
-			ConstructorInfo KFConstructor = SetType.GetConstructor(new Type[] { typeof(int)});
+			ConstructorInfo KFConstructor = SetType.GetConstructor(new Type[] { typeof(int) });
 
 			startPos = startingPosition;
 			endPos = startPos + extent;
@@ -63,14 +61,16 @@ namespace TISFAT_Zero
 		/// </summary>
 		/// <param name="First">The first keyframe in the set.</param>
 		/// <param name="Last">The last keyframe in the set.</param>
-		public Frameset(KeyFrame First, KeyFrame Last) : this(new KeyFrame[] { First, Last })
+		public Frameset(KeyFrame First, KeyFrame Last)
+			: this(new KeyFrame[] { First, Last })
 		{ }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Frameset" /> class from a set of keyframes sorted by timeline position.
 		/// </summary>
 		/// <param name="Frames">The set of frames to use in the frameset.</param>
-		public Frameset(List<KeyFrame> Frames) : this(Frames.ToArray())
+		public Frameset(List<KeyFrame> Frames)
+			: this(Frames.ToArray())
 		{ }
 
 		/// <summary>
@@ -132,7 +132,7 @@ namespace TISFAT_Zero
 		public KeyFrame this[int index]
 		{
 			get { return KeyFrames[index]; }
-			
+
 			set { KeyFrames[index] = value; }
 		}
 
@@ -145,16 +145,16 @@ namespace TISFAT_Zero
 		/// <exception cref="System.ArgumentOutOfRangeException">Item's Position must be >= 0</exception>
 		public bool InsertKeyFrame(KeyFrame item, bool copyBeforeInsert = false)
 		{
-			if(item.Position < 0)
+			if (item.Position < 0)
 				throw new ArgumentOutOfRangeException("Item", "Item's Position must be >= 0");
 
 			int insertPosition = -BinarySearch(item.Position);
 
-			if(copyBeforeInsert)
+			if (copyBeforeInsert)
 				item = item.createClone();
 
-			//If the variable is below 0 that means that there's a keyframe with that position already in the frameset. 
-			if(insertPosition < 0)
+			//If the variable is below 0 that means that there's a keyframe with that position already in the frameset.
+			if (insertPosition < 0)
 				return false;
 
 			KeyFrames.Insert(insertPosition, item);
@@ -162,9 +162,9 @@ namespace TISFAT_Zero
 
 			int Position = item.Position;
 
-			if(Position < startPos)
+			if (Position < startPos)
 				startPos = Position;
-			else if(Position > endPos)
+			else if (Position > endPos)
 				endPos = Position;
 
 			return true;
@@ -183,7 +183,7 @@ namespace TISFAT_Zero
 			if (position < 0)
 				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
 
-			if(copyBeforeInsert)
+			if (copyBeforeInsert)
 				item = item.createClone();
 
 			item.Position = position;
@@ -199,12 +199,12 @@ namespace TISFAT_Zero
 		/// <exception cref="System.ArgumentOutOfRangeException">Position argument must be >= 0</exception>
 		public bool RemoveKeyFrameAt(int position)
 		{
-			if(position < 0)
+			if (position < 0)
 				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
 
 			int Index = BinarySearch(position);
 
-			if(Index >= 0)
+			if (Index >= 0)
 			{
 				KeyFrames.RemoveAt(Index);
 				frameCount--;
@@ -221,24 +221,24 @@ namespace TISFAT_Zero
 		/// <param name="index">The index at which to remove.</param>
 		/// <returns>A boolean indicating whether or not the operation was a success.</returns>
 		/// <exception cref="System.ArgumentOutOfRangeException">Index argument must be >= 0</exception>
-		public bool RemoveKeyFrame (int index)
+		public bool RemoveKeyFrame(int index)
 		{
 			if (index < startPos)
 			{
 				if (index < 0)
-					throw new ArgumentOutOfRangeException ("Index", "Argument must be >= 0");
+					throw new ArgumentOutOfRangeException("Index", "Argument must be >= 0");
 
 				return false;
 			}
 			else if (index > endPos || frameCount < 2)
 				return false;
 
-			KeyFrame x = KeyFrames [index];
+			KeyFrame x = KeyFrames[index];
 
 			if (x.Position == startPos)
-				startPos = KeyFrames [index + 1].Position;
+				startPos = KeyFrames[index + 1].Position;
 			else if (x.Position == endPos)
-				endPos = KeyFrames [index - 1].Position;
+				endPos = KeyFrames[index - 1].Position;
 
 			KeyFrames.RemoveAt(index);
 			frameCount--;
@@ -267,7 +267,7 @@ namespace TISFAT_Zero
 			if (position < 0)
 				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
 
-			if(position > endPos)
+			if (position > endPos)
 				return -frameCount;
 
 			int bottom = 0;
@@ -323,7 +323,7 @@ namespace TISFAT_Zero
 		/// <exception cref="System.ArgumentOutOfRangeException">Position argument must be >= 0</exception>
 		public bool MoveKeyFrameTo(KeyFrame item, int position)
 		{
-			if(position < 0)
+			if (position < 0)
 				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
 
 			try { return MoveKeyFrameTo(KeyFrames.IndexOf(item), position); }
@@ -345,7 +345,7 @@ namespace TISFAT_Zero
 		{
 			if (position < 0)
 				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
-			if(index < 0 || index > frameCount)
+			if (index < 0 || index > frameCount)
 				throw new ArgumentOutOfRangeException("index", "Argument must be >= 0 and < " + frameCount);
 
 			if (position == startPos)
@@ -353,7 +353,7 @@ namespace TISFAT_Zero
 
 			int insertPosition = -BinarySearch(position);
 
-			if(insertPosition < 0)
+			if (insertPosition < 0)
 				return false;
 
 			if (insertPosition > index)
@@ -361,7 +361,6 @@ namespace TISFAT_Zero
 
 			KeyFrame item = KeyFrames[index];
 			item.Position = position;
-
 
 			KeyFrames.RemoveAt(index);
 			KeyFrames.Insert(Timeline.clamp(insertPosition, 0, KeyFrames.Count), item);
@@ -428,10 +427,10 @@ namespace TISFAT_Zero
 			return GetEnumerator();
 		}
 
-		public override string ToString ()
+		public override string ToString()
 		{
 			string x = "";
-			foreach(KeyFrame f in KeyFrames)
+			foreach (KeyFrame f in KeyFrames)
 				x += "\n" + f.Position;
 			return x;
 		}

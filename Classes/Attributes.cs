@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections;
-using System.Linq;
-using System.Text;
-using System.Drawing;
 
 namespace TISFAT_Zero
 {
-	class Attributes
+	internal class Attributes
 	{
 		private List<dynamic> attributes;
 		private List<string> attributeNames;
