@@ -148,6 +148,7 @@ namespace TISFAT_ZERO
 		private void Toolbox_Load(object sender, EventArgs e)
 		{
 			Size = new Size(179, 375);
+			trv_addView.ExpandAll();
 		}
 
 		private void btn_addStick_Click(object sender, EventArgs e)

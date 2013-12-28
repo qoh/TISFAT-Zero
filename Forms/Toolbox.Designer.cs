@@ -30,6 +30,18 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Toolbox));
+			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Default Figure");
+			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Custom Figure..");
+			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Stick Figures", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2});
+			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Line");
+			System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Rectangle");
+			System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Shapes", new System.Windows.Forms.TreeNode[] {
+            treeNode4,
+            treeNode5});
+			System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Light Source");
+			System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Text");
 			this.pnl_mainPanel = new System.Windows.Forms.Panel();
 			this.pnl_Properties = new System.Windows.Forms.Panel();
 			this.pnl_Properties_Rect = new System.Windows.Forms.Panel();
@@ -59,14 +71,6 @@
 			this.pic_pnlLine_color = new System.Windows.Forms.PictureBox();
 			this.num_pnlLine_thickness = new System.Windows.Forms.NumericUpDown();
 			this.lbl_pnlLine_thickness = new System.Windows.Forms.Label();
-			this.pnl_addTools = new System.Windows.Forms.Panel();
-			this.btn_cancelButton = new System.Windows.Forms.Button();
-			this.btn_addCircle = new System.Windows.Forms.Button();
-			this.btn_addPoly = new System.Windows.Forms.Button();
-			this.btn_addRectangle = new System.Windows.Forms.Button();
-			this.btn_addLine = new System.Windows.Forms.Button();
-			this.btn_addCustomStick = new System.Windows.Forms.Button();
-			this.btn_addStick = new System.Windows.Forms.Button();
 			this.pnl_mainTools = new System.Windows.Forms.Panel();
 			this.btn_BGButton = new System.Windows.Forms.Button();
 			this.btn_poserButton = new System.Windows.Forms.Button();
@@ -91,8 +95,17 @@
 			this.pnl_Drawing = new System.Windows.Forms.Panel();
 			this.pnl_paintPanel = new System.Windows.Forms.Panel();
 			this.btn_cancelButtonDraw = new System.Windows.Forms.Button();
+			this.pnl_addTools = new System.Windows.Forms.Panel();
+			this.btn_cancelButton = new System.Windows.Forms.Button();
+			this.btn_addCircle = new System.Windows.Forms.Button();
+			this.btn_addPoly = new System.Windows.Forms.Button();
+			this.btn_addRectangle = new System.Windows.Forms.Button();
+			this.btn_addLine = new System.Windows.Forms.Button();
+			this.btn_addCustomStick = new System.Windows.Forms.Button();
+			this.btn_addStick = new System.Windows.Forms.Button();
 			this.animTimer = new System.Windows.Forms.Timer(this.components);
 			this.dlg_Color = new System.Windows.Forms.ColorDialog();
+			this.trv_addView = new System.Windows.Forms.TreeView();
 			this.pnl_mainPanel.SuspendLayout();
 			this.pnl_Properties.SuspendLayout();
 			this.pnl_Properties_Rect.SuspendLayout();
@@ -110,7 +123,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.tkb_pnlLine_Transparency)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pic_pnlLine_color)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_pnlLine_thickness)).BeginInit();
-			this.pnl_addTools.SuspendLayout();
 			this.pnl_mainTools.SuspendLayout();
 			this.pnl_ctrlPanel.SuspendLayout();
 			this.tabControl1.SuspendLayout();
@@ -118,16 +130,23 @@
 			((System.ComponentModel.ISupportInitialize)(this.maskedTextBox1)).BeginInit();
 			this.tabPage2.SuspendLayout();
 			this.pnl_Drawing.SuspendLayout();
+			this.pnl_addTools.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// pnl_mainPanel
 			// 
-			this.pnl_mainPanel.Controls.Add(this.pnl_Properties);
-			this.pnl_mainPanel.Controls.Add(this.pnl_mainTools);
-			this.pnl_mainPanel.Controls.Add(this.pnl_ctrlPanel);
-			this.pnl_mainPanel.Controls.Add(this.lbl_selectionDummy);
-			this.pnl_mainPanel.Controls.Add(this.pnl_Drawing);
 			this.pnl_mainPanel.Controls.Add(this.pnl_addTools);
+			this.pnl_mainPanel.Controls.Add(this.btn_addCircle);
+			this.pnl_mainPanel.Controls.Add(this.pnl_Properties);
+			this.pnl_mainPanel.Controls.Add(this.btn_addPoly);
+			this.pnl_mainPanel.Controls.Add(this.pnl_mainTools);
+			this.pnl_mainPanel.Controls.Add(this.btn_addRectangle);
+			this.pnl_mainPanel.Controls.Add(this.pnl_ctrlPanel);
+			this.pnl_mainPanel.Controls.Add(this.btn_addLine);
+			this.pnl_mainPanel.Controls.Add(this.lbl_selectionDummy);
+			this.pnl_mainPanel.Controls.Add(this.btn_addCustomStick);
+			this.pnl_mainPanel.Controls.Add(this.pnl_Drawing);
+			this.pnl_mainPanel.Controls.Add(this.btn_addStick);
 			this.pnl_mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnl_mainPanel.Location = new System.Drawing.Point(0, 0);
 			this.pnl_mainPanel.Margin = new System.Windows.Forms.Padding(0);
@@ -171,10 +190,10 @@
 			// 
 			this.num_rectOLAlpha.Location = new System.Drawing.Point(83, 88);
 			this.num_rectOLAlpha.Maximum = new decimal(new int[] {
-			255,
-			0,
-			0,
-			0});
+            255,
+            0,
+            0,
+            0});
 			this.num_rectOLAlpha.Name = "num_rectOLAlpha";
 			this.num_rectOLAlpha.Size = new System.Drawing.Size(45, 20);
 			this.num_rectOLAlpha.TabIndex = 35;
@@ -184,10 +203,10 @@
 			// 
 			this.num_rectFillAlpha.Location = new System.Drawing.Point(22, 88);
 			this.num_rectFillAlpha.Maximum = new decimal(new int[] {
-			255,
-			0,
-			0,
-			0});
+            255,
+            0,
+            0,
+            0});
 			this.num_rectFillAlpha.Name = "num_rectFillAlpha";
 			this.num_rectFillAlpha.Size = new System.Drawing.Size(45, 20);
 			this.num_rectFillAlpha.TabIndex = 34;
@@ -197,10 +216,10 @@
 			// 
 			this.num_rectOLThickness.Location = new System.Drawing.Point(51, 128);
 			this.num_rectOLThickness.Maximum = new decimal(new int[] {
-			1000,
-			0,
-			0,
-			0});
+            1000,
+            0,
+            0,
+            0});
 			this.num_rectOLThickness.Name = "num_rectOLThickness";
 			this.num_rectOLThickness.Size = new System.Drawing.Size(45, 20);
 			this.num_rectOLThickness.TabIndex = 33;
@@ -320,10 +339,10 @@
 			// 
 			this.num_alpha.Location = new System.Drawing.Point(53, 113);
 			this.num_alpha.Maximum = new decimal(new int[] {
-			255,
-			0,
-			0,
-			0});
+            255,
+            0,
+            0,
+            0});
 			this.num_alpha.Name = "num_alpha";
 			this.num_alpha.Size = new System.Drawing.Size(45, 20);
 			this.num_alpha.TabIndex = 3;
@@ -334,7 +353,7 @@
 			this.tkb_alpha.Location = new System.Drawing.Point(23, 76);
 			this.tkb_alpha.Maximum = 255;
 			this.tkb_alpha.Name = "tkb_alpha";
-			this.tkb_alpha.Size = new System.Drawing.Size(104, 26);
+			this.tkb_alpha.Size = new System.Drawing.Size(104, 45);
 			this.tkb_alpha.TabIndex = 2;
 			this.tkb_alpha.Scroll += new System.EventHandler(this.tkb_alpha_Scroll);
 			// 
@@ -385,10 +404,10 @@
 			// 
 			this.num_pnlLine_Transparency.Location = new System.Drawing.Point(53, 121);
 			this.num_pnlLine_Transparency.Maximum = new decimal(new int[] {
-			255,
-			0,
-			0,
-			0});
+            255,
+            0,
+            0,
+            0});
 			this.num_pnlLine_Transparency.Name = "num_pnlLine_Transparency";
 			this.num_pnlLine_Transparency.Size = new System.Drawing.Size(45, 20);
 			this.num_pnlLine_Transparency.TabIndex = 3;
@@ -399,7 +418,7 @@
 			this.tkb_pnlLine_Transparency.Location = new System.Drawing.Point(23, 87);
 			this.tkb_pnlLine_Transparency.Maximum = 255;
 			this.tkb_pnlLine_Transparency.Name = "tkb_pnlLine_Transparency";
-			this.tkb_pnlLine_Transparency.Size = new System.Drawing.Size(104, 26);
+			this.tkb_pnlLine_Transparency.Size = new System.Drawing.Size(104, 45);
 			this.tkb_pnlLine_Transparency.TabIndex = 4;
 			// 
 			// lbl_pnlLine_Color
@@ -425,10 +444,10 @@
 			// 
 			this.num_pnlLine_thickness.Location = new System.Drawing.Point(83, 17);
 			this.num_pnlLine_thickness.Maximum = new decimal(new int[] {
-			1000,
-			0,
-			0,
-			0});
+            1000,
+            0,
+            0,
+            0});
 			this.num_pnlLine_thickness.Name = "num_pnlLine_thickness";
 			this.num_pnlLine_thickness.Size = new System.Drawing.Size(45, 20);
 			this.num_pnlLine_thickness.TabIndex = 1;
@@ -442,120 +461,6 @@
 			this.lbl_pnlLine_thickness.Size = new System.Drawing.Size(62, 13);
 			this.lbl_pnlLine_thickness.TabIndex = 0;
 			this.lbl_pnlLine_thickness.Text = "Thickness: ";
-			// 
-			// pnl_addTools
-			// 
-			this.pnl_addTools.Controls.Add(this.btn_cancelButton);
-			this.pnl_addTools.Controls.Add(this.btn_addCircle);
-			this.pnl_addTools.Controls.Add(this.btn_addPoly);
-			this.pnl_addTools.Controls.Add(this.btn_addRectangle);
-			this.pnl_addTools.Controls.Add(this.btn_addLine);
-			this.pnl_addTools.Controls.Add(this.btn_addCustomStick);
-			this.pnl_addTools.Controls.Add(this.btn_addStick);
-			this.pnl_addTools.Location = new System.Drawing.Point(198, 142);
-			this.pnl_addTools.Name = "pnl_addTools";
-			this.pnl_addTools.Size = new System.Drawing.Size(151, 203);
-			this.pnl_addTools.TabIndex = 27;
-			// 
-			// btn_cancelButton
-			// 
-			this.btn_cancelButton.Location = new System.Drawing.Point(34, 164);
-			this.btn_cancelButton.Name = "btn_cancelButton";
-			this.btn_cancelButton.Size = new System.Drawing.Size(75, 23);
-			this.btn_cancelButton.TabIndex = 25;
-			this.btn_cancelButton.Text = "Cancel";
-			this.btn_cancelButton.UseVisualStyleBackColor = true;
-			this.btn_cancelButton.Click += new System.EventHandler(this.btn_cancelButton_Click);
-			// 
-			// btn_addCircle
-			// 
-			this.btn_addCircle.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addCircle.BackgroundImage")));
-			this.btn_addCircle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.btn_addCircle.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.btn_addCircle.Enabled = false;
-			this.btn_addCircle.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btn_addCircle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
-			this.btn_addCircle.Location = new System.Drawing.Point(77, 108);
-			this.btn_addCircle.Name = "btn_addCircle";
-			this.btn_addCircle.Size = new System.Drawing.Size(73, 50);
-			this.btn_addCircle.TabIndex = 24;
-			this.btn_addCircle.TabStop = false;
-			this.btn_addCircle.UseVisualStyleBackColor = true;
-			// 
-			// btn_addPoly
-			// 
-			this.btn_addPoly.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addPoly.BackgroundImage")));
-			this.btn_addPoly.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.btn_addPoly.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.btn_addPoly.Enabled = false;
-			this.btn_addPoly.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btn_addPoly.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
-			this.btn_addPoly.Location = new System.Drawing.Point(1, 108);
-			this.btn_addPoly.Name = "btn_addPoly";
-			this.btn_addPoly.Size = new System.Drawing.Size(73, 50);
-			this.btn_addPoly.TabIndex = 23;
-			this.btn_addPoly.TabStop = false;
-			this.btn_addPoly.UseVisualStyleBackColor = true;
-			// 
-			// btn_addRectangle
-			// 
-			this.btn_addRectangle.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addRectangle.BackgroundImage")));
-			this.btn_addRectangle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.btn_addRectangle.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.btn_addRectangle.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btn_addRectangle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
-			this.btn_addRectangle.Location = new System.Drawing.Point(77, 56);
-			this.btn_addRectangle.Name = "btn_addRectangle";
-			this.btn_addRectangle.Size = new System.Drawing.Size(73, 50);
-			this.btn_addRectangle.TabIndex = 22;
-			this.btn_addRectangle.TabStop = false;
-			this.btn_addRectangle.UseVisualStyleBackColor = true;
-			this.btn_addRectangle.Click += new System.EventHandler(this.btn_addRectangle_Click);
-			// 
-			// btn_addLine
-			// 
-			this.btn_addLine.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addLine.BackgroundImage")));
-			this.btn_addLine.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.btn_addLine.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.btn_addLine.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btn_addLine.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
-			this.btn_addLine.Location = new System.Drawing.Point(1, 56);
-			this.btn_addLine.Name = "btn_addLine";
-			this.btn_addLine.Size = new System.Drawing.Size(73, 50);
-			this.btn_addLine.TabIndex = 21;
-			this.btn_addLine.TabStop = false;
-			this.btn_addLine.UseVisualStyleBackColor = true;
-			this.btn_addLine.Click += new System.EventHandler(this.btn_addLine_Click);
-			// 
-			// btn_addCustomStick
-			// 
-			this.btn_addCustomStick.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addCustomStick.BackgroundImage")));
-			this.btn_addCustomStick.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.btn_addCustomStick.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.btn_addCustomStick.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btn_addCustomStick.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
-			this.btn_addCustomStick.Location = new System.Drawing.Point(77, 4);
-			this.btn_addCustomStick.Name = "btn_addCustomStick";
-			this.btn_addCustomStick.Size = new System.Drawing.Size(73, 50);
-			this.btn_addCustomStick.TabIndex = 20;
-			this.btn_addCustomStick.TabStop = false;
-			this.btn_addCustomStick.UseVisualStyleBackColor = true;
-			this.btn_addCustomStick.Click += new System.EventHandler(this.btn_addCustomStick_Click);
-			// 
-			// btn_addStick
-			// 
-			this.btn_addStick.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addStick.BackgroundImage")));
-			this.btn_addStick.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.btn_addStick.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.btn_addStick.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btn_addStick.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
-			this.btn_addStick.Location = new System.Drawing.Point(1, 4);
-			this.btn_addStick.Name = "btn_addStick";
-			this.btn_addStick.Size = new System.Drawing.Size(73, 50);
-			this.btn_addStick.TabIndex = 19;
-			this.btn_addStick.TabStop = false;
-			this.btn_addStick.UseVisualStyleBackColor = true;
-			this.btn_addStick.Click += new System.EventHandler(this.btn_addStick_Click);
 			// 
 			// pnl_mainTools
 			// 
@@ -694,23 +599,23 @@
 			// 
 			this.maskedTextBox1.Location = new System.Drawing.Point(80, 44);
 			this.maskedTextBox1.Maximum = new decimal(new int[] {
-			120,
-			0,
-			0,
-			0});
+            120,
+            0,
+            0,
+            0});
 			this.maskedTextBox1.Minimum = new decimal(new int[] {
-			1,
-			0,
-			0,
-			0});
+            1,
+            0,
+            0,
+            0});
 			this.maskedTextBox1.Name = "maskedTextBox1";
 			this.maskedTextBox1.Size = new System.Drawing.Size(40, 20);
 			this.maskedTextBox1.TabIndex = 4;
 			this.maskedTextBox1.Value = new decimal(new int[] {
-			30,
-			0,
-			0,
-			0});
+            30,
+            0,
+            0,
+            0});
 			this.maskedTextBox1.ValueChanged += new System.EventHandler(this.maskedTextBox1_ValueChanged);
 			// 
 			// btn_playPause
@@ -838,10 +743,160 @@
 			this.btn_cancelButtonDraw.UseVisualStyleBackColor = true;
 			this.btn_cancelButtonDraw.Click += new System.EventHandler(this.btn_cancelButtonDraw_Click);
 			// 
+			// pnl_addTools
+			// 
+			this.pnl_addTools.Controls.Add(this.trv_addView);
+			this.pnl_addTools.Controls.Add(this.btn_cancelButton);
+			this.pnl_addTools.Location = new System.Drawing.Point(198, 142);
+			this.pnl_addTools.Name = "pnl_addTools";
+			this.pnl_addTools.Size = new System.Drawing.Size(151, 203);
+			this.pnl_addTools.TabIndex = 27;
+			// 
+			// btn_cancelButton
+			// 
+			this.btn_cancelButton.Location = new System.Drawing.Point(34, 164);
+			this.btn_cancelButton.Name = "btn_cancelButton";
+			this.btn_cancelButton.Size = new System.Drawing.Size(75, 23);
+			this.btn_cancelButton.TabIndex = 25;
+			this.btn_cancelButton.Text = "Cancel";
+			this.btn_cancelButton.UseVisualStyleBackColor = true;
+			this.btn_cancelButton.Click += new System.EventHandler(this.btn_cancelButton_Click);
+			// 
+			// btn_addCircle
+			// 
+			this.btn_addCircle.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addCircle.BackgroundImage")));
+			this.btn_addCircle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btn_addCircle.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btn_addCircle.Enabled = false;
+			this.btn_addCircle.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btn_addCircle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
+			this.btn_addCircle.Location = new System.Drawing.Point(431, 250);
+			this.btn_addCircle.Name = "btn_addCircle";
+			this.btn_addCircle.Size = new System.Drawing.Size(73, 50);
+			this.btn_addCircle.TabIndex = 24;
+			this.btn_addCircle.TabStop = false;
+			this.btn_addCircle.UseVisualStyleBackColor = true;
+			// 
+			// btn_addPoly
+			// 
+			this.btn_addPoly.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addPoly.BackgroundImage")));
+			this.btn_addPoly.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btn_addPoly.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btn_addPoly.Enabled = false;
+			this.btn_addPoly.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btn_addPoly.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
+			this.btn_addPoly.Location = new System.Drawing.Point(355, 250);
+			this.btn_addPoly.Name = "btn_addPoly";
+			this.btn_addPoly.Size = new System.Drawing.Size(73, 50);
+			this.btn_addPoly.TabIndex = 23;
+			this.btn_addPoly.TabStop = false;
+			this.btn_addPoly.UseVisualStyleBackColor = true;
+			// 
+			// btn_addRectangle
+			// 
+			this.btn_addRectangle.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addRectangle.BackgroundImage")));
+			this.btn_addRectangle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btn_addRectangle.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btn_addRectangle.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btn_addRectangle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
+			this.btn_addRectangle.Location = new System.Drawing.Point(431, 198);
+			this.btn_addRectangle.Name = "btn_addRectangle";
+			this.btn_addRectangle.Size = new System.Drawing.Size(73, 50);
+			this.btn_addRectangle.TabIndex = 22;
+			this.btn_addRectangle.TabStop = false;
+			this.btn_addRectangle.UseVisualStyleBackColor = true;
+			this.btn_addRectangle.Click += new System.EventHandler(this.btn_addRectangle_Click);
+			// 
+			// btn_addLine
+			// 
+			this.btn_addLine.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addLine.BackgroundImage")));
+			this.btn_addLine.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btn_addLine.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btn_addLine.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btn_addLine.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
+			this.btn_addLine.Location = new System.Drawing.Point(355, 198);
+			this.btn_addLine.Name = "btn_addLine";
+			this.btn_addLine.Size = new System.Drawing.Size(73, 50);
+			this.btn_addLine.TabIndex = 21;
+			this.btn_addLine.TabStop = false;
+			this.btn_addLine.UseVisualStyleBackColor = true;
+			this.btn_addLine.Click += new System.EventHandler(this.btn_addLine_Click);
+			// 
+			// btn_addCustomStick
+			// 
+			this.btn_addCustomStick.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addCustomStick.BackgroundImage")));
+			this.btn_addCustomStick.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btn_addCustomStick.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btn_addCustomStick.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btn_addCustomStick.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
+			this.btn_addCustomStick.Location = new System.Drawing.Point(431, 146);
+			this.btn_addCustomStick.Name = "btn_addCustomStick";
+			this.btn_addCustomStick.Size = new System.Drawing.Size(73, 50);
+			this.btn_addCustomStick.TabIndex = 20;
+			this.btn_addCustomStick.TabStop = false;
+			this.btn_addCustomStick.UseVisualStyleBackColor = true;
+			this.btn_addCustomStick.Click += new System.EventHandler(this.btn_addCustomStick_Click);
+			// 
+			// btn_addStick
+			// 
+			this.btn_addStick.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addStick.BackgroundImage")));
+			this.btn_addStick.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btn_addStick.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btn_addStick.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btn_addStick.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
+			this.btn_addStick.Location = new System.Drawing.Point(355, 146);
+			this.btn_addStick.Name = "btn_addStick";
+			this.btn_addStick.Size = new System.Drawing.Size(73, 50);
+			this.btn_addStick.TabIndex = 19;
+			this.btn_addStick.TabStop = false;
+			this.btn_addStick.UseVisualStyleBackColor = true;
+			this.btn_addStick.Click += new System.EventHandler(this.btn_addStick_Click);
+			// 
 			// animTimer
 			// 
 			this.animTimer.Interval = 24;
 			this.animTimer.Tick += new System.EventHandler(this.animTimer_Tick);
+			// 
+			// trv_addView
+			// 
+			this.trv_addView.Dock = System.Windows.Forms.DockStyle.Top;
+			this.trv_addView.FullRowSelect = true;
+			this.trv_addView.Location = new System.Drawing.Point(0, 0);
+			this.trv_addView.Name = "trv_addView";
+			treeNode1.Name = "nde_Stick_Default";
+			treeNode1.Text = "Default Figure";
+			treeNode1.ToolTipText = "The default stick figure";
+			treeNode2.Name = "nde_Stick_Custom";
+			treeNode2.Text = "Custom Figure..";
+			treeNode2.ToolTipText = "Create your own figure, or load an existing one";
+			treeNode3.Checked = true;
+			treeNode3.Name = "nde_StickFigures";
+			treeNode3.Text = "Stick Figures";
+			treeNode3.ToolTipText = "Various stick figure objects";
+			treeNode4.Name = "nde_Shape_Line";
+			treeNode4.Text = "Line";
+			treeNode4.ToolTipText = "A primitive line, from point A to point B.";
+			treeNode5.Name = "nde_Shape_Rect";
+			treeNode5.Text = "Rectangle";
+			treeNode5.ToolTipText = "A basic rectangle with 4 control points.";
+			treeNode6.Checked = true;
+			treeNode6.Name = "nde_Shapes";
+			treeNode6.Text = "Shapes";
+			treeNode6.ToolTipText = "Various primitive shapes";
+			treeNode7.Name = "nde_lightSource";
+			treeNode7.Text = "Light Source";
+			treeNode7.ToolTipText = "A source of light for the shading engine";
+			treeNode8.Name = "nde_Text";
+			treeNode8.Text = "Text";
+			treeNode8.ToolTipText = "A text object with 4 control points and configurable text.";
+			this.trv_addView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode3,
+            treeNode6,
+            treeNode7,
+            treeNode8});
+			this.trv_addView.ShowLines = false;
+			this.trv_addView.Size = new System.Drawing.Size(151, 158);
+			this.trv_addView.TabIndex = 26;
 			// 
 			// Toolbox
 			// 
@@ -877,7 +932,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.tkb_pnlLine_Transparency)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pic_pnlLine_color)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_pnlLine_thickness)).EndInit();
-			this.pnl_addTools.ResumeLayout(false);
 			this.pnl_mainTools.ResumeLayout(false);
 			this.pnl_ctrlPanel.ResumeLayout(false);
 			this.tabControl1.ResumeLayout(false);
@@ -887,6 +941,7 @@
 			this.tabPage2.ResumeLayout(false);
 			this.tabPage2.PerformLayout();
 			this.pnl_Drawing.ResumeLayout(false);
+			this.pnl_addTools.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -956,5 +1011,6 @@
 		private System.Windows.Forms.Label lbl_rectFillColor;
 		private System.Windows.Forms.NumericUpDown num_rectOLAlpha;
 		private System.Windows.Forms.NumericUpDown num_rectFillAlpha;
+		private System.Windows.Forms.TreeView trv_addView;
 	}
 }
