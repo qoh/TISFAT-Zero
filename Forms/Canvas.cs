@@ -56,7 +56,7 @@ namespace TISFAT_Zero
 		/// <param name="t">The toolbox object</param>
 		public Canvas()
 		{
-			maxaa = 8;
+			maxaa = 16;
 
 			InitializeComponent();
 		}
@@ -330,10 +330,10 @@ namespace TISFAT_Zero
 				GL.Color4(color);
 				GL.Begin(PrimitiveType.Quads);
 
-				GL.Vertex2(one.X - 2, one.Y - 2);
+				GL.Vertex2(one.X - 3, one.Y - 2);
 				GL.Vertex2(one.X + 2, one.Y - 2);
-				GL.Vertex2(one.X + 2, one.Y + 2);
-				GL.Vertex2(one.X - 2, one.Y + 2);
+				GL.Vertex2(one.X + 2, one.Y + 3);
+				GL.Vertex2(one.X - 3, one.Y + 3);
 
 				GL.End();
 
@@ -682,36 +682,19 @@ namespace TISFAT_Zero
 
 		public void recieveStickFigure(StickCustom figure)
 		{
-			/*
-			CustomLayer c = (CustomLayer)(Program.TheTimeline.Layers[Program.TheTimeline.selectedLayer_Ind]);
+			CustomLayer c = (CustomLayer)(Timeline.Layers[Timeline.selectedLayer_Ind]);
 
-			List<StickJoint> ps = figure.Joints;
-			c.fig = figure;
+			List<StickJoint> ps = figure.FigureJoints;
+			c.LayerFigure = figure;
 
-			int[] positions = new int[ps.Count];
-			for (int a = 0; a < ps.Count; a++)
-			{
-				StickJoint p = ps[a].parentJoint;
-				if (p != null)
-				{
-					positions[a] = ps.IndexOf(p);
-				}
-				else
-				{
-					positions[a] = -1;
-				}
-			}
+			c[0][0].FrameJoints = ps;
+			c[0][1].FrameJoints = StickCustom.copyJoints(ps);
+			
+			Timeline.selectedLayer_Ind = Timeline.Layers.Count - 1;
+			Timeline.selectedFrame_Ind = 0;
+			Timeline.setFrame();
 
-			c.keyFrames[0].Joints = ps;
-			c.keyFrames[1].Joints = custObjectFrame.createClone(ps, positions);
-
-			c.tweenFig = new StickCustom(true);
-			c.tweenFig.Joints = custObjectFrame.createClone(ps, positions);
-
-			addFigure(c.LayerFigure);
-			Timeline.layer_sel = Timeline.Layers.Count - 1;
-			Program.TheTimeline.setFrame(c.firstKF);
-			Program.TheTimeline.Invalidate();*/
+			Program.TheTimeline.Invalidate();
 		}
 
 		public void recieveStickFigure(StickCustom figure, bool lean)

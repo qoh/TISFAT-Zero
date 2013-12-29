@@ -50,8 +50,8 @@ namespace TISFAT_Zero
 		//If this value is -1 that means the timeline is selected
 		public static int selectedLayer_Ind = 0, selectedFrame_Ind = 0;
 
-		private byte selectedFrame_Type = 0;
-		private byte selectedFrame_RType = 0; //0: plain  1: keyframe  2: tween
+		private byte selectedFrame_Type = 1;
+		private byte selectedFrame_RType = 1; //0: plain  1: keyframe  2: tween
 
 		public KeyFrame selectedKeyFrame;
 		public Layer selectedLayer;
@@ -119,7 +119,6 @@ namespace TISFAT_Zero
 			StubY.Width = 12;
 
 			addNewLayer(typeof(StickLayer));
-			Layers[0].Framesets[0][0].FrameJoints[0].setPos(50, 50);
 
 			timelineRealLength = 9 * timelineFrameLength;
 		}
@@ -557,12 +556,7 @@ namespace TISFAT_Zero
 			if (name == null)
 				name = "Layer " + (Layers.Count + 1);
 
-			Layer newLayer = (Layer)layerType.GetConstructor(new Type[] { typeof(string), typeof(int) }).Invoke(new object[] { name, 2 });
-			newLayer.insertNewKeyFrameAt(6);
-			newLayer.insertNewKeyFrameAt(20);
-			newLayer.insertNewKeyFrameAt(7);
-
-			newLayer.insertNewFramesetAt(30);
+			Layer newLayer = (Layer)layerType.GetConstructor(new Type[] { typeof(string), typeof(int) }).Invoke(new object[] { name, 0 });
 
 			//Add the layer to the list
 			Layers.Add(newLayer);
@@ -898,7 +892,7 @@ namespace TISFAT_Zero
 					if (y > 15)
 					{
 						//Set selected layer index and frame index
-						selectedLayer_Ind = (pxOffsetY + (y - 16)) / 16; selectedFrame_Ind = (pxOffsetX + (x - 80)) / 9;
+						selectedLayer_Ind = clamp((pxOffsetY + (y - 16)) / 16, 0, Layers.Count - 1); selectedFrame_Ind = (pxOffsetX + (x - 80)) / 9;
 
 						forceRefresh = true;
 
@@ -968,11 +962,11 @@ namespace TISFAT_Zero
 				if (x < 80 && y >= 16)
 				{
 					selectedArea = 1;
-					selectedLayer_Ind = (pxOffsetY + (y - 16)) / 16;
+					selectedLayer_Ind = clamp((pxOffsetY + (y - 16)) / 16, 0, Layers.Count - 1);
 
 					foreach (Layer l in Layers)
 						l.layerIsSelected = false;
-					Layers[clamp(selectedLayer_Ind, 0, Layers.Count - 1)].layerIsSelected = true;
+					Layers[selectedLayer_Ind].layerIsSelected = true;
 
 					selectedFrame_Ind = 0;
 					selectedFrame_Type = Layers[selectedLayer_Ind].getFrameTypeAt(0);
@@ -1120,7 +1114,6 @@ namespace TISFAT_Zero
 
 		private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
 		{
-			//If cancelevent is true, that means we have nothing to do with the right click menu.
 			if (cancelevent)
 				e.Cancel = true;
 		}

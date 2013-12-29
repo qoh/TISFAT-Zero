@@ -51,14 +51,7 @@ namespace TISFAT_Zero
 
 		public StickEditor()
 		{
-			int aa = 0;
-			do
-			{
-				var mode = new GraphicsMode(32, 0, 0, aa);
-				if (mode.Samples == aa)
-					maxaa = aa;
-				aa += 2;
-			} while (aa <= 32);
+			maxaa = 8;
 
 			InitializeComponent();
 		}
@@ -116,22 +109,17 @@ namespace TISFAT_Zero
 			figure.reSortJoints();
 
 			for (int i = 0; i < figure.FigureJoints.Count(); i++)
-			{
 				if (figure.FigureJoints[i].parentJoint != null)
-				{
 					figure.FigureJoints[i].CalcLength(null);
-				}
-			}
 
 			for (int i = 0; i < figure.FigureJoints.Count(); i++)
 			{
-				if (figure.FigureJoints[i].parentJoint != null)
-				{
-					if(!(figure.FigureJoints[i].parentJoint.childJoints.IndexOf(figure.FigureJoints[i]) >= 0))
-						figure.FigureJoints[i].parentJoint.childJoints.Add(figure.FigureJoints[i]);
-				}
+				if (figure.FigureJoints[i].parentJoint != null && figure.FigureJoints[i].parentJoint.childJoints.IndexOf(figure.FigureJoints[i]) < 0)
+					figure.FigureJoints[i].parentJoint.childJoints.Add(figure.FigureJoints[i]);
+
 				figure.FigureJoints[i].parentFigure = figure;
 			}
+
 			glGraphics.Refresh();
 		}
 
@@ -150,11 +138,7 @@ namespace TISFAT_Zero
 				StickJoint parentJoint = null;
 
 				if (!(fig.FigureJoints[i].parentJoint == null))
-				{
-					int parentIndex = fig.FigureJoints.IndexOf(fig.FigureJoints[i].parentJoint);
-					
 					parentJoint = fig.FigureJoints[i].parentJoint;
-				}
 
 				this.figure.FigureJoints[i].parentJoint = parentJoint;
 			}

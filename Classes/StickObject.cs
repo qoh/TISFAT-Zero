@@ -511,6 +511,11 @@ namespace TISFAT_Zero
 
 	internal class StickCustom : StickObject
 	{
+		new public static List<StickJoint> DefaultPose
+		{
+			get { return new List<StickJoint>(); }
+		}
+
 		public StickCustom(bool setAsActive = true)
 			: base(setAsActive)
 		{

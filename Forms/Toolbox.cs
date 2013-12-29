@@ -159,11 +159,11 @@ namespace TISFAT_Zero
 					layerType = typeof(StickLayer); break;
 				case "1":
 					layerType = typeof(CustomLayer);
+					Timeline.addNewLayer(layerType);
 					Timeline.selectedLayer_Ind = Timeline.Layers.Count - 1;
-
 					StickEditor f = new StickEditor();
-					f.ShowDialog(this); 
-					break;
+					f.ShowDialog(this);
+					return;
 
 				case "2":
 					layerType = typeof(LineLayer); break;
@@ -190,7 +190,7 @@ namespace TISFAT_Zero
 			string name = layerType.ToString().Remove(0, "TISFAT_Zero.".Length); name = name.Insert(name.IndexOf("Layer"), " "); name = name + " " + i;
 
 			Timeline.addNewLayer(layerType, name);
-			Program.TheTimeline.GLGraphics.Refresh();
+			Program.TheTimeline.Timeline_Refresh();
 
 			pnl_addTools.Enabled = false;
 			slideOutObject = pnl_addTools;

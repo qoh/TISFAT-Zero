@@ -74,10 +74,8 @@ namespace TISFAT_Zero
 			Position = framePosition;
 		}
 
-		public KeyFrame()
-			: this(0)
-		{
-		}
+		public KeyFrame() : this(0)
+		{ }
 
 		#endregion Constructors
 
@@ -130,15 +128,13 @@ namespace TISFAT_Zero
 		/// Initializes a new instance of the <see cref="StickFrame"/> class at the specified position.
 		/// </summary>
 		/// <param name="Position">The position of the KeyFrame inside the timeline.</param>
-		public StickFrame(int Position)
-			: base(Position, 0)
+		public StickFrame(int Position) : base(Position, 0)
 		{ }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="StickFrame"/> class at the position 0.
 		/// </summary>
-		public StickFrame()
-			: this(0)
+		public StickFrame() : this(0)
 		{ }
 	}
 
@@ -153,12 +149,10 @@ namespace TISFAT_Zero
 		/// Initializes a new instance of the <see cref="LineFrame"/> class at the specified position.
 		/// </summary>
 		/// <param name="Position">The position of the KeyFrame inside the timeline.</param>
-		public LineFrame(int Position)
-			: base(Position, 1)
+		public LineFrame(int Position) : base(Position, 1)
 		{ }
 
-		public LineFrame()
-			: this(0)
+		public LineFrame() : this(0)
 		{ }
 	}
 
@@ -186,8 +180,7 @@ namespace TISFAT_Zero
 			Properties.addAttribute(true, "isFilled");
 		}
 
-		public RectFrame()
-			: this(0)
+		public RectFrame() : this(0)
 		{ }
 
 		protected override void copyKeyFrameStep2(Attributes oldAttributes)
@@ -208,12 +201,10 @@ namespace TISFAT_Zero
 		/// Initializes a new instance of the <see cref="CustomFrame"/> class at the specified position.
 		/// </summary>
 		/// <param name="Position">The position of the KeyFrame inside the timeline.</param>
-		public CustomFrame(int Position)
-			: base(Position, 3)
+		public CustomFrame(int Position) : base(Position, 3)
 		{ }
 
-		public CustomFrame()
-			: this(0)
+		public CustomFrame() : this(0)
 		{ }
 	}
 
@@ -230,14 +221,12 @@ namespace TISFAT_Zero
 			set { Properties["BitmapID"] = value; }
 		}
 
-		public BitmapFrame(int Position)
-			: base(Position, 4)
+		public BitmapFrame(int Position) : base(Position, 4)
 		{
 			Properties.addAttribute(-1, "BitmapID");
 		}
 
-		public BitmapFrame()
-			: this(0)
+		public BitmapFrame() : this(0)
 		{ }
 	}
 }

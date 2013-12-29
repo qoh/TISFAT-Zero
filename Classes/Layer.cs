@@ -571,6 +571,8 @@ namespace TISFAT_Zero
 		{
 			LayerFigure.Draw(Canvas);
 		}
+
+
 	}
 
 	internal class StickLayer : Layer
