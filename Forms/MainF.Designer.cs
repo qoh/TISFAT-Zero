@@ -387,7 +387,6 @@ namespace TISFAT_Zero
 			// MainF
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(750, 550);
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.mnu_strip1);

@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Attributes.cs" />
+    <Compile Include="Classes\Functions.cs" />
     <Compile Include="Classes\Interfaces.cs" />
     <Compile Include="Classes\Frameset.cs" />
     <Compile Include="Classes\KeyFrame.cs" />
@@ -97,6 +98,12 @@
     </Compile>
     <Compile Include="Forms\Timeline.Designer.cs">
       <DependentUpon>Timeline.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\StickEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\StickEditor.Designer.cs">
+      <DependentUpon>StickEditor.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Forms\LoadingForm.resx">
       <DependentUpon>LoadingForm.cs</DependentUpon>

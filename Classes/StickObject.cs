@@ -109,9 +109,8 @@ namespace TISFAT_Zero
 			}
 
 			if (figureType == 3)
-			{
-				Canvas.drawGraphics(5, figColor, FigureJoints[0].location, FigureJoints[0].thickness, FigureJoints[0].thickness, FigureJoints[2].location);
-			}
+				if (((StickRect)this).isFilled)
+					Canvas.drawGraphics(5, figColor, FigureJoints[0].location, FigureJoints[0].thickness, FigureJoints[0].thickness, FigureJoints[2].location);
 
 			foreach (StickJoint i in FigureJoints)
 			{
@@ -453,13 +452,15 @@ namespace TISFAT_Zero
 				Pose.Add(new StickJoint("CornerLR", new Point(150, 70), 3, Color.Black, Color.Red, 0, 0, Pose[1]));
 				Pose.Add(new StickJoint("CornerTR", new Point(150, 30), 3, Color.Black, Color.Blue, 0, 0, Pose[2]));
 
+				Pose[0].parentJoint = Pose[3];
+
 				return Pose;
 			}
 		}
 
 		new public static int[] ParentPositions
 		{
-			get { return new int[] { -1, 0, 1, 2 }; }
+			get { return new int[] { 3, 0, 1, 2 }; }
 		}
 
 		public Color fillColor
