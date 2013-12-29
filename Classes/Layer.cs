@@ -455,7 +455,7 @@ namespace TISFAT_Zero
 		}
 
 		/// <summary>
-		/// Returns a <see cref="System.String" /> that represents this instance.
+		/// Returns a <see cref="System.String" /> that represents this instance. Only used for debugging.
 		/// </summary>
 		/// <returns>
 		/// A <see cref="System.String" /> that represents this instance.

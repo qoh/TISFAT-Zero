@@ -67,6 +67,12 @@
     <Compile Include="Classes\StickJoint.cs" />
     <Compile Include="Classes\StickObject.cs" />
     <Compile Include="Classes\T0Bitmap.cs" />
+    <Compile Include="Forms\About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Canvas.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,6 +90,12 @@
     </Compile>
     <Compile Include="Forms\MainF.Designer.cs">
       <DependentUpon>MainF.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Preferences.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Preferences.Designer.cs">
+      <DependentUpon>Preferences.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Toolbox.cs">
       <SubType>Form</SubType>
@@ -105,6 +117,14 @@
     <Compile Include="Forms\StickEditor.Designer.cs">
       <DependentUpon>StickEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\User1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>User.settings</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Forms\About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoadingForm.resx">
       <DependentUpon>LoadingForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -142,6 +162,10 @@
     <None Include="COPYRIGHT.html" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\User.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>User1.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Resources\stub_x_l.png" />
     <None Include="Resources\stub_x_r.png" />
     <None Include="Resources\stub_y_b.png" />
@@ -166,6 +190,9 @@
     <None Include="Resources\NUMBERS\8.png" />
     <None Include="Resources\NUMBERS\9.png" />
     <Content Include="T0.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

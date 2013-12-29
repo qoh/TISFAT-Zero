@@ -10,6 +10,8 @@ namespace TISFAT_Zero
 		public static Canvas TheCanvas;
 		public static Toolbox TheToolbox;
 
+		public static readonly string Version = "3.0.0.0";
+
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
