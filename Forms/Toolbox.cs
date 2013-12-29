@@ -146,6 +146,7 @@ namespace TISFAT_Zero
 		{
 			Size = new Size(179, 375);
 			trv_addView.ExpandAll();
+			Color.FromArgb
 		}
 
 		private void AddObject(object sender, TreeNodeMouseClickEventArgs e)

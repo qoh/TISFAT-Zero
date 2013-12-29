@@ -17,11 +17,11 @@ namespace TISFAT_Zero
 		public static List<Layer> Layers = new List<Layer>();
 		private static Color[] Colors;
 
-		private double Scrollbar_eX = 0.0, Scrollbar_eY = 0.0;
+		private static double Scrollbar_eX = 0.0, Scrollbar_eY = 0.0;
 		public int pxOffsetX, pxOffsetY;
-		private int scrollAreaY, scrollAreaX, maxFrames, maxLayers;
+		private static int scrollAreaY, scrollAreaX, maxFrames, maxLayers;
 
-		private Rectangle ScrollX = new Rectangle(), ScrollY = new Rectangle();
+		private static Rectangle ScrollX = new Rectangle(), ScrollY = new Rectangle();
 		private Rectangle StubX = new Rectangle(), StubY = new Rectangle();
 
 		private Point relativePos;
@@ -43,9 +43,7 @@ namespace TISFAT_Zero
 		//repeated for bits 5-8 for scrolling stubs
 		public byte selectedScrollItems = 0;
 
-		public int timelineFrameLength = 512;
-		public int timelineRealLength;
-		public static int timelineHeight;
+		public static int timelineFrameLength = 512, timelineRealLength, timelineHeight;
 
 		//If this value is -1 that means the timeline is selected
 		public static int selectedLayer_Ind = 0, selectedFrame_Ind = 0;
@@ -112,8 +110,8 @@ namespace TISFAT_Zero
 			stubs[8] = new T0Bitmap(Properties.Resources.stub_x_l_c); stubs[9] = new T0Bitmap(Properties.Resources.stub_x_r_c);
 			stubs[10] = new T0Bitmap(Properties.Resources.stub_y_t_c); stubs[11] = new T0Bitmap(Properties.Resources.stub_y_b_c);
 
-			ScrollY.Width = 8;
-			ScrollX.Height = 8;
+			ScrollY.Width = 6;
+			ScrollX.Height = 6;
 
 			StubX.Height = 12;
 			StubY.Width = 12;
@@ -149,10 +147,10 @@ namespace TISFAT_Zero
 			float viewRatioY = (float)scrollAreaY / timelineHeight, viewRatioX = (float)scrollAreaX / timelineRealLength;
 
 			ScrollY.Height = viewRatioY < 1 ? Math.Max((int)(scrollAreaY * viewRatioY), 16) : -1;
-			ScrollY.Location = ScrollY.Height != -1 ? new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 26)) : new Point(-1, -1);
+			ScrollY.Location = ScrollY.Height != -1 ? new Point(Width - 9, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 26)) : new Point(-1, -1);
 
 			ScrollX.Width = viewRatioX < 1 ? Math.Max((int)(scrollAreaX * viewRatioX), 16) : -1;
-			ScrollX.Location = ScrollX.Width != -1 ? new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 91), Height - 10) : new Point(-1, -1);
+			ScrollX.Location = ScrollX.Width != -1 ? new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 91), Height - 9) : new Point(-1, -1);
 
 			pxOffsetX = (int)(Scrollbar_eX * timelineRealLength);
 			pxOffsetY = (int)(Scrollbar_eY * timelineHeight);
@@ -430,13 +428,28 @@ namespace TISFAT_Zero
 			GL.Vertex2(79, 15);
 			GL.Vertex2(Width, 15);
 
-			for (int p = start_L + 15, a = ind_L; a < endL_ind; p += 16, a++)
+			for (int p = start_L + 15, a = ind_L; p < Height; p += 16, a++)
 			{
 				GL.Vertex2(80, p);
 				GL.Vertex2(Width, p);
 			}
-
 			GL.End();
+
+			int endll = 16 * endL_ind + start_L + 15;
+
+			if (endll < Height)
+			{
+				//Draw a blue rectangle through the remaining area of the layers display
+				GL.Begin(PrimitiveType.Quads);
+				GL.Color3(Colors[5]);
+
+				GL.Vertex2(0, endll-16);
+				GL.Vertex2(0, Height);
+				GL.Vertex2(79, Height);
+				GL.Vertex2(79, endll-16);
+
+				GL.End();
+			}
 
 			//If the selected layer is the timeline then we need to do some fancy stuff to make a nice little seeker line
 			if (selectedLayer_Ind == -1)
@@ -575,69 +588,13 @@ namespace TISFAT_Zero
 				layerNames.Add(new T0Bitmap(raw));
 			}
 
-			timelineHeight += 16;
+			timelineHeight = clamp(Layers.Count * 16 - (Program.TheMainForm.splitContainer1.Panel1.Height - 28), 0, int.MaxValue);
 
 			return newLayer;
 		}
 
 		public void drawGraphics(int type, Color color, Point one, int width, int height, Point two)
-		{
-			GL.Enable(EnableCap.Blend);
-			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-
-			if (type == 0) //Line
-			{
-				//renderQuadLine(one, two, width, color);
-			}
-			else if (type == 1 || type == 2) //Rectangle
-			{
-				GL.Color4(color);
-				if (type == 1)
-					GL.Begin(PrimitiveType.Quads);
-				else
-					GL.Begin(PrimitiveType.LineLoop);
-
-				if (width != 0 && height != 0)
-				{
-					GL.Vertex2(one.X, one.Y);
-					GL.Vertex2(one.X + width, one.Y);
-					GL.Vertex2(one.X + width, one.Y + height);
-					GL.Vertex2(one.X, one.Y + height);
-				}
-				else
-				{
-					GL.Vertex2(one.X, one.Y);
-					GL.Vertex2(two.X, one.Y);
-					GL.Vertex2(two.X, two.Y);
-					GL.Vertex2(one.X, two.Y);
-				}
-
-				GL.End();
-			}
-
-			GL.Disable(EnableCap.Blend);
-		}
-
-		/* Not needed for the timeline, saving it for when the canvas is redone
-		 * private void renderQuadLine(Point one, Point two, float thickness, Color color)
-		 {
-			 GL.Color4(color);
-
-			 float dist = (float)Math.Sqrt(Math.Pow((two.X - one.X), 2) + Math.Pow((two.Y - one.Y), 2));
-
-			 GL.Begin(PrimitiveType.Quads);
-
-			 float normX = ((one.Y - two.Y) / dist) * thickness / 2;
-			 float normY = -((one.X - two.X) / dist) * thickness / 2;
-
-			 GL.Vertex2((one.X - normX), (one.Y - normY));
-			 GL.Vertex2((one.X + normX), (one.Y + normY));
-
-			 GL.Vertex2((two.X + normX), (two.Y + normY));
-			 GL.Vertex2((two.X - normX), (two.Y - normY));
-
-			 GL.End();
-		 } */
+		{ /* Never used, so hence it's blank */ }
 
 		private void renderRectangle(Rectangle rect, Color color)
 		{
@@ -866,8 +823,8 @@ namespace TISFAT_Zero
 
 			if (updateScrollLocation)
 			{
-				ScrollY.Location = new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 26));
-				ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 91), Height - 10);
+				ScrollY.Location = new Point(Width - 9, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 26));
+				ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 91), Height - 9);
 				pxOffsetX = (int)(Scrollbar_eX * timelineRealLength);
 				pxOffsetY = (int)(Scrollbar_eY * timelineHeight);
 			}
@@ -1028,7 +985,7 @@ namespace TISFAT_Zero
 					return;
 
 				Scrollbar_eX = Math.Min(1, Math.Max(0, pxOffsetX / (double)timelineRealLength));
-				ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 91), Height - 10);
+				ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 91), Height - 9);
 			}
 			else
 			{
@@ -1039,7 +996,7 @@ namespace TISFAT_Zero
 					return;
 
 				Scrollbar_eY = Math.Min(1, Math.Max(0, pxOffsetY / (double)timelineHeight));
-				ScrollY.Location = new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 26));
+				ScrollY.Location = new Point(Width - 9, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 26));
 			}
 
 			Timeline_Refresh();
@@ -1057,13 +1014,13 @@ namespace TISFAT_Zero
 			{
 				pxOffsetY = clamp(16 * (((pxOffsetY + 0) / 16) + (up ? -1 : 1)), 0, timelineHeight);
 				Scrollbar_eY = clamp(pxOffsetY / (double)timelineHeight, 0, 1);
-				ScrollY.Location = new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 26));
+				ScrollY.Location = new Point(Width - 9, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 26));
 			}
 			else
 			{
 				pxOffsetX = clamp(9 * ((pxOffsetX / 9) + (up ? 1 : -1)), 0, timelineRealLength);
 				Scrollbar_eX = clamp(pxOffsetX / (double)timelineRealLength, 0, 1);
-				ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 91), Height - 10);
+				ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 91), Height - 9);
 			}
 
 			cancelTimerOnMouseUp = true;
@@ -1083,13 +1040,13 @@ namespace TISFAT_Zero
 					{
 						pxOffsetY = clamp(16 * (((pxOffsetY + 0) / 16) + (up ? -1 : 1)), 0, timelineHeight);
 						Scrollbar_eY = clamp(pxOffsetY / (double)timelineHeight, 0, 1);
-						ScrollY.Location = new Point(Width - 10, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 26));
+						ScrollY.Location = new Point(Width - 9, (int)((scrollAreaY - ScrollY.Height) * Scrollbar_eY + 26));
 					}
 					else
 					{
 						pxOffsetX = clamp(9 * ((pxOffsetX / 9) + (up ? 1 : -1)), 0, timelineRealLength);
 						Scrollbar_eX = clamp(pxOffsetX / (double)timelineRealLength, 0, 1);
-						ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 91), Height - 10);
+						ScrollX.Location = new Point((int)((scrollAreaX - ScrollX.Width) * Scrollbar_eX + 91), Height - 9);
 					}
 
 					Timeline_Refresh();

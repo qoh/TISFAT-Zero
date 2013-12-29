@@ -131,6 +131,9 @@
     <EmbeddedResource Include="Forms\MainF.resx">
       <DependentUpon>MainF.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Preferences.resx">
+      <DependentUpon>Preferences.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Toolbox.resx">
       <DependentUpon>Toolbox.cs</DependentUpon>
     </EmbeddedResource>

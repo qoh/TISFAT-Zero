@@ -113,6 +113,10 @@
 			this.pnl_Submit = new System.Windows.Forms.Panel();
 			this.btn_submitButton = new System.Windows.Forms.Button();
 			this.dlg_colorDialog = new System.Windows.Forms.ColorDialog();
+			this.label7 = new System.Windows.Forms.Label();
+			this.panel2 = new System.Windows.Forms.Panel();
+			this.lbl_tLayerBackgroundColor = new System.Windows.Forms.Label();
+			this.pic_tLayerBackgroundColor = new System.Windows.Forms.PictureBox();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -146,6 +150,8 @@
 			this.pnl_colorButtonHitbox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pic_ColorBox)).BeginInit();
 			this.pnl_Submit.SuspendLayout();
+			this.panel2.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pic_tLayerBackgroundColor)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// dlg_folderBrowser
@@ -170,7 +176,7 @@
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.listView1);
 			this.splitContainer1.Panel2.Controls.Add(this.pnl_Submit);
-			this.splitContainer1.Size = new System.Drawing.Size(524, 291);
+			this.splitContainer1.Size = new System.Drawing.Size(524, 292);
 			this.splitContainer1.SplitterDistance = 398;
 			this.splitContainer1.TabIndex = 0;
 			// 
@@ -183,7 +189,7 @@
 			this.pnl_TimelineTheme.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnl_TimelineTheme.Location = new System.Drawing.Point(0, 0);
 			this.pnl_TimelineTheme.Name = "pnl_TimelineTheme";
-			this.pnl_TimelineTheme.Size = new System.Drawing.Size(398, 291);
+			this.pnl_TimelineTheme.Size = new System.Drawing.Size(398, 292);
 			this.pnl_TimelineTheme.TabIndex = 1;
 			// 
 			// btn_saveTheme
@@ -209,6 +215,8 @@
 			this.pnl_themeScrollPanel.AutoScroll = true;
 			this.pnl_themeScrollPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.pnl_themeScrollPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pnl_themeScrollPanel.Controls.Add(this.label7);
+			this.pnl_themeScrollPanel.Controls.Add(this.panel2);
 			this.pnl_themeScrollPanel.Controls.Add(this.label32);
 			this.pnl_themeScrollPanel.Controls.Add(this.pnl_keyframeColorGeneral);
 			this.pnl_themeScrollPanel.Controls.Add(this.pnl_layerNameColor);
@@ -231,7 +239,7 @@
 			// label32
 			// 
 			this.label32.AutoSize = true;
-			this.label32.Location = new System.Drawing.Point(105, 278);
+			this.label32.Location = new System.Drawing.Point(104, 278);
 			this.label32.Name = "label32";
 			this.label32.Size = new System.Drawing.Size(76, 13);
 			this.label32.TabIndex = 27;
@@ -435,7 +443,7 @@
 			// label10
 			// 
 			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(99, 340);
+			this.label10.Location = new System.Drawing.Point(102, 340);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(78, 13);
 			this.label10.TabIndex = 20;
@@ -519,7 +527,7 @@
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(108, 313);
+			this.label6.Location = new System.Drawing.Point(107, 313);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(73, 13);
 			this.label6.TabIndex = 0;
@@ -720,7 +728,7 @@
 			this.pnl_Updates.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnl_Updates.Location = new System.Drawing.Point(0, 0);
 			this.pnl_Updates.Name = "pnl_Updates";
-			this.pnl_Updates.Size = new System.Drawing.Size(398, 291);
+			this.pnl_Updates.Size = new System.Drawing.Size(398, 292);
 			this.pnl_Updates.TabIndex = 1;
 			// 
 			// label5
@@ -841,14 +849,14 @@
 			this.pnl_General.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnl_General.Location = new System.Drawing.Point(0, 0);
 			this.pnl_General.Name = "pnl_General";
-			this.pnl_General.Size = new System.Drawing.Size(398, 291);
+			this.pnl_General.Size = new System.Drawing.Size(398, 292);
 			this.pnl_General.TabIndex = 0;
 			// 
 			// splitContainer2
 			// 
 			this.splitContainer2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.splitContainer2.Location = new System.Drawing.Point(0, 57);
+			this.splitContainer2.Location = new System.Drawing.Point(0, 58);
 			this.splitContainer2.Name = "splitContainer2";
 			// 
 			// splitContainer2.Panel1
@@ -1022,7 +1030,7 @@
 			this.listView1.Location = new System.Drawing.Point(0, 0);
 			this.listView1.MultiSelect = false;
 			this.listView1.Name = "listView1";
-			this.listView1.Size = new System.Drawing.Size(122, 255);
+			this.listView1.Size = new System.Drawing.Size(122, 256);
 			this.listView1.TabIndex = 2;
 			this.listView1.UseCompatibleStateImageBehavior = false;
 			this.listView1.View = System.Windows.Forms.View.SmallIcon;
@@ -1033,7 +1041,7 @@
 			this.pnl_Submit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.pnl_Submit.Controls.Add(this.btn_submitButton);
 			this.pnl_Submit.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pnl_Submit.Location = new System.Drawing.Point(0, 255);
+			this.pnl_Submit.Location = new System.Drawing.Point(0, 256);
 			this.pnl_Submit.Name = "pnl_Submit";
 			this.pnl_Submit.Size = new System.Drawing.Size(122, 36);
 			this.pnl_Submit.TabIndex = 1;
@@ -1048,11 +1056,53 @@
 			this.btn_submitButton.UseVisualStyleBackColor = true;
 			this.btn_submitButton.Click += new System.EventHandler(this.btn_submitButton_Click);
 			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(59, 373);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(121, 13);
+			this.label7.TabIndex = 29;
+			this.label7.Text = "Layer Background Color";
+			// 
+			// panel2
+			// 
+			this.panel2.BackColor = System.Drawing.SystemColors.ControlDark;
+			this.panel2.Controls.Add(this.lbl_tLayerBackgroundColor);
+			this.panel2.Controls.Add(this.pic_tLayerBackgroundColor);
+			this.panel2.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.panel2.Location = new System.Drawing.Point(184, 364);
+			this.panel2.Name = "panel2";
+			this.panel2.Size = new System.Drawing.Size(113, 32);
+			this.panel2.TabIndex = 28;
+			// 
+			// lbl_tLayerBackgroundColor
+			// 
+			this.lbl_tLayerBackgroundColor.Location = new System.Drawing.Point(31, 9);
+			this.lbl_tLayerBackgroundColor.Name = "lbl_tLayerBackgroundColor";
+			this.lbl_tLayerBackgroundColor.Size = new System.Drawing.Size(73, 13);
+			this.lbl_tLayerBackgroundColor.TabIndex = 17;
+			this.lbl_tLayerBackgroundColor.Text = "(255,255,255)";
+			this.lbl_tLayerBackgroundColor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// pic_tLayerBackgroundColor
+			// 
+			this.pic_tLayerBackgroundColor.BackColor = System.Drawing.Color.White;
+			this.pic_tLayerBackgroundColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_tLayerBackgroundColor.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pic_tLayerBackgroundColor.Location = new System.Drawing.Point(3, 3);
+			this.pic_tLayerBackgroundColor.Name = "pic_tLayerBackgroundColor";
+			this.pic_tLayerBackgroundColor.Size = new System.Drawing.Size(25, 25);
+			this.pic_tLayerBackgroundColor.TabIndex = 16;
+			this.pic_tLayerBackgroundColor.TabStop = false;
+			this.pic_tLayerBackgroundColor.Tag = "GridLineColor";
+			this.pic_tLayerBackgroundColor.Click += new System.EventHandler(this.ColorBoxItem_Click);
+			// 
 			// Preferences
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(524, 291);
+			this.ClientSize = new System.Drawing.Size(524, 292);
 			this.Controls.Add(this.splitContainer1);
 			this.MaximizeBox = false;
 			this.MaximumSize = new System.Drawing.Size(540, 330);
@@ -1104,6 +1154,8 @@
 			this.pnl_colorButtonHitbox.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pic_ColorBox)).EndInit();
 			this.pnl_Submit.ResumeLayout(false);
+			this.panel2.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.pic_tLayerBackgroundColor)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -1190,5 +1242,9 @@
 		private System.Windows.Forms.PictureBox pic_keyframeTopBarColorGeneral;
 		private System.Windows.Forms.Button btn_saveTheme;
 		private System.Windows.Forms.Button btn_loadTheme;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.Panel panel2;
+		private System.Windows.Forms.Label lbl_tLayerBackgroundColor;
+		private System.Windows.Forms.PictureBox pic_tLayerBackgroundColor;
 	}
 }
