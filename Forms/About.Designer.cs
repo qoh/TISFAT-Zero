@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(About));
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.pnl_Developers = new System.Windows.Forms.Panel();
@@ -99,10 +100,12 @@
 			// 
 			// label4
 			// 
+			this.label4.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.label4.Location = new System.Drawing.Point(3, 3);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(213, 328);
 			this.label4.TabIndex = 0;
+			this.label4.Text = resources.GetString("label4.Text");
 			this.label4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
 			// 
 			// pnl_About
@@ -121,6 +124,7 @@
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(236, 173);
 			this.label2.TabIndex = 0;
+			this.label2.Text = resources.GetString("label2.Text");
 			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// pnl_Thanks
@@ -138,6 +142,7 @@
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(233, 164);
 			this.label3.TabIndex = 0;
+			this.label3.Text = resources.GetString("label3.Text");
 			this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// listBox1

@@ -64,5 +64,26 @@ namespace TISFAT_Zero
 		{
 			Program.TheTimeline.Invalidate();
 		}
+
+		private void OpenMenuObject(object sender, EventArgs e)
+		{
+			ToolStripMenuItem theSender = (ToolStripMenuItem)sender;
+
+			switch (theSender.Tag.ToString())
+			{
+				case "0":
+					Preferences p = new Preferences(); p.ShowDialog(); break;
+				case "1":
+					//Help Dialog
+					break;
+				case "2":
+					About a = new About(); a.ShowDialog(); break;
+				case "3":
+					//Check for updates;
+					break;
+				default:
+					return;
+			}
+		}
 	}
 }
