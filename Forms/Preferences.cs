@@ -6,6 +6,7 @@ using System.Net;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace TISFAT_Zero
 {
@@ -64,6 +65,32 @@ namespace TISFAT_Zero
 
 			comboBox1.SelectedIndex = currentBuild;
 			checkBox1.Checked = Properties.User.Default.autoCheck;
+
+			//Load the current theme into the timeline colors
+			string theme = Properties.User.Default.theme;
+
+			string[] rgbs = theme.Split(' ');
+			Color[] colors = new Color[17];
+
+			for (int a = 0; a < rgbs.Length; a += 3)
+				colors[a / 3] = Color.FromArgb(Int32.Parse(rgbs[a]), Int32.Parse(rgbs[a + 1]), Int32.Parse(rgbs[a + 2]));
+
+			Timeline.Colors = colors;
+
+			//Gets all the picture boxes in the theme panel, then set the colors
+			PictureBox[] boxes = GetAll(Controls.Find("pnl_themeScrollPanel", true)[0], typeof(PictureBox)).Cast<PictureBox>().ToArray();
+			
+			foreach (PictureBox x in boxes)
+				x.BackColor = Timeline.Colors[Int32.Parse((string)x.Tag)];
+		}
+
+		public IEnumerable<Control> GetAll(Control control, Type type)
+		{
+			var controls = control.Controls.Cast<Control>();
+
+			return controls.SelectMany(ctrl => GetAll(ctrl, type))
+									  .Concat(controls)
+									  .Where(c => c.GetType() == type);
 		}
 
 		private void btn_defSavPathBrowse_Click(object sender, EventArgs e)
@@ -128,7 +155,7 @@ namespace TISFAT_Zero
 			if (!(sender.GetType() == typeof(PictureBox)))
 				return;
 			PictureBox thisBox = (PictureBox)sender;
-			Label thisLabel = (Label)(Controls.Find("lbl_" + thisBox.Name.TrimStart('p', 'i', 'c', '_'), true))[0];
+			Label thisLabel = (Label)(Controls.Find("lbl_" + thisBox.Name.Substring(4), true))[0];
 
 			if (!(dlg_colorDialog.ShowDialog() == DialogResult.OK))
 				return;
@@ -136,7 +163,13 @@ namespace TISFAT_Zero
 			thisBox.BackColor = dlg_colorDialog.Color;
 			thisLabel.Text = "(" + thisBox.BackColor.R + "," + thisBox.BackColor.G + "," + thisBox.BackColor.B + ")";
 
-			//The tag of the picture box is the name of the preferences property to save; Save those in the submit function.
+			if (thisBox.Tag != null)
+			{
+				Timeline.Colors[Int32.Parse((string)thisBox.Tag)] = thisBox.BackColor;
+
+				Program.TheTimeline.Timeline_Resize(sender, e);
+				Program.TheTimeline.Timeline_Refresh();
+			}
 		}
 	}
 

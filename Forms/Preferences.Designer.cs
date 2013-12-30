@@ -28,60 +28,81 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("General", System.Windows.Forms.HorizontalAlignment.Center);
-			System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Theme", System.Windows.Forms.HorizontalAlignment.Center);
-			System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Properties");
-			System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Updates");
-			System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Timeline");
+			System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("General", System.Windows.Forms.HorizontalAlignment.Center);
+			System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Theme", System.Windows.Forms.HorizontalAlignment.Center);
+			System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("Properties");
+			System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("Updates");
+			System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("Timeline");
 			this.dlg_folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.pnl_TimelineTheme = new System.Windows.Forms.Panel();
 			this.btn_saveTheme = new System.Windows.Forms.Button();
 			this.btn_loadTheme = new System.Windows.Forms.Button();
 			this.pnl_themeScrollPanel = new System.Windows.Forms.Panel();
+			this.panel5 = new System.Windows.Forms.Panel();
+			this.label6 = new System.Windows.Forms.Label();
+			this.label15 = new System.Windows.Forms.Label();
+			this.lbl_TGkeyframeColorSelected = new System.Windows.Forms.Label();
+			this.pic_TGkeyframeColorSelected = new System.Windows.Forms.PictureBox();
+			this.lbl_TGkeyframeColorGeneral = new System.Windows.Forms.Label();
+			this.pic_TGkeyframeColorGeneral = new System.Windows.Forms.PictureBox();
+			this.label18 = new System.Windows.Forms.Label();
+			this.label12 = new System.Windows.Forms.Label();
+			this.panel4 = new System.Windows.Forms.Panel();
+			this.label13 = new System.Windows.Forms.Label();
+			this.label14 = new System.Windows.Forms.Label();
+			this.lbl_T100thFrameColor = new System.Windows.Forms.Label();
+			this.pic_T100thFrameColor = new System.Windows.Forms.PictureBox();
+			this.lbl_T10thFrameColor = new System.Windows.Forms.Label();
+			this.pic_T10thFrameColor = new System.Windows.Forms.PictureBox();
+			this.label8 = new System.Windows.Forms.Label();
+			this.panel3 = new System.Windows.Forms.Panel();
+			this.label9 = new System.Windows.Forms.Label();
+			this.label11 = new System.Windows.Forms.Label();
+			this.lbl_TtBlankFrameColorSelected = new System.Windows.Forms.Label();
+			this.pic_TtBlankFrameColorSelected = new System.Windows.Forms.PictureBox();
+			this.lbl_TtBlankFrameColor = new System.Windows.Forms.Label();
+			this.pic_TtBlankFrameColor = new System.Windows.Forms.PictureBox();
+			this.label7 = new System.Windows.Forms.Label();
+			this.panel2 = new System.Windows.Forms.Panel();
+			this.lbl_TtLayerBackgroundColor = new System.Windows.Forms.Label();
+			this.pic_TtLayerBackgroundColor = new System.Windows.Forms.PictureBox();
 			this.label32 = new System.Windows.Forms.Label();
 			this.pnl_keyframeColorGeneral = new System.Windows.Forms.Panel();
 			this.lbl_lKeyframeColorSelected = new System.Windows.Forms.Label();
 			this.lbl_lKeyframeColorGeneral = new System.Windows.Forms.Label();
-			this.lbl_keyframeColorSelected = new System.Windows.Forms.Label();
-			this.pic_keyframeColorSelected = new System.Windows.Forms.PictureBox();
-			this.lbl_keyframeColorGeneral = new System.Windows.Forms.Label();
-			this.pic_keyframeColorGeneral = new System.Windows.Forms.PictureBox();
+			this.lbl_TFLkeyframeColorSelected = new System.Windows.Forms.Label();
+			this.pic_TFLkeyframeColorSelected = new System.Windows.Forms.PictureBox();
+			this.lbl_TFLkeyframeColorGeneral = new System.Windows.Forms.Label();
+			this.pic_TFLkeyframeColorGeneral = new System.Windows.Forms.PictureBox();
 			this.pnl_layerNameColor = new System.Windows.Forms.Panel();
 			this.lbl_layerNameText = new System.Windows.Forms.Label();
 			this.lbl_layerNameBackground = new System.Windows.Forms.Label();
-			this.lbl_layerNameColorSelected = new System.Windows.Forms.Label();
-			this.pic_layerNameColorSelected = new System.Windows.Forms.PictureBox();
-			this.lbl_layerNameColorGeneral = new System.Windows.Forms.Label();
-			this.pic_layerNameColorGeneral = new System.Windows.Forms.PictureBox();
+			this.lbl_TlayerNameColorSelected = new System.Windows.Forms.Label();
+			this.pic_TlayerNameColorSelected = new System.Windows.Forms.PictureBox();
+			this.lbl_TlayerNameColorGeneral = new System.Windows.Forms.Label();
+			this.pic_TlayerNameColorGeneral = new System.Windows.Forms.PictureBox();
 			this.pnl_gridLineColor = new System.Windows.Forms.Panel();
-			this.lbl_tGridLineColor = new System.Windows.Forms.Label();
-			this.pic_tGridLineColor = new System.Windows.Forms.PictureBox();
+			this.lbl_TtGridLineColor = new System.Windows.Forms.Label();
+			this.pic_TtGridLineColor = new System.Windows.Forms.PictureBox();
 			this.label10 = new System.Windows.Forms.Label();
 			this.lbl_layerNameColor = new System.Windows.Forms.Label();
 			this.panel1 = new System.Windows.Forms.Panel();
-			this.lbl_tSelectedLayer = new System.Windows.Forms.Label();
-			this.pic_tSelectedLayer = new System.Windows.Forms.PictureBox();
-			this.lbl_tTimelineColor = new System.Windows.Forms.Label();
-			this.pic_tTimelineColor = new System.Windows.Forms.PictureBox();
+			this.lbl_TtSelectedLayer = new System.Windows.Forms.Label();
+			this.pic_TtSelectedLayer = new System.Windows.Forms.PictureBox();
 			this.lbl_keyframeColor = new System.Windows.Forms.Label();
-			this.label6 = new System.Windows.Forms.Label();
 			this.lbl_blankFrameColor = new System.Windows.Forms.Label();
-			this.pnl_blankFrameColor = new System.Windows.Forms.Panel();
+			this.pnl_tweenFrameColor = new System.Windows.Forms.Panel();
 			this.lbl_lBlankFrameSelected = new System.Windows.Forms.Label();
 			this.lbl_lBlankFrameGeneral = new System.Windows.Forms.Label();
-			this.lbl_blankFrameSelected = new System.Windows.Forms.Label();
-			this.pic_blankFrameSelected = new System.Windows.Forms.PictureBox();
-			this.lbl_blankFrameGeneral = new System.Windows.Forms.Label();
-			this.pic_blankFrameGeneral = new System.Windows.Forms.PictureBox();
+			this.lbl_TtweenFrameSelected = new System.Windows.Forms.Label();
+			this.pic_TtweenFrameSelected = new System.Windows.Forms.PictureBox();
+			this.lbl_TtweenFrameGeneral = new System.Windows.Forms.Label();
+			this.pic_TtweenFrameGeneral = new System.Windows.Forms.PictureBox();
 			this.lbl_BKeyframeTopBarColor = new System.Windows.Forms.Label();
 			this.pnl_keyframeTopBarColor = new System.Windows.Forms.Panel();
-			this.lbl_lKeyframeTopBarSelected = new System.Windows.Forms.Label();
-			this.lbl_lKeyframeTopBarGeneral = new System.Windows.Forms.Label();
-			this.lbl_keyframeTopBarColorSelected = new System.Windows.Forms.Label();
-			this.pic_keyframeTopBarColorSelected = new System.Windows.Forms.PictureBox();
-			this.lbl_keyframeTopBarColorGeneral = new System.Windows.Forms.Label();
-			this.pic_keyframeTopBarColorGeneral = new System.Windows.Forms.PictureBox();
+			this.lbl_TkeyframeTopBarColorGeneral = new System.Windows.Forms.Label();
+			this.pic_TkeyframeTopBarColorGeneral = new System.Windows.Forms.PictureBox();
 			this.pnl_Updates = new System.Windows.Forms.Panel();
 			this.label5 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
@@ -113,33 +134,38 @@
 			this.pnl_Submit = new System.Windows.Forms.Panel();
 			this.btn_submitButton = new System.Windows.Forms.Button();
 			this.dlg_colorDialog = new System.Windows.Forms.ColorDialog();
-			this.label7 = new System.Windows.Forms.Label();
-			this.panel2 = new System.Windows.Forms.Panel();
-			this.lbl_tLayerBackgroundColor = new System.Windows.Forms.Label();
-			this.pic_tLayerBackgroundColor = new System.Windows.Forms.PictureBox();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
 			this.pnl_TimelineTheme.SuspendLayout();
 			this.pnl_themeScrollPanel.SuspendLayout();
+			this.panel5.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TGkeyframeColorSelected)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TGkeyframeColorGeneral)).BeginInit();
+			this.panel4.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pic_T100thFrameColor)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_T10thFrameColor)).BeginInit();
+			this.panel3.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TtBlankFrameColorSelected)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TtBlankFrameColor)).BeginInit();
+			this.panel2.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TtLayerBackgroundColor)).BeginInit();
 			this.pnl_keyframeColorGeneral.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pic_keyframeColorSelected)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pic_keyframeColorGeneral)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TFLkeyframeColorSelected)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TFLkeyframeColorGeneral)).BeginInit();
 			this.pnl_layerNameColor.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pic_layerNameColorSelected)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pic_layerNameColorGeneral)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TlayerNameColorSelected)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TlayerNameColorGeneral)).BeginInit();
 			this.pnl_gridLineColor.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pic_tGridLineColor)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TtGridLineColor)).BeginInit();
 			this.panel1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pic_tSelectedLayer)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pic_tTimelineColor)).BeginInit();
-			this.pnl_blankFrameColor.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pic_blankFrameSelected)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pic_blankFrameGeneral)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TtSelectedLayer)).BeginInit();
+			this.pnl_tweenFrameColor.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TtweenFrameSelected)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TtweenFrameGeneral)).BeginInit();
 			this.pnl_keyframeTopBarColor.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pic_keyframeTopBarColorSelected)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pic_keyframeTopBarColorGeneral)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TkeyframeTopBarColorGeneral)).BeginInit();
 			this.pnl_Updates.SuspendLayout();
 			this.pnl_General.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
@@ -150,8 +176,6 @@
 			this.pnl_colorButtonHitbox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pic_ColorBox)).BeginInit();
 			this.pnl_Submit.SuspendLayout();
-			this.panel2.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pic_tLayerBackgroundColor)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// dlg_folderBrowser
@@ -215,6 +239,12 @@
 			this.pnl_themeScrollPanel.AutoScroll = true;
 			this.pnl_themeScrollPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.pnl_themeScrollPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pnl_themeScrollPanel.Controls.Add(this.panel5);
+			this.pnl_themeScrollPanel.Controls.Add(this.label18);
+			this.pnl_themeScrollPanel.Controls.Add(this.label12);
+			this.pnl_themeScrollPanel.Controls.Add(this.panel4);
+			this.pnl_themeScrollPanel.Controls.Add(this.label8);
+			this.pnl_themeScrollPanel.Controls.Add(this.panel3);
 			this.pnl_themeScrollPanel.Controls.Add(this.label7);
 			this.pnl_themeScrollPanel.Controls.Add(this.panel2);
 			this.pnl_themeScrollPanel.Controls.Add(this.label32);
@@ -225,9 +255,8 @@
 			this.pnl_themeScrollPanel.Controls.Add(this.lbl_layerNameColor);
 			this.pnl_themeScrollPanel.Controls.Add(this.panel1);
 			this.pnl_themeScrollPanel.Controls.Add(this.lbl_keyframeColor);
-			this.pnl_themeScrollPanel.Controls.Add(this.label6);
 			this.pnl_themeScrollPanel.Controls.Add(this.lbl_blankFrameColor);
-			this.pnl_themeScrollPanel.Controls.Add(this.pnl_blankFrameColor);
+			this.pnl_themeScrollPanel.Controls.Add(this.pnl_tweenFrameColor);
 			this.pnl_themeScrollPanel.Controls.Add(this.lbl_BKeyframeTopBarColor);
 			this.pnl_themeScrollPanel.Controls.Add(this.pnl_keyframeTopBarColor);
 			this.pnl_themeScrollPanel.Dock = System.Windows.Forms.DockStyle.Top;
@@ -236,10 +265,322 @@
 			this.pnl_themeScrollPanel.Size = new System.Drawing.Size(396, 259);
 			this.pnl_themeScrollPanel.TabIndex = 26;
 			// 
+			// panel5
+			// 
+			this.panel5.BackColor = System.Drawing.SystemColors.ControlDark;
+			this.panel5.Controls.Add(this.label6);
+			this.panel5.Controls.Add(this.label15);
+			this.panel5.Controls.Add(this.lbl_TGkeyframeColorSelected);
+			this.panel5.Controls.Add(this.pic_TGkeyframeColorSelected);
+			this.panel5.Controls.Add(this.lbl_TGkeyframeColorGeneral);
+			this.panel5.Controls.Add(this.pic_TGkeyframeColorGeneral);
+			this.panel5.Cursor = System.Windows.Forms.Cursors.Default;
+			this.panel5.Location = new System.Drawing.Point(82, 154);
+			this.panel5.Name = "panel5";
+			this.panel5.Size = new System.Drawing.Size(215, 44);
+			this.panel5.TabIndex = 35;
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label6.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.label6.Location = new System.Drawing.Point(142, 28);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(41, 12);
+			this.label6.TabIndex = 23;
+			this.label6.Text = "Selected";
+			// 
+			// label15
+			// 
+			this.label15.AutoSize = true;
+			this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label15.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.label15.Location = new System.Drawing.Point(32, 28);
+			this.label15.Name = "label15";
+			this.label15.Size = new System.Drawing.Size(37, 12);
+			this.label15.TabIndex = 22;
+			this.label15.Text = "General";
+			// 
+			// lbl_TGkeyframeColorSelected
+			// 
+			this.lbl_TGkeyframeColorSelected.Location = new System.Drawing.Point(128, 9);
+			this.lbl_TGkeyframeColorSelected.Name = "lbl_TGkeyframeColorSelected";
+			this.lbl_TGkeyframeColorSelected.Size = new System.Drawing.Size(73, 13);
+			this.lbl_TGkeyframeColorSelected.TabIndex = 19;
+			this.lbl_TGkeyframeColorSelected.Text = "(255,255,255)";
+			this.lbl_TGkeyframeColorSelected.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// pic_TGkeyframeColorSelected
+			// 
+			this.pic_TGkeyframeColorSelected.BackColor = System.Drawing.Color.White;
+			this.pic_TGkeyframeColorSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_TGkeyframeColorSelected.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pic_TGkeyframeColorSelected.Location = new System.Drawing.Point(103, 3);
+			this.pic_TGkeyframeColorSelected.Name = "pic_TGkeyframeColorSelected";
+			this.pic_TGkeyframeColorSelected.Size = new System.Drawing.Size(25, 25);
+			this.pic_TGkeyframeColorSelected.TabIndex = 18;
+			this.pic_TGkeyframeColorSelected.TabStop = false;
+			this.pic_TGkeyframeColorSelected.Tag = "3";
+			this.pic_TGkeyframeColorSelected.Click += new System.EventHandler(this.ColorBoxItem_Click);
+			// 
+			// lbl_TGkeyframeColorGeneral
+			// 
+			this.lbl_TGkeyframeColorGeneral.Location = new System.Drawing.Point(32, 9);
+			this.lbl_TGkeyframeColorGeneral.Name = "lbl_TGkeyframeColorGeneral";
+			this.lbl_TGkeyframeColorGeneral.Size = new System.Drawing.Size(73, 13);
+			this.lbl_TGkeyframeColorGeneral.TabIndex = 17;
+			this.lbl_TGkeyframeColorGeneral.Text = "(255,255,255)";
+			this.lbl_TGkeyframeColorGeneral.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// pic_TGkeyframeColorGeneral
+			// 
+			this.pic_TGkeyframeColorGeneral.BackColor = System.Drawing.Color.White;
+			this.pic_TGkeyframeColorGeneral.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_TGkeyframeColorGeneral.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pic_TGkeyframeColorGeneral.Location = new System.Drawing.Point(7, 3);
+			this.pic_TGkeyframeColorGeneral.Name = "pic_TGkeyframeColorGeneral";
+			this.pic_TGkeyframeColorGeneral.Size = new System.Drawing.Size(25, 25);
+			this.pic_TGkeyframeColorGeneral.TabIndex = 16;
+			this.pic_TGkeyframeColorGeneral.TabStop = false;
+			this.pic_TGkeyframeColorGeneral.Tag = "2";
+			this.pic_TGkeyframeColorGeneral.Click += new System.EventHandler(this.ColorBoxItem_Click);
+			// 
+			// label18
+			// 
+			this.label18.AutoSize = true;
+			this.label18.Location = new System.Drawing.Point(84, 137);
+			this.label18.Name = "label18";
+			this.label18.Size = new System.Drawing.Size(118, 13);
+			this.label18.TabIndex = 34;
+			this.label18.Text = "General Keyframe Color";
+			// 
+			// label12
+			// 
+			this.label12.AutoSize = true;
+			this.label12.Location = new System.Drawing.Point(84, 330);
+			this.label12.Name = "label12";
+			this.label12.Size = new System.Drawing.Size(73, 13);
+			this.label12.TabIndex = 32;
+			this.label12.Text = "X Frame Color";
+			// 
+			// panel4
+			// 
+			this.panel4.BackColor = System.Drawing.SystemColors.ControlDark;
+			this.panel4.Controls.Add(this.label13);
+			this.panel4.Controls.Add(this.label14);
+			this.panel4.Controls.Add(this.lbl_T100thFrameColor);
+			this.panel4.Controls.Add(this.pic_T100thFrameColor);
+			this.panel4.Controls.Add(this.lbl_T10thFrameColor);
+			this.panel4.Controls.Add(this.pic_T10thFrameColor);
+			this.panel4.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.panel4.Location = new System.Drawing.Point(82, 347);
+			this.panel4.Name = "panel4";
+			this.panel4.Size = new System.Drawing.Size(215, 44);
+			this.panel4.TabIndex = 33;
+			// 
+			// label13
+			// 
+			this.label13.AutoSize = true;
+			this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label13.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.label13.Location = new System.Drawing.Point(134, 28);
+			this.label13.Name = "label13";
+			this.label13.Size = new System.Drawing.Size(57, 12);
+			this.label13.TabIndex = 23;
+			this.label13.Text = "100th Frame";
+			// 
+			// label14
+			// 
+			this.label14.AutoSize = true;
+			this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label14.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.label14.Location = new System.Drawing.Point(24, 28);
+			this.label14.Name = "label14";
+			this.label14.Size = new System.Drawing.Size(52, 12);
+			this.label14.TabIndex = 22;
+			this.label14.Text = "10th Frame";
+			// 
+			// lbl_T100thFrameColor
+			// 
+			this.lbl_T100thFrameColor.Location = new System.Drawing.Point(128, 9);
+			this.lbl_T100thFrameColor.Name = "lbl_T100thFrameColor";
+			this.lbl_T100thFrameColor.Size = new System.Drawing.Size(73, 13);
+			this.lbl_T100thFrameColor.TabIndex = 19;
+			this.lbl_T100thFrameColor.Text = "(255,255,255)";
+			this.lbl_T100thFrameColor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// pic_T100thFrameColor
+			// 
+			this.pic_T100thFrameColor.BackColor = System.Drawing.Color.White;
+			this.pic_T100thFrameColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_T100thFrameColor.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pic_T100thFrameColor.Location = new System.Drawing.Point(103, 3);
+			this.pic_T100thFrameColor.Name = "pic_T100thFrameColor";
+			this.pic_T100thFrameColor.Size = new System.Drawing.Size(25, 25);
+			this.pic_T100thFrameColor.TabIndex = 18;
+			this.pic_T100thFrameColor.TabStop = false;
+			this.pic_T100thFrameColor.Tag = "12";
+			this.pic_T100thFrameColor.Click += new System.EventHandler(this.ColorBoxItem_Click);
+			// 
+			// lbl_T10thFrameColor
+			// 
+			this.lbl_T10thFrameColor.Location = new System.Drawing.Point(32, 9);
+			this.lbl_T10thFrameColor.Name = "lbl_T10thFrameColor";
+			this.lbl_T10thFrameColor.Size = new System.Drawing.Size(73, 13);
+			this.lbl_T10thFrameColor.TabIndex = 17;
+			this.lbl_T10thFrameColor.Text = "(255,255,255)";
+			this.lbl_T10thFrameColor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// pic_T10thFrameColor
+			// 
+			this.pic_T10thFrameColor.BackColor = System.Drawing.Color.White;
+			this.pic_T10thFrameColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_T10thFrameColor.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pic_T10thFrameColor.Location = new System.Drawing.Point(7, 3);
+			this.pic_T10thFrameColor.Name = "pic_T10thFrameColor";
+			this.pic_T10thFrameColor.Size = new System.Drawing.Size(25, 25);
+			this.pic_T10thFrameColor.TabIndex = 16;
+			this.pic_T10thFrameColor.TabStop = false;
+			this.pic_T10thFrameColor.Tag = "11";
+			this.pic_T10thFrameColor.Click += new System.EventHandler(this.ColorBoxItem_Click);
+			// 
+			// label8
+			// 
+			this.label8.AutoSize = true;
+			this.label8.Location = new System.Drawing.Point(84, 266);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(93, 13);
+			this.label8.TabIndex = 30;
+			this.label8.Text = "Blank Frame Color";
+			// 
+			// panel3
+			// 
+			this.panel3.BackColor = System.Drawing.SystemColors.ControlDark;
+			this.panel3.Controls.Add(this.label9);
+			this.panel3.Controls.Add(this.label11);
+			this.panel3.Controls.Add(this.lbl_TtBlankFrameColorSelected);
+			this.panel3.Controls.Add(this.pic_TtBlankFrameColorSelected);
+			this.panel3.Controls.Add(this.lbl_TtBlankFrameColor);
+			this.panel3.Controls.Add(this.pic_TtBlankFrameColor);
+			this.panel3.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.panel3.Location = new System.Drawing.Point(82, 283);
+			this.panel3.Name = "panel3";
+			this.panel3.Size = new System.Drawing.Size(215, 44);
+			this.panel3.TabIndex = 31;
+			// 
+			// label9
+			// 
+			this.label9.AutoSize = true;
+			this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label9.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.label9.Location = new System.Drawing.Point(142, 28);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(41, 12);
+			this.label9.TabIndex = 23;
+			this.label9.Text = "Selected";
+			// 
+			// label11
+			// 
+			this.label11.AutoSize = true;
+			this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label11.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.label11.Location = new System.Drawing.Point(32, 28);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(37, 12);
+			this.label11.TabIndex = 22;
+			this.label11.Text = "General";
+			// 
+			// lbl_TtBlankFrameColorSelected
+			// 
+			this.lbl_TtBlankFrameColorSelected.Location = new System.Drawing.Point(128, 9);
+			this.lbl_TtBlankFrameColorSelected.Name = "lbl_TtBlankFrameColorSelected";
+			this.lbl_TtBlankFrameColorSelected.Size = new System.Drawing.Size(73, 13);
+			this.lbl_TtBlankFrameColorSelected.TabIndex = 19;
+			this.lbl_TtBlankFrameColorSelected.Text = "(255,255,255)";
+			this.lbl_TtBlankFrameColorSelected.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// pic_TtBlankFrameColorSelected
+			// 
+			this.pic_TtBlankFrameColorSelected.BackColor = System.Drawing.Color.White;
+			this.pic_TtBlankFrameColorSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_TtBlankFrameColorSelected.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pic_TtBlankFrameColorSelected.Location = new System.Drawing.Point(103, 3);
+			this.pic_TtBlankFrameColorSelected.Name = "pic_TtBlankFrameColorSelected";
+			this.pic_TtBlankFrameColorSelected.Size = new System.Drawing.Size(25, 25);
+			this.pic_TtBlankFrameColorSelected.TabIndex = 18;
+			this.pic_TtBlankFrameColorSelected.TabStop = false;
+			this.pic_TtBlankFrameColorSelected.Tag = "10";
+			this.pic_TtBlankFrameColorSelected.Click += new System.EventHandler(this.ColorBoxItem_Click);
+			// 
+			// lbl_TtBlankFrameColor
+			// 
+			this.lbl_TtBlankFrameColor.Location = new System.Drawing.Point(32, 9);
+			this.lbl_TtBlankFrameColor.Name = "lbl_TtBlankFrameColor";
+			this.lbl_TtBlankFrameColor.Size = new System.Drawing.Size(73, 13);
+			this.lbl_TtBlankFrameColor.TabIndex = 17;
+			this.lbl_TtBlankFrameColor.Text = "(255,255,255)";
+			this.lbl_TtBlankFrameColor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// pic_TtBlankFrameColor
+			// 
+			this.pic_TtBlankFrameColor.BackColor = System.Drawing.Color.White;
+			this.pic_TtBlankFrameColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_TtBlankFrameColor.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pic_TtBlankFrameColor.Location = new System.Drawing.Point(7, 3);
+			this.pic_TtBlankFrameColor.Name = "pic_TtBlankFrameColor";
+			this.pic_TtBlankFrameColor.Size = new System.Drawing.Size(25, 25);
+			this.pic_TtBlankFrameColor.TabIndex = 16;
+			this.pic_TtBlankFrameColor.TabStop = false;
+			this.pic_TtBlankFrameColor.Tag = "9";
+			this.pic_TtBlankFrameColor.Click += new System.EventHandler(this.ColorBoxItem_Click);
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(59, 476);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(121, 13);
+			this.label7.TabIndex = 29;
+			this.label7.Text = "Layer Background Color";
+			// 
+			// panel2
+			// 
+			this.panel2.BackColor = System.Drawing.SystemColors.ControlDark;
+			this.panel2.Controls.Add(this.lbl_TtLayerBackgroundColor);
+			this.panel2.Controls.Add(this.pic_TtLayerBackgroundColor);
+			this.panel2.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.panel2.Location = new System.Drawing.Point(184, 466);
+			this.panel2.Name = "panel2";
+			this.panel2.Size = new System.Drawing.Size(113, 32);
+			this.panel2.TabIndex = 28;
+			// 
+			// lbl_TtLayerBackgroundColor
+			// 
+			this.lbl_TtLayerBackgroundColor.Location = new System.Drawing.Point(31, 9);
+			this.lbl_TtLayerBackgroundColor.Name = "lbl_TtLayerBackgroundColor";
+			this.lbl_TtLayerBackgroundColor.Size = new System.Drawing.Size(73, 13);
+			this.lbl_TtLayerBackgroundColor.TabIndex = 17;
+			this.lbl_TtLayerBackgroundColor.Text = "(255,255,255)";
+			this.lbl_TtLayerBackgroundColor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// pic_TtLayerBackgroundColor
+			// 
+			this.pic_TtLayerBackgroundColor.BackColor = System.Drawing.Color.White;
+			this.pic_TtLayerBackgroundColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_TtLayerBackgroundColor.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pic_TtLayerBackgroundColor.Location = new System.Drawing.Point(3, 3);
+			this.pic_TtLayerBackgroundColor.Name = "pic_TtLayerBackgroundColor";
+			this.pic_TtLayerBackgroundColor.Size = new System.Drawing.Size(25, 25);
+			this.pic_TtLayerBackgroundColor.TabIndex = 16;
+			this.pic_TtLayerBackgroundColor.TabStop = false;
+			this.pic_TtLayerBackgroundColor.Tag = "16";
+			this.pic_TtLayerBackgroundColor.Click += new System.EventHandler(this.ColorBoxItem_Click);
+			// 
 			// label32
 			// 
 			this.label32.AutoSize = true;
-			this.label32.Location = new System.Drawing.Point(104, 278);
+			this.label32.Location = new System.Drawing.Point(104, 408);
 			this.label32.Name = "label32";
 			this.label32.Size = new System.Drawing.Size(76, 13);
 			this.label32.TabIndex = 27;
@@ -250,10 +591,10 @@
 			this.pnl_keyframeColorGeneral.BackColor = System.Drawing.SystemColors.ControlDark;
 			this.pnl_keyframeColorGeneral.Controls.Add(this.lbl_lKeyframeColorSelected);
 			this.pnl_keyframeColorGeneral.Controls.Add(this.lbl_lKeyframeColorGeneral);
-			this.pnl_keyframeColorGeneral.Controls.Add(this.lbl_keyframeColorSelected);
-			this.pnl_keyframeColorGeneral.Controls.Add(this.pic_keyframeColorSelected);
-			this.pnl_keyframeColorGeneral.Controls.Add(this.lbl_keyframeColorGeneral);
-			this.pnl_keyframeColorGeneral.Controls.Add(this.pic_keyframeColorGeneral);
+			this.pnl_keyframeColorGeneral.Controls.Add(this.lbl_TFLkeyframeColorSelected);
+			this.pnl_keyframeColorGeneral.Controls.Add(this.pic_TFLkeyframeColorSelected);
+			this.pnl_keyframeColorGeneral.Controls.Add(this.lbl_TFLkeyframeColorGeneral);
+			this.pnl_keyframeColorGeneral.Controls.Add(this.pic_TFLkeyframeColorGeneral);
 			this.pnl_keyframeColorGeneral.Cursor = System.Windows.Forms.Cursors.Default;
 			this.pnl_keyframeColorGeneral.Location = new System.Drawing.Point(82, 88);
 			this.pnl_keyframeColorGeneral.Name = "pnl_keyframeColorGeneral";
@@ -282,59 +623,59 @@
 			this.lbl_lKeyframeColorGeneral.TabIndex = 22;
 			this.lbl_lKeyframeColorGeneral.Text = "General";
 			// 
-			// lbl_keyframeColorSelected
+			// lbl_TFLkeyframeColorSelected
 			// 
-			this.lbl_keyframeColorSelected.Location = new System.Drawing.Point(128, 9);
-			this.lbl_keyframeColorSelected.Name = "lbl_keyframeColorSelected";
-			this.lbl_keyframeColorSelected.Size = new System.Drawing.Size(73, 13);
-			this.lbl_keyframeColorSelected.TabIndex = 19;
-			this.lbl_keyframeColorSelected.Text = "(255,255,255)";
-			this.lbl_keyframeColorSelected.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.lbl_TFLkeyframeColorSelected.Location = new System.Drawing.Point(128, 9);
+			this.lbl_TFLkeyframeColorSelected.Name = "lbl_TFLkeyframeColorSelected";
+			this.lbl_TFLkeyframeColorSelected.Size = new System.Drawing.Size(73, 13);
+			this.lbl_TFLkeyframeColorSelected.TabIndex = 19;
+			this.lbl_TFLkeyframeColorSelected.Text = "(255,255,255)";
+			this.lbl_TFLkeyframeColorSelected.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// pic_keyframeColorSelected
+			// pic_TFLkeyframeColorSelected
 			// 
-			this.pic_keyframeColorSelected.BackColor = System.Drawing.Color.White;
-			this.pic_keyframeColorSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pic_keyframeColorSelected.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.pic_keyframeColorSelected.Location = new System.Drawing.Point(103, 3);
-			this.pic_keyframeColorSelected.Name = "pic_keyframeColorSelected";
-			this.pic_keyframeColorSelected.Size = new System.Drawing.Size(25, 25);
-			this.pic_keyframeColorSelected.TabIndex = 18;
-			this.pic_keyframeColorSelected.TabStop = false;
-			this.pic_keyframeColorSelected.Tag = "KeyframeColorSelected";
-			this.pic_keyframeColorSelected.Click += new System.EventHandler(this.ColorBoxItem_Click);
+			this.pic_TFLkeyframeColorSelected.BackColor = System.Drawing.Color.White;
+			this.pic_TFLkeyframeColorSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_TFLkeyframeColorSelected.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pic_TFLkeyframeColorSelected.Location = new System.Drawing.Point(103, 3);
+			this.pic_TFLkeyframeColorSelected.Name = "pic_TFLkeyframeColorSelected";
+			this.pic_TFLkeyframeColorSelected.Size = new System.Drawing.Size(25, 25);
+			this.pic_TFLkeyframeColorSelected.TabIndex = 18;
+			this.pic_TFLkeyframeColorSelected.TabStop = false;
+			this.pic_TFLkeyframeColorSelected.Tag = "1";
+			this.pic_TFLkeyframeColorSelected.Click += new System.EventHandler(this.ColorBoxItem_Click);
 			// 
-			// lbl_keyframeColorGeneral
+			// lbl_TFLkeyframeColorGeneral
 			// 
-			this.lbl_keyframeColorGeneral.Location = new System.Drawing.Point(32, 9);
-			this.lbl_keyframeColorGeneral.Name = "lbl_keyframeColorGeneral";
-			this.lbl_keyframeColorGeneral.Size = new System.Drawing.Size(73, 13);
-			this.lbl_keyframeColorGeneral.TabIndex = 17;
-			this.lbl_keyframeColorGeneral.Text = "(255,255,255)";
-			this.lbl_keyframeColorGeneral.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.lbl_TFLkeyframeColorGeneral.Location = new System.Drawing.Point(32, 9);
+			this.lbl_TFLkeyframeColorGeneral.Name = "lbl_TFLkeyframeColorGeneral";
+			this.lbl_TFLkeyframeColorGeneral.Size = new System.Drawing.Size(73, 13);
+			this.lbl_TFLkeyframeColorGeneral.TabIndex = 17;
+			this.lbl_TFLkeyframeColorGeneral.Text = "(255,255,255)";
+			this.lbl_TFLkeyframeColorGeneral.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// pic_keyframeColorGeneral
+			// pic_TFLkeyframeColorGeneral
 			// 
-			this.pic_keyframeColorGeneral.BackColor = System.Drawing.Color.White;
-			this.pic_keyframeColorGeneral.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pic_keyframeColorGeneral.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.pic_keyframeColorGeneral.Location = new System.Drawing.Point(7, 3);
-			this.pic_keyframeColorGeneral.Name = "pic_keyframeColorGeneral";
-			this.pic_keyframeColorGeneral.Size = new System.Drawing.Size(25, 25);
-			this.pic_keyframeColorGeneral.TabIndex = 16;
-			this.pic_keyframeColorGeneral.TabStop = false;
-			this.pic_keyframeColorGeneral.Tag = "KeyframeColorGeneral";
-			this.pic_keyframeColorGeneral.Click += new System.EventHandler(this.ColorBoxItem_Click);
+			this.pic_TFLkeyframeColorGeneral.BackColor = System.Drawing.Color.White;
+			this.pic_TFLkeyframeColorGeneral.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_TFLkeyframeColorGeneral.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pic_TFLkeyframeColorGeneral.Location = new System.Drawing.Point(7, 3);
+			this.pic_TFLkeyframeColorGeneral.Name = "pic_TFLkeyframeColorGeneral";
+			this.pic_TFLkeyframeColorGeneral.Size = new System.Drawing.Size(25, 25);
+			this.pic_TFLkeyframeColorGeneral.TabIndex = 16;
+			this.pic_TFLkeyframeColorGeneral.TabStop = false;
+			this.pic_TFLkeyframeColorGeneral.Tag = "0";
+			this.pic_TFLkeyframeColorGeneral.Click += new System.EventHandler(this.ColorBoxItem_Click);
 			// 
 			// pnl_layerNameColor
 			// 
 			this.pnl_layerNameColor.BackColor = System.Drawing.SystemColors.ControlDark;
 			this.pnl_layerNameColor.Controls.Add(this.lbl_layerNameText);
 			this.pnl_layerNameColor.Controls.Add(this.lbl_layerNameBackground);
-			this.pnl_layerNameColor.Controls.Add(this.lbl_layerNameColorSelected);
-			this.pnl_layerNameColor.Controls.Add(this.pic_layerNameColorSelected);
-			this.pnl_layerNameColor.Controls.Add(this.lbl_layerNameColorGeneral);
-			this.pnl_layerNameColor.Controls.Add(this.pic_layerNameColorGeneral);
+			this.pnl_layerNameColor.Controls.Add(this.lbl_TlayerNameColorSelected);
+			this.pnl_layerNameColor.Controls.Add(this.pic_TlayerNameColorSelected);
+			this.pnl_layerNameColor.Controls.Add(this.lbl_TlayerNameColorGeneral);
+			this.pnl_layerNameColor.Controls.Add(this.pic_TlayerNameColorGeneral);
 			this.pnl_layerNameColor.Cursor = System.Windows.Forms.Cursors.Default;
 			this.pnl_layerNameColor.Location = new System.Drawing.Point(82, 23);
 			this.pnl_layerNameColor.Name = "pnl_layerNameColor";
@@ -363,87 +704,87 @@
 			this.lbl_layerNameBackground.TabIndex = 22;
 			this.lbl_layerNameBackground.Text = "Background";
 			// 
-			// lbl_layerNameColorSelected
+			// lbl_TlayerNameColorSelected
 			// 
-			this.lbl_layerNameColorSelected.Location = new System.Drawing.Point(128, 9);
-			this.lbl_layerNameColorSelected.Name = "lbl_layerNameColorSelected";
-			this.lbl_layerNameColorSelected.Size = new System.Drawing.Size(73, 13);
-			this.lbl_layerNameColorSelected.TabIndex = 19;
-			this.lbl_layerNameColorSelected.Text = "(255,255,255)";
-			this.lbl_layerNameColorSelected.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.lbl_TlayerNameColorSelected.Location = new System.Drawing.Point(128, 9);
+			this.lbl_TlayerNameColorSelected.Name = "lbl_TlayerNameColorSelected";
+			this.lbl_TlayerNameColorSelected.Size = new System.Drawing.Size(73, 13);
+			this.lbl_TlayerNameColorSelected.TabIndex = 19;
+			this.lbl_TlayerNameColorSelected.Text = "(255,255,255)";
+			this.lbl_TlayerNameColorSelected.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// pic_layerNameColorSelected
+			// pic_TlayerNameColorSelected
 			// 
-			this.pic_layerNameColorSelected.BackColor = System.Drawing.Color.White;
-			this.pic_layerNameColorSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pic_layerNameColorSelected.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.pic_layerNameColorSelected.Location = new System.Drawing.Point(103, 3);
-			this.pic_layerNameColorSelected.Name = "pic_layerNameColorSelected";
-			this.pic_layerNameColorSelected.Size = new System.Drawing.Size(25, 25);
-			this.pic_layerNameColorSelected.TabIndex = 18;
-			this.pic_layerNameColorSelected.TabStop = false;
-			this.pic_layerNameColorSelected.Tag = "LayerNameColorText";
-			this.pic_layerNameColorSelected.Click += new System.EventHandler(this.ColorBoxItem_Click);
+			this.pic_TlayerNameColorSelected.BackColor = System.Drawing.Color.White;
+			this.pic_TlayerNameColorSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_TlayerNameColorSelected.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pic_TlayerNameColorSelected.Location = new System.Drawing.Point(103, 3);
+			this.pic_TlayerNameColorSelected.Name = "pic_TlayerNameColorSelected";
+			this.pic_TlayerNameColorSelected.Size = new System.Drawing.Size(25, 25);
+			this.pic_TlayerNameColorSelected.TabIndex = 18;
+			this.pic_TlayerNameColorSelected.TabStop = false;
+			this.pic_TlayerNameColorSelected.Tag = "5";
+			this.pic_TlayerNameColorSelected.Click += new System.EventHandler(this.ColorBoxItem_Click);
 			// 
-			// lbl_layerNameColorGeneral
+			// lbl_TlayerNameColorGeneral
 			// 
-			this.lbl_layerNameColorGeneral.Location = new System.Drawing.Point(32, 9);
-			this.lbl_layerNameColorGeneral.Name = "lbl_layerNameColorGeneral";
-			this.lbl_layerNameColorGeneral.Size = new System.Drawing.Size(73, 13);
-			this.lbl_layerNameColorGeneral.TabIndex = 17;
-			this.lbl_layerNameColorGeneral.Text = "(255,255,255)";
-			this.lbl_layerNameColorGeneral.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.lbl_TlayerNameColorGeneral.Location = new System.Drawing.Point(32, 9);
+			this.lbl_TlayerNameColorGeneral.Name = "lbl_TlayerNameColorGeneral";
+			this.lbl_TlayerNameColorGeneral.Size = new System.Drawing.Size(73, 13);
+			this.lbl_TlayerNameColorGeneral.TabIndex = 17;
+			this.lbl_TlayerNameColorGeneral.Text = "(255,255,255)";
+			this.lbl_TlayerNameColorGeneral.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// pic_layerNameColorGeneral
+			// pic_TlayerNameColorGeneral
 			// 
-			this.pic_layerNameColorGeneral.BackColor = System.Drawing.Color.White;
-			this.pic_layerNameColorGeneral.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pic_layerNameColorGeneral.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.pic_layerNameColorGeneral.Location = new System.Drawing.Point(7, 3);
-			this.pic_layerNameColorGeneral.Name = "pic_layerNameColorGeneral";
-			this.pic_layerNameColorGeneral.Size = new System.Drawing.Size(25, 25);
-			this.pic_layerNameColorGeneral.TabIndex = 16;
-			this.pic_layerNameColorGeneral.TabStop = false;
-			this.pic_layerNameColorGeneral.Tag = "LayerNameColorBackground";
-			this.pic_layerNameColorGeneral.Click += new System.EventHandler(this.ColorBoxItem_Click);
+			this.pic_TlayerNameColorGeneral.BackColor = System.Drawing.Color.White;
+			this.pic_TlayerNameColorGeneral.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_TlayerNameColorGeneral.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pic_TlayerNameColorGeneral.Location = new System.Drawing.Point(7, 3);
+			this.pic_TlayerNameColorGeneral.Name = "pic_TlayerNameColorGeneral";
+			this.pic_TlayerNameColorGeneral.Size = new System.Drawing.Size(25, 25);
+			this.pic_TlayerNameColorGeneral.TabIndex = 16;
+			this.pic_TlayerNameColorGeneral.TabStop = false;
+			this.pic_TlayerNameColorGeneral.Tag = "4";
+			this.pic_TlayerNameColorGeneral.Click += new System.EventHandler(this.ColorBoxItem_Click);
 			// 
 			// pnl_gridLineColor
 			// 
 			this.pnl_gridLineColor.BackColor = System.Drawing.SystemColors.ControlDark;
-			this.pnl_gridLineColor.Controls.Add(this.lbl_tGridLineColor);
-			this.pnl_gridLineColor.Controls.Add(this.pic_tGridLineColor);
+			this.pnl_gridLineColor.Controls.Add(this.lbl_TtGridLineColor);
+			this.pnl_gridLineColor.Controls.Add(this.pic_TtGridLineColor);
 			this.pnl_gridLineColor.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.pnl_gridLineColor.Location = new System.Drawing.Point(184, 269);
+			this.pnl_gridLineColor.Location = new System.Drawing.Point(184, 398);
 			this.pnl_gridLineColor.Name = "pnl_gridLineColor";
 			this.pnl_gridLineColor.Size = new System.Drawing.Size(113, 32);
 			this.pnl_gridLineColor.TabIndex = 21;
 			// 
-			// lbl_tGridLineColor
+			// lbl_TtGridLineColor
 			// 
-			this.lbl_tGridLineColor.Location = new System.Drawing.Point(31, 9);
-			this.lbl_tGridLineColor.Name = "lbl_tGridLineColor";
-			this.lbl_tGridLineColor.Size = new System.Drawing.Size(73, 13);
-			this.lbl_tGridLineColor.TabIndex = 17;
-			this.lbl_tGridLineColor.Text = "(255,255,255)";
-			this.lbl_tGridLineColor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.lbl_TtGridLineColor.Location = new System.Drawing.Point(31, 9);
+			this.lbl_TtGridLineColor.Name = "lbl_TtGridLineColor";
+			this.lbl_TtGridLineColor.Size = new System.Drawing.Size(73, 13);
+			this.lbl_TtGridLineColor.TabIndex = 17;
+			this.lbl_TtGridLineColor.Text = "(255,255,255)";
+			this.lbl_TtGridLineColor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// pic_tGridLineColor
+			// pic_TtGridLineColor
 			// 
-			this.pic_tGridLineColor.BackColor = System.Drawing.Color.White;
-			this.pic_tGridLineColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pic_tGridLineColor.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.pic_tGridLineColor.Location = new System.Drawing.Point(3, 3);
-			this.pic_tGridLineColor.Name = "pic_tGridLineColor";
-			this.pic_tGridLineColor.Size = new System.Drawing.Size(25, 25);
-			this.pic_tGridLineColor.TabIndex = 16;
-			this.pic_tGridLineColor.TabStop = false;
-			this.pic_tGridLineColor.Tag = "GridLineColor";
-			this.pic_tGridLineColor.Click += new System.EventHandler(this.ColorBoxItem_Click);
+			this.pic_TtGridLineColor.BackColor = System.Drawing.Color.White;
+			this.pic_TtGridLineColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_TtGridLineColor.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pic_TtGridLineColor.Location = new System.Drawing.Point(3, 3);
+			this.pic_TtGridLineColor.Name = "pic_TtGridLineColor";
+			this.pic_TtGridLineColor.Size = new System.Drawing.Size(25, 25);
+			this.pic_TtGridLineColor.TabIndex = 16;
+			this.pic_TtGridLineColor.TabStop = false;
+			this.pic_TtGridLineColor.Tag = "14";
+			this.pic_TtGridLineColor.Click += new System.EventHandler(this.ColorBoxItem_Click);
 			// 
 			// label10
 			// 
 			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(102, 340);
+			this.label10.Location = new System.Drawing.Point(102, 442);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(78, 13);
 			this.label10.TabIndex = 20;
@@ -461,101 +802,68 @@
 			// panel1
 			// 
 			this.panel1.BackColor = System.Drawing.SystemColors.ControlDark;
-			this.panel1.Controls.Add(this.lbl_tSelectedLayer);
-			this.panel1.Controls.Add(this.pic_tSelectedLayer);
-			this.panel1.Controls.Add(this.lbl_tTimelineColor);
-			this.panel1.Controls.Add(this.pic_tTimelineColor);
+			this.panel1.Controls.Add(this.lbl_TtSelectedLayer);
+			this.panel1.Controls.Add(this.pic_TtSelectedLayer);
 			this.panel1.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.panel1.Location = new System.Drawing.Point(184, 304);
+			this.panel1.Location = new System.Drawing.Point(184, 432);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(113, 58);
+			this.panel1.Size = new System.Drawing.Size(113, 32);
 			this.panel1.TabIndex = 17;
 			// 
-			// lbl_tSelectedLayer
+			// lbl_TtSelectedLayer
 			// 
-			this.lbl_tSelectedLayer.Location = new System.Drawing.Point(31, 36);
-			this.lbl_tSelectedLayer.Name = "lbl_tSelectedLayer";
-			this.lbl_tSelectedLayer.Size = new System.Drawing.Size(73, 13);
-			this.lbl_tSelectedLayer.TabIndex = 19;
-			this.lbl_tSelectedLayer.Text = "(255,255,255)";
-			this.lbl_tSelectedLayer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.lbl_TtSelectedLayer.Location = new System.Drawing.Point(31, 9);
+			this.lbl_TtSelectedLayer.Name = "lbl_TtSelectedLayer";
+			this.lbl_TtSelectedLayer.Size = new System.Drawing.Size(73, 13);
+			this.lbl_TtSelectedLayer.TabIndex = 19;
+			this.lbl_TtSelectedLayer.Text = "(255,255,255)";
+			this.lbl_TtSelectedLayer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// pic_tSelectedLayer
+			// pic_TtSelectedLayer
 			// 
-			this.pic_tSelectedLayer.BackColor = System.Drawing.Color.White;
-			this.pic_tSelectedLayer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pic_tSelectedLayer.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.pic_tSelectedLayer.Location = new System.Drawing.Point(3, 30);
-			this.pic_tSelectedLayer.Name = "pic_tSelectedLayer";
-			this.pic_tSelectedLayer.Size = new System.Drawing.Size(25, 25);
-			this.pic_tSelectedLayer.TabIndex = 18;
-			this.pic_tSelectedLayer.TabStop = false;
-			this.pic_tSelectedLayer.Tag = "SelectedLayer";
-			this.pic_tSelectedLayer.Click += new System.EventHandler(this.ColorBoxItem_Click);
-			// 
-			// lbl_tTimelineColor
-			// 
-			this.lbl_tTimelineColor.Location = new System.Drawing.Point(31, 9);
-			this.lbl_tTimelineColor.Name = "lbl_tTimelineColor";
-			this.lbl_tTimelineColor.Size = new System.Drawing.Size(73, 13);
-			this.lbl_tTimelineColor.TabIndex = 17;
-			this.lbl_tTimelineColor.Text = "(255,255,255)";
-			this.lbl_tTimelineColor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// pic_tTimelineColor
-			// 
-			this.pic_tTimelineColor.BackColor = System.Drawing.Color.White;
-			this.pic_tTimelineColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pic_tTimelineColor.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.pic_tTimelineColor.Location = new System.Drawing.Point(3, 3);
-			this.pic_tTimelineColor.Name = "pic_tTimelineColor";
-			this.pic_tTimelineColor.Size = new System.Drawing.Size(25, 25);
-			this.pic_tTimelineColor.TabIndex = 16;
-			this.pic_tTimelineColor.TabStop = false;
-			this.pic_tTimelineColor.Tag = "TimelineColor";
-			this.pic_tTimelineColor.Click += new System.EventHandler(this.ColorBoxItem_Click);
+			this.pic_TtSelectedLayer.BackColor = System.Drawing.Color.White;
+			this.pic_TtSelectedLayer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_TtSelectedLayer.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pic_TtSelectedLayer.Location = new System.Drawing.Point(3, 3);
+			this.pic_TtSelectedLayer.Name = "pic_TtSelectedLayer";
+			this.pic_TtSelectedLayer.Size = new System.Drawing.Size(25, 25);
+			this.pic_TtSelectedLayer.TabIndex = 18;
+			this.pic_TtSelectedLayer.TabStop = false;
+			this.pic_TtSelectedLayer.Tag = "15";
+			this.pic_TtSelectedLayer.Click += new System.EventHandler(this.ColorBoxItem_Click);
 			// 
 			// lbl_keyframeColor
 			// 
 			this.lbl_keyframeColor.AutoSize = true;
 			this.lbl_keyframeColor.Location = new System.Drawing.Point(84, 71);
 			this.lbl_keyframeColor.Name = "lbl_keyframeColor";
-			this.lbl_keyframeColor.Size = new System.Drawing.Size(78, 13);
+			this.lbl_keyframeColor.Size = new System.Drawing.Size(125, 13);
 			this.lbl_keyframeColor.TabIndex = 18;
-			this.lbl_keyframeColor.Text = "Keyframe Color";
-			// 
-			// label6
-			// 
-			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(107, 313);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(73, 13);
-			this.label6.TabIndex = 0;
-			this.label6.Text = "Timeline Color";
+			this.lbl_keyframeColor.Text = "First/Last Keyframe Color";
 			// 
 			// lbl_blankFrameColor
 			// 
 			this.lbl_blankFrameColor.AutoSize = true;
 			this.lbl_blankFrameColor.Location = new System.Drawing.Point(84, 201);
 			this.lbl_blankFrameColor.Name = "lbl_blankFrameColor";
-			this.lbl_blankFrameColor.Size = new System.Drawing.Size(93, 13);
+			this.lbl_blankFrameColor.Size = new System.Drawing.Size(99, 13);
 			this.lbl_blankFrameColor.TabIndex = 20;
-			this.lbl_blankFrameColor.Text = "Blank Frame Color";
+			this.lbl_blankFrameColor.Text = "Tween Frame Color";
 			// 
-			// pnl_blankFrameColor
+			// pnl_tweenFrameColor
 			// 
-			this.pnl_blankFrameColor.BackColor = System.Drawing.SystemColors.ControlDark;
-			this.pnl_blankFrameColor.Controls.Add(this.lbl_lBlankFrameSelected);
-			this.pnl_blankFrameColor.Controls.Add(this.lbl_lBlankFrameGeneral);
-			this.pnl_blankFrameColor.Controls.Add(this.lbl_blankFrameSelected);
-			this.pnl_blankFrameColor.Controls.Add(this.pic_blankFrameSelected);
-			this.pnl_blankFrameColor.Controls.Add(this.lbl_blankFrameGeneral);
-			this.pnl_blankFrameColor.Controls.Add(this.pic_blankFrameGeneral);
-			this.pnl_blankFrameColor.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.pnl_blankFrameColor.Location = new System.Drawing.Point(82, 218);
-			this.pnl_blankFrameColor.Name = "pnl_blankFrameColor";
-			this.pnl_blankFrameColor.Size = new System.Drawing.Size(215, 44);
-			this.pnl_blankFrameColor.TabIndex = 25;
+			this.pnl_tweenFrameColor.BackColor = System.Drawing.SystemColors.ControlDark;
+			this.pnl_tweenFrameColor.Controls.Add(this.lbl_lBlankFrameSelected);
+			this.pnl_tweenFrameColor.Controls.Add(this.lbl_lBlankFrameGeneral);
+			this.pnl_tweenFrameColor.Controls.Add(this.lbl_TtweenFrameSelected);
+			this.pnl_tweenFrameColor.Controls.Add(this.pic_TtweenFrameSelected);
+			this.pnl_tweenFrameColor.Controls.Add(this.lbl_TtweenFrameGeneral);
+			this.pnl_tweenFrameColor.Controls.Add(this.pic_TtweenFrameGeneral);
+			this.pnl_tweenFrameColor.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pnl_tweenFrameColor.Location = new System.Drawing.Point(82, 218);
+			this.pnl_tweenFrameColor.Name = "pnl_tweenFrameColor";
+			this.pnl_tweenFrameColor.Size = new System.Drawing.Size(215, 44);
+			this.pnl_tweenFrameColor.TabIndex = 25;
 			// 
 			// lbl_lBlankFrameSelected
 			// 
@@ -579,54 +887,54 @@
 			this.lbl_lBlankFrameGeneral.TabIndex = 22;
 			this.lbl_lBlankFrameGeneral.Text = "General";
 			// 
-			// lbl_blankFrameSelected
+			// lbl_TtweenFrameSelected
 			// 
-			this.lbl_blankFrameSelected.Location = new System.Drawing.Point(128, 9);
-			this.lbl_blankFrameSelected.Name = "lbl_blankFrameSelected";
-			this.lbl_blankFrameSelected.Size = new System.Drawing.Size(73, 13);
-			this.lbl_blankFrameSelected.TabIndex = 19;
-			this.lbl_blankFrameSelected.Text = "(255,255,255)";
-			this.lbl_blankFrameSelected.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.lbl_TtweenFrameSelected.Location = new System.Drawing.Point(128, 9);
+			this.lbl_TtweenFrameSelected.Name = "lbl_TtweenFrameSelected";
+			this.lbl_TtweenFrameSelected.Size = new System.Drawing.Size(73, 13);
+			this.lbl_TtweenFrameSelected.TabIndex = 19;
+			this.lbl_TtweenFrameSelected.Text = "(255,255,255)";
+			this.lbl_TtweenFrameSelected.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// pic_blankFrameSelected
+			// pic_TtweenFrameSelected
 			// 
-			this.pic_blankFrameSelected.BackColor = System.Drawing.Color.White;
-			this.pic_blankFrameSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pic_blankFrameSelected.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.pic_blankFrameSelected.Location = new System.Drawing.Point(103, 3);
-			this.pic_blankFrameSelected.Name = "pic_blankFrameSelected";
-			this.pic_blankFrameSelected.Size = new System.Drawing.Size(25, 25);
-			this.pic_blankFrameSelected.TabIndex = 18;
-			this.pic_blankFrameSelected.TabStop = false;
-			this.pic_blankFrameSelected.Tag = "BlankFrameColorSelected";
-			this.pic_blankFrameSelected.Click += new System.EventHandler(this.ColorBoxItem_Click);
+			this.pic_TtweenFrameSelected.BackColor = System.Drawing.Color.White;
+			this.pic_TtweenFrameSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_TtweenFrameSelected.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pic_TtweenFrameSelected.Location = new System.Drawing.Point(103, 3);
+			this.pic_TtweenFrameSelected.Name = "pic_TtweenFrameSelected";
+			this.pic_TtweenFrameSelected.Size = new System.Drawing.Size(25, 25);
+			this.pic_TtweenFrameSelected.TabIndex = 18;
+			this.pic_TtweenFrameSelected.TabStop = false;
+			this.pic_TtweenFrameSelected.Tag = "8";
+			this.pic_TtweenFrameSelected.Click += new System.EventHandler(this.ColorBoxItem_Click);
 			// 
-			// lbl_blankFrameGeneral
+			// lbl_TtweenFrameGeneral
 			// 
-			this.lbl_blankFrameGeneral.Location = new System.Drawing.Point(32, 9);
-			this.lbl_blankFrameGeneral.Name = "lbl_blankFrameGeneral";
-			this.lbl_blankFrameGeneral.Size = new System.Drawing.Size(73, 13);
-			this.lbl_blankFrameGeneral.TabIndex = 17;
-			this.lbl_blankFrameGeneral.Text = "(255,255,255)";
-			this.lbl_blankFrameGeneral.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.lbl_TtweenFrameGeneral.Location = new System.Drawing.Point(32, 9);
+			this.lbl_TtweenFrameGeneral.Name = "lbl_TtweenFrameGeneral";
+			this.lbl_TtweenFrameGeneral.Size = new System.Drawing.Size(73, 13);
+			this.lbl_TtweenFrameGeneral.TabIndex = 17;
+			this.lbl_TtweenFrameGeneral.Text = "(255,255,255)";
+			this.lbl_TtweenFrameGeneral.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// pic_blankFrameGeneral
+			// pic_TtweenFrameGeneral
 			// 
-			this.pic_blankFrameGeneral.BackColor = System.Drawing.Color.White;
-			this.pic_blankFrameGeneral.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pic_blankFrameGeneral.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.pic_blankFrameGeneral.Location = new System.Drawing.Point(7, 3);
-			this.pic_blankFrameGeneral.Name = "pic_blankFrameGeneral";
-			this.pic_blankFrameGeneral.Size = new System.Drawing.Size(25, 25);
-			this.pic_blankFrameGeneral.TabIndex = 16;
-			this.pic_blankFrameGeneral.TabStop = false;
-			this.pic_blankFrameGeneral.Tag = "BlankFrameColorGeneral";
-			this.pic_blankFrameGeneral.Click += new System.EventHandler(this.ColorBoxItem_Click);
+			this.pic_TtweenFrameGeneral.BackColor = System.Drawing.Color.White;
+			this.pic_TtweenFrameGeneral.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_TtweenFrameGeneral.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pic_TtweenFrameGeneral.Location = new System.Drawing.Point(7, 3);
+			this.pic_TtweenFrameGeneral.Name = "pic_TtweenFrameGeneral";
+			this.pic_TtweenFrameGeneral.Size = new System.Drawing.Size(25, 25);
+			this.pic_TtweenFrameGeneral.TabIndex = 16;
+			this.pic_TtweenFrameGeneral.TabStop = false;
+			this.pic_TtweenFrameGeneral.Tag = "7";
+			this.pic_TtweenFrameGeneral.Click += new System.EventHandler(this.ColorBoxItem_Click);
 			// 
 			// lbl_BKeyframeTopBarColor
 			// 
 			this.lbl_BKeyframeTopBarColor.AutoSize = true;
-			this.lbl_BKeyframeTopBarColor.Location = new System.Drawing.Point(84, 136);
+			this.lbl_BKeyframeTopBarColor.Location = new System.Drawing.Point(58, 510);
 			this.lbl_BKeyframeTopBarColor.Name = "lbl_BKeyframeTopBarColor";
 			this.lbl_BKeyframeTopBarColor.Size = new System.Drawing.Size(119, 13);
 			this.lbl_BKeyframeTopBarColor.TabIndex = 24;
@@ -635,83 +943,35 @@
 			// pnl_keyframeTopBarColor
 			// 
 			this.pnl_keyframeTopBarColor.BackColor = System.Drawing.SystemColors.ControlDark;
-			this.pnl_keyframeTopBarColor.Controls.Add(this.lbl_lKeyframeTopBarSelected);
-			this.pnl_keyframeTopBarColor.Controls.Add(this.lbl_lKeyframeTopBarGeneral);
-			this.pnl_keyframeTopBarColor.Controls.Add(this.lbl_keyframeTopBarColorSelected);
-			this.pnl_keyframeTopBarColor.Controls.Add(this.pic_keyframeTopBarColorSelected);
-			this.pnl_keyframeTopBarColor.Controls.Add(this.lbl_keyframeTopBarColorGeneral);
-			this.pnl_keyframeTopBarColor.Controls.Add(this.pic_keyframeTopBarColorGeneral);
+			this.pnl_keyframeTopBarColor.Controls.Add(this.lbl_TkeyframeTopBarColorGeneral);
+			this.pnl_keyframeTopBarColor.Controls.Add(this.pic_TkeyframeTopBarColorGeneral);
 			this.pnl_keyframeTopBarColor.Cursor = System.Windows.Forms.Cursors.Default;
-			this.pnl_keyframeTopBarColor.Location = new System.Drawing.Point(82, 153);
+			this.pnl_keyframeTopBarColor.Location = new System.Drawing.Point(184, 500);
 			this.pnl_keyframeTopBarColor.Name = "pnl_keyframeTopBarColor";
-			this.pnl_keyframeTopBarColor.Size = new System.Drawing.Size(215, 44);
+			this.pnl_keyframeTopBarColor.Size = new System.Drawing.Size(113, 32);
 			this.pnl_keyframeTopBarColor.TabIndex = 24;
 			// 
-			// lbl_lKeyframeTopBarSelected
+			// lbl_TkeyframeTopBarColorGeneral
 			// 
-			this.lbl_lKeyframeTopBarSelected.AutoSize = true;
-			this.lbl_lKeyframeTopBarSelected.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lbl_lKeyframeTopBarSelected.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.lbl_lKeyframeTopBarSelected.Location = new System.Drawing.Point(142, 28);
-			this.lbl_lKeyframeTopBarSelected.Name = "lbl_lKeyframeTopBarSelected";
-			this.lbl_lKeyframeTopBarSelected.Size = new System.Drawing.Size(41, 12);
-			this.lbl_lKeyframeTopBarSelected.TabIndex = 23;
-			this.lbl_lKeyframeTopBarSelected.Text = "Selected";
+			this.lbl_TkeyframeTopBarColorGeneral.Location = new System.Drawing.Point(31, 10);
+			this.lbl_TkeyframeTopBarColorGeneral.Name = "lbl_TkeyframeTopBarColorGeneral";
+			this.lbl_TkeyframeTopBarColorGeneral.Size = new System.Drawing.Size(73, 13);
+			this.lbl_TkeyframeTopBarColorGeneral.TabIndex = 17;
+			this.lbl_TkeyframeTopBarColorGeneral.Text = "(255,255,255)";
+			this.lbl_TkeyframeTopBarColorGeneral.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// lbl_lKeyframeTopBarGeneral
+			// pic_TkeyframeTopBarColorGeneral
 			// 
-			this.lbl_lKeyframeTopBarGeneral.AutoSize = true;
-			this.lbl_lKeyframeTopBarGeneral.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lbl_lKeyframeTopBarGeneral.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.lbl_lKeyframeTopBarGeneral.Location = new System.Drawing.Point(32, 28);
-			this.lbl_lKeyframeTopBarGeneral.Name = "lbl_lKeyframeTopBarGeneral";
-			this.lbl_lKeyframeTopBarGeneral.Size = new System.Drawing.Size(37, 12);
-			this.lbl_lKeyframeTopBarGeneral.TabIndex = 22;
-			this.lbl_lKeyframeTopBarGeneral.Text = "General";
-			// 
-			// lbl_keyframeTopBarColorSelected
-			// 
-			this.lbl_keyframeTopBarColorSelected.Location = new System.Drawing.Point(128, 9);
-			this.lbl_keyframeTopBarColorSelected.Name = "lbl_keyframeTopBarColorSelected";
-			this.lbl_keyframeTopBarColorSelected.Size = new System.Drawing.Size(73, 13);
-			this.lbl_keyframeTopBarColorSelected.TabIndex = 19;
-			this.lbl_keyframeTopBarColorSelected.Text = "(255,255,255)";
-			this.lbl_keyframeTopBarColorSelected.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// pic_keyframeTopBarColorSelected
-			// 
-			this.pic_keyframeTopBarColorSelected.BackColor = System.Drawing.Color.White;
-			this.pic_keyframeTopBarColorSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pic_keyframeTopBarColorSelected.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.pic_keyframeTopBarColorSelected.Location = new System.Drawing.Point(103, 3);
-			this.pic_keyframeTopBarColorSelected.Name = "pic_keyframeTopBarColorSelected";
-			this.pic_keyframeTopBarColorSelected.Size = new System.Drawing.Size(25, 25);
-			this.pic_keyframeTopBarColorSelected.TabIndex = 18;
-			this.pic_keyframeTopBarColorSelected.TabStop = false;
-			this.pic_keyframeTopBarColorSelected.Tag = "KeyfraemTopBarColorSelected";
-			this.pic_keyframeTopBarColorSelected.Click += new System.EventHandler(this.ColorBoxItem_Click);
-			// 
-			// lbl_keyframeTopBarColorGeneral
-			// 
-			this.lbl_keyframeTopBarColorGeneral.Location = new System.Drawing.Point(32, 9);
-			this.lbl_keyframeTopBarColorGeneral.Name = "lbl_keyframeTopBarColorGeneral";
-			this.lbl_keyframeTopBarColorGeneral.Size = new System.Drawing.Size(73, 13);
-			this.lbl_keyframeTopBarColorGeneral.TabIndex = 17;
-			this.lbl_keyframeTopBarColorGeneral.Text = "(255,255,255)";
-			this.lbl_keyframeTopBarColorGeneral.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// pic_keyframeTopBarColorGeneral
-			// 
-			this.pic_keyframeTopBarColorGeneral.BackColor = System.Drawing.Color.White;
-			this.pic_keyframeTopBarColorGeneral.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pic_keyframeTopBarColorGeneral.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.pic_keyframeTopBarColorGeneral.Location = new System.Drawing.Point(7, 3);
-			this.pic_keyframeTopBarColorGeneral.Name = "pic_keyframeTopBarColorGeneral";
-			this.pic_keyframeTopBarColorGeneral.Size = new System.Drawing.Size(25, 25);
-			this.pic_keyframeTopBarColorGeneral.TabIndex = 16;
-			this.pic_keyframeTopBarColorGeneral.TabStop = false;
-			this.pic_keyframeTopBarColorGeneral.Tag = "KeyframeTopBarColorGeneral";
-			this.pic_keyframeTopBarColorGeneral.Click += new System.EventHandler(this.ColorBoxItem_Click);
+			this.pic_TkeyframeTopBarColorGeneral.BackColor = System.Drawing.Color.White;
+			this.pic_TkeyframeTopBarColorGeneral.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pic_TkeyframeTopBarColorGeneral.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pic_TkeyframeTopBarColorGeneral.Location = new System.Drawing.Point(3, 4);
+			this.pic_TkeyframeTopBarColorGeneral.Name = "pic_TkeyframeTopBarColorGeneral";
+			this.pic_TkeyframeTopBarColorGeneral.Size = new System.Drawing.Size(25, 25);
+			this.pic_TkeyframeTopBarColorGeneral.TabIndex = 16;
+			this.pic_TkeyframeTopBarColorGeneral.TabStop = false;
+			this.pic_TkeyframeTopBarColorGeneral.Tag = "6";
+			this.pic_TkeyframeTopBarColorGeneral.Click += new System.EventHandler(this.ColorBoxItem_Click);
 			// 
 			// pnl_Updates
 			// 
@@ -1009,24 +1269,24 @@
 			this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
 			this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-			listViewGroup1.Header = "General";
-			listViewGroup1.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-			listViewGroup1.Name = "lvg_General";
-			listViewGroup2.Header = "Theme";
-			listViewGroup2.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-			listViewGroup2.Name = "lvg_Themes";
+			listViewGroup3.Header = "General";
+			listViewGroup3.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+			listViewGroup3.Name = "lvg_General";
+			listViewGroup4.Header = "Theme";
+			listViewGroup4.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+			listViewGroup4.Name = "lvg_Themes";
 			this.listView1.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup1,
-            listViewGroup2});
+            listViewGroup3,
+            listViewGroup4});
 			this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
 			this.listView1.HideSelection = false;
-			listViewItem1.Group = listViewGroup1;
-			listViewItem2.Group = listViewGroup1;
-			listViewItem3.Group = listViewGroup2;
+			listViewItem4.Group = listViewGroup3;
+			listViewItem5.Group = listViewGroup3;
+			listViewItem6.Group = listViewGroup4;
 			this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2,
-            listViewItem3});
+            listViewItem4,
+            listViewItem5,
+            listViewItem6});
 			this.listView1.Location = new System.Drawing.Point(0, 0);
 			this.listView1.MultiSelect = false;
 			this.listView1.Name = "listView1";
@@ -1056,54 +1316,13 @@
 			this.btn_submitButton.UseVisualStyleBackColor = true;
 			this.btn_submitButton.Click += new System.EventHandler(this.btn_submitButton_Click);
 			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(59, 373);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(121, 13);
-			this.label7.TabIndex = 29;
-			this.label7.Text = "Layer Background Color";
-			// 
-			// panel2
-			// 
-			this.panel2.BackColor = System.Drawing.SystemColors.ControlDark;
-			this.panel2.Controls.Add(this.lbl_tLayerBackgroundColor);
-			this.panel2.Controls.Add(this.pic_tLayerBackgroundColor);
-			this.panel2.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.panel2.Location = new System.Drawing.Point(184, 364);
-			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(113, 32);
-			this.panel2.TabIndex = 28;
-			// 
-			// lbl_tLayerBackgroundColor
-			// 
-			this.lbl_tLayerBackgroundColor.Location = new System.Drawing.Point(31, 9);
-			this.lbl_tLayerBackgroundColor.Name = "lbl_tLayerBackgroundColor";
-			this.lbl_tLayerBackgroundColor.Size = new System.Drawing.Size(73, 13);
-			this.lbl_tLayerBackgroundColor.TabIndex = 17;
-			this.lbl_tLayerBackgroundColor.Text = "(255,255,255)";
-			this.lbl_tLayerBackgroundColor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// pic_tLayerBackgroundColor
-			// 
-			this.pic_tLayerBackgroundColor.BackColor = System.Drawing.Color.White;
-			this.pic_tLayerBackgroundColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pic_tLayerBackgroundColor.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.pic_tLayerBackgroundColor.Location = new System.Drawing.Point(3, 3);
-			this.pic_tLayerBackgroundColor.Name = "pic_tLayerBackgroundColor";
-			this.pic_tLayerBackgroundColor.Size = new System.Drawing.Size(25, 25);
-			this.pic_tLayerBackgroundColor.TabIndex = 16;
-			this.pic_tLayerBackgroundColor.TabStop = false;
-			this.pic_tLayerBackgroundColor.Tag = "GridLineColor";
-			this.pic_tLayerBackgroundColor.Click += new System.EventHandler(this.ColorBoxItem_Click);
-			// 
 			// Preferences
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(524, 292);
 			this.Controls.Add(this.splitContainer1);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
 			this.MaximumSize = new System.Drawing.Size(540, 330);
 			this.MinimizeBox = false;
@@ -1119,27 +1338,38 @@
 			this.pnl_TimelineTheme.ResumeLayout(false);
 			this.pnl_themeScrollPanel.ResumeLayout(false);
 			this.pnl_themeScrollPanel.PerformLayout();
+			this.panel5.ResumeLayout(false);
+			this.panel5.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TGkeyframeColorSelected)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TGkeyframeColorGeneral)).EndInit();
+			this.panel4.ResumeLayout(false);
+			this.panel4.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pic_T100thFrameColor)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_T10thFrameColor)).EndInit();
+			this.panel3.ResumeLayout(false);
+			this.panel3.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TtBlankFrameColorSelected)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TtBlankFrameColor)).EndInit();
+			this.panel2.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.pic_TtLayerBackgroundColor)).EndInit();
 			this.pnl_keyframeColorGeneral.ResumeLayout(false);
 			this.pnl_keyframeColorGeneral.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pic_keyframeColorSelected)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pic_keyframeColorGeneral)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TFLkeyframeColorSelected)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TFLkeyframeColorGeneral)).EndInit();
 			this.pnl_layerNameColor.ResumeLayout(false);
 			this.pnl_layerNameColor.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pic_layerNameColorSelected)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pic_layerNameColorGeneral)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TlayerNameColorSelected)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TlayerNameColorGeneral)).EndInit();
 			this.pnl_gridLineColor.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.pic_tGridLineColor)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TtGridLineColor)).EndInit();
 			this.panel1.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.pic_tSelectedLayer)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pic_tTimelineColor)).EndInit();
-			this.pnl_blankFrameColor.ResumeLayout(false);
-			this.pnl_blankFrameColor.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pic_blankFrameSelected)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pic_blankFrameGeneral)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TtSelectedLayer)).EndInit();
+			this.pnl_tweenFrameColor.ResumeLayout(false);
+			this.pnl_tweenFrameColor.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TtweenFrameSelected)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TtweenFrameGeneral)).EndInit();
 			this.pnl_keyframeTopBarColor.ResumeLayout(false);
-			this.pnl_keyframeTopBarColor.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pic_keyframeTopBarColorSelected)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pic_keyframeTopBarColorGeneral)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_TkeyframeTopBarColorGeneral)).EndInit();
 			this.pnl_Updates.ResumeLayout(false);
 			this.pnl_Updates.PerformLayout();
 			this.pnl_General.ResumeLayout(false);
@@ -1154,8 +1384,6 @@
 			this.pnl_colorButtonHitbox.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pic_ColorBox)).EndInit();
 			this.pnl_Submit.ResumeLayout(false);
-			this.panel2.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.pic_tLayerBackgroundColor)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -1197,54 +1425,71 @@
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Panel pnl_TimelineTheme;
 		private System.Windows.Forms.Panel pnl_gridLineColor;
-		private System.Windows.Forms.Label lbl_tGridLineColor;
-		private System.Windows.Forms.PictureBox pic_tGridLineColor;
+		private System.Windows.Forms.Label lbl_TtGridLineColor;
+		private System.Windows.Forms.PictureBox pic_TtGridLineColor;
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Label lbl_tSelectedLayer;
-		private System.Windows.Forms.PictureBox pic_tSelectedLayer;
-		private System.Windows.Forms.Label lbl_tTimelineColor;
-		private System.Windows.Forms.PictureBox pic_tTimelineColor;
-		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.Label lbl_TtSelectedLayer;
+		private System.Windows.Forms.PictureBox pic_TtSelectedLayer;
 		private System.Windows.Forms.Label label32;
 		private System.Windows.Forms.Panel pnl_themeScrollPanel;
 		private System.Windows.Forms.Panel pnl_keyframeColorGeneral;
 		private System.Windows.Forms.Label lbl_lKeyframeColorSelected;
 		private System.Windows.Forms.Label lbl_lKeyframeColorGeneral;
-		private System.Windows.Forms.Label lbl_keyframeColorSelected;
-		private System.Windows.Forms.PictureBox pic_keyframeColorSelected;
-		private System.Windows.Forms.Label lbl_keyframeColorGeneral;
-		private System.Windows.Forms.PictureBox pic_keyframeColorGeneral;
+		private System.Windows.Forms.Label lbl_TFLkeyframeColorSelected;
+		private System.Windows.Forms.PictureBox pic_TFLkeyframeColorSelected;
+		private System.Windows.Forms.Label lbl_TFLkeyframeColorGeneral;
+		private System.Windows.Forms.PictureBox pic_TFLkeyframeColorGeneral;
 		private System.Windows.Forms.Panel pnl_layerNameColor;
 		private System.Windows.Forms.Label lbl_layerNameText;
 		private System.Windows.Forms.Label lbl_layerNameBackground;
-		private System.Windows.Forms.Label lbl_layerNameColorSelected;
-		private System.Windows.Forms.PictureBox pic_layerNameColorSelected;
-		private System.Windows.Forms.Label lbl_layerNameColorGeneral;
-		private System.Windows.Forms.PictureBox pic_layerNameColorGeneral;
+		private System.Windows.Forms.Label lbl_TlayerNameColorSelected;
+		private System.Windows.Forms.PictureBox pic_TlayerNameColorSelected;
+		private System.Windows.Forms.Label lbl_TlayerNameColorGeneral;
+		private System.Windows.Forms.PictureBox pic_TlayerNameColorGeneral;
 		private System.Windows.Forms.Label lbl_layerNameColor;
 		private System.Windows.Forms.Label lbl_keyframeColor;
 		private System.Windows.Forms.Label lbl_blankFrameColor;
-		private System.Windows.Forms.Panel pnl_blankFrameColor;
+		private System.Windows.Forms.Panel pnl_tweenFrameColor;
 		private System.Windows.Forms.Label lbl_lBlankFrameSelected;
 		private System.Windows.Forms.Label lbl_lBlankFrameGeneral;
-		private System.Windows.Forms.Label lbl_blankFrameSelected;
-		private System.Windows.Forms.PictureBox pic_blankFrameSelected;
-		private System.Windows.Forms.Label lbl_blankFrameGeneral;
-		private System.Windows.Forms.PictureBox pic_blankFrameGeneral;
+		private System.Windows.Forms.Label lbl_TtweenFrameSelected;
+		private System.Windows.Forms.PictureBox pic_TtweenFrameSelected;
+		private System.Windows.Forms.Label lbl_TtweenFrameGeneral;
+		private System.Windows.Forms.PictureBox pic_TtweenFrameGeneral;
 		private System.Windows.Forms.Label lbl_BKeyframeTopBarColor;
 		private System.Windows.Forms.Panel pnl_keyframeTopBarColor;
-		private System.Windows.Forms.Label lbl_lKeyframeTopBarSelected;
-		private System.Windows.Forms.Label lbl_lKeyframeTopBarGeneral;
-		private System.Windows.Forms.Label lbl_keyframeTopBarColorSelected;
-		private System.Windows.Forms.PictureBox pic_keyframeTopBarColorSelected;
-		private System.Windows.Forms.Label lbl_keyframeTopBarColorGeneral;
-		private System.Windows.Forms.PictureBox pic_keyframeTopBarColorGeneral;
+		private System.Windows.Forms.Label lbl_TkeyframeTopBarColorGeneral;
+		private System.Windows.Forms.PictureBox pic_TkeyframeTopBarColorGeneral;
 		private System.Windows.Forms.Button btn_saveTheme;
 		private System.Windows.Forms.Button btn_loadTheme;
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.Panel panel2;
-		private System.Windows.Forms.Label lbl_tLayerBackgroundColor;
-		private System.Windows.Forms.PictureBox pic_tLayerBackgroundColor;
+		private System.Windows.Forms.Label lbl_TtLayerBackgroundColor;
+		private System.Windows.Forms.PictureBox pic_TtLayerBackgroundColor;
+		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.Panel panel3;
+		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.Label label11;
+		private System.Windows.Forms.Label lbl_TtBlankFrameColorSelected;
+		private System.Windows.Forms.PictureBox pic_TtBlankFrameColorSelected;
+		private System.Windows.Forms.Label lbl_TtBlankFrameColor;
+		private System.Windows.Forms.PictureBox pic_TtBlankFrameColor;
+		private System.Windows.Forms.Label label12;
+		private System.Windows.Forms.Panel panel4;
+		private System.Windows.Forms.Label label13;
+		private System.Windows.Forms.Label label14;
+		private System.Windows.Forms.Label lbl_T100thFrameColor;
+		private System.Windows.Forms.PictureBox pic_T100thFrameColor;
+		private System.Windows.Forms.Label lbl_T10thFrameColor;
+		private System.Windows.Forms.PictureBox pic_T10thFrameColor;
+		private System.Windows.Forms.Panel panel5;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.Label label15;
+		private System.Windows.Forms.Label lbl_TGkeyframeColorSelected;
+		private System.Windows.Forms.PictureBox pic_TGkeyframeColorSelected;
+		private System.Windows.Forms.Label lbl_TGkeyframeColorGeneral;
+		private System.Windows.Forms.PictureBox pic_TGkeyframeColorGeneral;
+		private System.Windows.Forms.Label label18;
 	}
 }

@@ -171,8 +171,8 @@ namespace TISFAT_Zero
 					//tolerance of about 4 pixels.
 					f = activeFigure.selectPoint(new Point(e.X, e.Y), 6);
 
-					//if(!hasLockedJoint)
-					//	activeFigure.setAsBase(activeFigure.Joints[(activeFigure.Joints.IndexOf(f) + 1) % activeFigure.Joints.Count]);
+					if(!hasLockedJoint)
+						activeFigure.setAsBase(activeFigure.FigureJoints[(activeFigure.FigureJoints.IndexOf(f) + 1) % activeFigure.FigureJoints.Count]);
 
 					//Sets the selectedJoint variable to the joint that we just selected.
 					selectedJoint = f;
@@ -200,7 +200,7 @@ namespace TISFAT_Zero
 							hasLockedJoint = !hasLockedJoint;
 							GL_GRAPHICS.Invalidate();
 							selectedJoint = f;
-							//activeFigure.setAsBase(f);
+							activeFigure.setAsBase(f);
 						}
 					}
 					catch
@@ -478,7 +478,7 @@ namespace TISFAT_Zero
 			GL.LoadIdentity();
 			GL.Viewport(0, 0, GL_WIDTH, GL_HEIGHT);
 			GL.Ortho(0, GL_WIDTH, 0, GL_HEIGHT, -1, 1);
-			GL.ClearColor(Color.White);
+			GL.ClearColor(Properties.User.Default.CanvasColor);
 
 			//Since we are 2d, we don't need the depth test
 			GL.Disable(EnableCap.DepthTest);

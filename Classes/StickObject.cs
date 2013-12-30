@@ -224,6 +224,8 @@ namespace TISFAT_Zero
 
 			Centre.parentJoint = null;
 
+			reSortJoints();
+
 			for (int i = 0; i < FigureJoints.Count(); i++)
 				if (FigureJoints[i].parentJoint != null)
 					FigureJoints[i].CalcLength(null);
@@ -238,7 +240,6 @@ namespace TISFAT_Zero
 			next.parentJoint = prev;
 			prev.childJoints.Add(next);
 
-			//Swap the color and draw order so they draw and color correctly. No idea if this works correctly.
 			Color x = prev.jointColor;
 			prev.jointColor = next.jointColor;
 			next.jointColor = x;
@@ -250,7 +251,7 @@ namespace TISFAT_Zero
 
 		public void reSortJoints()
 		{
-			//Joints.Sort(Functions.compareDrawOrder);
+			FigureJoints.Sort(Functions.compareDrawOrder);
 		}
 
 		public static List<StickJoint> copyJoints(List<StickJoint> original)

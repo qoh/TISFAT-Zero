@@ -109,13 +109,15 @@ namespace TISFAT_Zero.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Setting {
+        [global::System.Configuration.DefaultSettingValueAttribute("200 190 245 255 0 0 170 170 170 255 0 0 70 120 255 0 0 0 0 0 0 255 255 255 255 0 " +
+            "0 220 220 220 255 0 0 40 230 255 255 192 203 0 0 0 140 140 140 200 200 200 30 10" +
+            "0 255")]
+        public string theme {
             get {
-                return ((string)(this["Setting"]));
+                return ((string)(this["theme"]));
             }
             set {
-                this["Setting"] = value;
+                this["theme"] = value;
             }
         }
     }

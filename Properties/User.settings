@@ -23,8 +23,8 @@
     <Setting Name="DefaultSavePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">%userprofile%\My Documents\TISFAT</Value>
     </Setting>
-    <Setting Name="Setting" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="theme" Type="System.String" Scope="User">
+      <Value Profile="(Default)">200 190 245 255 0 0 170 170 170 255 0 0 70 120 255 0 0 0 0 0 0 255 255 255 255 0 0 220 220 220 255 0 0 40 230 255 255 192 203 0 0 0 140 140 140 200 200 200 30 100 255</Value>
     </Setting>
   </Settings>
 </SettingsFile>

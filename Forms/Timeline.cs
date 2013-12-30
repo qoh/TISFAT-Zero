@@ -15,7 +15,7 @@ namespace TISFAT_Zero
 
 		public MainF MainForm;
 		public static List<Layer> Layers = new List<Layer>();
-		private static Color[] Colors;
+		public static Color[] Colors;
 
 		private static double Scrollbar_eX = 0.0, Scrollbar_eY = 0.0;
 		public int pxOffsetX, pxOffsetY;
@@ -81,7 +81,27 @@ namespace TISFAT_Zero
 			LoadGraphics();
 
 			MainForm = f;
-			Colors = new Color[] { Color.FromArgb(220, 220, 220), Color.FromArgb(140, 140, 140), Color.FromArgb(200, 200, 200), Color.FromArgb(70, 120, 255), Color.FromArgb(40, 230, 255), Color.FromArgb(30, 100, 255) };
+			
+			Colors = new Color[] {
+				Color.FromArgb(200, 190, 245),
+				Color.FromArgb(255, 0, 0),
+				Color.FromArgb(170, 170, 170),
+				Color.FromArgb(255, 0, 0),
+				Color.FromArgb(70, 120, 255),
+				Color.FromArgb(0, 0, 0),
+				Color.FromArgb(0, 0, 0),
+				Color.FromArgb(255, 255, 255),
+				Color.FromArgb(255, 0, 0),
+				Color.FromArgb(220, 220, 220),
+				Color.FromArgb(255, 0, 0),
+				Color.FromArgb(40, 230, 255),
+				Color.FromArgb(255, 192, 203),
+				Color.FromArgb(0, 0, 0),
+				Color.FromArgb(140, 140, 140),
+				Color.FromArgb(200, 200, 200),
+				Color.FromArgb(30, 100, 255)
+			};
+
 
 			zerotonine[0] = new T0Bitmap(Properties.Resources._0); zerotonine[1] = new T0Bitmap(Properties.Resources._1);
 			zerotonine[2] = new T0Bitmap(Properties.Resources._2); zerotonine[3] = new T0Bitmap(Properties.Resources._3);
@@ -95,7 +115,7 @@ namespace TISFAT_Zero
 			using (Bitmap raw = new Bitmap(79, 15))
 			using (Graphics g = Graphics.FromImage(raw))
 			{
-				g.Clear(Colors[5]);
+				g.Clear(Colors[16]);
 				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
 				g.DrawString("TIMELINE", F, Brushes.Black, y);
 
@@ -133,7 +153,7 @@ namespace TISFAT_Zero
 			GL.LoadIdentity();
 
 			GL.Clear(ClearBufferMask.ColorBufferBit);
-			GL.ClearColor(Colors[0]);
+			GL.ClearColor(Colors[9]);
 
 			GL.Ortho(0, Width, Height, 0, 0, 1);
 
@@ -200,7 +220,7 @@ namespace TISFAT_Zero
 
 			int endL_ind = Math.Min(Layers.Count, ind_L + maxLayers), endF_ind = ind_F + maxFrames;
 
-			//Getting the draw order for this exactly right was very difficult...
+			//Getting the draw order for this exactly right was very difficult... NEVERMIND THIS ITS FUCKING WRONG OK
 
 			#endregion Init. stuff
 
@@ -208,7 +228,7 @@ namespace TISFAT_Zero
 
 			if (selectedLayer_Ind >= ind_L && selectedLayer_Ind < endL_ind)
 			{
-				GL.Color3(Colors[2]);
+				GL.Color3(Colors[15]);
 				GL.Begin(PrimitiveType.Quads);
 
 				int y = 16 * (selectedLayer_Ind - ind_L) + start_L;
@@ -223,7 +243,7 @@ namespace TISFAT_Zero
 
 			#region Colored bars and such
 
-			GL.Color4(Colors[1]);
+			GL.Color4(Colors[14]);
 			GL.Begin(PrimitiveType.Lines);
 
 			GL.Vertex2(80, 15); GL.Vertex2(Width, 15);
@@ -237,9 +257,9 @@ namespace TISFAT_Zero
 				Color c = Color.Empty;
 
 				if ((a + 1) % 100 == 0)
-					c = Color.Pink;
+					c = Colors[12];
 				else if ((a + 1) % 10 == 0)
-					c = Color.FromArgb(40, 230, 255);
+					c = Colors[11];
 
 				if (c != Color.Empty)
 				{
@@ -254,7 +274,7 @@ namespace TISFAT_Zero
 					drawFrame(x, c, true);
 				}
 
-				GL.Color3(Colors[1]);
+				GL.Color3(Colors[14]);
 				GL.Begin(PrimitiveType.Lines);
 
 				GL.Vertex2(p - 1, 0); GL.Vertex2(p - 1, Height);
@@ -312,17 +332,17 @@ namespace TISFAT_Zero
 
 					for (KeyFrame f1 = fs[framepos], f2 = fs[framepos + 1]; framepos < max; )
 					{
-						Color c = Color.DarkGray;
+						Color c = Colors[2];
 
 						if (framepos == 0)
-							c = Color.FromArgb(255, 200, 190, 245);
+							c = Colors[0];
 
 						drawFrame(renderingpos1, p2, c);
 						renderingpos1 += 9;
 
 						if (renderingpos1 != renderingpos2)
 						{
-							GL.Color3(Color.White);
+							GL.Color3(Colors[7]);
 
 							GL.Begin(PrimitiveType.Quads);
 
@@ -333,14 +353,14 @@ namespace TISFAT_Zero
 
 							if (rendernow && selectedFrame_Ind > f1.Position && selectedFrame_Ind < f2.Position)
 							{
-								drawFrame(rendpoint, Color.Red, true);
+								drawFrame(rendpoint, Colors[8], true);
 
 								rendered = true;
 							}
 
 							p2 += 11;
 
-							GL.Color4(Color.Black);
+							GL.Color4(Colors[13]);
 							GL.Begin(PrimitiveType.LineStrip);
 
 							GL.Vertex2(renderingpos1 + 2, p2); GL.Vertex2(renderingpos2 - 3, p2);
@@ -353,7 +373,7 @@ namespace TISFAT_Zero
 							GL.Vertex2(renderingpos2 - 3, p2); GL.Vertex2(renderingpos2 - 5, p2 + 3);
 							p2 -= 11;
 
-							GL.Color4(Colors[1]);
+							GL.Color4(Colors[14]);
 							GL.Vertex2(renderingpos2 - 1, p2); GL.Vertex2(renderingpos2 - 1, p2 + 16);
 
 							GL.End();
@@ -370,7 +390,7 @@ namespace TISFAT_Zero
 						renderingpos2 = 9 * (fs[framepos + 1].Position - ind_F) + p1;
 					}
 
-					drawFrame(renderingpos2, p2, Color.FromArgb(200, 190, 245));
+					drawFrame(renderingpos2, p2, Colors[0]);
 
 					framesetpos++;
 					if (framesetpos < current.Framesets.Count)
@@ -381,7 +401,7 @@ namespace TISFAT_Zero
 			}
 
 			if (!renderinloop)
-				drawFrame(rendpoint, Color.Red, selectedFrame_RType == 0);
+				drawFrame(rendpoint, selectedFrame_RType == 0 ? Colors[10] : Colors[1], selectedFrame_RType == 0);
 
 			#endregion Layer Frames rendering
 
@@ -394,21 +414,21 @@ namespace TISFAT_Zero
 				Color c = Color.Empty;
 
 				if ((a + 1) % 100 == 0)
-					c = Color.Pink;
+					c = Colors[12];
 				else if ((a + 1) % 10 == 0)
-					c = Color.FromArgb(40, 230, 255);
+					c = Colors[11];
 
 				if (c == Color.Empty)
 					if (selectedLayer_Ind != -1)
-						drawFrame(x, Colors[0], true);
+						drawFrame(x, Colors[9], true);
 					else
-						drawFrame(x, Colors[2], true);
+						drawFrame(x, Colors[15], true);
 				else
 					drawFrame(x, c, true);
 
 				zerotonine[(a + 1) % 10].Draw(this, x);
 
-				GL.Color3(Colors[1]);
+				GL.Color3(Colors[14]);
 				GL.Begin(PrimitiveType.Lines);
 
 				GL.Vertex2(p - 1, 0);
@@ -441,7 +461,7 @@ namespace TISFAT_Zero
 			{
 				//Draw a blue rectangle through the remaining area of the layers display
 				GL.Begin(PrimitiveType.Quads);
-				GL.Color3(Colors[5]);
+				GL.Color3(Colors[16]);
 
 				GL.Vertex2(0, endll-16);
 				GL.Vertex2(0, Height);
@@ -459,9 +479,9 @@ namespace TISFAT_Zero
 				GL.Color3(Color.Red);
 				GL.Begin(PrimitiveType.LineStrip);
 
-				GL.Vertex2(x + 7, 1); GL.Vertex2(x + 7, 15);
+				GL.Vertex2(x + 7, 0); GL.Vertex2(x + 7, 15);
 				GL.Vertex2(x, 14); GL.Vertex2(x, 0);
-				GL.Vertex2(x + 8, 0); GL.Vertex2(x + 8, 16);
+				GL.Vertex2(x + 8, 0); GL.Vertex2(x + 8, 15);
 
 				x--;
 
@@ -581,9 +601,9 @@ namespace TISFAT_Zero
 			using (Bitmap raw = new Bitmap(79, 15))
 			using (Graphics g = Graphics.FromImage(raw))
 			{
-				g.Clear(Colors[3]);
+				g.Clear(Colors[4]);
 				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-				g.DrawString(name, F, Brushes.Black, y);
+				g.DrawString(name, F, new SolidBrush(Colors[5]), y);
 
 				layerNames.Add(new T0Bitmap(raw));
 			}
@@ -628,7 +648,7 @@ namespace TISFAT_Zero
 
 				if (!nofancy)
 				{
-					GL.Color4(Color.FromArgb(127, 0, 0, 0));
+					GL.Color4(Color.FromArgb(127, Colors[6].R, Colors[6].G, Colors[6].B));
 
 					GL.Vertex2(p.X, p.Y);
 					GL.Vertex2(p.X, p.Y + 2);
