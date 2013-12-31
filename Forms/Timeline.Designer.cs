@@ -69,7 +69,7 @@ namespace TISFAT_Zero
 			this.glgraphics.BackColor = System.Drawing.Color.Black;
 			this.glgraphics.Location = new System.Drawing.Point(0, 0);
 			this.glgraphics.Name = "glgraphics";
-			this.glgraphics.Size = new System.Drawing.Size(1920, 1080);
+			this.glgraphics.Size = Screen.PrimaryScreen.Bounds.Size;
 			this.glgraphics.TabIndex = 0;
 			this.glgraphics.VSync = false;
 			this.glgraphics.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Timeline_MouseDown);

@@ -135,78 +135,52 @@ namespace TISFAT_Zero
 			location.Y = Convert.ToInt32(vy);
 		}
 
-		private void Recalc(StickJoint pStart = null)
+		public void setPos(int x, int y)
 		{
-			if (pStart == null || pStart.childJoints.Count == 0)
-				return;
+			StickJoint thisJoint = this, parent = parentJoint;
+
+			thisJoint.location = new Point(x, y);
+
+			for (; parent != null; thisJoint = parent, parent = thisJoint.parentJoint)
+			{
+				if (parent.jointState != 0)
+				{
+					adjustTo(parent, thisJoint, false);
+					break;
+				}
+
+				adjustTo(thisJoint, parent, false);
+			}
+
+			adjustThroughChildren(thisJoint);
+		}
+
+		public void adjustThroughChildren(StickJoint pStart = null)
+		{
+			if (pStart == null)
+				pStart = this;
 
 			foreach (StickJoint pJoint in pStart.childJoints)
 			{
-				int xDiff = pStart.location.X - pJoint.location.X;
-				int yDiff = pStart.location.Y - pJoint.location.Y;
-
-				double dAngle = 180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI);
-				double dRads = (Math.PI * dAngle) / 180;
-
-				if (pStart.parentJoint != null)
-				{
-					xDiff = pStart.parentJoint.location.X - pStart.location.X;
-					yDiff = pStart.parentJoint.location.Y - pStart.location.Y;
-					pJoint.AngleToParent = (180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI)) - dAngle;
-				}
-
-				double cx = Math.Round(pJoint.length * Math.Cos(dRads));
-				double cy = Math.Round(pJoint.length * Math.Sin(dRads));
-
-				pJoint.SetPosAbs(Math.Round(pStart.location.X + cx), Math.Round(pStart.location.Y + cy));
-				Recalc(pJoint);
+				adjustTo(pStart, pJoint, true);
+				adjustThroughChildren(pJoint);
 			}
 		}
 
-		public void setPos(int vx, int vy)
+		public void adjustTo(StickJoint start, StickJoint end, bool endischild, bool adjustend = true)
 		{
-			int xDiff, yDiff;
-			StickJoint pParent, pThis;
-			double dAngle, dRads, dParentAngle, cx, cy;
-			bool bContinue;
+			int odx = end.location.X - start.location.X, ody = end.location.Y - start.location.Y;
+			double angle = Math.Atan2(ody, odx);
+			double len = endischild ? end.length : start.length;
 
-			location.X = vx;
-			location.Y = vy;
-			pThis = this;
-			pParent = parentJoint;
-			bContinue = true;
+			double ndy = len * Math.Sin(angle);
 
-			while (pParent != null)
-			{
-				if ((pParent.jointState != 0) & !(pParent.isSelectedJoint))
-					bContinue = false;
-				if (bContinue)
-				{
-					xDiff = pThis.location.X - pParent.location.X;
-					yDiff = pThis.location.Y - pParent.location.Y;
-					dAngle = 180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI);
-					dRads = (Math.PI * dAngle) / 180;
-					cx = Math.Round(pThis.length * Math.Cos(dRads));
-					cy = Math.Round(pThis.length * Math.Sin(dRads));
-					pParent.SetPosAbs(Math.Round(pThis.location.X + cx), Math.Round(pThis.location.Y + cy));
+			double ndx = len * Math.Cos(angle);
 
-					if (pParent.parentJoint != null)
-					{
-						xDiff = pParent.location.X - pParent.parentJoint.location.X;
-						yDiff = pParent.location.Y - pParent.parentJoint.location.Y;
-						dParentAngle = 180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI);
-						pThis.AngleToParent = 360 - (dAngle - dParentAngle);
-					}
-				}
-
-				pThis = pParent;
-				pParent = pParent.parentJoint;
-			}
-
-			Recalc(pThis);
-
-			//Dunno if we even need this
-			//this.parentFigure.onJointMoved();
+			if (adjustend)
+				end.location = new Point((int)Math.Round(start.location.X + ndx), (int)Math.Round(start.location.Y + ndy));
+			else
+				start.location = new Point((int)Math.Round(end.location.X + ndx), (int)Math.Round(end.location.Y + ndy));
 		}
 
 		#endregion Positioning
