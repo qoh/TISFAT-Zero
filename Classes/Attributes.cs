@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TISFAT_Zero
 {
-	internal class Attributes
+	class Attributes
 	{
 		private List<dynamic> attributes;
 		private List<string> attributeNames;

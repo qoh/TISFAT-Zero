@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace TISFAT_Zero
 {
-	internal abstract class KeyFrame
+	abstract class KeyFrame
 	{
 		#region Properties
 
@@ -117,7 +117,7 @@ namespace TISFAT_Zero
 		#endregion Methods
 	}
 
-	internal class StickFrame : KeyFrame
+	class StickFrame : KeyFrame
 	{
 		new public static Type ObjectType
 		{
@@ -138,7 +138,7 @@ namespace TISFAT_Zero
 		{ }
 	}
 
-	internal class LineFrame : KeyFrame
+	class LineFrame : KeyFrame
 	{
 		new public static Type ObjectType
 		{
@@ -156,7 +156,7 @@ namespace TISFAT_Zero
 		{ }
 	}
 
-	internal class RectFrame : KeyFrame
+	class RectFrame : KeyFrame
 	{
 		new public static Type ObjectType
 		{
@@ -190,7 +190,7 @@ namespace TISFAT_Zero
 		}
 	}
 
-	internal class CustomFrame : KeyFrame
+	class CustomFrame : KeyFrame
 	{
 		new public static Type ObjectType
 		{
@@ -208,7 +208,7 @@ namespace TISFAT_Zero
 		{ }
 	}
 
-	internal class BitmapFrame : KeyFrame
+	class BitmapFrame : KeyFrame
 	{
 		new public static Type ObjectType
 		{

@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.IO;
 
 namespace TISFAT_Zero
 {
-	internal abstract class Layer
+	abstract class Layer : ISavable
 	{
 		#region Properties
 
@@ -282,6 +283,8 @@ namespace TISFAT_Zero
 
 		#endregion Accessor Helpers
 
+		#region Mutator Helpers
+
 		/// <summary>
 		/// Inserts the given frameset into the layer
 		/// </summary>
@@ -454,6 +457,10 @@ namespace TISFAT_Zero
 			return true;
 		}
 
+		#endregion Mutator Helpers
+
+		#region Other Helpers
+
 		/// <summary>
 		/// Returns a <see cref="System.String" /> that represents this instance. Only used for debugging.
 		/// </summary>
@@ -572,10 +579,15 @@ namespace TISFAT_Zero
 			LayerFigure.Draw(Canvas);
 		}
 
+		#endregion Other Helpers
 
+		public void saveObjectToStream(Stream saveTo)
+		{
+
+		}
 	}
 
-	internal class StickLayer : Layer
+	class StickLayer : Layer
 	{
 		new public static Type FrameType
 		{
@@ -592,7 +604,7 @@ namespace TISFAT_Zero
 		{ }
 	}
 
-	internal class LineLayer : Layer
+	class LineLayer : Layer
 	{
 		new public static Type FrameType
 		{
@@ -609,7 +621,7 @@ namespace TISFAT_Zero
 		{ }
 	}
 
-	internal class RectLayer : Layer
+	class RectLayer : Layer
 	{
 		new public static Type FrameType
 		{
@@ -626,7 +638,7 @@ namespace TISFAT_Zero
 		{ }
 	}
 
-	internal class CustomLayer : Layer
+	class CustomLayer : Layer
 	{
 		new public static Type FrameType
 		{
@@ -643,7 +655,7 @@ namespace TISFAT_Zero
 		{ }
 	}
 
-	internal class BitmapLayer : Layer
+	class BitmapLayer : Layer
 	{
 		new public static Type FrameType
 		{
@@ -660,7 +672,7 @@ namespace TISFAT_Zero
 		{ }
 	}
 
-	internal class TextLayer : Layer
+	class TextLayer : Layer
 	{
 		new public static Type FrameType
 		{

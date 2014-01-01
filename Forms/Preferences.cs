@@ -10,7 +10,7 @@ using System.Drawing;
 
 namespace TISFAT_Zero
 {
-	public partial class Preferences : Form
+	partial class Preferences : Form
 	{
 		private string folderPath = Environment.SpecialFolder.ApplicationData + "\\TISFAT\\";
 

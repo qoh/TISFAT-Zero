@@ -4,7 +4,7 @@ using System.IO;
 
 namespace TISFAT_Zero
 {
-	internal interface ICanDraw
+	interface ICanDraw
 	{
 		GLControl GLGraphics
 		{
@@ -14,13 +14,14 @@ namespace TISFAT_Zero
 		void drawGraphics(int type, Color color, Point one, int width, int height, Point two);
 	}
 
-	internal interface IGLDrawable
+	interface IGLDrawable
 	{
 		void Draw(ICanDraw Canvas, Point position = new Point());
 	}
 
-	internal interface ISavable
+	interface ISavable
 	{
 		void saveObjectToStream(Stream saveTo);
+		//void loadFromStream(Stream loadFrom);
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace TISFAT_Zero.Forms
 {
-	public partial class LoadingForm : Form
+	partial class LoadingForm : Form
 	{
 		public LoadingForm()
 		{

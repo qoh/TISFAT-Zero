@@ -4,7 +4,7 @@ using System.Drawing.Imaging;
 
 namespace TISFAT_Zero
 {
-	internal struct T0Bitmap : IGLDrawable
+	struct T0Bitmap : IGLDrawable
 	{
 		public int texID;
 		public Size texSize;

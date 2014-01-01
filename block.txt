@@ -1,0 +1,16 @@
+class Block
+{
+	public ushort type;
+	public MemoryStream data;
+
+	//00: layer
+	//01: end layer
+	//02: frameset start
+	//03: frameset end
+	//04: keyframe
+	//05: end keyframe
+	//06: keyframe properties
+	//07: int list
+	//08: Properties
+	//09: custom fig block
+}

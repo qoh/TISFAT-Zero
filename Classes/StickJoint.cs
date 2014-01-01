@@ -4,16 +4,16 @@ using System.Drawing;
 
 namespace TISFAT_Zero
 {
-	internal class StickJoint
+	class StickJoint
 	{
 		#region Variables
 
 		public string jointName;
 
-		public int jointState; // 0 = Normal, 1 = Locked, 2 = Adjust to parent, 3 = Adjust to parent locked
+		public byte jointState; // 0 = Normal, 1 = Locked, 2 = Adjust to parent, 3 = Adjust to parent locked
 
-		public int drawOrder;
-		public int drawType; // 0 = Line, 1 = Circle, 2 = Bitmap
+		public ushort drawOrder;
+		public byte drawType; // 0 = Line, 1 = Circle, 2 = Bitmap
 
 		public Point location;
 		public double length;
@@ -40,7 +40,7 @@ namespace TISFAT_Zero
 
 		#region Constructors
 
-		public StickJoint(string newname, Point newLocation, int newThickness, Color newColor, Color newHandleColor, int newState = 0, int newDrawState = 0, StickJoint newParent = null, bool newHandleDrawn = true)
+		public StickJoint(string newname, Point newLocation, int newThickness, Color newColor, Color newHandleColor, byte newState = 0, byte newDrawState = 0, StickJoint newParent = null, bool newHandleDrawn = true)
 		{
 			jointName = newname;
 			location = newLocation;

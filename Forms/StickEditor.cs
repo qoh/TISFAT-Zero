@@ -183,7 +183,7 @@ namespace TISFAT_Zero
 				float norm1X = (vecX / dist);
 				float norm1Y = (vecY / dist);
 
-				GL.Begin(BeginMode.Quads);
+				GL.Begin(PrimitiveType.Quads);
 
 				//step 5: get the perpindicular line to norm1, and scale it based on our width
 				float normX = norm1Y * width / 2;
@@ -211,7 +211,7 @@ namespace TISFAT_Zero
 				GL.Disable(EnableCap.Multisample);
 
 				GL.Color4(color);
-				GL.Begin(BeginMode.Quads);
+				GL.Begin(PrimitiveType.Quads);
 
 				GL.Vertex2(one.X - 2.5, one.Y - 2.5);
 				GL.Vertex2(one.X + 2.5, one.Y - 2.5);
@@ -227,7 +227,7 @@ namespace TISFAT_Zero
 				GL.Disable(EnableCap.Multisample);
 
 				GL.Color4(color);
-				GL.Begin(BeginMode.LineLoop);
+				GL.Begin(PrimitiveType.LineLoop);
 
 				GL.Vertex2(one.X - 2.5, one.Y - 2.5);
 				GL.Vertex2(one.X + 2.5, one.Y - 2.5);
@@ -243,7 +243,7 @@ namespace TISFAT_Zero
 				GL.Disable(EnableCap.Multisample);
 
 				GL.Color4(color);
-				GL.Begin(BeginMode.LineLoop);
+				GL.Begin(PrimitiveType.LineLoop);
 
 				GL.Vertex2(one.X, one.Y);
 				GL.Vertex2(two.X, one.Y);
@@ -255,7 +255,7 @@ namespace TISFAT_Zero
 				color = Color.FromArgb(color.A - 200, color);
 				GL.Color4(color);
 
-				GL.Begin(BeginMode.Quads);
+				GL.Begin(PrimitiveType.Quads);
 
 				GL.Vertex2(one.X, one.Y);
 				GL.Vertex2(two.X, one.Y);
@@ -280,7 +280,7 @@ namespace TISFAT_Zero
 
 			float y = 0;
 
-			GL.Begin(BeginMode.TriangleFan);
+			GL.Begin(PrimitiveType.TriangleFan);
 
 			for (int ii = 0; ii < num_segments; ii++)
 			{
@@ -388,7 +388,7 @@ namespace TISFAT_Zero
 
 					StickJoint j = new StickJoint("New Joint", e.Location, (int)num_brushThickness.Value, selectedJoint.jointColor, selectedJoint.handleColor, 0, 0, selectedJoint);
 					figure.FigureJoints.Add(j);
-					j.drawOrder = figure.FigureJoints.IndexOf(j);
+					j.drawOrder = (ushort)figure.FigureJoints.IndexOf(j);
 
 					recalcFigureJoints();
 					selectedJoint = j;
@@ -591,13 +591,13 @@ namespace TISFAT_Zero
 			if (selectedJoint == null)
 				return;
 
-			selectedJoint.drawType = com_lineType.SelectedIndex;
+			selectedJoint.drawType = (byte)com_lineType.SelectedIndex;
 			glGraphics.Invalidate();
 		}
 
 		private void num_drawOrder_ValueChanged(object sender, EventArgs e)
 		{
-			selectedJoint.drawOrder = (int)num_drawOrder.Value;
+			selectedJoint.drawOrder = (ushort)num_drawOrder.Value;
 
 			recalcFigureJoints();
 			glGraphics.Invalidate();

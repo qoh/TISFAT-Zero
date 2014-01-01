@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace TISFAT_Zero
 {
-	internal class Frameset : IEnumerable<KeyFrame>
+	class Frameset : IEnumerable<KeyFrame>
 	{
 		public List<KeyFrame> KeyFrames = new List<KeyFrame>();
 		private int startPos, endPos, frameCount = 2;

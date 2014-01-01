@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace TISFAT_Zero
 {
-	public partial class About : Form
+	partial class About : Form
 	{
 		public About()
 		{

@@ -4,10 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.IO;
 
 namespace TISFAT_Zero
 {
-	internal abstract class StickObject : IEnumerable<StickJoint>, IGLDrawable
+	abstract class StickObject : IEnumerable<StickJoint>, IGLDrawable
 	{
 		#region Properties
 
@@ -52,7 +53,7 @@ namespace TISFAT_Zero
 				if (FigureJoints[i].parentJoint != null)
 					FigureJoints[i].CalcLength();
 
-				FigureJoints[i].drawOrder = i;
+				FigureJoints[i].drawOrder = (ushort)i;
 			}
 
 			for (int i = 0; i < FigureJoints.Count(); i++)
@@ -246,7 +247,7 @@ namespace TISFAT_Zero
 
 			int y = prev.drawOrder;
 			prev.drawOrder = next.drawOrder;
-			next.drawOrder = y;
+			next.drawOrder = (ushort)y;
 		}
 
 		public void reSortJoints()
@@ -323,10 +324,18 @@ namespace TISFAT_Zero
 			return GetEnumerator();
 		}
 
+		protected virtual void saveStickJointList(Stream saveTo)
+		{ }
+
+		protected virtual List<StickJoint> loadStickJointList(Stream loadFrom)
+		{
+			return new List<StickJoint>();
+		}
+
 		#endregion Methods
 	}
 
-	internal class StickFigure : StickObject
+	class StickFigure : StickObject
 	{
 		#region Variables
 
@@ -397,7 +406,7 @@ namespace TISFAT_Zero
 		#endregion Custom Methods
 	}
 
-	internal class StickLine : StickObject
+	class StickLine : StickObject
 	{
 		#region Properties
 
@@ -437,7 +446,7 @@ namespace TISFAT_Zero
 		#endregion Custom Methods
 	}
 
-	internal class StickRect : StickObject
+	class StickRect : StickObject
 	{
 		#region Properties
 
@@ -510,7 +519,7 @@ namespace TISFAT_Zero
 		#endregion Custom Methods
 	}
 
-	internal class StickCustom : StickObject
+	class StickCustom : StickObject
 	{
 		new public static List<StickJoint> DefaultPose
 		{

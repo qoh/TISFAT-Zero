@@ -1,0 +1,17 @@
+def savelayer
+	write 00 to stream
+	write layer type to stream
+	write layer name to stream
+	
+	insert current length of stream at beginning of stream
+	
+	call savelayerpart2
+	
+	write end layer block
+end def
+
+(in sticklayer)
+def savelayerpart2
+	foreach frameset
+		foreach keyframe
+			
