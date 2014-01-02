@@ -9,8 +9,7 @@ class Block
 	//03: frameset end
 	//04: keyframe
 	//05: end keyframe
-	//06: keyframe properties
-	//07: int list
-	//08: Properties
-	//09: custom fig block
+	//06: stickjoint list
+	//07: Properties
+	//08: custom fig block
 }

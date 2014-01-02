@@ -111,7 +111,7 @@ namespace TISFAT_Zero
 			int g = tmp2.G + (int)Math.Round(sPercent * (tmp3.G - tmp2.G));
 			int b = tmp2.B + (int)Math.Round(sPercent * (tmp3.B - tmp2.B));
 			int a = tmp2.A + (int)Math.Round(sPercent * (tmp3.A - tmp2.A));
-
+			
 			jointColor = Color.FromArgb(a, r, g, b);
 		}
 

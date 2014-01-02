@@ -232,12 +232,11 @@ namespace TISFAT_Zero
 
 			if (result[1] < 0)
 				return 4;
-			else if (result[1] == 0)
-				return 2;
-			else if (result[1] == set.FrameCount - 1)
-				return 3;
 
-			return 1;
+			if (result[1] == 0)
+				return 2;
+
+			return result[1] == set.FrameCount - 1 ? (byte)3 : (byte)1;
 		}
 
 		/// <summary>
@@ -585,6 +584,16 @@ namespace TISFAT_Zero
 		{
 
 		}
+
+		private virtual void saveLayerPartTwo(Stream saveTo)
+		{
+
+		}
+
+		private virtual MemoryStream saveFrameset(int framesetind)
+		{
+			return new MemoryStream();
+		}
 	}
 
 	class StickLayer : Layer
@@ -599,8 +608,7 @@ namespace TISFAT_Zero
 		/// </summary>
 		/// <param name="layerName">The name to be given to the layer.</param>
 		/// <param name="startingOffset">The starting position of the first frameset. Defaults to 0.</param>
-		public StickLayer(string layerName, int startingOffset = 0)
-			: base(layerName, typeof(StickFrame), 0, startingOffset)
+		public StickLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(StickFrame), 0, startingOffset)
 		{ }
 	}
 
@@ -616,8 +624,7 @@ namespace TISFAT_Zero
 		/// </summary>
 		/// <param name="layerName">The name to be given to the layer.</param>
 		/// <param name="startingOffset">The starting position of the first frameset. Defaults to 0.</param>
-		public LineLayer(string layerName, int startingOffset = 0)
-			: base(layerName, typeof(LineFrame), 1, startingOffset)
+		public LineLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(LineFrame), 1, startingOffset)
 		{ }
 	}
 
@@ -633,8 +640,7 @@ namespace TISFAT_Zero
 		/// </summary>
 		/// <param name="layerName">The name to be given to the layer.</param>
 		/// <param name="startingOffset">The starting position of the first frameset. Defaults to 0.</param>
-		public RectLayer(string layerName, int startingOffset = 0)
-			: base(layerName, typeof(RectFrame), 2, startingOffset)
+		public RectLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(RectFrame), 2, startingOffset)
 		{ }
 	}
 
@@ -650,8 +656,7 @@ namespace TISFAT_Zero
 		/// </summary>
 		/// <param name="layerName">The name to be given to the layer.</param>
 		/// <param name="startingOffset">The starting position of the first frameset. Defaults to 0.</param>
-		public CustomLayer(string layerName, int startingOffset = 0)
-			: base(layerName, typeof(CustomFrame), 3, startingOffset)
+		public CustomLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(CustomFrame), 3, startingOffset)
 		{ }
 	}
 
@@ -667,8 +672,7 @@ namespace TISFAT_Zero
 		/// </summary>
 		/// <param name="layerName">The name to be given to the layer.</param>
 		/// <param name="startingOffset">The starting position of the first frameset. Defaults to 0.</param>
-		public BitmapLayer(string layerName, int startingOffset = 0)
-			: base(layerName, typeof(BitmapFrame), 4, startingOffset)
+		public BitmapLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(BitmapFrame), 4, startingOffset)
 		{ }
 	}
 
@@ -684,8 +688,7 @@ namespace TISFAT_Zero
 		/// </summary>
 		/// <param name="layerName">The name to be given to the layer.</param>
 		/// <param name="startingOffset">The starting position of the first frameset. Defaults to 0.</param>
-		public TextLayer(string layerName, int startingOffset = 0)
-			: base(layerName, typeof(BitmapFrame), 5, startingOffset)
+		public TextLayer(string layerName, int startingOffset = 0) : base(layerName, typeof(BitmapFrame), 5, startingOffset)
 		{ }
 	}
 }

@@ -329,6 +329,8 @@ namespace TISFAT_Zero
 
 		protected virtual List<StickJoint> loadStickJointList(Stream loadFrom)
 		{
+			MemoryStream blah = new MemoryStream();
+			
 			return new List<StickJoint>();
 		}
 
@@ -369,8 +371,7 @@ namespace TISFAT_Zero
 
 		#endregion Variables
 
-		public StickFigure(bool setAsActive = true)
-			: base(setAsActive)
+		public StickFigure(bool setAsActive = true) : base(setAsActive)
 		{
 			figureType = 1;
 		}
@@ -429,8 +430,7 @@ namespace TISFAT_Zero
 
 		#endregion Properties
 
-		public StickLine(bool setAsActive = true)
-			: base(setAsActive)
+		public StickLine(bool setAsActive = true) : base(setAsActive)
 		{
 			figureType = 2;
 		}
@@ -481,8 +481,7 @@ namespace TISFAT_Zero
 
 		#endregion Properties
 
-		public StickRect(bool setAsActive = true)
-			: base(setAsActive)
+		public StickRect(bool setAsActive = true) : base(setAsActive)
 		{
 			figureType = 3;
 
