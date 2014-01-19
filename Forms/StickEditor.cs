@@ -20,7 +20,7 @@ namespace TISFAT_Zero
 
 		private bool GLLoaded;
 		private int GL_WIDTH, GL_HEIGHT;
-		private OpenTK.GLControl glGraphics, oldGL;
+		private OpenTK.GLControl glGraphics;
 
 		public GLControl GLGraphics
 		{

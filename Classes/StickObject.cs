@@ -324,8 +324,7 @@ namespace TISFAT_Zero
 			return GetEnumerator();
 		}
 
-		protected virtual void saveStickJointList(Stream saveTo)
-		{ }
+		protected abstract void saveStickJointList(Stream saveTo);
 
 		protected virtual List<StickJoint> loadStickJointList(Stream loadFrom)
 		{
@@ -405,6 +404,26 @@ namespace TISFAT_Zero
 		}
 
 		#endregion Custom Methods
+
+		protected override void saveStickJointList(Stream saveTo)
+		{
+			MemoryStream tmp = new MemoryStream();
+			BinaryWriter bw = new BinaryWriter(tmp);
+
+			bw.Write((ushort)6);
+
+			//Save figure color
+			bw.Write((byte)figColor.R);
+			bw.Write((byte)figColor.G);
+			bw.Write((byte)figColor.B);
+			bw.Write((byte)figColor.A);
+
+			foreach (StickJoint s in this)
+			{
+				bw.Write((short)s.location.X);
+				bw.Write((short)s.location.Y);
+			}
+		}
 	}
 
 	class StickLine : StickObject
@@ -444,6 +463,11 @@ namespace TISFAT_Zero
 		}
 
 		#endregion Custom Methods
+
+		protected override void saveStickJointList(Stream saveTo)
+		{
+			throw new NotImplementedException();
+		}
 	}
 
 	class StickRect : StickObject
@@ -516,6 +540,11 @@ namespace TISFAT_Zero
 		}
 
 		#endregion Custom Methods
+
+		protected override void saveStickJointList(Stream saveTo)
+		{
+			throw new NotImplementedException();
+		}
 	}
 
 	class StickCustom : StickObject
@@ -525,10 +554,14 @@ namespace TISFAT_Zero
 			get { return new List<StickJoint>(); }
 		}
 
-		public StickCustom(bool setAsActive = true)
-			: base(setAsActive)
+		public StickCustom(bool setAsActive = true) : base(setAsActive)
 		{
 			figureType = 4;
+		}
+
+		protected override void saveStickJointList(Stream saveTo)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

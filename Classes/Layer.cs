@@ -585,12 +585,12 @@ namespace TISFAT_Zero
 
 		}
 
-		private virtual void saveLayerPartTwo(Stream saveTo)
+		protected virtual void saveLayerPartTwo(Stream saveTo)
 		{
 
 		}
 
-		private virtual MemoryStream saveFrameset(int framesetind)
+		protected virtual MemoryStream saveFrameset(int framesetind)
 		{
 			return new MemoryStream();
 		}
