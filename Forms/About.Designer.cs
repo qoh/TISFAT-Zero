@@ -73,9 +73,9 @@
 			// splitContainer1.Panel1
 			// 
 			this.splitContainer1.Panel1.BackColor = System.Drawing.Color.Gainsboro;
+			this.splitContainer1.Panel1.Controls.Add(this.pnl_Thanks);
 			this.splitContainer1.Panel1.Controls.Add(this.pnl_Developers);
 			this.splitContainer1.Panel1.Controls.Add(this.pnl_About);
-			this.splitContainer1.Panel1.Controls.Add(this.pnl_Thanks);
 			this.splitContainer1.Panel1.Padding = new System.Windows.Forms.Padding(1);
 			// 
 			// splitContainer1.Panel2
@@ -151,9 +151,9 @@
 			this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listBox1.FormattingEnabled = true;
 			this.listBox1.Items.AddRange(new object[] {
-			"- About TISFAT",
-			"- Meet the Devs",
-			"- Special Thanks"});
+            "- About TISFAT",
+            "- Meet the Devs",
+            "- Special Thanks"});
 			this.listBox1.Location = new System.Drawing.Point(1, 1);
 			this.listBox1.Name = "listBox1";
 			this.listBox1.ScrollAlwaysVisible = true;
