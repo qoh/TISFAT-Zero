@@ -9,6 +9,7 @@ using OpenTK;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Reflection;
 
 namespace TISFAT_ZERO
 {
@@ -742,9 +743,18 @@ namespace TISFAT_ZERO
         }
 
         //"shader" being a shader inside the /shaders folder
+		//^^Above is obsolete; Shaders are now an embedded resource. -Evar
         private string readShader(string shader)
         {
-            return File.ReadAllText(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(shader)))) + "\\Shaders\\" + shader);
+			Assembly _assembly = Assembly.GetExecutingAssembly();
+			foreach (string s in _assembly.GetManifestResourceNames())
+				Console.WriteLine(s);
+
+			StreamReader _textStreamReader = new StreamReader(_assembly.GetManifestResourceStream("TISFAT_ZERO.Shaders." + shader));
+
+			return _textStreamReader.ReadToEnd();
+
+            //return File.ReadAllText(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(shader)))) + "\\Shaders\\" + shader);
         }
 
 		public void recieveStickFigure(StickCustom figure)

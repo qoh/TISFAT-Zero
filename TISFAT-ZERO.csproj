@@ -39,6 +39,9 @@
     <ApplicationIcon>T0.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Shaders\pass_vert.glsl" />
+    <EmbeddedResource Include="Shaders\shadowMap_frag.glsl" />
+    <EmbeddedResource Include="Shaders\shadowRender_frag.glsl" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
