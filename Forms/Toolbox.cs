@@ -490,5 +490,11 @@ namespace TISFAT_ZERO
 			setOLAlpha((int)num_rectOLAlpha.Value);
 			Canvas.theCanvas.Refresh();
 		}
+
+		private void ckb_renderShadows_CheckedChanged(object sender, EventArgs e)
+		{
+			Canvas.renderShadows = ckb_renderShadows.Checked;
+			Canvas.theCanvas.Refresh();
+		}
 	}
 }

@@ -16,8 +16,11 @@ namespace TISFAT_ZERO
 	{
 
 		#region Variables
+		public Color BackColor;
+
         private static List<Point> lights = new List<Point>();
         public readonly float lightSize = 400.0f;
+		public static bool renderShadows = false;
 
         public static MainF mainForm;
         public static Toolbox theToolbox;
@@ -515,6 +518,8 @@ namespace TISFAT_ZERO
             glGraphics = GL_GRAPHICS;
             glGraphics.MakeCurrent();
 
+			BackColor = Color.White;
+
             //GLControl's load event is never fired, so we have to piggyback off the canvas's load function instead
             GLLoaded = true;
 
@@ -526,7 +531,7 @@ namespace TISFAT_ZERO
             GL.LoadIdentity();
             GL.Viewport(0, 0, GL_WIDTH, GL_HEIGHT);
             GL.Ortho(0, GL_WIDTH, 0, GL_HEIGHT, -1, 1);
-            GL.ClearColor(Color.White);
+            GL.ClearColor(BackColor);
 
             //Since we are 2d, we don't need the depth test
             GL.Disable(EnableCap.DepthTest);
@@ -629,6 +634,8 @@ namespace TISFAT_ZERO
 
 		public void setBackgroundColor(Color c)
 		{
+			BackColor = c;
+
 			GL.ClearColor(c);
 			GL_GRAPHICS.Invalidate();
 		}
@@ -658,7 +665,7 @@ namespace TISFAT_ZERO
 
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
 
-            GL.ClearColor(Color.DarkGray);
+            GL.ClearColor(BackColor);
         }
 
         private void DrawShadows(Point pos)
@@ -688,7 +695,7 @@ namespace TISFAT_ZERO
 
             GL.UseProgram(0);
 
-            GL.ClearColor(Color.DarkGray);
+            GL.ClearColor(BackColor);
 
             GL.UseProgram(Program_passAndRender);
 
@@ -718,8 +725,9 @@ namespace TISFAT_ZERO
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.StencilBufferBit);
 
-            for (int i = lights.Count; i > 0; i--)
-                DrawShadows(lights[i - 1]);
+			if(Canvas.renderShadows)
+				for (int i = lights.Count; i > 0; i--)
+					DrawShadows(lights[i - 1]);
 
             for (int i = figureList.Count; i > 0; i--)
                 figureList[i - 1].drawFigure();
