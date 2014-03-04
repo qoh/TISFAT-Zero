@@ -209,7 +209,7 @@ namespace TISFAT_ZERO
 
 			bytes.AddRange(BitConverter.GetBytes((ushort)6));
 
-			Size canSize = Properties.User.Default.CanvasSize;
+			Size canSize = Canvas.theCanvas.Size;
 			bytes.AddRange(BitConverter.GetBytes((ushort)canSize.Width));
 			bytes.AddRange(BitConverter.GetBytes((ushort)canSize.Height));
 

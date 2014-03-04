@@ -49,26 +49,26 @@ namespace TISFAT_ZERO
 			this.flipVerticallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.flipLegsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.flipArmsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.GL_GRAPHICS = new OpenTK.GLControl(new GraphicsMode(32, 0, 1, Canvas.maxaa), 3, 0, GraphicsContextFlags.Default);
+			this.GL_GRAPHICS = new OpenTK.GLControl();
 			this.contextMenuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// contextMenuStrip1
 			// 
 			this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.moveToolStripMenuItem,
-			this.copyPoseToolStripMenuItem,
-			this.applyPoseToolStripMenuItem,
-			this.setPoseToPreviousKeyframeToolStripMenuItem,
-			this.setPoseToNextKeyframeToolStripMenuItem,
-			this.toolStripSeparator1,
-			this.changeMouthStateToolStripMenuItem,
-			this.changeFaceDirectionToolStripMenuItem,
-			this.toolStripSeparator2,
-			this.flipHorizontallyToolStripMenuItem,
-			this.flipVerticallyToolStripMenuItem,
-			this.flipLegsToolStripMenuItem,
-			this.flipArmsToolStripMenuItem});
+            this.moveToolStripMenuItem,
+            this.copyPoseToolStripMenuItem,
+            this.applyPoseToolStripMenuItem,
+            this.setPoseToPreviousKeyframeToolStripMenuItem,
+            this.setPoseToNextKeyframeToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.changeMouthStateToolStripMenuItem,
+            this.changeFaceDirectionToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.flipHorizontallyToolStripMenuItem,
+            this.flipVerticallyToolStripMenuItem,
+            this.flipLegsToolStripMenuItem,
+            this.flipArmsToolStripMenuItem});
 			this.contextMenuStrip1.Name = "contextMenuStrip1";
 			this.contextMenuStrip1.Size = new System.Drawing.Size(233, 258);
 			// 
@@ -163,6 +163,7 @@ namespace TISFAT_ZERO
 			this.GL_GRAPHICS.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseDown);
 			this.GL_GRAPHICS.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
 			this.GL_GRAPHICS.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
+			this.GL_GRAPHICS.Resize += new System.EventHandler(this.GL_GRAPHICS_Resize);
 			// 
 			// Canvas
 			// 
@@ -172,7 +173,7 @@ namespace TISFAT_ZERO
 			this.ControlBox = false;
 			this.Controls.Add(this.GL_GRAPHICS);
 			this.DoubleBuffered = true;
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.Name = "Canvas";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Canvas";

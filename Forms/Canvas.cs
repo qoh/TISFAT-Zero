@@ -16,7 +16,7 @@ namespace TISFAT_ZERO
 	{
 
 		#region Variables
-		public Color BackColor;
+		public Color bkgColor;
 
         private static List<Point> lights = new List<Point>();
         public readonly float lightSize = 400.0f;
@@ -518,7 +518,7 @@ namespace TISFAT_ZERO
             glGraphics = GL_GRAPHICS;
             glGraphics.MakeCurrent();
 
-			BackColor = Color.White;
+			bkgColor = Color.White;
 
             //GLControl's load event is never fired, so we have to piggyback off the canvas's load function instead
             GLLoaded = true;
@@ -531,7 +531,7 @@ namespace TISFAT_ZERO
             GL.LoadIdentity();
             GL.Viewport(0, 0, GL_WIDTH, GL_HEIGHT);
             GL.Ortho(0, GL_WIDTH, 0, GL_HEIGHT, -1, 1);
-            GL.ClearColor(BackColor);
+            GL.ClearColor(bkgColor);
 
             //Since we are 2d, we don't need the depth test
             GL.Disable(EnableCap.DepthTest);
@@ -634,7 +634,7 @@ namespace TISFAT_ZERO
 
 		public void setBackgroundColor(Color c)
 		{
-			BackColor = c;
+			bkgColor = c;
 
 			GL.ClearColor(c);
 			GL_GRAPHICS.Invalidate();
@@ -665,7 +665,7 @@ namespace TISFAT_ZERO
 
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
 
-            GL.ClearColor(BackColor);
+            GL.ClearColor(bkgColor);
         }
 
         private void DrawShadows(Point pos)
@@ -695,7 +695,7 @@ namespace TISFAT_ZERO
 
             GL.UseProgram(0);
 
-            GL.ClearColor(BackColor);
+            GL.ClearColor(bkgColor);
 
             GL.UseProgram(Program_passAndRender);
 
@@ -783,6 +783,18 @@ namespace TISFAT_ZERO
 		public void recieveStickFigure(StickCustom figure, bool lean)
 		{
 			//TODO: Make the current keyframe update with the new positions for the Custom Stick.
+		}
+
+		private void GL_GRAPHICS_Resize(object sender, EventArgs e)
+		{
+			GL_HEIGHT = GL_GRAPHICS.Height;
+			GL_WIDTH = GL_GRAPHICS.Width;
+			GL.MatrixMode(MatrixMode.Projection);
+			GL.LoadIdentity();
+
+			GL.Viewport(0, 0, GL_WIDTH, GL_HEIGHT);
+			GL.Ortho(0, GL_WIDTH, 0, GL_HEIGHT, -1, 1);
+			GL.ClearColor(bkgColor);
 		}
 	}
 }

@@ -706,8 +706,9 @@ namespace TISFAT_ZERO
 				case "tst_setPosePrvKfrm":
 					int pos = frm_selInd - 1;
 
-					for (int a = 0; a < cLayer.keyFrames[pos].Joints.Count; a++)
-						cLayer.keyFrames[pos].Joints[a].location = new Point(cLayer.keyFrames[pos - 1].Joints[a].location.X, cLayer.keyFrames[pos].Joints[a].location.Y);
+					if (pos - 1 != -1)
+						for (int a = 0;a < cLayer.keyFrames[pos].Joints.Count;a++)
+							cLayer.keyFrames[pos].Joints[a].location = new Point(cLayer.keyFrames[pos - 1].Joints[a].location.X, cLayer.keyFrames[pos].Joints[a].location.Y);
 
 					break;
 
