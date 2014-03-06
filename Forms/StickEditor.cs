@@ -108,9 +108,6 @@ namespace TISFAT_ZERO
 				figure.Joints[0].drawOrder = 0;
 				figure.Joints[1].drawOrder = 1;
 
-				figure.Joints[0].Bitmap_name = "<No Bitmap>";
-				figure.Joints[1].Bitmap_name = "<No Bitmap>";
-
 				recalcFigureJoints();
 			}
 		}
@@ -124,6 +121,7 @@ namespace TISFAT_ZERO
 				if (figure.Joints[i].parent != null)
 				{
 					figure.Joints[i].CalcLength(null);
+					figure.Joints[i].recalcAngleToParent();
 				}
 			}
 
@@ -444,7 +442,7 @@ namespace TISFAT_ZERO
 						return;
 
 					StickJoint j = new StickJoint("New Joint", e.Location, (int)num_brushThickness.Value, selectedJoint.color, selectedJoint.handleColor, 0, 0, false, selectedJoint, true);
-					j.Bitmap_name = "<No Bitmap>";
+
 					figure.Joints.Add(j);
 					j.drawOrder = figure.Joints.IndexOf(j);
 
@@ -579,15 +577,29 @@ namespace TISFAT_ZERO
 			com_lineType.SelectedIndex = selectedJoint.drawState;
 
 			com_lineBitmap.Items.Clear();
-			com_lineBitmap.Items.Add(selectedJoint.Bitmap_name);
-			com_lineBitmap.SelectedItem = selectedJoint.Bitmap_name;
+			for(int i = 0; i < selectedJoint.Bitmap_names.Count; i++)
+				com_lineBitmap.Items.Add(selectedJoint.Bitmap_names[i]);
 
-			tkb_Rotation.Value = selectedJoint.Bitmap_Rotation;
-			num_bitmapRotation.Value = selectedJoint.Bitmap_Rotation;
-			num_bitmapXOffs.Value = selectedJoint.Bitmap_Offset.X;
-			num_bitmapYOffs.Value = selectedJoint.Bitmap_Offset.Y;
+			if (selectedJoint.bitmaps.Count != 0)
+			{
+				com_lineBitmap.SelectedItem = selectedJoint.Bitmap_names[selectedJoint.Bitmap_CurrentID];
+				tkb_Rotation.Value = selectedJoint.Bitmap_Rotations[selectedJoint.Bitmap_CurrentID];
+				//num_bitmapRotation.Value = tkb_Rotation.Value;
+				//num_bitmapXOffs.Value = selectedJoint.Bitmap_Offsets[selectedJoint.Bitmap_CurrentID].X;
+				//num_bitmapYOffs.Value = selectedJoint.Bitmap_Offsets[selectedJoint.Bitmap_CurrentID].Y;
 
-			lbl_bitmapID.Text = "Bitmap ID: " + selectedJoint.Bitmap_ID;
+				lbl_bitmapID.Text = "Bitmap ID: " + selectedJoint.Bitmap_IDs[selectedJoint.Bitmap_CurrentID];
+			}
+			else
+			{
+				com_lineBitmap.SelectedItem = 0;
+				tkb_Rotation.Value = 0;
+				num_bitmapRotation.Value = 0;
+				num_bitmapXOffs.Value = 0;
+				num_bitmapYOffs.Value = 0;
+
+				lbl_bitmapID.Text = "Bitmap ID: <no bitmaps>";
+			}
 		}
 
 		private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -758,37 +770,63 @@ namespace TISFAT_ZERO
 
 		private void dlg_openBitmap_FileOk(object sender, CancelEventArgs e)
 		{
-			selectedJoint.bitmap = (Bitmap)Bitmap.FromFile(dlg_openBitmap.FileName);
-			selectedJoint.Bitmap_ID = ((StickCustom)selectedJoint.ParentFigure).getBitmapCount();
-			selectedJoint.Bitmap_name = dlg_openBitmap.FileName.Split('\\').Last();
+			selectedJoint.bitmaps.Add((Bitmap)Bitmap.FromFile(dlg_openBitmap.FileName));
+
+			selectedJoint.Bitmap_IDs.Add(((StickCustom)selectedJoint.ParentFigure).getBitmapCount());
+			selectedJoint.Bitmap_names.Add(dlg_openBitmap.FileName.Split('\\').Last());
+			selectedJoint.Bitmap_CurrentID = selectedJoint.bitmaps.IndexOf(selectedJoint.bitmaps.Last());
+			selectedJoint.Bitmap_Rotations.Add(0);
+			selectedJoint.Bitmap_Offsets.Add(new Point(0, 0));
+			selectedJoint.recalcAngleToParent();
+
 			updateToolboxInfo();
 
-			Functions.AssignGlid(selectedJoint);
+			Functions.AssignGlid(selectedJoint, selectedJoint.bitmaps.IndexOf(selectedJoint.bitmaps.Last()));
+			glGraphics.Refresh();
 		}
 
 		private void num_bitmapRotation_ValueChanged(object sender, EventArgs e)
 		{
+			if (selectedJoint.bitmaps.Count == 0)
+				return;
+
 			tkb_Rotation.Value = (int)num_bitmapRotation.Value;
-			selectedJoint.Bitmap_Rotation = (int)num_bitmapRotation.Value;
+			selectedJoint.Bitmap_Rotations[selectedJoint.Bitmap_CurrentID] = (int)num_bitmapRotation.Value;
 			glGraphics.Refresh();
 		}
 
 		private void num_bitmapXOffs_ValueChanged(object sender, EventArgs e)
 		{
-			selectedJoint.Bitmap_Offset.X = (int)num_bitmapXOffs.Value;
+			if (selectedJoint.bitmaps.Count == 0)
+				return;
+
+			selectedJoint.Bitmap_Offsets[selectedJoint.Bitmap_CurrentID] = new Point((int)num_bitmapXOffs.Value, selectedJoint.Bitmap_Offsets[selectedJoint.Bitmap_CurrentID].Y);
 			glGraphics.Refresh();
 		}
 
 		private void num_bitmapYOffs_ValueChanged(object sender, EventArgs e)
 		{
-			selectedJoint.Bitmap_Offset.Y = (int)num_bitmapYOffs.Value;
+			if (selectedJoint.bitmaps.Count == 0)
+				return;
+
+			selectedJoint.Bitmap_Offsets[selectedJoint.Bitmap_CurrentID] = new Point(selectedJoint.Bitmap_Offsets[selectedJoint.Bitmap_CurrentID].X, (int)num_bitmapYOffs.Value);
 			glGraphics.Refresh();
 		}
 
 		private void tkb_Rotation_Scroll(object sender, EventArgs e)
 		{
+			if (selectedJoint.bitmaps.Count == 0)
+				return;
+
 			num_bitmapRotation.Value = tkb_Rotation.Value;
-			selectedJoint.Bitmap_Rotation = (int)num_bitmapRotation.Value;
+			selectedJoint.Bitmap_Rotations[selectedJoint.Bitmap_CurrentID] = (int)num_bitmapRotation.Value;
+			glGraphics.Refresh();
+		}
+
+		private void com_lineBitmap_SelectionChangeCommitted(object sender, EventArgs e)
+		{
+			selectedJoint.Bitmap_CurrentID = com_lineBitmap.SelectedIndex;
+			updateToolboxInfo();
 			glGraphics.Refresh();
 		}
 	}

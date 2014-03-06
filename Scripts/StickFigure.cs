@@ -49,14 +49,16 @@ namespace TISFAT_ZERO
 		public Color defaultHandleColor;
 
 
-		public Bitmap bitmap;
+		public List<Bitmap> bitmaps = new List<Bitmap>();
 
-		public int Bitmap_ID = -1;
-		public string Bitmap_name = "<No Bitmap>";
-		public int Bitmap_Rotation = 0;
-		public Point Bitmap_Offset = new Point(0, 0);
+		public List<int> Bitmap_IDs = new List<int>();
+		public List<string> Bitmap_names = new List<string>();
+		public List<int> Bitmap_Rotations = new List<int>();
+		public List<Point> Bitmap_Offsets = new List<Point>();
 
-		public int textureID;
+		public int Bitmap_CurrentID = -1;
+
+		public List<int> textureIDs = new List<int>();
 		#endregion
 
 		#region Functions
@@ -73,26 +75,57 @@ namespace TISFAT_ZERO
 			fill = newFill;
 			parent = newParent;
 			handleDrawn = newHandleDrawn;
-
-			this.bitmap = bitty;
-			Bitmap_name = bName;
 		}
 
 		public StickJoint(StickJoint obj, StickJoint newParent)
 		{
-			name = obj.name;
-			location = obj.location;
-			thickness = obj.thickness;
-			color = obj.color;
-			handleColor = obj.handleColor;
-			defaultHandleColor = obj.defaultHandleColor;
-			state = obj.state;
-			drawState = obj.drawState;
-			fill = obj.fill;
+			this.AngleToParent = obj.AngleToParent;
+			this.bitmaps = obj.bitmaps;
+			this.Bitmap_Rotations = obj.Bitmap_Rotations;
+			this.Bitmap_Offsets = obj.Bitmap_Offsets;
+			this.Bitmap_names = obj.Bitmap_names;
+			this.Bitmap_IDs = obj.Bitmap_IDs;
+			this.Bitmap_CurrentID = obj.Bitmap_CurrentID;
+			this.color = obj.color;
+			this.defaultHandleColor = obj.defaultHandleColor;
+			this.drawOrder = obj.drawOrder;
+			this.drawState = obj.drawState;
+			this.fill = obj.fill;
+			this.handleColor = obj.handleColor;
+			this.handleDrawn = obj.handleDrawn;
+			this.length = obj.length;
+			this.location = obj.location;
+			this.name = obj.name;
+			this.state = obj.state;
+			this.textureIDs = obj.textureIDs;
+			this.thickness = obj.thickness;
+			this.visible = obj.visible;
 			parent = newParent;
-			handleDrawn = obj.handleDrawn;
+		}
 
-			Bitmap_name = "<No Bitmap>";
+		public StickJoint(StickJoint obj)
+		{
+			this.AngleToParent = obj.AngleToParent;
+			this.bitmaps = obj.bitmaps;
+			this.Bitmap_Rotations = obj.Bitmap_Rotations;
+			this.Bitmap_Offsets = obj.Bitmap_Offsets;
+			this.Bitmap_names = obj.Bitmap_names;
+			this.Bitmap_IDs = obj.Bitmap_IDs;
+			this.Bitmap_CurrentID = obj.Bitmap_CurrentID;
+			this.color = obj.color;
+			this.defaultHandleColor = obj.defaultHandleColor;
+			this.drawOrder = obj.drawOrder;
+			this.drawState = obj.drawState;
+			this.fill = obj.fill;
+			this.handleColor = obj.handleColor;
+			this.handleDrawn = obj.handleDrawn;
+			this.length = obj.length;
+			this.location = obj.location;
+			this.name = obj.name;
+			this.state = obj.state;
+			this.textureIDs = obj.textureIDs;
+			this.thickness = obj.thickness;
+			this.visible = obj.visible;
 		}
 
 		public double CalcLength(StickJoint start)
@@ -149,6 +182,7 @@ namespace TISFAT_ZERO
 
 			length = (int)Math.Round(pStart.length + ((pEnd.length - pStart.length) * sPercent));
 			thickness = (int)Math.Round(pStart.thickness + ((pEnd.thickness - pStart.thickness) * sPercent));
+			AngleToParent = (int)Math.Round(pStart.AngleToParent + ((pEnd.AngleToParent - pStart.AngleToParent) * sPercent));
 
 			if (pStart.ParentFigure != null)
 				if (pStart.ParentFigure.type == 3)
@@ -220,6 +254,8 @@ namespace TISFAT_ZERO
 		{
 			location.X = Convert.ToInt32(vx);
 			location.Y = Convert.ToInt32(vy);
+
+			recalcAngleToParent();
 		}
 
 		public void Recalc(StickJoint pStart = null)
@@ -255,6 +291,9 @@ namespace TISFAT_ZERO
 
 		public void recalcAngleToParent()
 		{
+			if (parent == null)
+				return;
+
 			StickJoint pStart = this;
 			StickJoint pJoint = this.parent;
 			/*
@@ -267,15 +306,7 @@ namespace TISFAT_ZERO
 			int xDiff = pStart.location.X - pJoint.location.X;
 			int yDiff = pStart.location.Y - pJoint.location.Y;
 
-			double dAngle = 180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI);
-			double dRads = Functions.DegToRads(dAngle);
-
-			if (pStart.parent != null)
-			{
-				xDiff = pStart.parent.location.X - pStart.location.X;
-				yDiff = pStart.parent.location.Y - pStart.location.Y;
-				pJoint.AngleToParent = (180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI)) - dAngle;
-			}
+			AngleToParent = -(180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI));
 		}
 
 		public void SetPos(int vx, int vy)
@@ -429,7 +460,6 @@ namespace TISFAT_ZERO
 				GL.StencilOp(StencilOp.Keep, StencilOp.Keep, StencilOp.Incr);
 			}
 
-
 			if (type == 3)
 				if (((StickRect)this).filled)
 					Canvas.drawGraphics(5, figColor, Joints[0].location, Joints[0].thickness, Joints[0].thickness, Joints[2].location);
@@ -444,13 +474,25 @@ namespace TISFAT_ZERO
 					Canvas.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
 				}
 
-				if (i.textureID != 0)
-				{
-					Canvas.drawGraphics(6, Color.White, new Point(i.location.X - i.Bitmap_Offset.X, i.location.Y - i.Bitmap_Offset.Y), i.bitmap.Width, i.bitmap.Height, new Point(0, 0), i.textureID, (float)i.AngleToParent - i.Bitmap_Rotation);
-				}
+				if (i.bitmaps.Count != 0)
+					if (i.textureIDs[i.Bitmap_CurrentID] != 0)
+					{
+						Point offset = rotate(i.Bitmap_Offsets[i.Bitmap_CurrentID], i.AngleToParent);
+						Canvas.drawGraphics(6, Color.White, new Point(i.location.X - offset.X, i.location.Y - offset.Y), i.bitmaps[i.Bitmap_CurrentID].Width, i.bitmaps[i.Bitmap_CurrentID].Height, new Point(0, 0), i.textureIDs[i.Bitmap_CurrentID], (float)i.AngleToParent - i.Bitmap_Rotations[i.Bitmap_CurrentID]);
+					}
 			}
 
 			GL.Disable(EnableCap.StencilTest);
+		}
+
+		private Point rotate(Point offset, double rotation)
+		{
+			double length = Math.Sqrt((offset.X * offset.X) + (offset.Y * offset.Y));
+			double angle = Math.Atan2(offset.Y, offset.X) + Functions.DegToRads(rotation);
+
+			Point result = new Point((int)(Math.Sin(angle) * length), (int)(Math.Cos(angle) * length));
+
+			return result;
 		}
 
 		private void drawJoints(int x, bool fromCanvas = true)
@@ -497,10 +539,12 @@ namespace TISFAT_ZERO
 					StickEditor.theSticked.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
 				}
 
-				if (i.textureID != 0)
-				{
-					StickEditor.theSticked.drawGraphics(6, Color.White, new Point(i.location.X - i.Bitmap_Offset.X, i.location.Y - i.Bitmap_Offset.Y), i.bitmap.Width, i.bitmap.Height, new Point(0, 0), i.textureID, (float)i.AngleToParent - i.Bitmap_Rotation);
-				}
+				if (i.bitmaps.Count != 0)
+					if (i.textureIDs[i.Bitmap_CurrentID] != 0)
+					{
+						Point offset = rotate(i.Bitmap_Offsets[i.Bitmap_CurrentID], i.AngleToParent);
+						StickEditor.theSticked.drawGraphics(6, Color.White, new Point(i.location.X - offset.X, i.location.Y - offset.Y), i.bitmaps[i.Bitmap_CurrentID].Width, i.bitmaps[i.Bitmap_CurrentID].Height, new Point(0, 0), i.textureIDs[i.Bitmap_CurrentID], (float)i.AngleToParent - i.Bitmap_Rotations[i.Bitmap_CurrentID]);
+					}
 			}
 
 			GL.Disable(EnableCap.StencilTest);
@@ -932,6 +976,17 @@ namespace TISFAT_ZERO
 
 	public class StickCustom : StickObject
 	{
+		public StickCustom(StickCustom obj, bool isTweenFigure= false)
+		{
+			type = 4;
+			Joints = obj.Joints;
+
+			if (!isTweenFigure)
+				Canvas.addFigure(this);
+			else
+				Canvas.addTweenFigure(this);
+		}
+
 		public StickCustom(bool isTweenFigure = false)
 		{
 			type = 4;
@@ -955,8 +1010,7 @@ namespace TISFAT_ZERO
 		{
 			int bitmaps = 0;
 			foreach (StickJoint j in Joints)
-				if (j.Bitmap_ID != -1)
-					bitmaps++;
+				bitmaps = bitmaps + j.bitmaps.Count;
 
 			return bitmaps;
 		}

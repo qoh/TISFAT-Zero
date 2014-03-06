@@ -179,19 +179,35 @@ namespace TISFAT_ZERO
 		public static List<StickJoint> createClone(List<StickJoint> old, int[] positions)
 		{
 			List<StickJoint> x = new List<StickJoint>();
-			x.AddRange(new StickJoint[old.Count]);
-			for (int a = 0; a < old.Count; a++)
-				writeJoint(x, old, a, positions);
-			for (int a = 0; a < old.Count; a++)
-				x[a].CalcLength(null);
-			for (int i = 0; i < x.Count; i++)
+			for(int i = 0; i < old.Count; i++)
+				x.Add(new StickJoint(old[i]));
+			for (int i = 0;i < old.Count;i++)
 			{
+				int index = old.IndexOf(old[i].parent);
+				if(index != -1)
+					x[i].parent = x[index];
+			}
+			for (int i = 0;i < x.Count;i++)
 				if (x[i].parent != null)
 				{
 					x[i].parent.children.Add(x[i]);
+					x[i].CalcLength(null);
 				}
-			}
-			return x;
+
+				/*x.AddRange(new StickJoint[old.Count]);
+				for (int a = 0; a < old.Count; a++)
+					writeJoint(x, old, a, positions);
+				for (int a = 0; a < old.Count; a++)
+					x[a].CalcLength(null);
+				for (int i = 0; i < x.Count; i++)
+				{
+					if (x[i].parent != null)
+					{
+						x[i].parent.children.Add(x[i]);
+					}
+				} */
+
+				return x;
 		}
 
 		private static void writeJoint(List<StickJoint> jnts, List<StickJoint> olds, int p, int[] positions)

@@ -49,7 +49,7 @@ namespace TISFAT_ZERO
 		public static bool saveFigure(string path, StickCustom figure)
 		{
 			BinaryWriter bin = new BinaryWriter(File.Open(path, FileMode.Create));
-			bin.Write(tzf.fileSig, 0, tzs.fileSig.Length);
+			bin.Write(tzf.fileSig, 0, tzf.fileSig.Length);
 			bin.Write(tzf.curVersion, 0, tzf.curVersion.Length);
 
 			bin.Write(figure.Joints.Count);
@@ -61,8 +61,9 @@ namespace TISFAT_ZERO
 					writeJointBlock(bin, figure, joint);
 
 				foreach (StickJoint joint in figure.Joints)
-					if (joint.Bitmap_ID != -1)
-						writeBitmapBlock(joint.Bitmap_ID, joint, bin);
+					if (joint.Bitmap_IDs.Count > 0)
+						for (int x = 0;x < joint.Bitmap_IDs.Count; x++)
+							writeBitmapBlock(x, joint, bin);
 			}
 			catch (Exception ex)
 			{
@@ -75,6 +76,35 @@ namespace TISFAT_ZERO
 
 			bin.Close();
 			bin.Dispose();
+			return true;
+		}
+
+		public static bool saveFigure(BinaryWriter bin, StickCustom figure)
+		{
+			bin.Write(tzf.fileSig, 0, tzf.fileSig.Length);
+			bin.Write(tzf.curVersion, 0, tzf.curVersion.Length);
+
+			bin.Write(figure.Joints.Count);
+			bin.Write(figure.getBitmapCount());
+
+			try
+			{
+				foreach (StickJoint joint in figure.Joints)
+					writeJointBlock(bin, figure, joint);
+
+				foreach (StickJoint joint in figure.Joints)
+					if (joint.Bitmap_IDs.Count > 0)
+						for (int x = 0;x < joint.Bitmap_IDs.Count;x++)
+							writeBitmapBlock(x, joint, bin);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Saving failed. Error Detail:\n" + ex.Message, "Saving Failed!");
+				bin.Close();
+				bin.Dispose();
+
+				return false;
+			}
 			return true;
 		}
 
@@ -92,7 +122,10 @@ namespace TISFAT_ZERO
 			bin.Write(j.visible);
 			bin.Write(j.handleDrawn);
 
-			bin.Write(j.Bitmap_ID);
+			bin.Write(j.Bitmap_IDs.Count);
+			for (int i = 0;i < j.Bitmap_IDs.Count;i++)
+				bin.Write(j.Bitmap_IDs[i]);
+
 			if (!(j.parent == null))
 				bin.Write(figure.Joints.IndexOf(j.parent));
 			else
@@ -103,17 +136,17 @@ namespace TISFAT_ZERO
 		{
 			Stream bitmapStream = new MemoryStream();
 
-			j.bitmap.Save(bitmapStream, System.Drawing.Imaging.ImageFormat.Png);
+			j.bitmaps[id].Save(bitmapStream, System.Drawing.Imaging.ImageFormat.Png);
 
 			bin.Write(id);
-			bin.Write(j.Bitmap_name);
-			bin.Write(j.Bitmap_Rotation);
+			bin.Write(j.Bitmap_names[id]);
+			bin.Write(j.Bitmap_Rotations[id]);
 
-			bin.Write(j.Bitmap_Offset.X);
-			bin.Write(j.Bitmap_Offset.Y);
+			bin.Write(j.Bitmap_Offsets[id].X);
+			bin.Write(j.Bitmap_Offsets[id].Y);
 
 			bin.Write(bitmapStream.Length);
-			j.bitmap.Save(bin.BaseStream, System.Drawing.Imaging.ImageFormat.Png);
+			j.bitmaps[id].Save(bin.BaseStream, System.Drawing.Imaging.ImageFormat.Png);
 		}
 	}
 
@@ -159,14 +192,21 @@ namespace TISFAT_ZERO
 				bool visible = bin.ReadBoolean();
 				bool handleDrawn = bin.ReadBoolean();
 
-				int bitmapIndex = bin.ReadInt32();
+				int bitmapIndexes = bin.ReadInt32();
+
+				List<int> bitmapis = new List<int>();
+				for (int z = 0;z < bitmapIndexes;z++)
+					bitmapis.Add(bin.ReadInt32());
+
 				int parentIndex = bin.ReadInt32();
 
 				parentList.Add(parentIndex);
 
 				sticked.figure.Joints.Add(new StickJoint("Joint " + i.ToString(), new Point(x, y), thickness, col, hCol, 0, drawState, false, null, handleDrawn));
 
-				sticked.figure.Joints[sticked.figure.Joints.Count - 1].Bitmap_ID = bitmapIndex;
+				sticked.figure.Joints[sticked.figure.Joints.Count - 1].Bitmap_CurrentID = 0;
+				sticked.figure.Joints[sticked.figure.Joints.Count - 1].Bitmap_IDs = bitmapis;
+
 				sticked.figure.Joints[sticked.figure.Joints.Count - 1].drawOrder = drawOrder;
 			}
 
@@ -191,10 +231,9 @@ namespace TISFAT_ZERO
 			}
 			for (int i = 0;i < jointCount;i++)
 			{
-				sticked.figure.Joints[i].Bitmap_name = "<No Bitmap>";
 				foreach (T0JointBitmap bitmap in bitmapList)
-					if (sticked.figure.Joints[i].Bitmap_ID == bitmap.id)
-						bitmap.ApplyTo(sticked.figure.Joints[i]);
+					if (sticked.figure.Joints[i].Bitmap_IDs.Contains(bitmap.id + 1))
+						bitmap.ApplyTo(sticked.figure.Joints[i], bitmap.id);
 
 				if (parentList[i] != -1)
 					sticked.figure.Joints[i].parent = sticked.figure.Joints[parentList[i]];
@@ -223,14 +262,14 @@ namespace TISFAT_ZERO
 			this.bitmap = Img;
 		}
 
-		public void ApplyTo(StickJoint j)
+		public void ApplyTo(StickJoint j, int index)
 		{
-			j.bitmap = (Bitmap)bitmap;
-			j.Bitmap_name = name;
-			j.Bitmap_Offset = new Point(OffsetX, OffsetY);
-			j.Bitmap_Rotation = Rotation;
+			j.bitmaps.Add((Bitmap)bitmap);
+			j.Bitmap_names.Add(name);
+			j.Bitmap_Offsets.Add(new Point(OffsetX, OffsetY));
+			j.Bitmap_Rotations.Add(Rotation);
 
-			Functions.AssignGlid(j);
+			Functions.AssignGlid(j, index);
 		}
 	}
 

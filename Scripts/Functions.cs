@@ -100,16 +100,17 @@ namespace TISFAT_ZERO
 			return sb.ToString();
 		}
 
-		public static void AssignGlid(StickJoint joint)
+		public static void AssignGlid(StickJoint joint, int i)
 		{
-			BitmapData raw = joint.bitmap.LockBits(new Rectangle(0, 0, joint.bitmap.Width, joint.bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+			BitmapData raw = joint.bitmaps[i].LockBits(new Rectangle(0, 0, joint.bitmaps[i].Width, joint.bitmaps[i].Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-			joint.textureID = GL.GenTexture();
-			GL.BindTexture(TextureTarget.Texture2D, joint.textureID);
+			joint.textureIDs.Add(GL.GenTexture());
+
+			GL.BindTexture(TextureTarget.Texture2D, joint.textureIDs[i]);
 
 			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, raw.Width, raw.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, raw.Scan0);
 
-			joint.bitmap.UnlockBits(raw);
+			joint.bitmaps[i].UnlockBits(raw);
 
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);

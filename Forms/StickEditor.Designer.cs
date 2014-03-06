@@ -474,6 +474,7 @@ namespace TISFAT_ZERO
 			this.com_lineBitmap.Name = "com_lineBitmap";
 			this.com_lineBitmap.Size = new System.Drawing.Size(114, 21);
 			this.com_lineBitmap.TabIndex = 8;
+			this.com_lineBitmap.SelectionChangeCommitted += new System.EventHandler(this.com_lineBitmap_SelectionChangeCommitted);
 			// 
 			// lbl_lineBitmap
 			// 
@@ -681,6 +682,7 @@ namespace TISFAT_ZERO
 			// 
 			// saveToolStripMenuItem
 			// 
+			this.saveToolStripMenuItem.Enabled = false;
 			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
 			this.saveToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.saveToolStripMenuItem.Text = "Save";

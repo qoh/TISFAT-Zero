@@ -96,12 +96,15 @@ namespace TISFAT_ZERO
 			//That you're dragging a joint
 			if (draw & !(e.Button == MouseButtons.Right))
 			{
-				//To prevent exceptions being thrown.
-				if (!(selectedJoint == null) && (selectedJoint.ParentFigure.type != 3))
+				//To prevent exceptions being thrown. 
+				if (selectedJoint != null)
 				{
-					selectedJoint.SetPos(e.X, e.Y);
-					theToolbox.lbl_dbgAngleToParent.Text = "AngleToParent: " + selectedJoint.AngleToParent;
-					Refresh();
+					if (selectedJoint.ParentFigure.type != 3)
+					{
+						selectedJoint.SetPos(e.X, e.Y);
+						theToolbox.lbl_dbgAngleToParent.Text = "AngleToParent: " + selectedJoint.AngleToParent;
+						Refresh();
+					}
 				}
 				else if (selectedJoint != null && selectedJoint.ParentFigure.type == 3)
 				{
@@ -801,9 +804,13 @@ namespace TISFAT_ZERO
 
 			c.keyFrames[0].Joints = ps;
 			c.keyFrames[1].Joints = custObjectFrame.createClone(ps, positions);
+			foreach (StickJoint j in c.keyFrames[1].Joints)
+				j.ParentFigure = c.fig;
 
-			c.tweenFig = new StickCustom(true);
+			c.tweenFig = new StickCustom(figure, true);
 			c.tweenFig.Joints = custObjectFrame.createClone(ps, positions);
+			foreach (StickJoint j in c.tweenFig.Joints)
+				j.ParentFigure = c.tweenFig;
 
 			addFigure(c.fig);
 			Timeline.layer_sel = Timeline.layer_cnt - 1;
