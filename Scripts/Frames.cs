@@ -130,6 +130,23 @@ namespace TISFAT_ZERO
 		}
 	}
 
+	public class LightFrame : KeyFrame
+	{
+		public LightFrame(List<StickJoint> ps, int po)
+		{
+			type = 5; pos = po;
+
+			Joints = ps;
+		}
+
+		public LightFrame(int po)
+		{
+			type = 4; pos = po;
+
+			Joints.Add(new StickJoint("Light Source", new Point(30, 30), 1, Color.Black, Color.Green));
+		}
+	}
+
 	public class custObjectFrame : KeyFrame
 	{
 		public custObjectFrame(List<StickJoint> ps, int po)

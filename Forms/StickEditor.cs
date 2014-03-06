@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using System.Drawing.Imaging;
 
 
 namespace TISFAT_ZERO
@@ -63,7 +64,15 @@ namespace TISFAT_ZERO
 
 		private void StickEditor_Load(object sender, EventArgs e)
 		{
+			dlg_openBitmap.Filter = Functions.GetImageFilters();
 			num_drawOrder.Maximum = int.MaxValue;
+
+			num_bitmapXOffs.Maximum = int.MaxValue;
+			num_bitmapXOffs.Minimum = -int.MaxValue;
+
+			num_bitmapYOffs.Maximum = int.MaxValue;
+			num_bitmapYOffs.Minimum = -int.MaxValue;
+
 			glGraphics = GL_GRAPHICS;
 			glGraphics.MakeCurrent();
 
@@ -98,6 +107,9 @@ namespace TISFAT_ZERO
 				figure.Joints[1].parent = figure.Joints[0];
 				figure.Joints[0].drawOrder = 0;
 				figure.Joints[1].drawOrder = 1;
+
+				figure.Joints[0].Bitmap_name = "<No Bitmap>";
+				figure.Joints[1].Bitmap_name = "<No Bitmap>";
 
 				recalcFigureJoints();
 			}
@@ -155,7 +167,7 @@ namespace TISFAT_ZERO
 		}
 
 		#region Drawing Grapics
-		public void drawGraphics(int type, Color color, Point one, int width, int height, Point two)
+		public void drawGraphics(int type, Color color, Point one, int width, int height, Point two, int textureID = 0, float rotation = 0)
 		{
 			if (!GLLoaded)
 			{
@@ -273,6 +285,43 @@ namespace TISFAT_ZERO
 				GL.End();
 
 				GL.Enable(EnableCap.Multisample);
+			}
+
+			else if (type == 6) //Texture
+			{
+				GL.Color4(color);
+
+				GL.Enable(EnableCap.Texture2D);
+				GL.Enable(EnableCap.Blend);
+				GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+
+				GL.BindTexture(TextureTarget.Texture2D, textureID);
+
+				GL.PushMatrix();
+
+				GL.Translate(one.X, one.Y, 0);
+				GL.Rotate(rotation, 0, 0, 1);
+
+				GL.Begin(BeginMode.Quads);
+
+				GL.TexCoord2(0.0, 1.0);
+				GL.Vertex2(0, 0);
+
+				GL.TexCoord2(0.0, 0.0);
+				GL.Vertex2(0, -height);
+
+				GL.TexCoord2(1.0, 0.0);
+				GL.Vertex2(width, -height);
+
+				GL.TexCoord2(1.0, 1.0);
+				GL.Vertex2(width, 0);
+
+				GL.End();
+
+				GL.PopMatrix();
+
+				GL.Disable(EnableCap.Blend);
+				GL.Disable(EnableCap.Texture2D);
 			}
 			GL.Disable(EnableCap.Blend);
 		}
@@ -395,6 +444,7 @@ namespace TISFAT_ZERO
 						return;
 
 					StickJoint j = new StickJoint("New Joint", e.Location, (int)num_brushThickness.Value, selectedJoint.color, selectedJoint.handleColor, 0, 0, false, selectedJoint, true);
+					j.Bitmap_name = "<No Bitmap>";
 					figure.Joints.Add(j);
 					j.drawOrder = figure.Joints.IndexOf(j);
 
@@ -527,6 +577,17 @@ namespace TISFAT_ZERO
 			chk_lineVisible.Checked = selectedJoint.visible;
 
 			com_lineType.SelectedIndex = selectedJoint.drawState;
+
+			com_lineBitmap.Items.Clear();
+			com_lineBitmap.Items.Add(selectedJoint.Bitmap_name);
+			com_lineBitmap.SelectedItem = selectedJoint.Bitmap_name;
+
+			tkb_Rotation.Value = selectedJoint.Bitmap_Rotation;
+			num_bitmapRotation.Value = selectedJoint.Bitmap_Rotation;
+			num_bitmapXOffs.Value = selectedJoint.Bitmap_Offset.X;
+			num_bitmapYOffs.Value = selectedJoint.Bitmap_Offset.Y;
+
+			lbl_bitmapID.Text = "Bitmap ID: " + selectedJoint.Bitmap_ID;
 		}
 
 		private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -686,5 +747,49 @@ namespace TISFAT_ZERO
 				Canvas.theCanvas.recieveStickFigure(figure, true);
 		}
 		#endregion
+
+		private void btn_addBitmap_Click(object sender, EventArgs e)
+		{
+			if (selectedJoint == null)
+				return;
+
+			dlg_openBitmap.ShowDialog();
+		}
+
+		private void dlg_openBitmap_FileOk(object sender, CancelEventArgs e)
+		{
+			selectedJoint.bitmap = (Bitmap)Bitmap.FromFile(dlg_openBitmap.FileName);
+			selectedJoint.Bitmap_ID = ((StickCustom)selectedJoint.ParentFigure).getBitmapCount();
+			selectedJoint.Bitmap_name = dlg_openBitmap.FileName.Split('\\').Last();
+			updateToolboxInfo();
+
+			Functions.AssignGlid(selectedJoint);
+		}
+
+		private void num_bitmapRotation_ValueChanged(object sender, EventArgs e)
+		{
+			tkb_Rotation.Value = (int)num_bitmapRotation.Value;
+			selectedJoint.Bitmap_Rotation = (int)num_bitmapRotation.Value;
+			glGraphics.Refresh();
+		}
+
+		private void num_bitmapXOffs_ValueChanged(object sender, EventArgs e)
+		{
+			selectedJoint.Bitmap_Offset.X = (int)num_bitmapXOffs.Value;
+			glGraphics.Refresh();
+		}
+
+		private void num_bitmapYOffs_ValueChanged(object sender, EventArgs e)
+		{
+			selectedJoint.Bitmap_Offset.Y = (int)num_bitmapYOffs.Value;
+			glGraphics.Refresh();
+		}
+
+		private void tkb_Rotation_Scroll(object sender, EventArgs e)
+		{
+			num_bitmapRotation.Value = tkb_Rotation.Value;
+			selectedJoint.Bitmap_Rotation = (int)num_bitmapRotation.Value;
+			glGraphics.Refresh();
+		}
 	}
 }

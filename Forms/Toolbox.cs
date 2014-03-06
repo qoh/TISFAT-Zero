@@ -151,54 +151,9 @@ namespace TISFAT_ZERO
 			trv_addView.ExpandAll();
 		}
 
-		private void btn_addStick_Click(object sender, EventArgs e)
-		{
-			int i = 1;
-			foreach (Layer k in Timeline.layers)
-			{
-				i++;
-			}
-			mainForm.tline.addStickLayer("Stick Figure " + i.ToString());
-			mainForm.tline.Refresh();
-
-			pnl_addTools.Enabled = false;
-			slideOutObject = pnl_addTools;
-			animTimer.Start();
-		}
-
 		private void maskedTextBox1_ValueChanged(object sender, EventArgs e)
 		{
 			frameRate = (byte)maskedTextBox1.Value;
-		}
-
-		private void btn_addLine_Click(object sender, EventArgs e)
-		{
-			int i = 1;
-			foreach (Layer k in Timeline.layers)
-			{
-				i++;
-			}
-			mainForm.tline.addLineLayer("Line " + i.ToString());
-			mainForm.tline.Refresh();
-
-			pnl_addTools.Enabled = false;
-			slideOutObject = pnl_addTools;
-			animTimer.Start();
-		}
-
-		private void btn_addRectangle_Click(object sender, EventArgs e)
-		{
-			int i = 1;
-			foreach (Layer k in Timeline.layers)
-			{
-				i++;
-			}
-			mainForm.tline.addRectLayer("Rectangle " + i.ToString());
-			mainForm.tline.Refresh();
-
-			pnl_addTools.Enabled = false;
-			slideOutObject = pnl_addTools;
-			animTimer.Start();
 		}
 
 		private void pic_pnlLine_color_Click(object sender, EventArgs e)
@@ -368,13 +323,49 @@ namespace TISFAT_ZERO
 			Canvas.theCanvas.setBackgroundColor(dlg_Color.Color);
 		}
 
-		private void btn_addCustomStick_Click(object sender, EventArgs e)
+		private void AddObject(object sender, TreeNodeMouseClickEventArgs e)
 		{
-			CustomLayer l = mainForm.tline.addCustomLayer("Custom Figure");
-			Timeline.layer_sel = Timeline.layer_cnt - 1;
+			TreeNode theSender = trv_addView.SelectedNode;
+			int x = 1;
+			switch (theSender.Tag.ToString())
+			{
+				case "0":
+					foreach (Layer l in Timeline.layers) { if(l.GetType() == typeof(StickLayer)){ x++;} }
+					mainForm.tline.addStickLayer("Stick Layer " + x);
+					break;
+				case "1":
+					foreach (Layer l in Timeline.layers) { if(l.GetType() == typeof(CustomLayer)){ x++;} }
+					mainForm.tline.addCustomLayer("Custom Layer " + x);
+					Timeline.layer_sel = Timeline.layer_cnt - 1;
+					StickEditor f = new StickEditor();
+					f.ShowDialog(this);
+					return;
 
-			StickEditor f = new StickEditor();
-			f.ShowDialog(this);
+				case "2":
+					foreach (Layer l in Timeline.layers) { if(l.GetType() == typeof(LineLayer)){ x++;} }
+					mainForm.tline.addLineLayer("Line Layer " + x);
+					break;
+				case "3":
+					foreach (Layer l in Timeline.layers) { if(l.GetType() == typeof(RectLayer)){ x++;} }
+					mainForm.tline.addRectLayer("Rect Layer " + x);
+					break;
+				case "4":
+					foreach (Layer l in Timeline.layers) { if(l.GetType() == typeof(LightLayer)){ x++;} }
+					mainForm.tline.addLightLayer("Light Layer " + x);
+					return;
+
+				case "5":
+					//layerType = typeof(TextLayer);
+					return;
+
+				default:
+					return;
+			}
+			mainForm.tline.Refresh();
+
+			pnl_addTools.Enabled = false;
+			slideOutObject = pnl_addTools;
+			animTimer.Start();
 		}
 
 		public void updateOpenPanel()

@@ -46,6 +46,13 @@ namespace TISFAT_ZERO
 			this.btn_toolPointer = new System.Windows.Forms.Button();
 			this.lbl_toolBox = new System.Windows.Forms.Label();
 			this.pnl_lineProps = new System.Windows.Forms.Panel();
+			this.num_bitmapYOffs = new System.Windows.Forms.NumericUpDown();
+			this.lbl_bitmapYOffs = new System.Windows.Forms.Label();
+			this.num_bitmapXOffs = new System.Windows.Forms.NumericUpDown();
+			this.lbl_bitmapXOffs = new System.Windows.Forms.Label();
+			this.num_bitmapRotation = new System.Windows.Forms.NumericUpDown();
+			this.lbl_bitmapRotation = new System.Windows.Forms.Label();
+			this.tkb_Rotation = new System.Windows.Forms.TrackBar();
 			this.num_drawOrder = new System.Windows.Forms.NumericUpDown();
 			this.lbl_drawOrder = new System.Windows.Forms.Label();
 			this.num_lineThickness = new System.Windows.Forms.NumericUpDown();
@@ -86,6 +93,7 @@ namespace TISFAT_ZERO
 			this.dlg_saveFile = new System.Windows.Forms.SaveFileDialog();
 			this.dlg_openBitmap = new System.Windows.Forms.OpenFileDialog();
 			this.GL_GRAPHICS = new OpenTK.GLControl();
+			this.lbl_bitmapID = new System.Windows.Forms.Label();
 			this.pnl_toolBox.SuspendLayout();
 			this.pnl_Stats.SuspendLayout();
 			this.pnl_brushProps.SuspendLayout();
@@ -93,6 +101,10 @@ namespace TISFAT_ZERO
 			this.pnl_toolboxMain.SuspendLayout();
 			this.pnl_toolPanel.SuspendLayout();
 			this.pnl_lineProps.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_bitmapYOffs)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.num_bitmapXOffs)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.num_bitmapRotation)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.tkb_Rotation)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_drawOrder)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_lineThickness)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_lineAlpha)).BeginInit();
@@ -282,6 +294,13 @@ namespace TISFAT_ZERO
             | System.Windows.Forms.AnchorStyles.Left)));
 			this.pnl_lineProps.AutoScroll = true;
 			this.pnl_lineProps.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pnl_lineProps.Controls.Add(this.num_bitmapYOffs);
+			this.pnl_lineProps.Controls.Add(this.lbl_bitmapYOffs);
+			this.pnl_lineProps.Controls.Add(this.num_bitmapXOffs);
+			this.pnl_lineProps.Controls.Add(this.lbl_bitmapXOffs);
+			this.pnl_lineProps.Controls.Add(this.num_bitmapRotation);
+			this.pnl_lineProps.Controls.Add(this.lbl_bitmapRotation);
+			this.pnl_lineProps.Controls.Add(this.tkb_Rotation);
 			this.pnl_lineProps.Controls.Add(this.num_drawOrder);
 			this.pnl_lineProps.Controls.Add(this.lbl_drawOrder);
 			this.pnl_lineProps.Controls.Add(this.num_lineThickness);
@@ -302,9 +321,86 @@ namespace TISFAT_ZERO
 			this.pnl_lineProps.Size = new System.Drawing.Size(173, 139);
 			this.pnl_lineProps.TabIndex = 4;
 			// 
+			// num_bitmapYOffs
+			// 
+			this.num_bitmapYOffs.Location = new System.Drawing.Point(92, 224);
+			this.num_bitmapYOffs.Maximum = new decimal(new int[] {
+            900000,
+            0,
+            0,
+            0});
+			this.num_bitmapYOffs.Name = "num_bitmapYOffs";
+			this.num_bitmapYOffs.Size = new System.Drawing.Size(43, 20);
+			this.num_bitmapYOffs.TabIndex = 21;
+			this.num_bitmapYOffs.ValueChanged += new System.EventHandler(this.num_bitmapYOffs_ValueChanged);
+			// 
+			// lbl_bitmapYOffs
+			// 
+			this.lbl_bitmapYOffs.AutoSize = true;
+			this.lbl_bitmapYOffs.Location = new System.Drawing.Point(11, 227);
+			this.lbl_bitmapYOffs.Name = "lbl_bitmapYOffs";
+			this.lbl_bitmapYOffs.Size = new System.Drawing.Size(74, 13);
+			this.lbl_bitmapYOffs.TabIndex = 20;
+			this.lbl_bitmapYOffs.Text = "Bitmap Y Offs:";
+			// 
+			// num_bitmapXOffs
+			// 
+			this.num_bitmapXOffs.Location = new System.Drawing.Point(92, 198);
+			this.num_bitmapXOffs.Maximum = new decimal(new int[] {
+            900000,
+            0,
+            0,
+            0});
+			this.num_bitmapXOffs.Name = "num_bitmapXOffs";
+			this.num_bitmapXOffs.Size = new System.Drawing.Size(43, 20);
+			this.num_bitmapXOffs.TabIndex = 19;
+			this.num_bitmapXOffs.ValueChanged += new System.EventHandler(this.num_bitmapXOffs_ValueChanged);
+			// 
+			// lbl_bitmapXOffs
+			// 
+			this.lbl_bitmapXOffs.AutoSize = true;
+			this.lbl_bitmapXOffs.Location = new System.Drawing.Point(11, 201);
+			this.lbl_bitmapXOffs.Name = "lbl_bitmapXOffs";
+			this.lbl_bitmapXOffs.Size = new System.Drawing.Size(74, 13);
+			this.lbl_bitmapXOffs.TabIndex = 18;
+			this.lbl_bitmapXOffs.Text = "Bitmap X Offs:";
+			// 
+			// num_bitmapRotation
+			// 
+			this.num_bitmapRotation.Location = new System.Drawing.Point(91, 134);
+			this.num_bitmapRotation.Maximum = new decimal(new int[] {
+            359,
+            0,
+            0,
+            0});
+			this.num_bitmapRotation.Name = "num_bitmapRotation";
+			this.num_bitmapRotation.Size = new System.Drawing.Size(61, 20);
+			this.num_bitmapRotation.TabIndex = 17;
+			this.num_bitmapRotation.ValueChanged += new System.EventHandler(this.num_bitmapRotation_ValueChanged);
+			// 
+			// lbl_bitmapRotation
+			// 
+			this.lbl_bitmapRotation.AutoSize = true;
+			this.lbl_bitmapRotation.Location = new System.Drawing.Point(2, 136);
+			this.lbl_bitmapRotation.Name = "lbl_bitmapRotation";
+			this.lbl_bitmapRotation.Size = new System.Drawing.Size(85, 13);
+			this.lbl_bitmapRotation.TabIndex = 16;
+			this.lbl_bitmapRotation.Text = "Bitmap Rotation:";
+			// 
+			// tkb_Rotation
+			// 
+			this.tkb_Rotation.Location = new System.Drawing.Point(-1, 152);
+			this.tkb_Rotation.Maximum = 359;
+			this.tkb_Rotation.Name = "tkb_Rotation";
+			this.tkb_Rotation.Size = new System.Drawing.Size(152, 45);
+			this.tkb_Rotation.TabIndex = 15;
+			this.tkb_Rotation.TickFrequency = 30;
+			this.tkb_Rotation.TickStyle = System.Windows.Forms.TickStyle.Both;
+			this.tkb_Rotation.Scroll += new System.EventHandler(this.tkb_Rotation_Scroll);
+			// 
 			// num_drawOrder
 			// 
-			this.num_drawOrder.Location = new System.Drawing.Point(91, 132);
+			this.num_drawOrder.Location = new System.Drawing.Point(91, 250);
 			this.num_drawOrder.Name = "num_drawOrder";
 			this.num_drawOrder.Size = new System.Drawing.Size(43, 20);
 			this.num_drawOrder.TabIndex = 14;
@@ -313,7 +409,7 @@ namespace TISFAT_ZERO
 			// lbl_drawOrder
 			// 
 			this.lbl_drawOrder.AutoSize = true;
-			this.lbl_drawOrder.Location = new System.Drawing.Point(21, 134);
+			this.lbl_drawOrder.Location = new System.Drawing.Point(21, 252);
 			this.lbl_drawOrder.Name = "lbl_drawOrder";
 			this.lbl_drawOrder.Size = new System.Drawing.Size(64, 13);
 			this.lbl_drawOrder.TabIndex = 13;
@@ -321,7 +417,7 @@ namespace TISFAT_ZERO
 			// 
 			// num_lineThickness
 			// 
-			this.num_lineThickness.Location = new System.Drawing.Point(91, 160);
+			this.num_lineThickness.Location = new System.Drawing.Point(91, 278);
 			this.num_lineThickness.Maximum = new decimal(new int[] {
             999,
             0,
@@ -335,7 +431,7 @@ namespace TISFAT_ZERO
 			// lbl_lineThickness
 			// 
 			this.lbl_lineThickness.AutoSize = true;
-			this.lbl_lineThickness.Location = new System.Drawing.Point(31, 162);
+			this.lbl_lineThickness.Location = new System.Drawing.Point(31, 280);
 			this.lbl_lineThickness.Name = "lbl_lineThickness";
 			this.lbl_lineThickness.Size = new System.Drawing.Size(59, 13);
 			this.lbl_lineThickness.TabIndex = 11;
@@ -344,7 +440,7 @@ namespace TISFAT_ZERO
 			// chk_lineVisible
 			// 
 			this.chk_lineVisible.AutoSize = true;
-			this.chk_lineVisible.Location = new System.Drawing.Point(49, 185);
+			this.chk_lineVisible.Location = new System.Drawing.Point(49, 303);
 			this.chk_lineVisible.Name = "chk_lineVisible";
 			this.chk_lineVisible.Size = new System.Drawing.Size(56, 17);
 			this.chk_lineVisible.TabIndex = 10;
@@ -368,6 +464,7 @@ namespace TISFAT_ZERO
 			this.btn_addBitmap.TabIndex = 9;
 			this.btn_addBitmap.Text = "Add";
 			this.btn_addBitmap.UseVisualStyleBackColor = true;
+			this.btn_addBitmap.Click += new System.EventHandler(this.btn_addBitmap_Click);
 			// 
 			// com_lineBitmap
 			// 
@@ -654,6 +751,7 @@ namespace TISFAT_ZERO
 			// dlg_openBitmap
 			// 
 			this.dlg_openBitmap.DefaultExt = "png";
+			this.dlg_openBitmap.FileOk += new System.ComponentModel.CancelEventHandler(this.dlg_openBitmap_FileOk);
 			// 
 			// GL_GRAPHICS
 			// 
@@ -670,11 +768,21 @@ namespace TISFAT_ZERO
 			this.GL_GRAPHICS.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GL_GRAPHICS_MouseUp);
 			this.GL_GRAPHICS.Resize += new System.EventHandler(this.GL_GRAPHICS_Resize);
 			// 
+			// lbl_bitmapID
+			// 
+			this.lbl_bitmapID.AutoSize = true;
+			this.lbl_bitmapID.Location = new System.Drawing.Point(375, 9);
+			this.lbl_bitmapID.Name = "lbl_bitmapID";
+			this.lbl_bitmapID.Size = new System.Drawing.Size(53, 13);
+			this.lbl_bitmapID.TabIndex = 8;
+			this.lbl_bitmapID.Text = "BitmapID:";
+			// 
 			// StickEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(884, 511);
+			this.Controls.Add(this.lbl_bitmapID);
 			this.Controls.Add(this.GL_GRAPHICS);
 			this.Controls.Add(this.lbl_jointPosition);
 			this.Controls.Add(this.lbl_lineLength);
@@ -697,6 +805,10 @@ namespace TISFAT_ZERO
 			this.pnl_toolPanel.ResumeLayout(false);
 			this.pnl_lineProps.ResumeLayout(false);
 			this.pnl_lineProps.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_bitmapYOffs)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.num_bitmapXOffs)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.num_bitmapRotation)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.tkb_Rotation)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_drawOrder)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_lineThickness)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_lineAlpha)).EndInit();
@@ -770,6 +882,14 @@ namespace TISFAT_ZERO
 		private System.Windows.Forms.OpenFileDialog dlg_openBitmap;
 		private OpenTK.GLControl GL_GRAPHICS;
 		public System.Windows.Forms.ComboBox com_lineBitmap;
+		private System.Windows.Forms.Label lbl_bitmapID;
+		private System.Windows.Forms.NumericUpDown num_bitmapYOffs;
+		private System.Windows.Forms.Label lbl_bitmapYOffs;
+		private System.Windows.Forms.NumericUpDown num_bitmapXOffs;
+		private System.Windows.Forms.Label lbl_bitmapXOffs;
+		private System.Windows.Forms.NumericUpDown num_bitmapRotation;
+		private System.Windows.Forms.Label lbl_bitmapRotation;
+		private System.Windows.Forms.TrackBar tkb_Rotation;
 
 	}
 }

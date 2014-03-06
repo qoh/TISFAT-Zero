@@ -14,8 +14,8 @@ namespace TISFAT_ZERO
 	{
 		//This class holds the various constants used in file saving/loading.
 		public static readonly byte[]
-			fileSig =		{ 0x54, 0x49, 0x53, 0x46, 0x41, 0x54, 0x2D, 0x30 }, //TISFAT-0 in hex
-			curVersion =	{ 0x00, 0x03, 0x00, 0x00 };
+			fileSig = { 0x54, 0x49, 0x53, 0x46, 0x41, 0x54, 0x2D, 0x30 }, //TISFAT-0 in hex
+			curVersion = { 0x00, 0x03, 0x00, 0x00 };
 
 		public static readonly string saveFileExt = ".tzs";
 	}
@@ -23,8 +23,8 @@ namespace TISFAT_ZERO
 	class tzf
 	{
 		public static readonly byte[]
-			fileSig =		{ 0x53, 0x74, 0x69, 0x63, 0x6b, 0x20, 0x46, 0x69, 0x67 }, //Stick Fig in hex
-			curVersion =	{ 0x00, 0x03, 0x00, 0x00 };
+			fileSig = { 0x53, 0x74, 0x69, 0x63, 0x6b, 0x20, 0x46, 0x69, 0x67 }, //Stick Fig in hex
+			curVersion = { 0x00, 0x03, 0x00, 0x00 };
 
 		public static readonly string saveFileExt = ".tzf";
 	}
@@ -53,11 +53,16 @@ namespace TISFAT_ZERO
 			bin.Write(tzf.curVersion, 0, tzf.curVersion.Length);
 
 			bin.Write(figure.Joints.Count);
-			
+			bin.Write(figure.getBitmapCount());
+
 			try
 			{
 				foreach (StickJoint joint in figure.Joints)
 					writeJointBlock(bin, figure, joint);
+
+				foreach (StickJoint joint in figure.Joints)
+					if (joint.Bitmap_ID != -1)
+						writeBitmapBlock(joint.Bitmap_ID, joint, bin);
 			}
 			catch (Exception ex)
 			{
@@ -87,13 +92,28 @@ namespace TISFAT_ZERO
 			bin.Write(j.visible);
 			bin.Write(j.handleDrawn);
 
-			bin.Write(j.bitmapName);
-			j.Bitmap.Save(bin.BaseStream, System.Drawing.Imaging.ImageFormat.Png);
-
+			bin.Write(j.Bitmap_ID);
 			if (!(j.parent == null))
 				bin.Write(figure.Joints.IndexOf(j.parent));
 			else
 				bin.Write(-1);
+		}
+
+		private static void writeBitmapBlock(int id, StickJoint j, BinaryWriter bin)
+		{
+			Stream bitmapStream = new MemoryStream();
+
+			j.bitmap.Save(bitmapStream, System.Drawing.Imaging.ImageFormat.Png);
+
+			bin.Write(id);
+			bin.Write(j.Bitmap_name);
+			bin.Write(j.Bitmap_Rotation);
+
+			bin.Write(j.Bitmap_Offset.X);
+			bin.Write(j.Bitmap_Offset.Y);
+
+			bin.Write(bitmapStream.Length);
+			j.bitmap.Save(bin.BaseStream, System.Drawing.Imaging.ImageFormat.Png);
 		}
 	}
 
@@ -116,17 +136,19 @@ namespace TISFAT_ZERO
 			bin.BaseStream.Position += 12;
 
 			int jointCount = bin.ReadInt32();
+			int bitmapCount = bin.ReadInt32();
+
 			sticked.figure = new StickCustom(1);
 			sticked.figure.drawFig = true;
 			sticked.figure.drawHandles = true;
 			sticked.figure.isActiveFig = true;
 			List<int> parentList = new List<int>();
+			List<T0JointBitmap> bitmapList = new List<T0JointBitmap>();
 
-			for(int i = 0; i < jointCount; i++)
+			for (int i = 0;i < jointCount;i++)
 			{
 				int x = bin.ReadInt32();
 				int y = bin.ReadInt32();
-				
 
 				Color col = Color.FromArgb(bin.ReadInt32());
 				Color hCol = Color.FromArgb(bin.ReadInt32());
@@ -136,25 +158,79 @@ namespace TISFAT_ZERO
 				int drawOrder = bin.ReadInt32();
 				bool visible = bin.ReadBoolean();
 				bool handleDrawn = bin.ReadBoolean();
-				int parentIndex = bin.ReadInt32();
 
-				String bittyName = bin.ReadString();
-				Bitmap bitty = (Bitmap)Bitmap.FromStream(bin.BaseStream);
+				int bitmapIndex = bin.ReadInt32();
+				int parentIndex = bin.ReadInt32();
 
 				parentList.Add(parentIndex);
 
+				sticked.figure.Joints.Add(new StickJoint("Joint " + i.ToString(), new Point(x, y), thickness, col, hCol, 0, drawState, false, null, handleDrawn));
 
-				sticked.figure.Joints.Add(new StickJoint("Joint " + i.ToString(), new Point(x, y), thickness, col, hCol, 0, drawState, false, null, handleDrawn, bitty, bittyName));
-
+				sticked.figure.Joints[sticked.figure.Joints.Count - 1].Bitmap_ID = bitmapIndex;
 				sticked.figure.Joints[sticked.figure.Joints.Count - 1].drawOrder = drawOrder;
 			}
-			for (int i = 0; i < jointCount; i++)
+
+			for (int i = 0;i < bitmapCount;i++)
+			{
+				int id = bin.ReadInt32();
+				string name = bin.ReadString();
+				int Rotation = bin.ReadInt32();
+				int OffsetX = bin.ReadInt32();
+				int OffsetY = bin.ReadInt32();
+
+				long bytesToRead = bin.ReadInt64();
+
+				byte[] buffer = bin.ReadBytes((int)bytesToRead);
+
+				//bin.Read(buffer, (int)bin.BaseStream.Position, (int)bytesToRead);
+				Stream bitmapStream = new MemoryStream(buffer);
+
+				Image bitty = Bitmap.FromStream(bitmapStream);
+
+				bitmapList.Add(new T0JointBitmap(id, name, Rotation, OffsetX, OffsetY, bitty));
+			}
+			for (int i = 0;i < jointCount;i++)
+			{
+				sticked.figure.Joints[i].Bitmap_name = "<No Bitmap>";
+				foreach (T0JointBitmap bitmap in bitmapList)
+					if (sticked.figure.Joints[i].Bitmap_ID == bitmap.id)
+						bitmap.ApplyTo(sticked.figure.Joints[i]);
+
 				if (parentList[i] != -1)
 					sticked.figure.Joints[i].parent = sticked.figure.Joints[parentList[i]];
+			}
 
 			sticked.recalcFigureJoints();
 			bin.Close();
 			bin.Dispose();
+		}
+	}
+
+	class T0JointBitmap
+	{
+		public int id, Rotation, OffsetX, OffsetY;
+		public string name;
+		public Image bitmap;
+
+		public T0JointBitmap(int id, string name, int Rotation, int OffsetX, int OffsetY, Image Img)
+		{
+			this.id = id;
+			this.name = name;
+			this.Rotation = Rotation;
+			this.OffsetX = OffsetX;
+			this.OffsetY = OffsetY;
+
+			this.bitmap = Img;
+		}
+
+		public void ApplyTo(StickJoint j)
+		{
+			j.bitmap = (Bitmap)bitmap;
+			j.Bitmap_name = name;
+			j.Bitmap_Offset = new Point(OffsetX, OffsetY);
+			j.Bitmap_Rotation = Rotation;
+
+			Functions.AssignGlid(j);
 		}
 	}
 
@@ -234,7 +310,7 @@ namespace TISFAT_ZERO
 
 			byte[] name = Encoding.UTF8.GetBytes(l.name);
 
-			bytes.Add((byte)(name.Length-1));
+			bytes.Add((byte)(name.Length - 1));
 			//(the - 1 allows 256 characters instead of just 255, by replacing 1 with 0, 2 with 1 and so forth)
 
 			bytes.AddRange(name);
@@ -246,7 +322,7 @@ namespace TISFAT_ZERO
 			if (l.type == 4)
 				writeCustomFigBlock(l, stream);
 
-			for(int x = 0; x < l.keyFrames.Count; x++)
+			for (int x = 0;x < l.keyFrames.Count;x++)
 				writeFrameBlock(l.keyFrames[x], stream);
 
 			List<byte> b2 = new List<byte>();
@@ -265,7 +341,7 @@ namespace TISFAT_ZERO
 			List<StickJoint> customFig = l.keyFrames[0].Joints;
 			bytes.AddRange(BitConverter.GetBytes((ushort)customFig.Count));
 
-			for(int a = 0; a < customFig.Count; a++)
+			for (int a = 0;a < customFig.Count;a++)
 			{
 				StickJoint j = customFig[a];
 				//Parent index
@@ -299,14 +375,14 @@ namespace TISFAT_ZERO
 				//handle visible and visible
 				bytes.AddRange(BitConverter.GetBytes(j.visible));
 				bytes.AddRange(BitConverter.GetBytes(j.handleDrawn));
-				
+
 			}
 
 			bytes.InsertRange(0, BitConverter.GetBytes(bytes.Count));
 
 			s.Write(bytes.ToArray(), 0, bytes.Count);
 		}
-		
+
 		private static void writeFrameBlock(KeyFrame f, Stream stream)
 		{
 			byte type = f.type;
@@ -428,7 +504,7 @@ namespace TISFAT_ZERO
 
 			try
 			{
-				while(layer.type != 6 && layer.type != 0)
+				while (layer.type != 6 && layer.type != 0)
 					layer = readNextBlock(file);
 
 				if (layer.type == 6)
@@ -487,12 +563,14 @@ namespace TISFAT_ZERO
 					newLayer = new CustomLayer(name, new StickCustom(false), zeCanvas);
 					otherTmpBlock = readNextBlock(file);
 				}
+				else if (layerType == 5)
+					newLayer = new LightLayer(name, new LightObject(false), zeCanvas);
 				else
-					continue; //Only 1, 2, 3, and 4 have been coded so far, so only load those types.
+					continue; //Only 1, 2, 3, 4, and 5 have been coded so far, so only load those types.
 
 				List<KeyFrame> thingy = new List<KeyFrame>();
 
-				for (Block tmpBlk = readNextBlock(file); tmpBlk.type != 1; tmpBlk = readNextBlock(file))
+				for (Block tmpBlk = readNextBlock(file);tmpBlk.type != 1;tmpBlk = readNextBlock(file))
 				{
 
 					if (tmpBlk.type != 2)
@@ -514,8 +592,8 @@ namespace TISFAT_ZERO
 						f.Joints.AddRange(new StickJoint[JC]);
 
 						int[] parents = new int[JC];
-						
-						for (int a = 0; a < JC; a++)
+
+						for (int a = 0;a < JC;a++)
 						{
 							f.Joints[a] = new StickJoint("", new Point(0, 0), 0, Color.Black, Color.Black, 0, 0, false, null, false);
 							int blockItr = a * 16;
@@ -538,7 +616,7 @@ namespace TISFAT_ZERO
 							f.Joints[a].handleDrawn = (bool)BitConverter.ToBoolean(otherTmpBlock.data, 17);
 						}
 
-						for (int i = 0; i < JC; i++)
+						for (int i = 0;i < JC;i++)
 						{
 							if (parents[i] != -1)
 							{
@@ -558,8 +636,10 @@ namespace TISFAT_ZERO
 						newLayer.tweenFig = new StickCustom(true);
 						newLayer.tweenFig.Joints = custObjectFrame.createClone(f.Joints, parents);
 					}
+					else if (layerType == 5)
+						f = new LightFrame(0);
 					else
-						continue; //Nothing past layer type 4 has even begun implementation, so if we encounter any just skip.
+						continue; //Nothing past layer type 5 has even begun implementation, so if we encounter any just skip.
 
 					int kPos = BitConverter.ToInt32(tmpBlk.data, 0);
 
@@ -571,7 +651,7 @@ namespace TISFAT_ZERO
 					try
 					{
 						//We can also just skip the keyframe properties totally in case we're loading an older file format.
-						while(propBlock.type != 4 && propBlock.type != 5)
+						while (propBlock.type != 4 && propBlock.type != 5)
 							propBlock = readNextBlock(file);
 					}
 					catch
@@ -585,9 +665,9 @@ namespace TISFAT_ZERO
 					if (propBlock.type == 4)
 					{
 						//Obtain the colour that's stored in the properties block
-						if(layerType != 4)
+						if (layerType != 4)
 							figColor = Color.FromArgb(propBlock.data[1], propBlock.data[2], propBlock.data[3], propBlock.data[4]);
-						
+
 						if (layerType == 3)
 						{
 							((RectFrame)f).figColor = figColor;
@@ -597,20 +677,20 @@ namespace TISFAT_ZERO
 							foreach (StickJoint j in f.Joints)
 								j.color = outlineColor;
 						}
-						
+
 						//Obtain the joints positions block
 						posblk = readNextBlock(file); //Oh readNextBlock method, how you make my life simpler so
 					}
 
 					int jointcount = BitConverter.ToUInt16(posblk.data, 0);
-					
-					try 
+
+					try
 					{
-						for (int a = 0; a < jointcount; a++)
+						for (int a = 0;a < jointcount;a++)
 						{
 							int x = 4 * a + 2;
 
-							if(layerType != 4 && layerType != 3)
+							if (layerType != 4 && layerType != 3)
 								f.Joints[a].color = figColor;
 
 							f.Joints[a].location = new Point(BitConverter.ToInt16(posblk.data, x),

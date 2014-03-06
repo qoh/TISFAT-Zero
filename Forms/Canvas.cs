@@ -19,7 +19,7 @@ namespace TISFAT_ZERO
 		#region Variables
 		public Color bkgColor;
 
-        private static List<Point> lights = new List<Point>();
+		public static List<LightObject> lights = new List<LightObject>();
         public readonly float lightSize = 400.0f;
 		public static bool renderShadows = false;
 
@@ -100,6 +100,7 @@ namespace TISFAT_ZERO
 				if (!(selectedJoint == null) && (selectedJoint.ParentFigure.type != 3))
 				{
 					selectedJoint.SetPos(e.X, e.Y);
+					theToolbox.lbl_dbgAngleToParent.Text = "AngleToParent: " + selectedJoint.AngleToParent;
 					Refresh();
 				}
 				else if (selectedJoint != null && selectedJoint.ParentFigure.type == 3)
@@ -196,6 +197,7 @@ namespace TISFAT_ZERO
 					{
 						theToolbox.lbl_selectedJoint.Text = "Selected Joint: " + f.name;
 						theToolbox.lbl_jointLength.Text = "Joint Length: " + f.CalcLength(null).ToString();
+						theToolbox.lbl_dbgAngleToParent.Text = "AngleToParent: " + f.AngleToParent;
 					}
 
 					//This tells the form that the mouse button is being held down, and
@@ -277,7 +279,7 @@ namespace TISFAT_ZERO
 		/// <param name="width">The width.</param>
 		/// <param name="height">The height.</param>
 		/// <param name="two">The end point. (only used in line type)</param>
-		public static void drawGraphics(int type, Color color, Point one, int width, int height, Point two, int textureID = 0)
+		public static void drawGraphics(int type, Color color, Point one, int width, int height, Point two, int textureID = 0, float rotation = 0)
 		{
 			if (!GLLoaded)
 				return;
@@ -382,32 +384,39 @@ namespace TISFAT_ZERO
 			}
             else if (type == 6) //Texture
             {
-                GL.Color4(color);
+				GL.Color4(color);
 
-                GL.Enable(EnableCap.Texture2D);
-                GL.Enable(EnableCap.Blend);
-                GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+				GL.Enable(EnableCap.Texture2D);
+				GL.Enable(EnableCap.Blend);
+				GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
-                GL.BindTexture(TextureTarget.Texture2D, textureID);
+				GL.BindTexture(TextureTarget.Texture2D, textureID);
 
-                GL.Begin(BeginMode.Quads);
+				GL.PushMatrix();
 
-                GL.TexCoord2(0.0, 1.0);
-                GL.Vertex2(one.X, one.Y);
+				GL.Translate(one.X, one.Y, 0);
+				GL.Rotate(rotation, 0, 0, 1);
 
-                GL.TexCoord2(0.0, 0.0);
-                GL.Vertex2(one.X, one.Y - height);
+				GL.Begin(BeginMode.Quads);
 
-                GL.TexCoord2(1.0, 0.0);
-                GL.Vertex2(one.X + width, one.Y - height);
+				GL.TexCoord2(0.0, 1.0);
+				GL.Vertex2(0, 0);
 
-                GL.TexCoord2(1.0, 1.0);
-                GL.Vertex2(one.X + width, one.Y);
+				GL.TexCoord2(0.0, 0.0);
+				GL.Vertex2(0, -height);
 
-                GL.End();
+				GL.TexCoord2(1.0, 0.0);
+				GL.Vertex2(width, -height);
 
-                GL.Disable(EnableCap.Blend);
-                GL.Disable(EnableCap.Texture2D);
+				GL.TexCoord2(1.0, 1.0);
+				GL.Vertex2(width, 0);
+
+				GL.End();
+
+				GL.PopMatrix();
+
+				GL.Disable(EnableCap.Blend);
+				GL.Disable(EnableCap.Texture2D);
             }
 
 			GL.Disable(EnableCap.Blend);
@@ -452,7 +461,7 @@ namespace TISFAT_ZERO
 		/// Adds the tween figure.
 		/// </summary>
 		/// <param name="figure">The figure.</param>
-		public static void addTweenFigure(StickObject figure){ tweenFigs.Add(figure);}
+		public static void addTweenFigure(StickObject figure) { tweenFigs.Add(figure); figure.isTweenFig = true; }
 
 		/// <summary>
 		/// Removes the figure.
@@ -629,8 +638,10 @@ namespace TISFAT_ZERO
             GL.LinkProgram(Program_passAndRender);
 
             //lights.Add(new Point(100, 250));
-            lights.Add(new Point(200, 200));
+            //lights.Add(new Point(200, 200));
             //lights.Add(new Point(300, 250));
+
+			mainForm.tline.addStickLayer("Stick Layer 1");
         }
 
 		public void setBackgroundColor(Color c)
@@ -727,8 +738,18 @@ namespace TISFAT_ZERO
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.StencilBufferBit);
 
 			if(Canvas.renderShadows)
-				for (int i = lights.Count; i > 0; i--)
-					DrawShadows(lights[i - 1]);
+				for (int i = lights.Count;i > 0;i--)
+				{
+					if (lights[i - 1].isTweenFig)
+					{
+						if (lights[i - 1].drawFig)
+						{
+							DrawShadows(lights[i - 1].Joints[0].location);
+						}
+					}
+					else
+						DrawShadows(lights[i - 1].Joints[0].location);
+				}
 
             for (int i = figureList.Count; i > 0; i--)
                 figureList[i - 1].drawFigure();

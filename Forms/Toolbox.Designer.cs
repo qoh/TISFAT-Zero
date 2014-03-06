@@ -29,18 +29,18 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Default Figure");
-			System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Custom Figure..");
-			System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Stick Figures", new System.Windows.Forms.TreeNode[] {
-            treeNode9,
-            treeNode10});
-			System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Line");
-			System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Rectangle");
-			System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Shapes", new System.Windows.Forms.TreeNode[] {
-            treeNode12,
-            treeNode13});
-			System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Light Source");
-			System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Text");
+			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Default Figure");
+			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Custom Figure..");
+			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Stick Figures", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2});
+			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Line");
+			System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Rectangle");
+			System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Shapes", new System.Windows.Forms.TreeNode[] {
+            treeNode4,
+            treeNode5});
+			System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Light Source");
+			System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Text");
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Toolbox));
 			this.pnl_mainPanel = new System.Windows.Forms.Panel();
 			this.pnl_addTools = new System.Windows.Forms.Panel();
@@ -77,6 +77,7 @@
 			this.lbl_pnlLine_thickness = new System.Windows.Forms.Label();
 			this.btn_addPoly = new System.Windows.Forms.Button();
 			this.pnl_mainTools = new System.Windows.Forms.Panel();
+			this.ckb_renderShadows = new System.Windows.Forms.CheckBox();
 			this.btn_BGButton = new System.Windows.Forms.Button();
 			this.btn_poserButton = new System.Windows.Forms.Button();
 			this.btn_scaleButton = new System.Windows.Forms.Button();
@@ -106,7 +107,7 @@
 			this.btn_addStick = new System.Windows.Forms.Button();
 			this.animTimer = new System.Windows.Forms.Timer(this.components);
 			this.dlg_Color = new System.Windows.Forms.ColorDialog();
-			this.ckb_renderShadows = new System.Windows.Forms.CheckBox();
+			this.lbl_dbgAngleToParent = new System.Windows.Forms.Label();
 			this.pnl_mainPanel.SuspendLayout();
 			this.pnl_addTools.SuspendLayout();
 			this.pnl_Properties.SuspendLayout();
@@ -170,40 +171,49 @@
 			this.trv_addView.FullRowSelect = true;
 			this.trv_addView.Location = new System.Drawing.Point(0, 0);
 			this.trv_addView.Name = "trv_addView";
-			treeNode9.Name = "nde_Stick_Default";
-			treeNode9.Text = "Default Figure";
-			treeNode9.ToolTipText = "The default stick figure";
-			treeNode10.Name = "nde_Stick_Custom";
-			treeNode10.Text = "Custom Figure..";
-			treeNode10.ToolTipText = "Create your own figure, or load an existing one";
-			treeNode11.Checked = true;
-			treeNode11.Name = "nde_StickFigures";
-			treeNode11.Text = "Stick Figures";
-			treeNode11.ToolTipText = "Various stick figure objects";
-			treeNode12.Name = "nde_Shape_Line";
-			treeNode12.Text = "Line";
-			treeNode12.ToolTipText = "A primitive line, from point A to point B.";
-			treeNode13.Name = "nde_Shape_Rect";
-			treeNode13.Text = "Rectangle";
-			treeNode13.ToolTipText = "A basic rectangle with 4 control points.";
-			treeNode14.Checked = true;
-			treeNode14.Name = "nde_Shapes";
-			treeNode14.Text = "Shapes";
-			treeNode14.ToolTipText = "Various primitive shapes";
-			treeNode15.Name = "nde_lightSource";
-			treeNode15.Text = "Light Source";
-			treeNode15.ToolTipText = "A source of light for the shading engine";
-			treeNode16.Name = "nde_Text";
-			treeNode16.Text = "Text";
-			treeNode16.ToolTipText = "A text object with 4 control points and configurable text.";
+			treeNode1.Name = "nde_Stick_Default";
+			treeNode1.Tag = "0";
+			treeNode1.Text = "Default Figure";
+			treeNode1.ToolTipText = "The default stick figure";
+			treeNode2.Name = "nde_Stick_Custom";
+			treeNode2.Tag = "1";
+			treeNode2.Text = "Custom Figure..";
+			treeNode2.ToolTipText = "Create your own figure, or load an existing one";
+			treeNode3.Checked = true;
+			treeNode3.Name = "nde_StickFigures";
+			treeNode3.Tag = "-1";
+			treeNode3.Text = "Stick Figures";
+			treeNode3.ToolTipText = "Various stick figure objects";
+			treeNode4.Name = "nde_Shape_Line";
+			treeNode4.Tag = "2";
+			treeNode4.Text = "Line";
+			treeNode4.ToolTipText = "A primitive line, from point A to point B.";
+			treeNode5.Name = "nde_Shape_Rect";
+			treeNode5.Tag = "3";
+			treeNode5.Text = "Rectangle";
+			treeNode5.ToolTipText = "A basic rectangle with 4 control points.";
+			treeNode6.Checked = true;
+			treeNode6.Name = "nde_Shapes";
+			treeNode6.Tag = "-1";
+			treeNode6.Text = "Shapes";
+			treeNode6.ToolTipText = "Various primitive shapes";
+			treeNode7.Name = "nde_lightSource";
+			treeNode7.Tag = "4";
+			treeNode7.Text = "Light Source";
+			treeNode7.ToolTipText = "A source of light for the shading engine";
+			treeNode8.Name = "nde_Text";
+			treeNode8.Tag = "5";
+			treeNode8.Text = "Text";
+			treeNode8.ToolTipText = "A text object with 4 control points and configurable text.";
 			this.trv_addView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode11,
-            treeNode14,
-            treeNode15,
-            treeNode16});
+            treeNode3,
+            treeNode6,
+            treeNode7,
+            treeNode8});
 			this.trv_addView.ShowLines = false;
 			this.trv_addView.Size = new System.Drawing.Size(151, 158);
 			this.trv_addView.TabIndex = 26;
+			this.trv_addView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.AddObject);
 			// 
 			// btn_cancelButton
 			// 
@@ -567,6 +577,17 @@
 			this.pnl_mainTools.Size = new System.Drawing.Size(151, 203);
 			this.pnl_mainTools.TabIndex = 28;
 			// 
+			// ckb_renderShadows
+			// 
+			this.ckb_renderShadows.AutoSize = true;
+			this.ckb_renderShadows.Location = new System.Drawing.Point(21, 170);
+			this.ckb_renderShadows.Name = "ckb_renderShadows";
+			this.ckb_renderShadows.Size = new System.Drawing.Size(108, 17);
+			this.ckb_renderShadows.TabIndex = 25;
+			this.ckb_renderShadows.Text = "Render Shadows";
+			this.ckb_renderShadows.UseVisualStyleBackColor = true;
+			this.ckb_renderShadows.CheckedChanged += new System.EventHandler(this.ckb_renderShadows_CheckedChanged);
+			// 
 			// btn_BGButton
 			// 
 			this.btn_BGButton.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -665,7 +686,6 @@
 			this.btn_addRectangle.TabIndex = 22;
 			this.btn_addRectangle.TabStop = false;
 			this.btn_addRectangle.UseVisualStyleBackColor = true;
-			this.btn_addRectangle.Click += new System.EventHandler(this.btn_addRectangle_Click);
 			// 
 			// pnl_ctrlPanel
 			// 
@@ -758,6 +778,7 @@
 			// tabPage2
 			// 
 			this.tabPage2.BackColor = System.Drawing.Color.LightGray;
+			this.tabPage2.Controls.Add(this.lbl_dbgAngleToParent);
 			this.tabPage2.Controls.Add(this.lbl_stickFigures);
 			this.tabPage2.Controls.Add(this.lbl_jointLength);
 			this.tabPage2.Controls.Add(this.lbl_selectedJoint);
@@ -773,7 +794,7 @@
 			// lbl_stickFigures
 			// 
 			this.lbl_stickFigures.AutoSize = true;
-			this.lbl_stickFigures.Location = new System.Drawing.Point(3, 65);
+			this.lbl_stickFigures.Location = new System.Drawing.Point(3, 81);
 			this.lbl_stickFigures.Name = "lbl_stickFigures";
 			this.lbl_stickFigures.Size = new System.Drawing.Size(85, 13);
 			this.lbl_stickFigures.TabIndex = 9;
@@ -828,7 +849,6 @@
 			this.btn_addLine.TabIndex = 21;
 			this.btn_addLine.TabStop = false;
 			this.btn_addLine.UseVisualStyleBackColor = true;
-			this.btn_addLine.Click += new System.EventHandler(this.btn_addLine_Click);
 			// 
 			// lbl_selectionDummy
 			// 
@@ -851,7 +871,6 @@
 			this.btn_addCustomStick.TabIndex = 20;
 			this.btn_addCustomStick.TabStop = false;
 			this.btn_addCustomStick.UseVisualStyleBackColor = true;
-			this.btn_addCustomStick.Click += new System.EventHandler(this.btn_addCustomStick_Click);
 			// 
 			// pnl_Drawing
 			// 
@@ -893,23 +912,20 @@
 			this.btn_addStick.TabIndex = 19;
 			this.btn_addStick.TabStop = false;
 			this.btn_addStick.UseVisualStyleBackColor = true;
-			this.btn_addStick.Click += new System.EventHandler(this.btn_addStick_Click);
 			// 
 			// animTimer
 			// 
 			this.animTimer.Interval = 24;
 			this.animTimer.Tick += new System.EventHandler(this.animTimer_Tick);
 			// 
-			// ckb_renderShadows
+			// lbl_dbgAngleToParent
 			// 
-			this.ckb_renderShadows.AutoSize = true;
-			this.ckb_renderShadows.Location = new System.Drawing.Point(21, 170);
-			this.ckb_renderShadows.Name = "ckb_renderShadows";
-			this.ckb_renderShadows.Size = new System.Drawing.Size(108, 17);
-			this.ckb_renderShadows.TabIndex = 25;
-			this.ckb_renderShadows.Text = "Render Shadows";
-			this.ckb_renderShadows.UseVisualStyleBackColor = true;
-			this.ckb_renderShadows.CheckedChanged += new System.EventHandler(this.ckb_renderShadows_CheckedChanged);
+			this.lbl_dbgAngleToParent.AutoSize = true;
+			this.lbl_dbgAngleToParent.Location = new System.Drawing.Point(3, 66);
+			this.lbl_dbgAngleToParent.Name = "lbl_dbgAngleToParent";
+			this.lbl_dbgAngleToParent.Size = new System.Drawing.Size(84, 13);
+			this.lbl_dbgAngleToParent.TabIndex = 10;
+			this.lbl_dbgAngleToParent.Text = "AngleToParent: ";
 			// 
 			// Toolbox
 			// 
@@ -1027,5 +1043,6 @@
 		private System.Windows.Forms.NumericUpDown num_rectFillAlpha;
 		private System.Windows.Forms.TreeView trv_addView;
 		private System.Windows.Forms.CheckBox ckb_renderShadows;
+		public System.Windows.Forms.Label lbl_dbgAngleToParent;
 	}
 }

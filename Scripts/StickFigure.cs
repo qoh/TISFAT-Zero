@@ -8,7 +8,6 @@ namespace TISFAT_ZERO
 {
 	public class StickJoint
 	{
-
 		#region Variables
 		//Defining Public Varaibles
 		public string name;
@@ -49,8 +48,15 @@ namespace TISFAT_ZERO
 		public Color handleColor;
 		public Color defaultHandleColor;
 
-		public String bitmapName = null;
-		public Bitmap Bitmap;
+
+		public Bitmap bitmap;
+
+		public int Bitmap_ID = -1;
+		public string Bitmap_name = "<No Bitmap>";
+		public int Bitmap_Rotation = 0;
+		public Point Bitmap_Offset = new Point(0, 0);
+
+		public int textureID;
 		#endregion
 
 		#region Functions
@@ -68,8 +74,8 @@ namespace TISFAT_ZERO
 			parent = newParent;
 			handleDrawn = newHandleDrawn;
 
-			this.Bitmap = bitty;
-			bitmapName = bName;
+			this.bitmap = bitty;
+			Bitmap_name = bName;
 		}
 
 		public StickJoint(StickJoint obj, StickJoint newParent)
@@ -85,6 +91,8 @@ namespace TISFAT_ZERO
 			fill = obj.fill;
 			parent = newParent;
 			handleDrawn = obj.handleDrawn;
+
+			Bitmap_name = "<No Bitmap>";
 		}
 
 		public double CalcLength(StickJoint start)
@@ -142,36 +150,38 @@ namespace TISFAT_ZERO
 			length = (int)Math.Round(pStart.length + ((pEnd.length - pStart.length) * sPercent));
 			thickness = (int)Math.Round(pStart.thickness + ((pEnd.thickness - pStart.thickness) * sPercent));
 
-			if (pStart.ParentFigure.type == 3 && ((StickRect)ParentFigure).filled)
-			{
-				int[] r2 = new int[3];
-				int[] g2 = new int[3];
-				int[] b2 = new int[3];
-				int[] a2 = new int[3];
+			if (pStart.ParentFigure != null)
+				if (pStart.ParentFigure.type == 3)
+					if (((StickRect)ParentFigure).filled)
+					{
+						int[] r2 = new int[3];
+						int[] g2 = new int[3];
+						int[] b2 = new int[3];
+						int[] a2 = new int[3];
 
-				Color tmp1 = pStart.ParentFigure.parentLayer.adjacentBack.figColor;
-				Color tmp2 = pEnd.ParentFigure.parentLayer.adjacentFront.figColor;
+						Color tmp1 = pStart.ParentFigure.parentLayer.adjacentBack.figColor;
+						Color tmp2 = pEnd.ParentFigure.parentLayer.adjacentFront.figColor;
 
-				r2[0] = tmp1.R;
-				g2[0] = tmp1.G;
-				b2[0] = tmp1.B;
-				a2[0] = tmp1.A;
+						r2[0] = tmp1.R;
+						g2[0] = tmp1.G;
+						b2[0] = tmp1.B;
+						a2[0] = tmp1.A;
 
-				r2[1] = tmp2.R;
-				g2[1] = tmp2.G;
-				b2[1] = tmp2.B;
-				a2[1] = tmp2.A;
+						r2[1] = tmp2.R;
+						g2[1] = tmp2.G;
+						b2[1] = tmp2.B;
+						a2[1] = tmp2.A;
 
-				r2[2] = r2[0] + (int)Math.Round(sPercent * (r2[1] - r2[0]));
-				g2[2] = g2[0] + (int)Math.Round(sPercent * (g2[1] - g2[0]));
-				b2[2] = b2[0] + (int)Math.Round(sPercent * (b2[1] - b2[0]));
-				a2[2] = a2[0] + (int)Math.Round(sPercent * (a2[1] - a2[0]));
+						r2[2] = r2[0] + (int)Math.Round(sPercent * (r2[1] - r2[0]));
+						g2[2] = g2[0] + (int)Math.Round(sPercent * (g2[1] - g2[0]));
+						b2[2] = b2[0] + (int)Math.Round(sPercent * (b2[1] - b2[0]));
+						a2[2] = a2[0] + (int)Math.Round(sPercent * (a2[1] - a2[0]));
 
-				if (a2[2] > 255)
-					a2[2] = 255;
+						if (a2[2] > 255)
+							a2[2] = 255;
 
-				((StickRect)ParentFigure).figColor = Color.FromArgb(a2[2], r2[2], g2[2], b2[2]);
-			}
+						((StickRect)ParentFigure).figColor = Color.FromArgb(a2[2], r2[2], g2[2], b2[2]);
+					}
 
 			r[0] = pStart.color.R;
 			g[0] = pStart.color.G;
@@ -196,7 +206,7 @@ namespace TISFAT_ZERO
 
 		public void removeChildren()
 		{
-			for (int i = children.Count; i > 0; i--)
+			for (int i = children.Count;i > 0;i--)
 			{
 				children[i - 1].removeChildren();
 				ParentFigure.Joints.Remove(children[i - 1]);
@@ -235,9 +245,36 @@ namespace TISFAT_ZERO
 				double cx = Math.Round(pJoint.length * Math.Cos(dRads));
 				double cy = Math.Round(pJoint.length * Math.Sin(dRads));
 
+				pJoint.AngleToParent = -dAngle;
+
 				pJoint.SetPosAbs(Math.Round(pStart.location.X + cx), Math.Round(pStart.location.Y + cy));
 
 				Recalc(pJoint);
+			}
+		}
+
+		public void recalcAngleToParent()
+		{
+			StickJoint pStart = this;
+			StickJoint pJoint = this.parent;
+			/*
+			int xDiff = pStart.location.X - pJoint.location.X;
+			int yDiff = pStart.location.Y - pJoint.location.Y;
+
+			double dAngle = 180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI);
+			AngleToParent = (180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI)) - dAngle;
+			*/
+			int xDiff = pStart.location.X - pJoint.location.X;
+			int yDiff = pStart.location.Y - pJoint.location.Y;
+
+			double dAngle = 180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI);
+			double dRads = Functions.DegToRads(dAngle);
+
+			if (pStart.parent != null)
+			{
+				xDiff = pStart.parent.location.X - pStart.location.X;
+				yDiff = pStart.parent.location.Y - pStart.location.Y;
+				pJoint.AngleToParent = (180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI)) - dAngle;
 			}
 		}
 
@@ -262,6 +299,8 @@ namespace TISFAT_ZERO
 					xDiff = pThis.location.X - pParent.location.X;
 					yDiff = pThis.location.Y - pParent.location.Y;
 					dAngle = 180 * (1 + Math.Atan2(yDiff, xDiff) / Math.PI);
+					pThis.AngleToParent = -dAngle;
+
 					dRads = Functions.DegToRads(dAngle);
 					cx = Math.Round(pThis.length * Math.Cos(dRads));
 					cy = Math.Round(pThis.length * Math.Sin(dRads));
@@ -404,6 +443,11 @@ namespace TISFAT_ZERO
 				{
 					Canvas.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
 				}
+
+				if (i.textureID != 0)
+				{
+					Canvas.drawGraphics(6, Color.White, new Point(i.location.X - i.Bitmap_Offset.X, i.location.Y - i.Bitmap_Offset.Y), i.bitmap.Width, i.bitmap.Height, new Point(0, 0), i.textureID, (float)i.AngleToParent - i.Bitmap_Rotation);
+				}
 			}
 
 			GL.Disable(EnableCap.StencilTest);
@@ -451,6 +495,11 @@ namespace TISFAT_ZERO
 				else if (i.drawState != 0)
 				{
 					StickEditor.theSticked.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
+				}
+
+				if (i.textureID != 0)
+				{
+					StickEditor.theSticked.drawGraphics(6, Color.White, new Point(i.location.X - i.Bitmap_Offset.X, i.location.Y - i.Bitmap_Offset.Y), i.bitmap.Width, i.bitmap.Height, new Point(0, 0), i.textureID, (float)i.AngleToParent - i.Bitmap_Rotation);
 				}
 			}
 
@@ -521,11 +570,11 @@ namespace TISFAT_ZERO
 
 		public void setColor(Color color)
 		{
-			for (int i = 0; i < Joints.Count; i++)
+			for (int i = 0;i < Joints.Count;i++)
 			{
 				Joints[i].color = color;
 			}
-			if(type != 3)
+			if (type != 3)
 				figColor = color;
 		}
 
@@ -542,7 +591,7 @@ namespace TISFAT_ZERO
 			double minimum = short.MaxValue; //ITS OVER 9000!!!!
 			int index = new int();
 
-			for (int i = 0; i < Joints.Count(); i++)
+			for (int i = 0;i < Joints.Count();i++)
 			{
 				if (Joints[i].handleDrawn & !fromSticked)
 				{
@@ -576,14 +625,14 @@ namespace TISFAT_ZERO
 
 			if (index == -1)
 			{
-				for (int i = 0; i < Joints.Count(); i++)
+				for (int i = 0;i < Joints.Count();i++)
 				{
 					Joints[i].handleColor = Joints[i].defaultHandleColor;
 				}
 				return null;
 			}
 
-			for (int i = 0; i < Joints.Count(); i++)
+			for (int i = 0;i < Joints.Count();i++)
 			{
 				if (i == index)
 				{
@@ -600,7 +649,7 @@ namespace TISFAT_ZERO
 
 		public void activate()
 		{
-			for (int i = 0; i < Canvas.figureList.Count(); i++)
+			for (int i = 0;i < Canvas.figureList.Count();i++)
 			{
 				Canvas.figureList[i].isActiveFig = false;
 			}
@@ -624,7 +673,7 @@ namespace TISFAT_ZERO
 
 			centre.parent = null;
 
-			for (int i = 0; i < Joints.Count(); i++)
+			for (int i = 0;i < Joints.Count();i++)
 			{
 				if (Joints[i].parent != null)
 				{
@@ -699,7 +748,7 @@ namespace TISFAT_ZERO
 			#endregion
 
 			#region Calculate joint Lengths/Add Children to Parents | Draw Order defined
-			for (int i = 0; i < Joints.Count(); i++)
+			for (int i = 0;i < Joints.Count();i++)
 			{
 				if (Joints[i].parent != null)
 					Joints[i].CalcLength(null);
@@ -707,7 +756,7 @@ namespace TISFAT_ZERO
 				Joints[i].drawOrder = i;
 			}
 
-			for (int i = 0; i < Joints.Count(); i++)
+			for (int i = 0;i < Joints.Count();i++)
 				if (Joints[i].parent != null)
 					Joints[i].parent.children.Add(Joints[i]);
 
@@ -746,7 +795,7 @@ namespace TISFAT_ZERO
 			#endregion
 
 			#region Calculate joint Lengths/Add Children to Parents | Draw Order defined
-			for (int i = 0; i < Joints.Count(); i++)
+			for (int i = 0;i < Joints.Count();i++)
 			{
 				if (Joints[i].parent != null)
 				{
@@ -755,7 +804,7 @@ namespace TISFAT_ZERO
 				Joints[i].drawOrder = i;
 			}
 
-			for (int i = 0; i < Joints.Count(); i++)
+			for (int i = 0;i < Joints.Count();i++)
 			{
 				if (Joints[i].parent != null)
 				{
@@ -900,6 +949,37 @@ namespace TISFAT_ZERO
 			Joints = new List<StickJoint>();
 
 			fromSticked = true;
+		}
+
+		public int getBitmapCount()
+		{
+			int bitmaps = 0;
+			foreach (StickJoint j in Joints)
+				if (j.Bitmap_ID != -1)
+					bitmaps++;
+
+			return bitmaps;
+		}
+	}
+
+	public class LightObject : StickObject
+	{
+		int Size;
+		Color Color;
+
+		public LightObject(bool isTweenFigure = false)
+		{
+			type = 5;
+			Joints = new List<StickJoint>();
+
+			Joints.Add(new StickJoint("Light Source", new Point(30, 30), 1, Color.Black, Color.Green));
+
+			if (!isTweenFigure)
+				Canvas.addFigure(this);
+			else
+				Canvas.addTweenFigure(this);
+
+			Canvas.lights.Add(this);
 		}
 	}
 }

@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
+using OpenTK.Graphics.OpenGL;
 
 namespace TISFAT_ZERO
 {
@@ -97,6 +98,21 @@ namespace TISFAT_ZERO
 				sb.AppendFormat("|{0}|{1}", image.Key, image.Value);
 			}
 			return sb.ToString();
+		}
+
+		public static void AssignGlid(StickJoint joint)
+		{
+			BitmapData raw = joint.bitmap.LockBits(new Rectangle(0, 0, joint.bitmap.Width, joint.bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+			joint.textureID = GL.GenTexture();
+			GL.BindTexture(TextureTarget.Texture2D, joint.textureID);
+
+			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, raw.Width, raw.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, raw.Scan0);
+
+			joint.bitmap.UnlockBits(raw);
+
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
 		}
 	}
 }

@@ -49,8 +49,6 @@ namespace TISFAT_ZERO
 
 			layers = new List<Layer>();
 
-			addStickLayer("Stick Figure 1");
-
 			frm_selPos = 0;
 			layer_sel = 0;
 
@@ -217,6 +215,22 @@ namespace TISFAT_ZERO
 
 			setFrame(n.firstKF);
 			
+			return n;
+		}
+
+		public LightLayer addLightLayer(string name)
+		{
+			LightObject x = new LightObject(false);
+
+			LightLayer n = new LightLayer(name, x, theCanvas);
+			layers.Add(n);
+
+			layer_sel = layer_cnt;
+
+			mainForm.updateByLayers(++layer_cnt);
+
+			setFrame(n.firstKF);
+
 			return n;
 		}
 
@@ -729,6 +743,12 @@ namespace TISFAT_ZERO
 
 					Canvas.figureList.Remove(toRemove.fig);
 					Canvas.tweenFigs.Remove(toRemove.tweenFig);
+
+					if (toRemove.GetType() == typeof(LightLayer))
+					{
+						Canvas.lights.Remove((LightObject)toRemove.fig);
+						Canvas.lights.Remove((LightObject)toRemove.tweenFig);
+					}
 
 					layers.RemoveAt(Timeline.layer_sel);
 					layer_cnt--;

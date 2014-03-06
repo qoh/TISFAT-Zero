@@ -463,4 +463,88 @@ namespace TISFAT_ZERO
 			return c;
 		}
 	}
+
+	public class LightLayer : Layer
+	{
+		public LightLayer(string Name, LightObject custom, Canvas _Canvas)
+		{
+			name = Name;
+
+			fig = custom;
+			fig.parentLayer = this;
+
+			theCanvas = _Canvas;
+			tweenFig = new LightObject(true);
+
+			type = 5;
+
+			firstKF = 0;
+			lastKF = 19;
+
+			keyFrames = new List<KeyFrame>();
+
+			LightFrame first = new LightFrame(firstKF), last = new LightFrame(lastKF);
+
+			foreach (StickJoint j in first.Joints)
+				j.ParentFigure = fig;
+
+			foreach (StickJoint j in last.Joints)
+				j.ParentFigure = fig;
+
+			keyFrames.Add(first);
+			keyFrames.Add(last);
+		}
+
+		public override int insertKeyFrame(int pos)
+		{
+			//If inserting before the first, then make the new keyframe the first and re-arrange list
+			if (pos < firstKF)
+			{
+				firstKF = pos;
+				LightFrame x = new LightFrame(pos);
+
+				keyFrames.Insert(0, x);
+
+				return 0;
+			}
+			else if (pos > lastKF) //Do the same if it's more than the last
+			{
+				lastKF = pos;
+
+				LightFrame x = new LightFrame(keyFrames[keyFrames.Count - 1].Joints, pos);
+				x.pos = pos;
+
+				keyFrames.Add(x);
+
+				return keyFrames.Count - 1;
+			}
+
+			LightFrame n = null;
+			int c = 0;
+
+			//Look through the list for the nearest keyframe (as we want to retain all it's properties except for the position in the timeline)
+			for (int a = 0;a < keyFrames.Count;a++)
+			{
+				LightFrame k = (LightFrame)keyFrames[a];
+				if (pos < k.pos)
+				{
+					n = new LightFrame(keyFrames[c - 1].Joints, pos);
+					n.pos = pos;
+					break;
+				}
+				else if (pos > k.pos)
+					c++;
+				else if (pos == k.pos)
+					return -1;
+
+			}
+
+			foreach (StickJoint j in n.Joints)
+				j.ParentFigure = fig;
+
+			keyFrames.Insert(c, n);
+
+			return c;
+		}
+	}
 }
