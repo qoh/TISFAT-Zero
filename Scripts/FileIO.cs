@@ -152,6 +152,84 @@ namespace TISFAT_ZERO
 
 	class CustomFigLoader
 	{
+		public static StickCustom loadStickFile(BinaryReader bin)
+		{
+			bin.BaseStream.Position += 12;
+
+			int jointCount = bin.ReadInt32();
+			int bitmapCount = bin.ReadInt32();
+
+			StickCustom figure = new StickCustom(1);
+			figure.drawFig = true;
+			figure.drawHandles = true;
+			figure.isActiveFig = false;
+			List<int> parentList = new List<int>();
+			List<T0JointBitmap> bitmapList = new List<T0JointBitmap>();
+
+			for (int i = 0;i < jointCount;i++)
+			{
+				int x = bin.ReadInt32();
+				int y = bin.ReadInt32();
+
+				Color col = Color.FromArgb(bin.ReadInt32());
+				Color hCol = Color.FromArgb(bin.ReadInt32());
+				Color defHCol = Color.FromArgb(bin.ReadInt32());
+				int thickness = bin.ReadInt32();
+				int drawState = bin.ReadInt32();
+				int drawOrder = bin.ReadInt32();
+				bool visible = bin.ReadBoolean();
+				bool handleDrawn = bin.ReadBoolean();
+
+				int bitmapIndexes = bin.ReadInt32();
+
+				List<int> bitmapis = new List<int>();
+				for (int z = 0;z < bitmapIndexes;z++)
+					bitmapis.Add(bin.ReadInt32());
+
+				int parentIndex = bin.ReadInt32();
+
+				parentList.Add(parentIndex);
+
+				figure.Joints.Add(new StickJoint("Joint " + i, new Point(x, y), thickness, col, hCol, 0, drawState, false, null, handleDrawn));
+
+				figure.Joints[figure.Joints.Count - 1].Bitmap_CurrentID = 0;
+				figure.Joints[figure.Joints.Count - 1].Bitmap_IDs = bitmapis;
+
+				figure.Joints[figure.Joints.Count - 1].drawOrder = drawOrder;
+			}
+
+			for (int i = 0;i < bitmapCount;i++)
+			{
+				int id = bin.ReadInt32();
+				string name = bin.ReadString();
+				int Rotation = bin.ReadInt32();
+				int OffsetX = bin.ReadInt32();
+				int OffsetY = bin.ReadInt32();
+
+				long bytesToRead = bin.ReadInt64();
+
+				byte[] buffer = bin.ReadBytes((int)bytesToRead);
+
+				//bin.Read(buffer, (int)bin.BaseStream.Position, (int)bytesToRead);
+				Stream bitmapStream = new MemoryStream(buffer);
+
+				Image bitty = Bitmap.FromStream(bitmapStream);
+
+				bitmapList.Add(new T0JointBitmap(id, name, Rotation, OffsetX, OffsetY, bitty));
+			}
+			for (int i = 0;i < jointCount;i++)
+			{
+				foreach (T0JointBitmap bitmap in bitmapList)
+					if (figure.Joints[i].Bitmap_IDs.Contains(bitmap.id + 1))
+						bitmap.ApplyTo(figure.Joints[i], bitmap.id);
+
+				if (parentList[i] != -1)
+					figure.Joints[i].parent = figure.Joints[parentList[i]];
+			}
+
+			return figure;
+		}
+
 		public static void loadStickFile(string path)
 		{
 			StickEditor sticked = StickEditor.theSticked;
