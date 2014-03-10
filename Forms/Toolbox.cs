@@ -19,7 +19,7 @@ namespace TISFAT_ZERO
 
 		public Panel slideOutObject;
 
-		public string[] panels = new String[] { "None", "Stick", "Line", "Rect", "Poly", "Paint" };
+		public string[] panels = new String[] { "None", "Stick", "Line", "Rect", "Poly", "Paint", "Custom" };
 		public string pnlOpen = "None";
 
 		private bool reOpen = false;
@@ -195,6 +195,8 @@ namespace TISFAT_ZERO
 					pnl_Properties_Stick.Visible = true;
 					pnl_Properties_Rect.Visible = false;
 					pnl_Properties_Line.Visible = false;
+					pnl_Properties_Custom.Visible = false;
+
 					pic_pnlStick_color.BackColor = ((StickFrame)mainForm.tline.frm_selected).figColor;
 					tkb_alpha.Value = ((StickFrame)mainForm.tline.frm_selected).figColor.A;
 					num_alpha.Value = ((StickFrame)mainForm.tline.frm_selected).figColor.A;
@@ -205,6 +207,8 @@ namespace TISFAT_ZERO
 					pnl_Properties_Stick.Visible = false;
 					pnl_Properties_Rect.Visible = false;
 					pnl_Properties_Line.Visible = true;
+					pnl_Properties_Custom.Visible = false;
+
 					pic_pnlLine_color.BackColor = Canvas.activeFigure.Joints[0].color;
 					num_pnlLine_thickness.Value = Canvas.activeFigure.Joints[0].thickness;
 					pnlOpen = panels[2];
@@ -214,6 +218,7 @@ namespace TISFAT_ZERO
 					pnl_Properties_Stick.Visible = false;
 					pnl_Properties_Rect.Visible = true;
 					pnl_Properties_Line.Visible = false;
+					pnl_Properties_Custom.Visible = false;
 
 					pic_rectFillColor.BackColor = Canvas.activeFigure.figColor;
 					pic_rectOLColor.BackColor = Canvas.activeFigure.Joints[0].color;
@@ -227,10 +232,21 @@ namespace TISFAT_ZERO
 				}
 				else if (Canvas.activeFigure.type == 4)
 				{
-					StickEditor f = new StickEditor(true);
-					f.loadFigure((StickCustom)Canvas.activeFigure);
-					f.ShowDialog();
-					return;
+					pnl_Properties_Stick.Visible = false;
+					pnl_Properties_Rect.Visible = false;
+					pnl_Properties_Line.Visible = false;
+					pnl_Properties_Custom.Visible = true;
+
+					com_Properties_Bitmap.Items.Clear();
+					if (!(Canvas.selectedJoint == null))
+						if (Canvas.selectedJoint.bitmaps.Count > 0)
+						{
+							foreach (string s in Canvas.selectedJoint.Bitmap_names)
+								com_Properties_Bitmap.Items.Add(s);
+							com_Properties_Bitmap.SelectedItem = Canvas.selectedJoint.Bitmap_names[Canvas.selectedJoint.Bitmap_CurrentID];
+						}
+
+					pnlOpen = panels[6];
 				}
 
 				pnl_mainTools.Enabled = false;
@@ -385,6 +401,7 @@ namespace TISFAT_ZERO
 					pnl_Properties_Stick.Visible = true;
 					pnl_Properties_Rect.Visible = false;
 					pnl_Properties_Line.Visible = false;
+					pnl_Properties_Custom.Visible = false;
 
 					slideOutObject = pnl_Properties;
 					reOpen = true;
@@ -404,6 +421,7 @@ namespace TISFAT_ZERO
 					pnl_Properties_Stick.Visible = false;
 					pnl_Properties_Rect.Visible = false;
 					pnl_Properties_Line.Visible = true;
+					pnl_Properties_Custom.Visible = false;
 
 					slideOutObject = pnl_Properties;
 					reOpen = true;
@@ -428,6 +446,7 @@ namespace TISFAT_ZERO
 					pnl_Properties_Stick.Visible = false;
 					pnl_Properties_Rect.Visible = true;
 					pnl_Properties_Line.Visible = false;
+					pnl_Properties_Custom.Visible = false;
 
 					slideOutObject = pnl_Properties;
 					reOpen = true;
@@ -438,6 +457,44 @@ namespace TISFAT_ZERO
 					animTimer.Start();
 				}
 			}
+			else if(type == 4)
+			{
+				com_Properties_Bitmap.Items.Clear();
+				if (!(Canvas.selectedJoint == null))
+					if (Canvas.selectedJoint.bitmaps.Count > 0)
+					{
+						foreach (string s in Canvas.selectedJoint.Bitmap_names)
+							com_Properties_Bitmap.Items.Add(s);
+						com_Properties_Bitmap.SelectedItem = Canvas.selectedJoint.Bitmap_names[Canvas.selectedJoint.Bitmap_CurrentID];
+					}
+				if (pnlOpen != panels[6])
+				{
+					pnl_Properties_Stick.Visible = false;
+					pnl_Properties_Rect.Visible = false;
+					pnl_Properties_Line.Visible = false;
+					pnl_Properties_Custom.Visible = true;
+
+					slideOutObject = pnl_Properties;
+					reOpen = true;
+					reOpenPanel = pnl_Properties;
+
+					pnlOpen = panels[3];
+
+					animTimer.Start();
+				}
+			}
+		}
+
+		public void updateBitmapList()
+		{
+			com_Properties_Bitmap.Items.Clear();
+			if (!(Canvas.selectedJoint == null))
+				if (Canvas.selectedJoint.bitmaps.Count > 0)
+				{
+					foreach (string s in Canvas.selectedJoint.Bitmap_names)
+						com_Properties_Bitmap.Items.Add(s);
+					com_Properties_Bitmap.SelectedItem = Canvas.selectedJoint.Bitmap_names[Canvas.selectedJoint.Bitmap_CurrentID];
+				}
 		}
 
 		private void pic_rectFillColor_Click(object sender, EventArgs e)
@@ -485,6 +542,14 @@ namespace TISFAT_ZERO
 		private void ckb_renderShadows_CheckedChanged(object sender, EventArgs e)
 		{
 			Canvas.renderShadows = ckb_renderShadows.Checked;
+			Canvas.theCanvas.Refresh();
+		}
+
+		private void com_Properties_Bitmap_SelectionChangeCommitted(object sender, EventArgs e)
+		{
+			mainForm.tline.frm_selected.Joints[Canvas.selectedJoint.ParentFigure.Joints.IndexOf(Canvas.selectedJoint)].Bitmap_CurrentID = com_Properties_Bitmap.SelectedIndex;
+			//Canvas.selectedJoint.Bitmap_CurrentID = com_Properties_Bitmap.SelectedIndex;
+			((StickCustom)Timeline.layers[Timeline.layer_sel].tweenFig).Joints[Canvas.selectedJoint.ParentFigure.Joints.IndexOf(Canvas.selectedJoint)].Bitmap_CurrentID = com_Properties_Bitmap.SelectedIndex;
 			Canvas.theCanvas.Refresh();
 		}
 	}

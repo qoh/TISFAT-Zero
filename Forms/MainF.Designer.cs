@@ -75,6 +75,8 @@ namespace TISFAT_ZERO
 			this.framesPanel = new System.Windows.Forms.Panel();
 			this.dlg_saveFile = new System.Windows.Forms.SaveFileDialog();
 			this.dlg_openFile = new System.Windows.Forms.OpenFileDialog();
+			this.animatedGifToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.dlg_exportFile = new System.Windows.Forms.SaveFileDialog();
 			this.mnu_strip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -145,6 +147,8 @@ namespace TISFAT_ZERO
 			// 
 			// exportToolStripMenuItem
 			// 
+			this.exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.animatedGifToolStripMenuItem});
 			this.exportToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("exportToolStripMenuItem.Image")));
 			this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
 			this.exportToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
@@ -427,6 +431,18 @@ namespace TISFAT_ZERO
 			this.dlg_openFile.Filter = "TISFAT:Zero Saves (*.tzs)|*.tzs";
 			this.dlg_openFile.FileOk += new System.ComponentModel.CancelEventHandler(this.dlg_openFile_FileOk);
 			// 
+			// animatedGifToolStripMenuItem
+			// 
+			this.animatedGifToolStripMenuItem.Name = "animatedGifToolStripMenuItem";
+			this.animatedGifToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.animatedGifToolStripMenuItem.Text = "Animated Gif..";
+			this.animatedGifToolStripMenuItem.Click += new System.EventHandler(this.animatedGifToolStripMenuItem_Click);
+			// 
+			// dlg_exportFile
+			// 
+			this.dlg_exportFile.Filter = "Animated Gif|*.gif";
+			this.dlg_exportFile.FileOk += new System.ComponentModel.CancelEventHandler(this.dlg_exportFile_FileOk);
+			// 
 			// MainF
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -497,6 +513,8 @@ namespace TISFAT_ZERO
 		private OpenFileDialog dlg_openFile;
 		private Panel panel1;
 		private ToolStripMenuItem checkForUpdatesToolStripMenuItem;
+		private ToolStripMenuItem animatedGifToolStripMenuItem;
+		private SaveFileDialog dlg_exportFile;
 	}
 }
 

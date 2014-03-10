@@ -236,6 +236,8 @@ namespace TISFAT_ZERO
 				a[2] = 255;
 
 			color = Color.FromArgb(a[2], r[2], g[2], b[2]);
+
+			Bitmap_CurrentID = pEnd.Bitmap_CurrentID;
 		}
 
 		public void removeChildren()

@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
 
 namespace TISFAT_ZERO
 {
@@ -62,7 +64,7 @@ namespace TISFAT_ZERO
 		/// </summary>
 		/// <param name="pos">The position to check.</param>
 		/// <returns>Returns whether or not the given position has frames.</returns>
-		private bool hasFrames(int pos)
+		public bool hasFrames(int pos)
 		{
 			//Check if it's within the keyset of any layer.
 			//If it's within even one, then there is an active figure and it will return true.
@@ -113,6 +115,48 @@ namespace TISFAT_ZERO
 				mainForm.theToolbox.updateOpenPanel();
 
 			theCanvas.Refresh();
+		}
+
+		public Bitmap saveFrame(int pos)
+		{
+			if (pos != frm_selPos)
+				frm_selPos = pos;
+
+			for (int a = 0;a < layers.Count;a++)
+				if (a != layer_sel)
+					layers[a].doDisplay(pos, false);
+
+			if (layer_sel != -1)
+			{
+				layers[layer_sel].doDisplay(pos);
+				Canvas.activeFigure = layers[layer_sel].fig;
+			}
+
+			if (frm_selected != null)
+				mainForm.theToolbox.updateOpenPanel();
+
+			theCanvas.Refresh();
+
+			if (GraphicsContext.CurrentContext == null)
+				throw new GraphicsContextMissingException();
+
+			Bitmap bmp = new Bitmap(theCanvas.glGraphics.Width, theCanvas.glGraphics.Height);
+			System.Drawing.Imaging.BitmapData data = bmp.LockBits(theCanvas.glGraphics.ClientRectangle, System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+			GL.ReadPixels(0, 0, theCanvas.glGraphics.Width, theCanvas.glGraphics.Height, PixelFormat.Rgba, PixelType.UnsignedByte, data.Scan0);
+			bmp.UnlockBits(data);
+
+			bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
+			return bmp;
+		}
+
+		public List<Bitmap> saveProjectToBitmapList()
+		{
+			List<Bitmap> bittyList = new List<Bitmap>();
+			for(int i = 0;hasFrames(i);i++)
+			{
+				bittyList.Add(saveFrame(i));
+			}
+			return bittyList;
 		}
 
 		/// <summary>

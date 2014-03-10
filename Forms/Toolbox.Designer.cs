@@ -29,24 +29,22 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Default Figure");
-			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Custom Figure..");
-			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Stick Figures", new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
-			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Line");
-			System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Rectangle");
-			System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Shapes", new System.Windows.Forms.TreeNode[] {
-            treeNode4,
-            treeNode5});
-			System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Light Source");
-			System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Text");
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Toolbox));
+			System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("Default Figure");
+			System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Custom Figure..");
+			System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Stick Figures", new System.Windows.Forms.TreeNode[] {
+            treeNode17,
+            treeNode18});
+			System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Line");
+			System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("Rectangle");
+			System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("Shapes", new System.Windows.Forms.TreeNode[] {
+            treeNode20,
+            treeNode21});
+			System.Windows.Forms.TreeNode treeNode23 = new System.Windows.Forms.TreeNode("Light Source");
+			System.Windows.Forms.TreeNode treeNode24 = new System.Windows.Forms.TreeNode("Text");
 			this.pnl_mainPanel = new System.Windows.Forms.Panel();
 			this.pnl_addTools = new System.Windows.Forms.Panel();
 			this.trv_addView = new System.Windows.Forms.TreeView();
 			this.btn_cancelButton = new System.Windows.Forms.Button();
-			this.btn_addCircle = new System.Windows.Forms.Button();
 			this.pnl_Properties = new System.Windows.Forms.Panel();
 			this.pnl_Properties_Rect = new System.Windows.Forms.Panel();
 			this.num_rectOLAlpha = new System.Windows.Forms.NumericUpDown();
@@ -75,7 +73,6 @@
 			this.pic_pnlLine_color = new System.Windows.Forms.PictureBox();
 			this.num_pnlLine_thickness = new System.Windows.Forms.NumericUpDown();
 			this.lbl_pnlLine_thickness = new System.Windows.Forms.Label();
-			this.btn_addPoly = new System.Windows.Forms.Button();
 			this.pnl_mainTools = new System.Windows.Forms.Panel();
 			this.ckb_renderShadows = new System.Windows.Forms.CheckBox();
 			this.btn_BGButton = new System.Windows.Forms.Button();
@@ -84,7 +81,6 @@
 			this.fPropButton = new System.Windows.Forms.Button();
 			this.drawButton = new System.Windows.Forms.Button();
 			this.btn_addButton = new System.Windows.Forms.Button();
-			this.btn_addRectangle = new System.Windows.Forms.Button();
 			this.pnl_ctrlPanel = new System.Windows.Forms.Panel();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -93,21 +89,22 @@
 			this.lbl_FPS = new System.Windows.Forms.Label();
 			this.lbl_frameCount = new System.Windows.Forms.Label();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.lbl_dbgAngleToParent = new System.Windows.Forms.Label();
 			this.lbl_stickFigures = new System.Windows.Forms.Label();
 			this.lbl_jointLength = new System.Windows.Forms.Label();
 			this.lbl_selectedJoint = new System.Windows.Forms.Label();
 			this.lbl_yPos = new System.Windows.Forms.Label();
 			this.lbl_xPos = new System.Windows.Forms.Label();
-			this.btn_addLine = new System.Windows.Forms.Button();
 			this.lbl_selectionDummy = new System.Windows.Forms.Label();
-			this.btn_addCustomStick = new System.Windows.Forms.Button();
 			this.pnl_Drawing = new System.Windows.Forms.Panel();
 			this.pnl_paintPanel = new System.Windows.Forms.Panel();
 			this.btn_cancelButtonDraw = new System.Windows.Forms.Button();
-			this.btn_addStick = new System.Windows.Forms.Button();
 			this.animTimer = new System.Windows.Forms.Timer(this.components);
 			this.dlg_Color = new System.Windows.Forms.ColorDialog();
-			this.lbl_dbgAngleToParent = new System.Windows.Forms.Label();
+			this.pnl_Properties_Custom = new System.Windows.Forms.Panel();
+			this.btn_Properties_Edit = new System.Windows.Forms.Button();
+			this.com_Properties_Bitmap = new System.Windows.Forms.ComboBox();
+			this.lbl_Properties_Bitmap = new System.Windows.Forms.Label();
 			this.pnl_mainPanel.SuspendLayout();
 			this.pnl_addTools.SuspendLayout();
 			this.pnl_Properties.SuspendLayout();
@@ -133,27 +130,22 @@
 			((System.ComponentModel.ISupportInitialize)(this.maskedTextBox1)).BeginInit();
 			this.tabPage2.SuspendLayout();
 			this.pnl_Drawing.SuspendLayout();
+			this.pnl_Properties_Custom.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// pnl_mainPanel
 			// 
 			this.pnl_mainPanel.Controls.Add(this.pnl_addTools);
-			this.pnl_mainPanel.Controls.Add(this.btn_addCircle);
 			this.pnl_mainPanel.Controls.Add(this.pnl_Properties);
-			this.pnl_mainPanel.Controls.Add(this.btn_addPoly);
 			this.pnl_mainPanel.Controls.Add(this.pnl_mainTools);
-			this.pnl_mainPanel.Controls.Add(this.btn_addRectangle);
 			this.pnl_mainPanel.Controls.Add(this.pnl_ctrlPanel);
-			this.pnl_mainPanel.Controls.Add(this.btn_addLine);
 			this.pnl_mainPanel.Controls.Add(this.lbl_selectionDummy);
-			this.pnl_mainPanel.Controls.Add(this.btn_addCustomStick);
 			this.pnl_mainPanel.Controls.Add(this.pnl_Drawing);
-			this.pnl_mainPanel.Controls.Add(this.btn_addStick);
 			this.pnl_mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnl_mainPanel.Location = new System.Drawing.Point(0, 0);
 			this.pnl_mainPanel.Margin = new System.Windows.Forms.Padding(0);
 			this.pnl_mainPanel.Name = "pnl_mainPanel";
-			this.pnl_mainPanel.Size = new System.Drawing.Size(1021, 633);
+			this.pnl_mainPanel.Size = new System.Drawing.Size(1021, 785);
 			this.pnl_mainPanel.TabIndex = 2;
 			// 
 			// pnl_addTools
@@ -171,45 +163,45 @@
 			this.trv_addView.FullRowSelect = true;
 			this.trv_addView.Location = new System.Drawing.Point(0, 0);
 			this.trv_addView.Name = "trv_addView";
-			treeNode1.Name = "nde_Stick_Default";
-			treeNode1.Tag = "0";
-			treeNode1.Text = "Default Figure";
-			treeNode1.ToolTipText = "The default stick figure";
-			treeNode2.Name = "nde_Stick_Custom";
-			treeNode2.Tag = "1";
-			treeNode2.Text = "Custom Figure..";
-			treeNode2.ToolTipText = "Create your own figure, or load an existing one";
-			treeNode3.Checked = true;
-			treeNode3.Name = "nde_StickFigures";
-			treeNode3.Tag = "-1";
-			treeNode3.Text = "Stick Figures";
-			treeNode3.ToolTipText = "Various stick figure objects";
-			treeNode4.Name = "nde_Shape_Line";
-			treeNode4.Tag = "2";
-			treeNode4.Text = "Line";
-			treeNode4.ToolTipText = "A primitive line, from point A to point B.";
-			treeNode5.Name = "nde_Shape_Rect";
-			treeNode5.Tag = "3";
-			treeNode5.Text = "Rectangle";
-			treeNode5.ToolTipText = "A basic rectangle with 4 control points.";
-			treeNode6.Checked = true;
-			treeNode6.Name = "nde_Shapes";
-			treeNode6.Tag = "-1";
-			treeNode6.Text = "Shapes";
-			treeNode6.ToolTipText = "Various primitive shapes";
-			treeNode7.Name = "nde_lightSource";
-			treeNode7.Tag = "4";
-			treeNode7.Text = "Light Source";
-			treeNode7.ToolTipText = "A source of light for the shading engine";
-			treeNode8.Name = "nde_Text";
-			treeNode8.Tag = "5";
-			treeNode8.Text = "Text";
-			treeNode8.ToolTipText = "A text object with 4 control points and configurable text.";
+			treeNode17.Name = "nde_Stick_Default";
+			treeNode17.Tag = "0";
+			treeNode17.Text = "Default Figure";
+			treeNode17.ToolTipText = "The default stick figure";
+			treeNode18.Name = "nde_Stick_Custom";
+			treeNode18.Tag = "1";
+			treeNode18.Text = "Custom Figure..";
+			treeNode18.ToolTipText = "Create your own figure, or load an existing one";
+			treeNode19.Checked = true;
+			treeNode19.Name = "nde_StickFigures";
+			treeNode19.Tag = "-1";
+			treeNode19.Text = "Stick Figures";
+			treeNode19.ToolTipText = "Various stick figure objects";
+			treeNode20.Name = "nde_Shape_Line";
+			treeNode20.Tag = "2";
+			treeNode20.Text = "Line";
+			treeNode20.ToolTipText = "A primitive line, from point A to point B.";
+			treeNode21.Name = "nde_Shape_Rect";
+			treeNode21.Tag = "3";
+			treeNode21.Text = "Rectangle";
+			treeNode21.ToolTipText = "A basic rectangle with 4 control points.";
+			treeNode22.Checked = true;
+			treeNode22.Name = "nde_Shapes";
+			treeNode22.Tag = "-1";
+			treeNode22.Text = "Shapes";
+			treeNode22.ToolTipText = "Various primitive shapes";
+			treeNode23.Name = "nde_lightSource";
+			treeNode23.Tag = "4";
+			treeNode23.Text = "Light Source";
+			treeNode23.ToolTipText = "A source of light for the shading engine";
+			treeNode24.Name = "nde_Text";
+			treeNode24.Tag = "5";
+			treeNode24.Text = "Text";
+			treeNode24.ToolTipText = "A text object with 4 control points and configurable text.";
 			this.trv_addView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode6,
-            treeNode7,
-            treeNode8});
+            treeNode19,
+            treeNode22,
+            treeNode23,
+            treeNode24});
 			this.trv_addView.ShowLines = false;
 			this.trv_addView.Size = new System.Drawing.Size(151, 158);
 			this.trv_addView.TabIndex = 26;
@@ -225,31 +217,17 @@
 			this.btn_cancelButton.UseVisualStyleBackColor = true;
 			this.btn_cancelButton.Click += new System.EventHandler(this.btn_cancelButton_Click);
 			// 
-			// btn_addCircle
-			// 
-			this.btn_addCircle.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addCircle.BackgroundImage")));
-			this.btn_addCircle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.btn_addCircle.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.btn_addCircle.Enabled = false;
-			this.btn_addCircle.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btn_addCircle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
-			this.btn_addCircle.Location = new System.Drawing.Point(431, 250);
-			this.btn_addCircle.Name = "btn_addCircle";
-			this.btn_addCircle.Size = new System.Drawing.Size(73, 50);
-			this.btn_addCircle.TabIndex = 24;
-			this.btn_addCircle.TabStop = false;
-			this.btn_addCircle.UseVisualStyleBackColor = true;
-			// 
 			// pnl_Properties
 			// 
 			this.pnl_Properties.AutoSize = true;
+			this.pnl_Properties.Controls.Add(this.pnl_Properties_Custom);
 			this.pnl_Properties.Controls.Add(this.pnl_Properties_Rect);
 			this.pnl_Properties.Controls.Add(this.btn_pnlLine_Cancel);
 			this.pnl_Properties.Controls.Add(this.pnl_Properties_Stick);
 			this.pnl_Properties.Controls.Add(this.pnl_Properties_Line);
 			this.pnl_Properties.Location = new System.Drawing.Point(198, 142);
 			this.pnl_Properties.Name = "pnl_Properties";
-			this.pnl_Properties.Size = new System.Drawing.Size(151, 474);
+			this.pnl_Properties.Size = new System.Drawing.Size(151, 632);
 			this.pnl_Properties.TabIndex = 30;
 			// 
 			// pnl_Properties_Rect
@@ -548,21 +526,6 @@
 			this.lbl_pnlLine_thickness.TabIndex = 0;
 			this.lbl_pnlLine_thickness.Text = "Thickness: ";
 			// 
-			// btn_addPoly
-			// 
-			this.btn_addPoly.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addPoly.BackgroundImage")));
-			this.btn_addPoly.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.btn_addPoly.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.btn_addPoly.Enabled = false;
-			this.btn_addPoly.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btn_addPoly.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
-			this.btn_addPoly.Location = new System.Drawing.Point(355, 250);
-			this.btn_addPoly.Name = "btn_addPoly";
-			this.btn_addPoly.Size = new System.Drawing.Size(73, 50);
-			this.btn_addPoly.TabIndex = 23;
-			this.btn_addPoly.TabStop = false;
-			this.btn_addPoly.UseVisualStyleBackColor = true;
-			// 
 			// pnl_mainTools
 			// 
 			this.pnl_mainTools.Controls.Add(this.ckb_renderShadows);
@@ -673,20 +636,6 @@
 			this.btn_addButton.UseVisualStyleBackColor = true;
 			this.btn_addButton.Click += new System.EventHandler(this.addButton_Click);
 			// 
-			// btn_addRectangle
-			// 
-			this.btn_addRectangle.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addRectangle.BackgroundImage")));
-			this.btn_addRectangle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.btn_addRectangle.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.btn_addRectangle.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btn_addRectangle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
-			this.btn_addRectangle.Location = new System.Drawing.Point(431, 198);
-			this.btn_addRectangle.Name = "btn_addRectangle";
-			this.btn_addRectangle.Size = new System.Drawing.Size(73, 50);
-			this.btn_addRectangle.TabIndex = 22;
-			this.btn_addRectangle.TabStop = false;
-			this.btn_addRectangle.UseVisualStyleBackColor = true;
-			// 
 			// pnl_ctrlPanel
 			// 
 			this.pnl_ctrlPanel.BackColor = System.Drawing.SystemColors.Control;
@@ -791,6 +740,15 @@
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Debug";
 			// 
+			// lbl_dbgAngleToParent
+			// 
+			this.lbl_dbgAngleToParent.AutoSize = true;
+			this.lbl_dbgAngleToParent.Location = new System.Drawing.Point(3, 66);
+			this.lbl_dbgAngleToParent.Name = "lbl_dbgAngleToParent";
+			this.lbl_dbgAngleToParent.Size = new System.Drawing.Size(84, 13);
+			this.lbl_dbgAngleToParent.TabIndex = 10;
+			this.lbl_dbgAngleToParent.Text = "AngleToParent: ";
+			// 
 			// lbl_stickFigures
 			// 
 			this.lbl_stickFigures.AutoSize = true;
@@ -836,20 +794,6 @@
 			this.lbl_xPos.TabIndex = 5;
 			this.lbl_xPos.Text = "X Pos: 0";
 			// 
-			// btn_addLine
-			// 
-			this.btn_addLine.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addLine.BackgroundImage")));
-			this.btn_addLine.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.btn_addLine.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.btn_addLine.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btn_addLine.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
-			this.btn_addLine.Location = new System.Drawing.Point(355, 198);
-			this.btn_addLine.Name = "btn_addLine";
-			this.btn_addLine.Size = new System.Drawing.Size(73, 50);
-			this.btn_addLine.TabIndex = 21;
-			this.btn_addLine.TabStop = false;
-			this.btn_addLine.UseVisualStyleBackColor = true;
-			// 
 			// lbl_selectionDummy
 			// 
 			this.lbl_selectionDummy.AutoSize = true;
@@ -857,20 +801,6 @@
 			this.lbl_selectionDummy.Name = "lbl_selectionDummy";
 			this.lbl_selectionDummy.Size = new System.Drawing.Size(0, 13);
 			this.lbl_selectionDummy.TabIndex = 19;
-			// 
-			// btn_addCustomStick
-			// 
-			this.btn_addCustomStick.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addCustomStick.BackgroundImage")));
-			this.btn_addCustomStick.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.btn_addCustomStick.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.btn_addCustomStick.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btn_addCustomStick.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
-			this.btn_addCustomStick.Location = new System.Drawing.Point(431, 146);
-			this.btn_addCustomStick.Name = "btn_addCustomStick";
-			this.btn_addCustomStick.Size = new System.Drawing.Size(73, 50);
-			this.btn_addCustomStick.TabIndex = 20;
-			this.btn_addCustomStick.TabStop = false;
-			this.btn_addCustomStick.UseVisualStyleBackColor = true;
 			// 
 			// pnl_Drawing
 			// 
@@ -899,40 +829,56 @@
 			this.btn_cancelButtonDraw.UseVisualStyleBackColor = true;
 			this.btn_cancelButtonDraw.Click += new System.EventHandler(this.btn_cancelButtonDraw_Click);
 			// 
-			// btn_addStick
-			// 
-			this.btn_addStick.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_addStick.BackgroundImage")));
-			this.btn_addStick.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.btn_addStick.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.btn_addStick.Font = new System.Drawing.Font("Lucida Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btn_addStick.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
-			this.btn_addStick.Location = new System.Drawing.Point(355, 146);
-			this.btn_addStick.Name = "btn_addStick";
-			this.btn_addStick.Size = new System.Drawing.Size(73, 50);
-			this.btn_addStick.TabIndex = 19;
-			this.btn_addStick.TabStop = false;
-			this.btn_addStick.UseVisualStyleBackColor = true;
-			// 
 			// animTimer
 			// 
 			this.animTimer.Interval = 24;
 			this.animTimer.Tick += new System.EventHandler(this.animTimer_Tick);
 			// 
-			// lbl_dbgAngleToParent
+			// pnl_Properties_Custom
 			// 
-			this.lbl_dbgAngleToParent.AutoSize = true;
-			this.lbl_dbgAngleToParent.Location = new System.Drawing.Point(3, 66);
-			this.lbl_dbgAngleToParent.Name = "lbl_dbgAngleToParent";
-			this.lbl_dbgAngleToParent.Size = new System.Drawing.Size(84, 13);
-			this.lbl_dbgAngleToParent.TabIndex = 10;
-			this.lbl_dbgAngleToParent.Text = "AngleToParent: ";
+			this.pnl_Properties_Custom.Controls.Add(this.lbl_Properties_Bitmap);
+			this.pnl_Properties_Custom.Controls.Add(this.com_Properties_Bitmap);
+			this.pnl_Properties_Custom.Controls.Add(this.btn_Properties_Edit);
+			this.pnl_Properties_Custom.Dock = System.Windows.Forms.DockStyle.Top;
+			this.pnl_Properties_Custom.Location = new System.Drawing.Point(0, 474);
+			this.pnl_Properties_Custom.Name = "pnl_Properties_Custom";
+			this.pnl_Properties_Custom.Size = new System.Drawing.Size(151, 158);
+			this.pnl_Properties_Custom.TabIndex = 31;
+			// 
+			// btn_Properties_Edit
+			// 
+			this.btn_Properties_Edit.Location = new System.Drawing.Point(41, 101);
+			this.btn_Properties_Edit.Name = "btn_Properties_Edit";
+			this.btn_Properties_Edit.Size = new System.Drawing.Size(75, 23);
+			this.btn_Properties_Edit.TabIndex = 26;
+			this.btn_Properties_Edit.Text = "Edit..";
+			this.btn_Properties_Edit.UseVisualStyleBackColor = true;
+			// 
+			// com_Properties_Bitmap
+			// 
+			this.com_Properties_Bitmap.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.com_Properties_Bitmap.FormattingEnabled = true;
+			this.com_Properties_Bitmap.Location = new System.Drawing.Point(22, 30);
+			this.com_Properties_Bitmap.Name = "com_Properties_Bitmap";
+			this.com_Properties_Bitmap.Size = new System.Drawing.Size(109, 21);
+			this.com_Properties_Bitmap.TabIndex = 27;
+			this.com_Properties_Bitmap.SelectionChangeCommitted += new System.EventHandler(this.com_Properties_Bitmap_SelectionChangeCommitted);
+			// 
+			// lbl_Properties_Bitmap
+			// 
+			this.lbl_Properties_Bitmap.AutoSize = true;
+			this.lbl_Properties_Bitmap.Location = new System.Drawing.Point(20, 14);
+			this.lbl_Properties_Bitmap.Name = "lbl_Properties_Bitmap";
+			this.lbl_Properties_Bitmap.Size = new System.Drawing.Size(45, 13);
+			this.lbl_Properties_Bitmap.TabIndex = 28;
+			this.lbl_Properties_Bitmap.Text = "Bitmap: ";
 			// 
 			// Toolbox
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.White;
-			this.ClientSize = new System.Drawing.Size(1021, 633);
+			this.ClientSize = new System.Drawing.Size(1021, 785);
 			this.ControlBox = false;
 			this.Controls.Add(this.pnl_mainPanel);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -972,6 +918,8 @@
 			this.tabPage2.ResumeLayout(false);
 			this.tabPage2.PerformLayout();
 			this.pnl_Drawing.ResumeLayout(false);
+			this.pnl_Properties_Custom.ResumeLayout(false);
+			this.pnl_Properties_Custom.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -1000,12 +948,6 @@
 		private System.Windows.Forms.Button drawButton;
 		private System.Windows.Forms.Button btn_addButton;
 		private System.Windows.Forms.Panel pnl_addTools;
-		private System.Windows.Forms.Button btn_addCircle;
-		private System.Windows.Forms.Button btn_addPoly;
-		private System.Windows.Forms.Button btn_addRectangle;
-		private System.Windows.Forms.Button btn_addLine;
-		private System.Windows.Forms.Button btn_addCustomStick;
-		private System.Windows.Forms.Button btn_addStick;
 		private System.Windows.Forms.Timer animTimer;
 		private System.Windows.Forms.Button btn_cancelButton;
 		private System.Windows.Forms.Panel pnl_Drawing;
@@ -1044,5 +986,9 @@
 		private System.Windows.Forms.TreeView trv_addView;
 		private System.Windows.Forms.CheckBox ckb_renderShadows;
 		public System.Windows.Forms.Label lbl_dbgAngleToParent;
+		private System.Windows.Forms.Panel pnl_Properties_Custom;
+		private System.Windows.Forms.ComboBox com_Properties_Bitmap;
+		private System.Windows.Forms.Button btn_Properties_Edit;
+		private System.Windows.Forms.Label lbl_Properties_Bitmap;
 	}
 }

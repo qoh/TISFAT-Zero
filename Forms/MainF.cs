@@ -3,6 +3,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Gif.Components;
 
 namespace TISFAT_ZERO
 {
@@ -242,6 +244,26 @@ namespace TISFAT_ZERO
 		{
 			CheckUpdateForm f = new CheckUpdateForm();
 			f.ShowDialog();
+		}
+
+		private void animatedGifToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			dlg_exportFile.ShowDialog();
+		}
+
+		private void dlg_exportFile_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			List<Bitmap> bittyList = new List<Bitmap>();
+			if (dlg_exportFile.FileName.EndsWith(".gif"))
+				bittyList = tline.saveProjectToBitmapList();
+			AnimatedGifEncoder x = new AnimatedGifEncoder();
+			x.Start(dlg_exportFile.FileName);
+			x.SetDelay(1000 / theToolbox.frameRate);
+			x.SetRepeat(0);
+			for (int i = 0;i < bittyList.Count;i++)
+				x.AddFrame(bittyList[i]);
+			x.Finish();
+
 		}
 	}
 }
