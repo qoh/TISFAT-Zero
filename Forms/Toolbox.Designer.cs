@@ -29,18 +29,18 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Default Figure");
-			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Custom Figure..");
-			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Stick Figures", new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
-			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Line");
-			System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Rectangle");
-			System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Shapes", new System.Windows.Forms.TreeNode[] {
-            treeNode4,
-            treeNode5});
-			System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Light Source");
-			System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Text");
+			System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Default Figure");
+			System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Custom Figure..");
+			System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Stick Figures", new System.Windows.Forms.TreeNode[] {
+            treeNode9,
+            treeNode10});
+			System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Line");
+			System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Rectangle");
+			System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Shapes", new System.Windows.Forms.TreeNode[] {
+            treeNode12,
+            treeNode13});
+			System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Light Source");
+			System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Text");
 			this.pnl_mainPanel = new System.Windows.Forms.Panel();
 			this.pnl_addTools = new System.Windows.Forms.Panel();
 			this.trv_addView = new System.Windows.Forms.TreeView();
@@ -164,45 +164,45 @@
 			this.trv_addView.FullRowSelect = true;
 			this.trv_addView.Location = new System.Drawing.Point(0, 0);
 			this.trv_addView.Name = "trv_addView";
-			treeNode1.Name = "nde_Stick_Default";
-			treeNode1.Tag = "0";
-			treeNode1.Text = "Default Figure";
-			treeNode1.ToolTipText = "The default stick figure";
-			treeNode2.Name = "nde_Stick_Custom";
-			treeNode2.Tag = "1";
-			treeNode2.Text = "Custom Figure..";
-			treeNode2.ToolTipText = "Create your own figure, or load an existing one";
-			treeNode3.Checked = true;
-			treeNode3.Name = "nde_StickFigures";
-			treeNode3.Tag = "-1";
-			treeNode3.Text = "Stick Figures";
-			treeNode3.ToolTipText = "Various stick figure objects";
-			treeNode4.Name = "nde_Shape_Line";
-			treeNode4.Tag = "2";
-			treeNode4.Text = "Line";
-			treeNode4.ToolTipText = "A primitive line, from point A to point B.";
-			treeNode5.Name = "nde_Shape_Rect";
-			treeNode5.Tag = "3";
-			treeNode5.Text = "Rectangle";
-			treeNode5.ToolTipText = "A basic rectangle with 4 control points.";
-			treeNode6.Checked = true;
-			treeNode6.Name = "nde_Shapes";
-			treeNode6.Tag = "-1";
-			treeNode6.Text = "Shapes";
-			treeNode6.ToolTipText = "Various primitive shapes";
-			treeNode7.Name = "nde_lightSource";
-			treeNode7.Tag = "4";
-			treeNode7.Text = "Light Source";
-			treeNode7.ToolTipText = "A source of light for the shading engine";
-			treeNode8.Name = "nde_Text";
-			treeNode8.Tag = "5";
-			treeNode8.Text = "Text";
-			treeNode8.ToolTipText = "A text object with 4 control points and configurable text.";
+			treeNode9.Name = "nde_Stick_Default";
+			treeNode9.Tag = "0";
+			treeNode9.Text = "Default Figure";
+			treeNode9.ToolTipText = "The default stick figure";
+			treeNode10.Name = "nde_Stick_Custom";
+			treeNode10.Tag = "1";
+			treeNode10.Text = "Custom Figure..";
+			treeNode10.ToolTipText = "Create your own figure, or load an existing one";
+			treeNode11.Checked = true;
+			treeNode11.Name = "nde_StickFigures";
+			treeNode11.Tag = "-1";
+			treeNode11.Text = "Stick Figures";
+			treeNode11.ToolTipText = "Various stick figure objects";
+			treeNode12.Name = "nde_Shape_Line";
+			treeNode12.Tag = "2";
+			treeNode12.Text = "Line";
+			treeNode12.ToolTipText = "A primitive line, from point A to point B.";
+			treeNode13.Name = "nde_Shape_Rect";
+			treeNode13.Tag = "3";
+			treeNode13.Text = "Rectangle";
+			treeNode13.ToolTipText = "A basic rectangle with 4 control points.";
+			treeNode14.Checked = true;
+			treeNode14.Name = "nde_Shapes";
+			treeNode14.Tag = "-1";
+			treeNode14.Text = "Shapes";
+			treeNode14.ToolTipText = "Various primitive shapes";
+			treeNode15.Name = "nde_lightSource";
+			treeNode15.Tag = "4";
+			treeNode15.Text = "Light Source";
+			treeNode15.ToolTipText = "A source of light for the shading engine";
+			treeNode16.Name = "nde_Text";
+			treeNode16.Tag = "5";
+			treeNode16.Text = "Text";
+			treeNode16.ToolTipText = "A text object with 4 control points and configurable text.";
 			this.trv_addView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode6,
-            treeNode7,
-            treeNode8});
+            treeNode11,
+            treeNode14,
+            treeNode15,
+            treeNode16});
 			this.trv_addView.ShowLines = false;
 			this.trv_addView.Size = new System.Drawing.Size(151, 158);
 			this.trv_addView.TabIndex = 26;
@@ -274,6 +274,7 @@
 			// 
 			// btn_Properties_Edit
 			// 
+			this.btn_Properties_Edit.Enabled = false;
 			this.btn_Properties_Edit.Location = new System.Drawing.Point(41, 110);
 			this.btn_Properties_Edit.Name = "btn_Properties_Edit";
 			this.btn_Properties_Edit.Size = new System.Drawing.Size(75, 23);

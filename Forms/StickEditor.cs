@@ -18,6 +18,7 @@ namespace TISFAT_ZERO
 		public StickCustom figure = null;
 
 		public static StickEditor theSticked;
+		public string file;
 
 		private bool GLLoaded;
 		private int GL_WIDTH, GL_HEIGHT;
@@ -52,6 +53,23 @@ namespace TISFAT_ZERO
 					maxaa = aa;
 				aa += 2;
 			} while (aa <= 32);
+
+			InitializeComponent();
+		}
+
+		public StickEditor(string file)
+		{
+			int aa = 0;
+			do
+			{
+				var mode = new GraphicsMode(32, 0, 0, aa);
+				if (mode.Samples == aa)
+					maxaa = aa;
+				aa += 2;
+			} while (aa <= 32);
+
+			this.file = file;
+			loaded = true;
 
 			InitializeComponent();
 		}
@@ -109,6 +127,10 @@ namespace TISFAT_ZERO
 				figure.Joints[1].drawOrder = 1;
 
 				recalcFigureJoints();
+			}
+			else
+			{
+				loadFigure(file);
 			}
 		}
 

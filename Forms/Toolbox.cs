@@ -567,8 +567,7 @@ namespace TISFAT_ZERO
 			string tempfile = System.IO.Path.GetTempFileName();
 			CustomFigSaver.saveFigure(tempfile, (StickCustom)Canvas.activeFigure);
 
-			StickEditor sticked = new StickEditor();
-			sticked.loadFigure(tempfile);
+			StickEditor sticked = new StickEditor(tempfile);
 			sticked.ShowDialog();
 		}
 	}

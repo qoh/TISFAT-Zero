@@ -149,16 +149,6 @@ namespace TISFAT_ZERO
 			return bmp;
 		}
 
-		public List<Bitmap> saveProjectToBitmapList()
-		{
-			List<Bitmap> bittyList = new List<Bitmap>();
-			for(int i = 0;hasFrames(i);i++)
-			{
-				bittyList.Add(saveFrame(i));
-			}
-			return bittyList;
-		}
-
 		/// <summary>
 		/// Updates all the layers based on the currently selected frame.
 		/// </summary>

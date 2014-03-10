@@ -824,7 +824,37 @@ namespace TISFAT_ZERO
 
 		public void recieveStickFigure(StickCustom figure, bool lean)
 		{
-			//TODO: Make the current keyframe update with the new positions for the Custom Stick.
+			CustomLayer c = (CustomLayer)Timeline.layers[Timeline.layer_sel];
+
+			List<StickJoint> ps = figure.Joints;
+			c.fig = figure;
+
+			int[] positions = new int[ps.Count];
+			for (int a = 0;a < ps.Count;a++)
+			{
+				StickJoint p = ps[a].parent;
+				if (p != null)
+				{
+					positions[a] = ps.IndexOf(p);
+				}
+				else
+				{
+					positions[a] = -1;
+				}
+			}
+
+			c.keyFrames[c.selectedFrame].Joints = ps;
+			foreach (StickJoint j in c.keyFrames[c.selectedFrame].Joints)
+				j.ParentFigure = c.fig;
+
+			c.tweenFig = new StickCustom(figure, true);
+			c.tweenFig.Joints = custObjectFrame.createClone(ps, positions);
+			foreach (StickJoint j in c.tweenFig.Joints)
+				j.ParentFigure = c.tweenFig;
+
+			Timeline.layer_sel = Timeline.layer_cnt - 1;
+			mainForm.tline.setFrame(c.firstKF);
+			mainForm.tline.Invalidate();
 		}
 
 		private void GL_GRAPHICS_Resize(object sender, EventArgs e)

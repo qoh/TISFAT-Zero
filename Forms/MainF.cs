@@ -253,17 +253,20 @@ namespace TISFAT_ZERO
 
 		private void dlg_exportFile_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			List<Bitmap> bittyList = new List<Bitmap>();
-			if (dlg_exportFile.FileName.EndsWith(".gif"))
-				bittyList = tline.saveProjectToBitmapList();
 			AnimatedGifEncoder x = new AnimatedGifEncoder();
 			x.Start(dlg_exportFile.FileName);
 			x.SetDelay(1000 / theToolbox.frameRate);
 			x.SetRepeat(0);
-			for (int i = 0;i < bittyList.Count;i++)
-				x.AddFrame(bittyList[i]);
-			x.Finish();
 
+			if (dlg_exportFile.FileName.EndsWith(".gif"))
+			{
+				for (int i = 0;tline.hasFrames(i);i++)
+				{
+					x.AddFrame(tline.saveFrame(i));
+				}
+			}
+			
+			x.Finish();
 		}
 	}
 }
