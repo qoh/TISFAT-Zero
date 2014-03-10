@@ -29,23 +29,28 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("Default Figure");
-			System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Custom Figure..");
-			System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Stick Figures", new System.Windows.Forms.TreeNode[] {
-            treeNode17,
-            treeNode18});
-			System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Line");
-			System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("Rectangle");
-			System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("Shapes", new System.Windows.Forms.TreeNode[] {
-            treeNode20,
-            treeNode21});
-			System.Windows.Forms.TreeNode treeNode23 = new System.Windows.Forms.TreeNode("Light Source");
-			System.Windows.Forms.TreeNode treeNode24 = new System.Windows.Forms.TreeNode("Text");
+			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Default Figure");
+			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Custom Figure..");
+			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Stick Figures", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2});
+			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Line");
+			System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Rectangle");
+			System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Shapes", new System.Windows.Forms.TreeNode[] {
+            treeNode4,
+            treeNode5});
+			System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Light Source");
+			System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Text");
 			this.pnl_mainPanel = new System.Windows.Forms.Panel();
 			this.pnl_addTools = new System.Windows.Forms.Panel();
 			this.trv_addView = new System.Windows.Forms.TreeView();
 			this.btn_cancelButton = new System.Windows.Forms.Button();
 			this.pnl_Properties = new System.Windows.Forms.Panel();
+			this.pnl_Properties_Custom = new System.Windows.Forms.Panel();
+			this.btn_bitmapUseNone = new System.Windows.Forms.Button();
+			this.lbl_Properties_Bitmap = new System.Windows.Forms.Label();
+			this.com_Properties_Bitmap = new System.Windows.Forms.ComboBox();
+			this.btn_Properties_Edit = new System.Windows.Forms.Button();
 			this.pnl_Properties_Rect = new System.Windows.Forms.Panel();
 			this.num_rectOLAlpha = new System.Windows.Forms.NumericUpDown();
 			this.num_rectFillAlpha = new System.Windows.Forms.NumericUpDown();
@@ -101,13 +106,10 @@
 			this.btn_cancelButtonDraw = new System.Windows.Forms.Button();
 			this.animTimer = new System.Windows.Forms.Timer(this.components);
 			this.dlg_Color = new System.Windows.Forms.ColorDialog();
-			this.pnl_Properties_Custom = new System.Windows.Forms.Panel();
-			this.btn_Properties_Edit = new System.Windows.Forms.Button();
-			this.com_Properties_Bitmap = new System.Windows.Forms.ComboBox();
-			this.lbl_Properties_Bitmap = new System.Windows.Forms.Label();
 			this.pnl_mainPanel.SuspendLayout();
 			this.pnl_addTools.SuspendLayout();
 			this.pnl_Properties.SuspendLayout();
+			this.pnl_Properties_Custom.SuspendLayout();
 			this.pnl_Properties_Rect.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.num_rectOLAlpha)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_rectFillAlpha)).BeginInit();
@@ -130,7 +132,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.maskedTextBox1)).BeginInit();
 			this.tabPage2.SuspendLayout();
 			this.pnl_Drawing.SuspendLayout();
-			this.pnl_Properties_Custom.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// pnl_mainPanel
@@ -163,45 +164,45 @@
 			this.trv_addView.FullRowSelect = true;
 			this.trv_addView.Location = new System.Drawing.Point(0, 0);
 			this.trv_addView.Name = "trv_addView";
-			treeNode17.Name = "nde_Stick_Default";
-			treeNode17.Tag = "0";
-			treeNode17.Text = "Default Figure";
-			treeNode17.ToolTipText = "The default stick figure";
-			treeNode18.Name = "nde_Stick_Custom";
-			treeNode18.Tag = "1";
-			treeNode18.Text = "Custom Figure..";
-			treeNode18.ToolTipText = "Create your own figure, or load an existing one";
-			treeNode19.Checked = true;
-			treeNode19.Name = "nde_StickFigures";
-			treeNode19.Tag = "-1";
-			treeNode19.Text = "Stick Figures";
-			treeNode19.ToolTipText = "Various stick figure objects";
-			treeNode20.Name = "nde_Shape_Line";
-			treeNode20.Tag = "2";
-			treeNode20.Text = "Line";
-			treeNode20.ToolTipText = "A primitive line, from point A to point B.";
-			treeNode21.Name = "nde_Shape_Rect";
-			treeNode21.Tag = "3";
-			treeNode21.Text = "Rectangle";
-			treeNode21.ToolTipText = "A basic rectangle with 4 control points.";
-			treeNode22.Checked = true;
-			treeNode22.Name = "nde_Shapes";
-			treeNode22.Tag = "-1";
-			treeNode22.Text = "Shapes";
-			treeNode22.ToolTipText = "Various primitive shapes";
-			treeNode23.Name = "nde_lightSource";
-			treeNode23.Tag = "4";
-			treeNode23.Text = "Light Source";
-			treeNode23.ToolTipText = "A source of light for the shading engine";
-			treeNode24.Name = "nde_Text";
-			treeNode24.Tag = "5";
-			treeNode24.Text = "Text";
-			treeNode24.ToolTipText = "A text object with 4 control points and configurable text.";
+			treeNode1.Name = "nde_Stick_Default";
+			treeNode1.Tag = "0";
+			treeNode1.Text = "Default Figure";
+			treeNode1.ToolTipText = "The default stick figure";
+			treeNode2.Name = "nde_Stick_Custom";
+			treeNode2.Tag = "1";
+			treeNode2.Text = "Custom Figure..";
+			treeNode2.ToolTipText = "Create your own figure, or load an existing one";
+			treeNode3.Checked = true;
+			treeNode3.Name = "nde_StickFigures";
+			treeNode3.Tag = "-1";
+			treeNode3.Text = "Stick Figures";
+			treeNode3.ToolTipText = "Various stick figure objects";
+			treeNode4.Name = "nde_Shape_Line";
+			treeNode4.Tag = "2";
+			treeNode4.Text = "Line";
+			treeNode4.ToolTipText = "A primitive line, from point A to point B.";
+			treeNode5.Name = "nde_Shape_Rect";
+			treeNode5.Tag = "3";
+			treeNode5.Text = "Rectangle";
+			treeNode5.ToolTipText = "A basic rectangle with 4 control points.";
+			treeNode6.Checked = true;
+			treeNode6.Name = "nde_Shapes";
+			treeNode6.Tag = "-1";
+			treeNode6.Text = "Shapes";
+			treeNode6.ToolTipText = "Various primitive shapes";
+			treeNode7.Name = "nde_lightSource";
+			treeNode7.Tag = "4";
+			treeNode7.Text = "Light Source";
+			treeNode7.ToolTipText = "A source of light for the shading engine";
+			treeNode8.Name = "nde_Text";
+			treeNode8.Tag = "5";
+			treeNode8.Text = "Text";
+			treeNode8.ToolTipText = "A text object with 4 control points and configurable text.";
 			this.trv_addView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode19,
-            treeNode22,
-            treeNode23,
-            treeNode24});
+            treeNode3,
+            treeNode6,
+            treeNode7,
+            treeNode8});
 			this.trv_addView.ShowLines = false;
 			this.trv_addView.Size = new System.Drawing.Size(151, 158);
 			this.trv_addView.TabIndex = 26;
@@ -229,6 +230,57 @@
 			this.pnl_Properties.Name = "pnl_Properties";
 			this.pnl_Properties.Size = new System.Drawing.Size(151, 632);
 			this.pnl_Properties.TabIndex = 30;
+			// 
+			// pnl_Properties_Custom
+			// 
+			this.pnl_Properties_Custom.Controls.Add(this.btn_bitmapUseNone);
+			this.pnl_Properties_Custom.Controls.Add(this.lbl_Properties_Bitmap);
+			this.pnl_Properties_Custom.Controls.Add(this.com_Properties_Bitmap);
+			this.pnl_Properties_Custom.Controls.Add(this.btn_Properties_Edit);
+			this.pnl_Properties_Custom.Dock = System.Windows.Forms.DockStyle.Top;
+			this.pnl_Properties_Custom.Location = new System.Drawing.Point(0, 474);
+			this.pnl_Properties_Custom.Name = "pnl_Properties_Custom";
+			this.pnl_Properties_Custom.Size = new System.Drawing.Size(151, 158);
+			this.pnl_Properties_Custom.TabIndex = 31;
+			// 
+			// btn_bitmapUseNone
+			// 
+			this.btn_bitmapUseNone.Location = new System.Drawing.Point(38, 57);
+			this.btn_bitmapUseNone.Name = "btn_bitmapUseNone";
+			this.btn_bitmapUseNone.Size = new System.Drawing.Size(75, 20);
+			this.btn_bitmapUseNone.TabIndex = 29;
+			this.btn_bitmapUseNone.Text = "Use None";
+			this.btn_bitmapUseNone.UseVisualStyleBackColor = true;
+			this.btn_bitmapUseNone.Click += new System.EventHandler(this.btn_bitmapUseNone_Click);
+			// 
+			// lbl_Properties_Bitmap
+			// 
+			this.lbl_Properties_Bitmap.AutoSize = true;
+			this.lbl_Properties_Bitmap.Location = new System.Drawing.Point(20, 14);
+			this.lbl_Properties_Bitmap.Name = "lbl_Properties_Bitmap";
+			this.lbl_Properties_Bitmap.Size = new System.Drawing.Size(45, 13);
+			this.lbl_Properties_Bitmap.TabIndex = 28;
+			this.lbl_Properties_Bitmap.Text = "Bitmap: ";
+			// 
+			// com_Properties_Bitmap
+			// 
+			this.com_Properties_Bitmap.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.com_Properties_Bitmap.FormattingEnabled = true;
+			this.com_Properties_Bitmap.Location = new System.Drawing.Point(22, 30);
+			this.com_Properties_Bitmap.Name = "com_Properties_Bitmap";
+			this.com_Properties_Bitmap.Size = new System.Drawing.Size(109, 21);
+			this.com_Properties_Bitmap.TabIndex = 27;
+			this.com_Properties_Bitmap.SelectionChangeCommitted += new System.EventHandler(this.com_Properties_Bitmap_SelectionChangeCommitted);
+			// 
+			// btn_Properties_Edit
+			// 
+			this.btn_Properties_Edit.Location = new System.Drawing.Point(41, 110);
+			this.btn_Properties_Edit.Name = "btn_Properties_Edit";
+			this.btn_Properties_Edit.Size = new System.Drawing.Size(75, 23);
+			this.btn_Properties_Edit.TabIndex = 26;
+			this.btn_Properties_Edit.Text = "Edit Figure";
+			this.btn_Properties_Edit.UseVisualStyleBackColor = true;
+			this.btn_Properties_Edit.Click += new System.EventHandler(this.btn_Properties_Edit_Click);
 			// 
 			// pnl_Properties_Rect
 			// 
@@ -834,45 +886,6 @@
 			this.animTimer.Interval = 24;
 			this.animTimer.Tick += new System.EventHandler(this.animTimer_Tick);
 			// 
-			// pnl_Properties_Custom
-			// 
-			this.pnl_Properties_Custom.Controls.Add(this.lbl_Properties_Bitmap);
-			this.pnl_Properties_Custom.Controls.Add(this.com_Properties_Bitmap);
-			this.pnl_Properties_Custom.Controls.Add(this.btn_Properties_Edit);
-			this.pnl_Properties_Custom.Dock = System.Windows.Forms.DockStyle.Top;
-			this.pnl_Properties_Custom.Location = new System.Drawing.Point(0, 474);
-			this.pnl_Properties_Custom.Name = "pnl_Properties_Custom";
-			this.pnl_Properties_Custom.Size = new System.Drawing.Size(151, 158);
-			this.pnl_Properties_Custom.TabIndex = 31;
-			// 
-			// btn_Properties_Edit
-			// 
-			this.btn_Properties_Edit.Location = new System.Drawing.Point(41, 101);
-			this.btn_Properties_Edit.Name = "btn_Properties_Edit";
-			this.btn_Properties_Edit.Size = new System.Drawing.Size(75, 23);
-			this.btn_Properties_Edit.TabIndex = 26;
-			this.btn_Properties_Edit.Text = "Edit..";
-			this.btn_Properties_Edit.UseVisualStyleBackColor = true;
-			// 
-			// com_Properties_Bitmap
-			// 
-			this.com_Properties_Bitmap.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.com_Properties_Bitmap.FormattingEnabled = true;
-			this.com_Properties_Bitmap.Location = new System.Drawing.Point(22, 30);
-			this.com_Properties_Bitmap.Name = "com_Properties_Bitmap";
-			this.com_Properties_Bitmap.Size = new System.Drawing.Size(109, 21);
-			this.com_Properties_Bitmap.TabIndex = 27;
-			this.com_Properties_Bitmap.SelectionChangeCommitted += new System.EventHandler(this.com_Properties_Bitmap_SelectionChangeCommitted);
-			// 
-			// lbl_Properties_Bitmap
-			// 
-			this.lbl_Properties_Bitmap.AutoSize = true;
-			this.lbl_Properties_Bitmap.Location = new System.Drawing.Point(20, 14);
-			this.lbl_Properties_Bitmap.Name = "lbl_Properties_Bitmap";
-			this.lbl_Properties_Bitmap.Size = new System.Drawing.Size(45, 13);
-			this.lbl_Properties_Bitmap.TabIndex = 28;
-			this.lbl_Properties_Bitmap.Text = "Bitmap: ";
-			// 
 			// Toolbox
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -890,6 +903,8 @@
 			this.pnl_mainPanel.PerformLayout();
 			this.pnl_addTools.ResumeLayout(false);
 			this.pnl_Properties.ResumeLayout(false);
+			this.pnl_Properties_Custom.ResumeLayout(false);
+			this.pnl_Properties_Custom.PerformLayout();
 			this.pnl_Properties_Rect.ResumeLayout(false);
 			this.pnl_Properties_Rect.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.num_rectOLAlpha)).EndInit();
@@ -918,8 +933,6 @@
 			this.tabPage2.ResumeLayout(false);
 			this.tabPage2.PerformLayout();
 			this.pnl_Drawing.ResumeLayout(false);
-			this.pnl_Properties_Custom.ResumeLayout(false);
-			this.pnl_Properties_Custom.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -990,5 +1003,6 @@
 		private System.Windows.Forms.ComboBox com_Properties_Bitmap;
 		private System.Windows.Forms.Button btn_Properties_Edit;
 		private System.Windows.Forms.Label lbl_Properties_Bitmap;
+		private System.Windows.Forms.Button btn_bitmapUseNone;
 	}
 }

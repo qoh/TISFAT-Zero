@@ -29,6 +29,227 @@ namespace TISFAT_ZERO
 		public static readonly string saveFileExt = ".tzf";
 	}
 
+	public class LegacyTJointBitmap
+	{
+		MemoryStream ms;
+		public Bitmap bitmap;
+		public string name;
+
+		public void LegacyT0JointBitmap(BinaryReader s)
+		{
+			Load(s);
+		}
+
+		public void Load(BinaryReader bin)
+		{
+			int l;
+			string n;
+
+			l = bin.ReadInt32();
+			n = bin.ReadString();
+			name = n;
+			l = bin.ReadInt32();
+
+			byte[] buffer = bin.ReadBytes(l);
+
+			MemoryStream ms = new MemoryStream(buffer);
+			Image bitty;
+			ms.Seek(0, SeekOrigin.Begin);
+
+			try
+			{
+				bitty = Image.FromStream(ms);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e.Message);
+				return;
+			}
+
+			bitmap = (Bitmap)bitty;
+		}
+	}
+
+	class LegacyTStickFileLoader
+	{
+		public static List<StickJoint> Read(string file)
+		{
+			int nCount;
+			LegacyFigure fig = new LegacyFigure();
+
+			LegacyJoint pJoint;
+			LegacyTJointBitmap bmp;
+
+			BinaryReader bin = new BinaryReader(File.Open(file, FileMode.Open));
+
+			fig.DrawMode = bin.ReadInt32();
+			fig.Tension = bin.ReadSingle();
+			fig.CurveWidth = bin.ReadInt32();
+			fig.JointCount = bin.ReadInt32();
+			nCount = bin.ReadInt32();
+			for (int i = 0;i < nCount;i++)
+			{
+				pJoint = new LegacyJoint();
+				pJoint.Read(bin, fig);
+			}
+
+			fig.PoseCount = bin.ReadInt32();
+			fig.Alpha = 1 - (fig.PoseCount / 255);
+			fig.BitmapCount = bin.ReadInt32();
+			for (int i = 0;i < fig.BitmapCount;i++)
+			{
+				bmp = new LegacyTJointBitmap();
+				bmp.Load(bin);
+				fig.Bitmaps.Add(bmp);
+			}
+
+			List<StickJoint> x = new List<StickJoint>();
+			StickCustom cust = new StickCustom();
+
+			foreach (LegacyJoint j in fig.Joints)
+				x.Add(new StickJoint(j));
+
+			for (int i = 0;i < fig.Joints.Count;i++)
+				for (int j = 0;j < fig.Joints[i].children.Count;j++)
+				{
+					StickJoint lj = x[fig.Joints.IndexOf(fig.Joints[i].children[j])];
+					x[i].children.Add(lj);
+					lj.parent = x[i];
+				}
+
+			for (int z = 0;z < fig.Bitmaps.Count; z++)
+				for (int i = 0;i < x.Count;i++)
+				{
+					x[i].bitmaps.Add(fig.Bitmaps[z].bitmap);
+					x[i].Bitmap_names.Add(fig.Bitmaps[z].name);
+					x[i].Bitmap_Offsets.Add(new Point(fig.Joints[i].BitmapXOffs, fig.Joints[i].BitmapYOffs));
+					x[i].Bitmap_Rotations.Add(Math.Abs(Convert.ToInt32(fig.Joints[i].BitmapRotation)));
+
+					x[i].Bitmap_IDs.Add(z);
+					Functions.AssignGlid(x[i], x[i].bitmaps.IndexOf(fig.Bitmaps[z].bitmap));
+				}
+
+			return x;
+		}
+
+		public static void AddToList(List<StickJoint> z, List<LegacyJoint> j, StickJoint parent = null)
+		{
+			foreach (LegacyJoint x in j)
+			{
+				StickJoint sj = new StickJoint(x);
+
+				if (parent != null)
+					sj.parent = parent;
+				z.Add(sj);
+				AddToList(sj.children, x.children, sj);
+			}
+		}
+
+		public static void AddToList(List<StickJoint> z, LegacyJoint j, LegacyJoint parent = null)
+		{
+			//foreach(LegacyJoint x in j.children)
+			//	recursiveAdd(z, x);
+			StickJoint sJoint;
+			StickJoint sParent = null;
+			if (parent != null)
+				sParent = new StickJoint(parent);
+
+			sJoint = new StickJoint(j);
+			sJoint.parent = sParent;
+
+			if (!z.Contains(sJoint))
+				z.Add(sJoint);
+			if (sParent != null)
+				z.Add(sParent);
+		}
+	}
+
+	public class LegacyJoint
+	{
+		public List<LegacyJoint> children;
+
+		public int x, y, state, length, index, Bitmap, BitmapXOffs, BitmapYOffs, LineWidth, DrawAs, DrawWidth, Color, InColor;
+		public LegacyJoint parent;
+		public Single AngleToParent, BitmapRotation;
+		public byte BitmapAlpha;
+		public string name;
+		public bool ShowLine, Fill;
+
+		public int nCount;
+
+		public LegacyJoint()
+		{
+			children = new List<LegacyJoint>();
+		}
+
+		public bool Read(BinaryReader bin, LegacyFigure pFig)
+		{
+			LegacyFigure parentFigure = pFig;
+
+			DrawAs = bin.ReadInt32();
+			DrawWidth = bin.ReadInt32();
+			LineWidth = bin.ReadInt32();
+			ShowLine = bin.ReadBoolean();
+			Color = bin.ReadInt32();
+			InColor = bin.ReadInt32();
+			Fill = bin.ReadBoolean();
+			x = bin.ReadInt32();
+			y = bin.ReadInt32();
+			state = bin.ReadInt32();
+			length = bin.ReadInt32();
+			index = bin.ReadInt32();
+			AngleToParent = bin.ReadSingle();
+			Bitmap = bin.ReadInt32();
+			BitmapXOffs = bin.ReadInt32();
+			BitmapYOffs = bin.ReadInt32();
+			BitmapRotation = bin.ReadSingle();
+			BitmapAlpha = bin.ReadByte();
+
+			nCount = bin.ReadInt32();
+			for (int i = 0;i < nCount;i++)
+			{
+				LegacyJoint pChild = new LegacyJoint();
+				pChild.parent = this;
+				pChild.Read(bin, pFig);
+
+				children.Add(pChild);
+			}
+
+			pFig.Joints.Add(this);
+			return true;
+		}
+	}
+
+	public class LegacyFigure
+	{
+		public List<LegacyJoint> Joints;
+		public List<LegacyTJointBitmap> Bitmaps;
+
+		public bool CalcIK, ShowJoints, ShallowBitmaps;
+		public int Index, JointCount, DrawMode, CurveWidth, PoseCount, BitmapCount;
+		public Single Alpha, Tension;
+
+		public LegacyFigure()
+		{
+			Joints = new List<LegacyJoint>();
+			Bitmaps = new List<LegacyTJointBitmap>();
+		}
+	}
+
+	class LegacyFunctions
+	{
+		public static Color DWORDtoRGB(int l)
+		{
+			int r, g, b;
+
+			b = l >> 16;
+			g = l >> 8;
+			r = l;
+
+			return Color.FromArgb(255, r, g, b);
+		}
+	}
+
 	struct Block
 	{
 		public ushort type;
@@ -49,7 +270,7 @@ namespace TISFAT_ZERO
 		public static bool saveFigure(string path, StickCustom figure)
 		{
 			BinaryWriter bin = new BinaryWriter(File.Open(path, FileMode.Create));
-			bin.Write(tzf.fileSig, 0, tzf.fileSig.Length);
+			bin.Write(tzf.fileSig, 0, tzs.fileSig.Length);
 			bin.Write(tzf.curVersion, 0, tzf.curVersion.Length);
 
 			bin.Write(figure.Joints.Count);
@@ -62,7 +283,7 @@ namespace TISFAT_ZERO
 
 				foreach (StickJoint joint in figure.Joints)
 					if (joint.Bitmap_IDs.Count > 0)
-						for (int x = 0;x < joint.Bitmap_IDs.Count; x++)
+						for (int x = 0;x < joint.Bitmap_IDs.Count;x++)
 							writeBitmapBlock(x, joint, bin);
 			}
 			catch (Exception ex)
@@ -122,6 +343,7 @@ namespace TISFAT_ZERO
 			bin.Write(j.visible);
 			bin.Write(j.handleDrawn);
 
+			bin.Write(j.Bitmap_CurrentID);
 			bin.Write(j.Bitmap_IDs.Count);
 			for (int i = 0;i < j.Bitmap_IDs.Count;i++)
 				bin.Write(j.Bitmap_IDs[i]);
@@ -180,6 +402,7 @@ namespace TISFAT_ZERO
 				bool visible = bin.ReadBoolean();
 				bool handleDrawn = bin.ReadBoolean();
 
+				int Bitmap_CurrentID = bin.ReadInt32();
 				int bitmapIndexes = bin.ReadInt32();
 
 				List<int> bitmapis = new List<int>();
@@ -192,7 +415,7 @@ namespace TISFAT_ZERO
 
 				figure.Joints.Add(new StickJoint("Joint " + i, new Point(x, y), thickness, col, hCol, 0, drawState, false, null, handleDrawn));
 
-				figure.Joints[figure.Joints.Count - 1].Bitmap_CurrentID = 0;
+				figure.Joints[figure.Joints.Count - 1].Bitmap_CurrentID = Bitmap_CurrentID;
 				figure.Joints[figure.Joints.Count - 1].Bitmap_IDs = bitmapis;
 
 				figure.Joints[figure.Joints.Count - 1].drawOrder = drawOrder;
@@ -220,7 +443,7 @@ namespace TISFAT_ZERO
 			for (int i = 0;i < jointCount;i++)
 			{
 				foreach (T0JointBitmap bitmap in bitmapList)
-					if (figure.Joints[i].Bitmap_IDs.Contains(bitmap.id + 1))
+					if (figure.Joints[i].Bitmap_IDs.Contains(bitmap.id))
 						bitmap.ApplyTo(figure.Joints[i], bitmap.id);
 
 				if (parentList[i] != -1)
@@ -270,6 +493,7 @@ namespace TISFAT_ZERO
 				bool visible = bin.ReadBoolean();
 				bool handleDrawn = bin.ReadBoolean();
 
+				int Bitmap_CurrentID = bin.ReadInt32();
 				int bitmapIndexes = bin.ReadInt32();
 
 				List<int> bitmapis = new List<int>();
@@ -282,7 +506,7 @@ namespace TISFAT_ZERO
 
 				sticked.figure.Joints.Add(new StickJoint("Joint " + i.ToString(), new Point(x, y), thickness, col, hCol, 0, drawState, false, null, handleDrawn));
 
-				sticked.figure.Joints[sticked.figure.Joints.Count - 1].Bitmap_CurrentID = 0;
+				sticked.figure.Joints[sticked.figure.Joints.Count - 1].Bitmap_CurrentID = Bitmap_CurrentID;
 				sticked.figure.Joints[sticked.figure.Joints.Count - 1].Bitmap_IDs = bitmapis;
 
 				sticked.figure.Joints[sticked.figure.Joints.Count - 1].drawOrder = drawOrder;
@@ -310,7 +534,7 @@ namespace TISFAT_ZERO
 			for (int i = 0;i < jointCount;i++)
 			{
 				foreach (T0JointBitmap bitmap in bitmapList)
-					if (sticked.figure.Joints[i].Bitmap_IDs.Contains(bitmap.id + 1))
+					if (sticked.figure.Joints[i].Bitmap_IDs.Contains(bitmap.id))
 						bitmap.ApplyTo(sticked.figure.Joints[i], bitmap.id);
 
 				if (parentList[i] != -1)

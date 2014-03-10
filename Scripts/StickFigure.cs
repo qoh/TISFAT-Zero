@@ -6,7 +6,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace TISFAT_ZERO
 {
-	public class StickJoint
+	public class StickJoint : IEquatable<StickJoint>
 	{
 		#region Variables
 		//Defining Public Varaibles
@@ -61,6 +61,112 @@ namespace TISFAT_ZERO
 		public List<int> textureIDs = new List<int>();
 		#endregion
 
+		public override bool Equals(object obj)
+		{
+			if (obj == null)
+				return false;
+
+			StickJoint comp = obj as StickJoint;
+
+			if (this.AngleToParent != comp.AngleToParent)
+				return false;
+			if (this.bitmaps != comp.bitmaps)
+				return false;
+			if (this.Bitmap_Rotations != comp.Bitmap_Rotations)
+				return false;
+			if (this.Bitmap_Offsets != comp.Bitmap_Offsets)
+				return false;
+			if (this.Bitmap_names != comp.Bitmap_names)
+				return false;
+			if (this.Bitmap_IDs != comp.Bitmap_IDs)
+				return false;
+			if (this.Bitmap_CurrentID != comp.Bitmap_CurrentID)
+				return false;
+			if (this.color != comp.color)
+				return false;
+			if (this.defaultHandleColor != comp.defaultHandleColor)
+				return false;
+			if (this.drawOrder != comp.drawOrder)
+				return false;
+			if (this.drawState != comp.drawState)
+				return false;
+			if (this.fill != comp.fill)
+				return false;
+			if (this.handleColor != comp.handleColor)
+				return false;
+			if (this.handleDrawn != comp.handleDrawn)
+				return false;
+			if (this.length != comp.length)
+				return false;
+			if (this.location != comp.location)
+				return false;
+			if (this.name != comp.name)
+				return false;
+			if (this.state != comp.state)
+				return false;
+			if (this.textureIDs != comp.textureIDs)
+				return false;
+			if (this.thickness != comp.thickness)
+				return false;
+			if (this.visible != comp.visible)
+				return false;
+
+			return true;
+		}
+
+		public bool Equals(StickJoint obj)
+		{
+			if (obj == null)
+				return false;
+
+			StickJoint comp = obj;
+
+			if (this.AngleToParent != comp.AngleToParent)
+				return false;
+			if (this.bitmaps != comp.bitmaps)
+				return false;
+			if (this.Bitmap_Rotations != comp.Bitmap_Rotations)
+				return false;
+			if (this.Bitmap_Offsets != comp.Bitmap_Offsets)
+				return false;
+			if (this.Bitmap_names != comp.Bitmap_names)
+				return false;
+			if (this.Bitmap_IDs != comp.Bitmap_IDs)
+				return false;
+			if (this.Bitmap_CurrentID != comp.Bitmap_CurrentID)
+				return false;
+			if (this.color != comp.color)
+				return false;
+			if (this.defaultHandleColor != comp.defaultHandleColor)
+				return false;
+			if (this.drawOrder != comp.drawOrder)
+				return false;
+			if (this.drawState != comp.drawState)
+				return false;
+			if (this.fill != comp.fill)
+				return false;
+			if (this.handleColor != comp.handleColor)
+				return false;
+			if (this.handleDrawn != comp.handleDrawn)
+				return false;
+			if (this.length != comp.length)
+				return false;
+			if (this.location != comp.location)
+				return false;
+			if (this.name != comp.name)
+				return false;
+			if (this.state != comp.state)
+				return false;
+			if (this.textureIDs != comp.textureIDs)
+				return false;
+			if (this.thickness != comp.thickness)
+				return false;
+			if (this.visible != comp.visible)
+				return false;
+
+			return true;
+		}
+
 		#region Functions
 		public StickJoint(string newname, Point newLocation, int newThickness, Color newColor, Color newHandleColor, int newState = 0, int newDrawState = 0, bool newFill = false, StickJoint newParent = null, bool newHandleDrawn = true, Bitmap bitty = null, String bName = null)
 		{
@@ -101,6 +207,60 @@ namespace TISFAT_ZERO
 			this.thickness = obj.thickness;
 			this.visible = obj.visible;
 			parent = newParent;
+		}
+
+		public StickJoint(LegacyJoint j)
+		{
+			this.AngleToParent = j.AngleToParent;
+			//Bitmap_names are added in FileIO.cs
+			Bitmap_CurrentID = j.Bitmap;
+			//Bitmap_Offsets.Add(new Point(j.BitmapXOffs, j.BitmapYOffs));
+			//Bitmap_Rotations.Add(Convert.ToInt32(j.BitmapRotation));
+
+			foreach (LegacyJoint lj in j.children)
+				children.Add(new StickJoint(lj));
+
+			//this.color = LegacyFunctions.DWORDtoRGB(j.Color);
+			this.color = Color.Black;
+			this.defaultHandleColor = Color.ForestGreen;
+			this.drawState = j.DrawAs;
+			if (j.DrawAs == 2)
+				this.drawState = 1;
+			this.fill = j.Fill;
+			this.handleColor = Color.ForestGreen;
+			this.handleDrawn = true;
+			this.length = j.length;
+			this.location = new Point(j.x, j.y);
+			this.name = j.name;
+			//this.state = j.state;
+			this.thickness = j.LineWidth;
+			this.visible = j.ShowLine;
+		}
+
+		public StickJoint(LegacyJoint j, LegacyJoint parent)
+		{
+			this.AngleToParent = j.AngleToParent;
+			//Bitmap_names are added in FileIO.cs
+			Bitmap_CurrentID = j.Bitmap;
+			//Bitmap_Offsets.Add(new Point(j.BitmapXOffs, j.BitmapYOffs));
+			//Bitmap_Rotations.Add(Convert.ToInt32(j.BitmapRotation));
+
+			//this.color = LegacyFunctions.DWORDtoRGB(j.Color);
+			this.color = Color.Black;
+			this.defaultHandleColor = Color.ForestGreen;
+			this.drawState = j.DrawAs;
+			this.fill = j.Fill;
+			this.handleColor = Color.ForestGreen;
+			this.handleDrawn = true;
+			this.length = j.length;
+			this.location = new Point(j.x, j.y);
+			this.name = j.name;
+			this.state = j.state;
+			this.thickness = j.LineWidth;
+			this.visible = j.ShowLine;
+
+			StickJoint sj = new StickJoint(j.parent);
+			this.parent = sj;
 		}
 
 		public StickJoint(StickJoint obj)
@@ -476,12 +636,13 @@ namespace TISFAT_ZERO
 					Canvas.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
 				}
 
-				if (i.bitmaps.Count != 0)
-					if (i.textureIDs[i.Bitmap_CurrentID] != 0)
-					{
-						Point offset = rotate(i.Bitmap_Offsets[i.Bitmap_CurrentID], i.AngleToParent);
-						Canvas.drawGraphics(6, Color.White, new Point(i.location.X - offset.X, i.location.Y - offset.Y), i.bitmaps[i.Bitmap_CurrentID].Width, i.bitmaps[i.Bitmap_CurrentID].Height, new Point(0, 0), i.textureIDs[i.Bitmap_CurrentID], (float)i.AngleToParent - i.Bitmap_Rotations[i.Bitmap_CurrentID]);
-					}
+				if (i.Bitmap_CurrentID != -1)
+					if (i.bitmaps.Count != 0)
+						if (i.textureIDs[i.Bitmap_CurrentID] != 0)
+						{
+							Point offset = rotate(i.Bitmap_Offsets[i.Bitmap_CurrentID], i.AngleToParent);
+							Canvas.drawGraphics(6, Color.White, new Point(i.location.X - offset.X, i.location.Y - offset.Y), i.bitmaps[i.Bitmap_CurrentID].Width, i.bitmaps[i.Bitmap_CurrentID].Height, new Point(0, 0), i.textureIDs[i.Bitmap_CurrentID], (float)i.AngleToParent - i.Bitmap_Rotations[i.Bitmap_CurrentID]);
+						}
 			}
 
 			GL.Disable(EnableCap.StencilTest);
@@ -541,12 +702,13 @@ namespace TISFAT_ZERO
 					StickEditor.theSticked.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
 				}
 
-				if (i.bitmaps.Count != 0)
-					if (i.textureIDs[i.Bitmap_CurrentID] != 0)
-					{
-						Point offset = rotate(i.Bitmap_Offsets[i.Bitmap_CurrentID], i.AngleToParent);
-						StickEditor.theSticked.drawGraphics(6, Color.White, new Point(i.location.X - offset.X, i.location.Y - offset.Y), i.bitmaps[i.Bitmap_CurrentID].Width, i.bitmaps[i.Bitmap_CurrentID].Height, new Point(0, 0), i.textureIDs[i.Bitmap_CurrentID], (float)i.AngleToParent - i.Bitmap_Rotations[i.Bitmap_CurrentID]);
-					}
+				if (i.Bitmap_CurrentID != -1)
+					if (i.bitmaps.Count != 0)
+						if (i.textureIDs[i.Bitmap_CurrentID] != 0)
+						{
+							Point offset = rotate(i.Bitmap_Offsets[i.Bitmap_CurrentID], i.AngleToParent);
+							StickEditor.theSticked.drawGraphics(6, Color.White, new Point(i.location.X - offset.X, i.location.Y - offset.Y), i.bitmaps[i.Bitmap_CurrentID].Width, i.bitmaps[i.Bitmap_CurrentID].Height, new Point(0, 0), i.textureIDs[i.Bitmap_CurrentID], (float)i.AngleToParent - i.Bitmap_Rotations[i.Bitmap_CurrentID]);
+						}
 			}
 
 			GL.Disable(EnableCap.StencilTest);
@@ -978,7 +1140,7 @@ namespace TISFAT_ZERO
 
 	public class StickCustom : StickObject
 	{
-		public StickCustom(StickCustom obj, bool isTweenFigure= false)
+		public StickCustom(StickCustom obj, bool isTweenFigure = false)
 		{
 			type = 4;
 			Joints = obj.Joints;

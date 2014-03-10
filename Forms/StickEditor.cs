@@ -116,7 +116,7 @@ namespace TISFAT_ZERO
 		{
 			figure.reSortJoints();
 
-			for (int i = 0; i < figure.Joints.Count(); i++)
+			for (int i = 0;i < figure.Joints.Count();i++)
 			{
 				if (figure.Joints[i].parent != null)
 				{
@@ -125,16 +125,30 @@ namespace TISFAT_ZERO
 				}
 			}
 
-			for (int i = 0; i < figure.Joints.Count(); i++)
+			for (int i = 0;i < figure.Joints.Count; i++)
 			{
-				if (figure.Joints[i].parent != null)
+				foreach (StickJoint sj in figure.Joints[i].children)
 				{
-					if(!(figure.Joints[i].parent.children.IndexOf(figure.Joints[i]) >= 0))
-						figure.Joints[i].parent.children.Add(figure.Joints[i]);
+					Console.WriteLine(figure.Joints.Contains(sj));
+					sj.parent = figure.Joints[i];
 				}
-				figure.Joints[i].ParentFigure = figure;
 			}
+
+				for (int i = 0;i < figure.Joints.Count();i++)
+				{
+					if (figure.Joints[i].parent != null)
+					{
+						if (!(figure.Joints[i].parent.children.IndexOf(figure.Joints[i]) >= 0))
+							figure.Joints[i].parent.children.Add(figure.Joints[i]);
+					}
+					figure.Joints[i].ParentFigure = figure;
+				}
 			glGraphics.Refresh();
+		}
+
+		public void loadFigure(string file)
+		{
+			CustomFigLoader.loadStickFile(file);
 		}
 
 		public void loadFigure(StickCustom fig)
@@ -146,7 +160,7 @@ namespace TISFAT_ZERO
 			this.figure.drawHandles = true;
 			this.figure.isActiveFig = true;
 
-			for (int i = 0; i < fig.Joints.Count; i++)
+			for (int i = 0;i < fig.Joints.Count;i++)
 			{
 				this.figure.Joints.Add(fig.Joints[i]);
 				StickJoint parent = null;
@@ -154,7 +168,7 @@ namespace TISFAT_ZERO
 				if (!(fig.Joints[i].parent == null))
 				{
 					int parentIndex = fig.Joints.IndexOf(fig.Joints[i].parent);
-					
+
 					parent = fig.Joints[i].parent;
 				}
 
@@ -337,7 +351,7 @@ namespace TISFAT_ZERO
 
 			GL.Begin(BeginMode.TriangleFan);
 
-			for (int ii = 0; ii < num_segments; ii++)
+			for (int ii = 0;ii < num_segments;ii++)
 			{
 				GL.Vertex2(r + cx, y + cy);
 
@@ -398,7 +412,7 @@ namespace TISFAT_ZERO
 
 			if (e.Button == MouseButtons.Right && !mouseDown)
 			{
-				for (int i = 0; i < figure.Joints.Count; i++)
+				for (int i = 0;i < figure.Joints.Count;i++)
 				{
 					figure.Joints[i].location.X = fx[i] + (e.X - ox);
 					figure.Joints[i].location.Y = fy[i] + (e.Y - oy);
@@ -458,7 +472,7 @@ namespace TISFAT_ZERO
 					if (!(activeJoint == null))
 						selectedJoint = activeJoint;
 
-					if(activeJoint == null || activeJoint.parent == null)
+					if (activeJoint == null || activeJoint.parent == null)
 						return;
 
 					selectedJoint = activeJoint.parent;
@@ -481,7 +495,7 @@ namespace TISFAT_ZERO
 				fx = new List<int>();
 				fy = new List<int>();
 
-				for (int i = 0; i < figure.Joints.Count; i++)
+				for (int i = 0;i < figure.Joints.Count;i++)
 				{
 					fx.Add(figure.Joints[i].location.X);
 					fy.Add(figure.Joints[i].location.Y);
@@ -577,29 +591,30 @@ namespace TISFAT_ZERO
 			com_lineType.SelectedIndex = selectedJoint.drawState;
 
 			com_lineBitmap.Items.Clear();
-			for(int i = 0; i < selectedJoint.Bitmap_names.Count; i++)
+			for (int i = 0;i < selectedJoint.Bitmap_names.Count;i++)
 				com_lineBitmap.Items.Add(selectedJoint.Bitmap_names[i]);
 
-			if (selectedJoint.bitmaps.Count != 0)
-			{
-				com_lineBitmap.SelectedItem = selectedJoint.Bitmap_names[selectedJoint.Bitmap_CurrentID];
-				tkb_Rotation.Value = selectedJoint.Bitmap_Rotations[selectedJoint.Bitmap_CurrentID];
-				//num_bitmapRotation.Value = tkb_Rotation.Value;
-				//num_bitmapXOffs.Value = selectedJoint.Bitmap_Offsets[selectedJoint.Bitmap_CurrentID].X;
-				//num_bitmapYOffs.Value = selectedJoint.Bitmap_Offsets[selectedJoint.Bitmap_CurrentID].Y;
+			if (selectedJoint.Bitmap_CurrentID != -1)
+				if (selectedJoint.bitmaps.Count != 0)
+				{
+					com_lineBitmap.SelectedItem = selectedJoint.Bitmap_names[selectedJoint.Bitmap_CurrentID];
+					tkb_Rotation.Value = selectedJoint.Bitmap_Rotations[selectedJoint.Bitmap_CurrentID];
+					//num_bitmapRotation.Value = tkb_Rotation.Value;
+					//num_bitmapXOffs.Value = selectedJoint.Bitmap_Offsets[selectedJoint.Bitmap_CurrentID].X;
+					//num_bitmapYOffs.Value = selectedJoint.Bitmap_Offsets[selectedJoint.Bitmap_CurrentID].Y;
 
-				lbl_bitmapID.Text = "Bitmap ID: " + selectedJoint.Bitmap_IDs[selectedJoint.Bitmap_CurrentID];
-			}
-			else
-			{
-				com_lineBitmap.SelectedItem = 0;
-				tkb_Rotation.Value = 0;
-				num_bitmapRotation.Value = 0;
-				num_bitmapXOffs.Value = 0;
-				num_bitmapYOffs.Value = 0;
+					//lbl_bitmapID.Text = "Bitmap ID: " + selectedJoint.Bitmap_IDs[selectedJoint.Bitmap_CurrentID];
+				}
+				else
+				{
+					com_lineBitmap.SelectedItem = 0;
+					tkb_Rotation.Value = 0;
+					num_bitmapRotation.Value = 0;
+					num_bitmapXOffs.Value = 0;
+					num_bitmapYOffs.Value = 0;
 
-				lbl_bitmapID.Text = "Bitmap ID: <no bitmaps>";
-			}
+					lbl_bitmapID.Text = "Bitmap ID: <no bitmaps>";
+				}
 		}
 
 		private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -747,7 +762,7 @@ namespace TISFAT_ZERO
 
 			figure.Joints[0].location = new Point(222, 195);
 
-			for (int i = 1; i < figure.Joints.Count; i++)
+			for (int i = 1;i < figure.Joints.Count;i++)
 			{
 				figure.Joints[i].location = new Point(figure.Joints[0].location.X + Functions.calcFigureDiff(oldLoc, figure.Joints[i]).X, figure.Joints[0].location.Y + Functions.calcFigureDiff(oldLoc, figure.Joints[i]).Y);
 			}
@@ -828,6 +843,42 @@ namespace TISFAT_ZERO
 			selectedJoint.Bitmap_CurrentID = com_lineBitmap.SelectedIndex;
 			updateToolboxInfo();
 			glGraphics.Refresh();
+		}
+
+		private void originalTisfatFileToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			dlg_openLegacyFile.Filter = "Legacy Stick Figure Files (*.sff)|*.sff";
+			dlg_openLegacyFile.ShowDialog();
+		}
+
+		private void dlg_openLegacyFile_FileOk(object sender, CancelEventArgs e)
+		{
+			figure = new StickCustom(1);
+			figure.Joints = LegacyTStickFileLoader.Read(dlg_openLegacyFile.FileName);
+			foreach (StickJoint j in figure.Joints)
+				j.ParentFigure = figure;
+
+			recalcFigureJoints();
+			figure.drawFig = true;
+			figure.drawHandles = true;
+			figure.isActiveFig = false;
+		}
+
+		private void btn_remBitmap_Click(object sender, EventArgs e)
+		{
+			if (selectedJoint.Bitmap_CurrentID == -1)
+				return;
+
+			selectedJoint.bitmaps.RemoveAt(selectedJoint.Bitmap_CurrentID);
+			selectedJoint.Bitmap_Rotations.RemoveAt(selectedJoint.Bitmap_CurrentID);
+			selectedJoint.Bitmap_Offsets.RemoveAt(selectedJoint.Bitmap_CurrentID);
+			selectedJoint.Bitmap_names.RemoveAt(selectedJoint.Bitmap_CurrentID);
+			selectedJoint.Bitmap_IDs.RemoveAt(selectedJoint.Bitmap_CurrentID);
+			selectedJoint.textureIDs.RemoveAt(selectedJoint.Bitmap_CurrentID);
+
+			selectedJoint.Bitmap_CurrentID -= 1;
+			updateToolboxInfo();
+			Refresh();
 		}
 	}
 }

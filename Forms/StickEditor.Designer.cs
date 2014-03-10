@@ -94,6 +94,7 @@ namespace TISFAT_ZERO
 			this.dlg_openBitmap = new System.Windows.Forms.OpenFileDialog();
 			this.GL_GRAPHICS = new OpenTK.GLControl();
 			this.lbl_bitmapID = new System.Windows.Forms.Label();
+			this.dlg_openLegacyFile = new System.Windows.Forms.OpenFileDialog();
 			this.pnl_toolBox.SuspendLayout();
 			this.pnl_Stats.SuspendLayout();
 			this.pnl_brushProps.SuspendLayout();
@@ -455,6 +456,7 @@ namespace TISFAT_ZERO
 			this.btn_remBitmap.TabIndex = 9;
 			this.btn_remBitmap.Text = "Remove";
 			this.btn_remBitmap.UseVisualStyleBackColor = true;
+			this.btn_remBitmap.Click += new System.EventHandler(this.btn_remBitmap_Click);
 			// 
 			// btn_addBitmap
 			// 
@@ -712,6 +714,7 @@ namespace TISFAT_ZERO
 			this.originalTisfatFileToolStripMenuItem.Name = "originalTisfatFileToolStripMenuItem";
 			this.originalTisfatFileToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
 			this.originalTisfatFileToolStripMenuItem.Text = "Original Tisfat (.sff)";
+			this.originalTisfatFileToolStripMenuItem.Click += new System.EventHandler(this.originalTisfatFileToolStripMenuItem_Click);
 			// 
 			// exitStickEditorToolStripMenuItem
 			// 
@@ -778,6 +781,11 @@ namespace TISFAT_ZERO
 			this.lbl_bitmapID.Size = new System.Drawing.Size(53, 13);
 			this.lbl_bitmapID.TabIndex = 8;
 			this.lbl_bitmapID.Text = "BitmapID:";
+			// 
+			// dlg_openLegacyFile
+			// 
+			this.dlg_openLegacyFile.FileName = "openFileDialog1";
+			this.dlg_openLegacyFile.FileOk += new System.ComponentModel.CancelEventHandler(this.dlg_openLegacyFile_FileOk);
 			// 
 			// StickEditor
 			// 
@@ -892,6 +900,7 @@ namespace TISFAT_ZERO
 		private System.Windows.Forms.NumericUpDown num_bitmapRotation;
 		private System.Windows.Forms.Label lbl_bitmapRotation;
 		private System.Windows.Forms.TrackBar tkb_Rotation;
+		private System.Windows.Forms.OpenFileDialog dlg_openLegacyFile;
 
 	}
 }

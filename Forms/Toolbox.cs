@@ -296,7 +296,7 @@ namespace TISFAT_ZERO
 
 			(mainForm.tline.frm_selected).figColor = Color.FromArgb(argb[0], argb[1], argb[2], argb[3]);
 
-			if(Canvas.activeFigure.type == 3)
+			if (Canvas.activeFigure.type == 3)
 				Canvas.activeFigure.setFillColor(Color.FromArgb(argb[0], argb[1], argb[2], argb[3]));
 			else
 				Canvas.activeFigure.setColor(Color.FromArgb(argb[0], argb[1], argb[2], argb[3]));
@@ -346,11 +346,11 @@ namespace TISFAT_ZERO
 			switch (theSender.Tag.ToString())
 			{
 				case "0":
-					foreach (Layer l in Timeline.layers) { if(l.GetType() == typeof(StickLayer)){ x++;} }
+					foreach (Layer l in Timeline.layers) { if (l.GetType() == typeof(StickLayer)) { x++; } }
 					mainForm.tline.addStickLayer("Stick Layer " + x);
 					break;
 				case "1":
-					foreach (Layer l in Timeline.layers) { if(l.GetType() == typeof(CustomLayer)){ x++;} }
+					foreach (Layer l in Timeline.layers) { if (l.GetType() == typeof(CustomLayer)) { x++; } }
 					mainForm.tline.addCustomLayer("Custom Layer " + x);
 					Timeline.layer_sel = Timeline.layer_cnt - 1;
 					StickEditor f = new StickEditor();
@@ -358,15 +358,15 @@ namespace TISFAT_ZERO
 					return;
 
 				case "2":
-					foreach (Layer l in Timeline.layers) { if(l.GetType() == typeof(LineLayer)){ x++;} }
+					foreach (Layer l in Timeline.layers) { if (l.GetType() == typeof(LineLayer)) { x++; } }
 					mainForm.tline.addLineLayer("Line Layer " + x);
 					break;
 				case "3":
-					foreach (Layer l in Timeline.layers) { if(l.GetType() == typeof(RectLayer)){ x++;} }
+					foreach (Layer l in Timeline.layers) { if (l.GetType() == typeof(RectLayer)) { x++; } }
 					mainForm.tline.addRectLayer("Rect Layer " + x);
 					break;
 				case "4":
-					foreach (Layer l in Timeline.layers) { if(l.GetType() == typeof(LightLayer)){ x++;} }
+					foreach (Layer l in Timeline.layers) { if (l.GetType() == typeof(LightLayer)) { x++; } }
 					mainForm.tline.addLightLayer("Light Layer " + x);
 					return;
 
@@ -457,7 +457,7 @@ namespace TISFAT_ZERO
 					animTimer.Start();
 				}
 			}
-			else if(type == 4)
+			else if (type == 4)
 			{
 				com_Properties_Bitmap.Items.Clear();
 				if (!(Canvas.selectedJoint == null))
@@ -493,7 +493,8 @@ namespace TISFAT_ZERO
 				{
 					foreach (string s in Canvas.selectedJoint.Bitmap_names)
 						com_Properties_Bitmap.Items.Add(s);
-					com_Properties_Bitmap.SelectedItem = Canvas.selectedJoint.Bitmap_names[Canvas.selectedJoint.Bitmap_CurrentID];
+					if (Canvas.selectedJoint.Bitmap_CurrentID != -1)
+						com_Properties_Bitmap.SelectedItem = Canvas.selectedJoint.Bitmap_names[Canvas.selectedJoint.Bitmap_CurrentID];
 				}
 		}
 
@@ -504,7 +505,7 @@ namespace TISFAT_ZERO
 			pic_rectFillColor.BackColor = dlg_Color.Color;
 			Canvas.activeFigure.setFillColor(dlg_Color.Color);
 			mainForm.tline.frm_selected.figColor = dlg_Color.Color;
-			
+
 			Canvas.theCanvas.Refresh();
 		}
 
@@ -521,7 +522,7 @@ namespace TISFAT_ZERO
 				return;
 			pic_rectOLColor.BackColor = dlg_Color.Color;
 			Canvas.activeFigure.setColor(dlg_Color.Color);
-			for(int i = 0; i < mainForm.tline.frm_selected.Joints.Count; i++)
+			for (int i = 0;i < mainForm.tline.frm_selected.Joints.Count;i++)
 				mainForm.tline.frm_selected.Joints[i].color = dlg_Color.Color;
 
 			Canvas.theCanvas.Refresh();
@@ -551,6 +552,24 @@ namespace TISFAT_ZERO
 			//Canvas.selectedJoint.Bitmap_CurrentID = com_Properties_Bitmap.SelectedIndex;
 			((StickCustom)Timeline.layers[Timeline.layer_sel].tweenFig).Joints[Canvas.selectedJoint.ParentFigure.Joints.IndexOf(Canvas.selectedJoint)].Bitmap_CurrentID = com_Properties_Bitmap.SelectedIndex;
 			Canvas.theCanvas.Refresh();
+		}
+
+		private void btn_bitmapUseNone_Click(object sender, EventArgs e)
+		{
+			mainForm.tline.frm_selected.Joints[Canvas.selectedJoint.ParentFigure.Joints.IndexOf(Canvas.selectedJoint)].Bitmap_CurrentID = -1;
+			((StickCustom)Timeline.layers[Timeline.layer_sel].tweenFig).Joints[Canvas.selectedJoint.ParentFigure.Joints.IndexOf(Canvas.selectedJoint)].Bitmap_CurrentID = -1;
+			updateBitmapList();
+			Canvas.theCanvas.Refresh();
+		}
+
+		private void btn_Properties_Edit_Click(object sender, EventArgs e)
+		{
+			string tempfile = System.IO.Path.GetTempFileName();
+			CustomFigSaver.saveFigure(tempfile, (StickCustom)Canvas.activeFigure);
+
+			StickEditor sticked = new StickEditor();
+			sticked.loadFigure(tempfile);
+			sticked.ShowDialog();
 		}
 	}
 }
