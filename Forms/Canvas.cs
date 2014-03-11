@@ -807,12 +807,12 @@ namespace TISFAT_ZERO
 			}
 
 			c.keyFrames[0].Joints = ps;
-			c.keyFrames[1].Joints = custObjectFrame.createClone(ps, positions);
+			c.keyFrames[1].Joints = custObjectFrame.createClone(ps);
 			foreach (StickJoint j in c.keyFrames[1].Joints)
 				j.ParentFigure = c.fig;
 
 			c.tweenFig = new StickCustom(figure, true);
-			c.tweenFig.Joints = custObjectFrame.createClone(ps, positions);
+			c.tweenFig.Joints = custObjectFrame.createClone(ps);
 			foreach (StickJoint j in c.tweenFig.Joints)
 				j.ParentFigure = c.tweenFig;
 
@@ -848,7 +848,7 @@ namespace TISFAT_ZERO
 				j.ParentFigure = c.fig;
 
 			c.tweenFig = new StickCustom(figure, true);
-			c.tweenFig.Joints = custObjectFrame.createClone(ps, positions);
+			c.tweenFig.Joints = custObjectFrame.createClone(ps);
 			foreach (StickJoint j in c.tweenFig.Joints)
 				j.ParentFigure = c.tweenFig;
 

@@ -167,7 +167,7 @@ namespace TISFAT_ZERO
 					ps[a].CalcLength(ps[a]);
 				}
 			}
-			Joints = createClone(ps, positions);
+			Joints = createClone(ps);
 		}
 
 		public custObjectFrame(int po)
@@ -176,7 +176,7 @@ namespace TISFAT_ZERO
 			Joints = new List<StickJoint>();
 		}
 
-		public static List<StickJoint> createClone(List<StickJoint> old, int[] positions)
+		public static List<StickJoint> createClone(List<StickJoint> old)
 		{
 			List<StickJoint> x = new List<StickJoint>();
 			for(int i = 0; i < old.Count; i++)

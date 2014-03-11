@@ -270,7 +270,7 @@ namespace TISFAT_ZERO
 		public static bool saveFigure(string path, StickCustom figure)
 		{
 			BinaryWriter bin = new BinaryWriter(File.Open(path, FileMode.Create));
-			bin.Write(tzf.fileSig, 0, tzs.fileSig.Length);
+			bin.Write(tzf.fileSig, 0, tzf.fileSig.Length);
 			bin.Write(tzf.curVersion, 0, tzf.curVersion.Length);
 
 			bin.Write(figure.Joints.Count);
@@ -300,29 +300,27 @@ namespace TISFAT_ZERO
 			return true;
 		}
 
-		public static bool saveFigure(BinaryWriter bin, StickCustom figure)
+		public static bool saveFigure(List<byte> bytes, StickCustom figure)
 		{
-			bin.Write(tzf.fileSig, 0, tzf.fileSig.Length);
-			bin.Write(tzf.curVersion, 0, tzf.curVersion.Length);
+			bytes.AddRange(tzf.fileSig);
+			bytes.AddRange(tzf.curVersion);
 
-			bin.Write(figure.Joints.Count);
-			bin.Write(figure.getBitmapCount());
+			bytes.AddRange(BitConverter.GetBytes(figure.Joints.Count));
+			bytes.AddRange(BitConverter.GetBytes(figure.getBitmapCount()));
 
 			try
 			{
 				foreach (StickJoint joint in figure.Joints)
-					writeJointBlock(bin, figure, joint);
+					writeJointBlock(bytes, figure, joint);
 
 				foreach (StickJoint joint in figure.Joints)
 					if (joint.Bitmap_IDs.Count > 0)
 						for (int x = 0;x < joint.Bitmap_IDs.Count;x++)
-							writeBitmapBlock(x, joint, bin);
+							writeBitmapBlock(x, joint, bytes);
 			}
 			catch (Exception ex)
 			{
 				MessageBox.Show("Saving failed. Error Detail:\n" + ex.Message, "Saving Failed!");
-				bin.Close();
-				bin.Dispose();
 
 				return false;
 			}
@@ -370,13 +368,61 @@ namespace TISFAT_ZERO
 			bin.Write(bitmapStream.Length);
 			j.bitmaps[id].Save(bin.BaseStream, System.Drawing.Imaging.ImageFormat.Png);
 		}
+
+		private static void writeJointBlock(List<byte> bin, StickCustom figure, StickJoint j)
+		{
+			bin.AddRange(BitConverter.GetBytes(j.location.X));
+			bin.AddRange(BitConverter.GetBytes(j.location.Y));
+
+			bin.AddRange(BitConverter.GetBytes(j.color.ToArgb()));
+			bin.AddRange(BitConverter.GetBytes(j.handleColor.ToArgb()));
+			bin.AddRange(BitConverter.GetBytes(j.defaultHandleColor.ToArgb()));
+			bin.AddRange(BitConverter.GetBytes(j.thickness));
+			bin.AddRange(BitConverter.GetBytes(j.drawState));
+			bin.AddRange(BitConverter.GetBytes(j.drawOrder));
+			bin.AddRange(BitConverter.GetBytes(j.visible));
+			bin.AddRange(BitConverter.GetBytes(j.handleDrawn));
+
+			bin.AddRange((BitConverter.GetBytes(j.Bitmap_CurrentID)));
+			bin.AddRange((BitConverter.GetBytes(j.Bitmap_IDs.Count)));
+			for (int i = 0;i < j.Bitmap_IDs.Count;i++)
+				bin.AddRange((BitConverter.GetBytes(j.Bitmap_IDs[i])));
+
+			if (!(j.parent == null))
+				bin.AddRange((BitConverter.GetBytes(figure.Joints.IndexOf(j.parent))));
+			else
+				bin.AddRange(BitConverter.GetBytes(-1));
+		}
+
+		private static void writeBitmapBlock(int id, StickJoint j, List<byte> bin)
+		{
+			Stream bitmapStream = new MemoryStream();
+
+			j.bitmaps[id].Save(bitmapStream, System.Drawing.Imaging.ImageFormat.Png);
+
+			bin.AddRange(BitConverter.GetBytes(id));
+			bin.AddRange(BitConverter.GetBytes(Functions.GetByteCount(j.Bitmap_names[id])));
+			bin.AddRange(Functions.GetBytes(j.Bitmap_names[id]));
+			bin.AddRange(BitConverter.GetBytes(j.Bitmap_Rotations[id]));
+
+			bin.AddRange(BitConverter.GetBytes(j.Bitmap_Offsets[id].X));
+			bin.AddRange(BitConverter.GetBytes(j.Bitmap_Offsets[id].Y));
+
+			bin.AddRange(BitConverter.GetBytes(bitmapStream.Length));
+
+			ImageConverter converter = new ImageConverter();
+			bin.AddRange((byte[])converter.ConvertTo(j.bitmaps[id], typeof(byte[])));
+		}
 	}
 
 	class CustomFigLoader
 	{
-		public static StickCustom loadStickFile(BinaryReader bin)
+		public static StickCustom loadStickFile(byte[] bytes)
 		{
-			bin.BaseStream.Position += 12;
+			Stream ms = new MemoryStream(bytes);
+			BinaryReader bin = new BinaryReader(ms);
+
+			bin.BaseStream.Position += tzf.fileSig.Length + tzf.curVersion.Length;
 
 			int jointCount = bin.ReadInt32();
 			int bitmapCount = bin.ReadInt32();
@@ -424,7 +470,10 @@ namespace TISFAT_ZERO
 			for (int i = 0;i < bitmapCount;i++)
 			{
 				int id = bin.ReadInt32();
-				string name = bin.ReadString();
+				int nameCount = bin.ReadInt32();
+				byte[] str = bin.ReadBytes(nameCount);
+				string name = Functions.GetString(str);
+
 				int Rotation = bin.ReadInt32();
 				int OffsetX = bin.ReadInt32();
 				int OffsetY = bin.ReadInt32();
@@ -444,7 +493,7 @@ namespace TISFAT_ZERO
 			{
 				foreach (T0JointBitmap bitmap in bitmapList)
 					if (figure.Joints[i].Bitmap_IDs.Contains(bitmap.id))
-						bitmap.ApplyTo(figure.Joints[i], bitmap.id);
+						bitmap.ApplyTo(figure.Joints[i]);
 
 				if (parentList[i] != -1)
 					figure.Joints[i].parent = figure.Joints[parentList[i]];
@@ -467,7 +516,7 @@ namespace TISFAT_ZERO
 				throw new Exception("Failed to load project file. Reason: Unable to open file.");
 			}
 
-			bin.BaseStream.Position += 12;
+			bin.BaseStream.Position += tzf.fileSig.Length + tzf.curVersion.Length;
 
 			int jointCount = bin.ReadInt32();
 			int bitmapCount = bin.ReadInt32();
@@ -535,7 +584,7 @@ namespace TISFAT_ZERO
 			{
 				foreach (T0JointBitmap bitmap in bitmapList)
 					if (sticked.figure.Joints[i].Bitmap_IDs.Contains(bitmap.id))
-						bitmap.ApplyTo(sticked.figure.Joints[i], bitmap.id);
+						bitmap.ApplyTo(sticked.figure.Joints[i]);
 
 				if (parentList[i] != -1)
 					sticked.figure.Joints[i].parent = sticked.figure.Joints[parentList[i]];
@@ -564,14 +613,14 @@ namespace TISFAT_ZERO
 			this.bitmap = Img;
 		}
 
-		public void ApplyTo(StickJoint j, int index)
+		public void ApplyTo(StickJoint j)
 		{
 			j.bitmaps.Add((Bitmap)bitmap);
 			j.Bitmap_names.Add(name);
 			j.Bitmap_Offsets.Add(new Point(OffsetX, OffsetY));
 			j.Bitmap_Rotations.Add(Rotation);
 
-			Functions.AssignGlid(j, index);
+			Functions.AssignGlid(j, j.bitmaps.IndexOf((Bitmap)bitmap));
 		}
 	}
 
@@ -679,45 +728,11 @@ namespace TISFAT_ZERO
 			List<byte> bytes = new List<byte>();
 
 			bytes.AddRange(BitConverter.GetBytes((ushort)7));
-			List<StickJoint> customFig = l.keyFrames[0].Joints;
-			bytes.AddRange(BitConverter.GetBytes((ushort)customFig.Count));
 
-			for (int a = 0;a < customFig.Count;a++)
-			{
-				StickJoint j = customFig[a];
-				//Parent index
-				if (j.parent != null)
-					bytes.AddRange(BitConverter.GetBytes((ushort)(customFig.IndexOf(j.parent) + 1)));
-				else
-					bytes.AddRange(BitConverter.GetBytes((ushort)0));
+			StickCustom cust = new StickCustom();
+			cust.Joints = l.keyFrames[0].Joints;
 
-				//Joint Color
-				bytes.Add((byte)j.color.A);
-				bytes.Add((byte)j.color.R);
-				bytes.Add((byte)j.color.G);
-				bytes.Add((byte)j.color.B);
-
-				//Handle Color
-				bytes.Add((byte)j.handleColor.A);
-				bytes.Add((byte)j.handleColor.R);
-				bytes.Add((byte)j.handleColor.G);
-				bytes.Add((byte)j.handleColor.B);
-
-				//Thickness
-				bytes.Add((byte)j.thickness);
-
-				//DrawState
-				bytes.Add((byte)j.drawState);
-
-
-				//Draw order
-				bytes.AddRange(BitConverter.GetBytes((ushort)j.drawOrder));
-
-				//handle visible and visible
-				bytes.AddRange(BitConverter.GetBytes(j.visible));
-				bytes.AddRange(BitConverter.GetBytes(j.handleDrawn));
-
-			}
+			CustomFigSaver.saveFigure(bytes, cust);
 
 			bytes.InsertRange(0, BitConverter.GetBytes(bytes.Count));
 
@@ -928,54 +943,42 @@ namespace TISFAT_ZERO
 					else if (layerType == 4)
 					{
 						f = new custObjectFrame(0);
-						int JC = BitConverter.ToUInt16(otherTmpBlock.data, 0);
 
-						f.Joints.AddRange(new StickJoint[JC]);
+						StickCustom figure = CustomFigLoader.loadStickFile(otherTmpBlock.data);
 
-						int[] parents = new int[JC];
+						//figure.reSortJoints(); //For the love of GOD do not uncomment this!!!
 
-						for (int a = 0;a < JC;a++)
+						for (int i = 0;i < figure.Joints.Count();i++)
 						{
-							f.Joints[a] = new StickJoint("", new Point(0, 0), 0, Color.Black, Color.Black, 0, 0, false, null, false);
-							int blockItr = a * 16;
-
-							ushort parentIndex = (ushort)BitConverter.ToInt16(otherTmpBlock.data, blockItr + 2);
-
-							parents[a] = -1;
-							if (parentIndex != 0)
+							if (figure.Joints[i].parent != null)
 							{
-								parents[a] = parentIndex - 1;
-							}
-
-							f.Joints[a].color = Color.FromArgb(otherTmpBlock.data[blockItr + 4], otherTmpBlock.data[blockItr + 5], otherTmpBlock.data[blockItr + 6], otherTmpBlock.data[blockItr + 7]);
-							f.Joints[a].handleColor = Color.FromArgb(otherTmpBlock.data[blockItr + 8], otherTmpBlock.data[blockItr + 9], otherTmpBlock.data[blockItr + 10], otherTmpBlock.data[blockItr + 11]);
-							f.Joints[a].defaultHandleColor = f.Joints[a].handleColor;
-							f.Joints[a].thickness = otherTmpBlock.data[blockItr + 12];
-							f.Joints[a].drawState = otherTmpBlock.data[blockItr + 13];
-							f.Joints[a].drawOrder = (ushort)BitConverter.ToInt16(otherTmpBlock.data, blockItr + 14);
-							f.Joints[a].visible = (bool)BitConverter.ToBoolean(otherTmpBlock.data, 16);
-							f.Joints[a].handleDrawn = (bool)BitConverter.ToBoolean(otherTmpBlock.data, 17);
-						}
-
-						for (int i = 0;i < JC;i++)
-						{
-							if (parents[i] != -1)
-							{
-								f.Joints[i].parent = f.Joints[parents[i]];
+								figure.Joints[i].CalcLength(null);
+								figure.Joints[i].recalcAngleToParent();
 							}
 						}
 
-						foreach (StickJoint j in f.Joints)
+						for (int i = 0;i < figure.Joints.Count();i++)
 						{
-							if (j.parent != null)
+							if (figure.Joints[i].parent != null)
 							{
-								j.parent.children.Add(j);
-								j.CalcLength(null);
+								if (!(figure.Joints[i].parent.children.IndexOf(figure.Joints[i]) >= 0))
+									figure.Joints[i].parent.children.Add(figure.Joints[i]);
 							}
-
+							figure.Joints[i].ParentFigure = figure;
 						}
+
+						for (int i = 0;i < figure.Joints.Count;i++)
+						{
+							foreach (StickJoint sj in figure.Joints[i].children)
+							{
+								sj.parent = figure.Joints[i];
+							}
+						}
+
+						f.Joints = figure.Joints;
+
 						newLayer.tweenFig = new StickCustom(true);
-						newLayer.tweenFig.Joints = custObjectFrame.createClone(f.Joints, parents);
+						newLayer.tweenFig.Joints = custObjectFrame.createClone(f.Joints);
 					}
 					else if (layerType == 5)
 						f = new LightFrame(0);

@@ -132,9 +132,6 @@ namespace TISFAT_ZERO
 				Canvas.activeFigure = layers[layer_sel].fig;
 			}
 
-			if (frm_selected != null)
-				mainForm.theToolbox.updateOpenPanel();
-
 			theCanvas.Refresh();
 
 			if (GraphicsContext.CurrentContext == null)
@@ -756,7 +753,7 @@ namespace TISFAT_ZERO
 
 					if (pos - 1 != -1)
 						for (int a = 0;a < cLayer.keyFrames[pos].Joints.Count;a++)
-							cLayer.keyFrames[pos].Joints[a].location = new Point(cLayer.keyFrames[pos - 1].Joints[a].location.X, cLayer.keyFrames[pos].Joints[a].location.Y);
+							cLayer.keyFrames[pos].Joints[a].location = cLayer.keyFrames[pos - 1].Joints[a].location;
 
 					break;
 
@@ -764,7 +761,7 @@ namespace TISFAT_ZERO
 					pos = frm_selInd + 1;
 
 					for (int a = 0; a < cLayer.keyFrames[pos].Joints.Count; a++)
-						cLayer.keyFrames[pos].Joints[a].location = new Point(cLayer.keyFrames[pos + 1].Joints[a].location.X, cLayer.keyFrames[pos].Joints[a].location.Y);
+						frm_selected.Joints[a].location = new Point(cLayer.keyFrames[pos + 1].Joints[a].location.X, cLayer.keyFrames[pos].Joints[a].location.Y);
 
 					break;
 

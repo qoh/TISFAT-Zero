@@ -342,6 +342,8 @@ namespace TISFAT_ZERO
 
 			length = (int)Math.Round(pStart.length + ((pEnd.length - pStart.length) * sPercent));
 			thickness = (int)Math.Round(pStart.thickness + ((pEnd.thickness - pStart.thickness) * sPercent));
+			pStart.recalcAngleToParent();
+			pEnd.recalcAngleToParent();
 			AngleToParent = (int)Math.Round(pStart.AngleToParent + ((pEnd.AngleToParent - pStart.AngleToParent) * sPercent));
 
 			if (pStart.ParentFigure != null)

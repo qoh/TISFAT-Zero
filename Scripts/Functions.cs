@@ -102,7 +102,16 @@ namespace TISFAT_ZERO
 
 		public static void AssignGlid(StickJoint joint, int i)
 		{
-			BitmapData raw = joint.bitmaps[i].LockBits(new Rectangle(0, 0, joint.bitmaps[i].Width, joint.bitmaps[i].Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+			BitmapData raw;
+			try
+			{
+				raw = joint.bitmaps[i].LockBits(new Rectangle(0, 0, joint.bitmaps[i].Width, joint.bitmaps[i].Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+			}
+			catch(Exception e)
+			{
+				Console.WriteLine(e.Message);
+				return;
+			}
 
 			joint.textureIDs.Add(GL.GenTexture());
 
@@ -114,6 +123,26 @@ namespace TISFAT_ZERO
 
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+		}
+		public static byte[] GetBytes(string str)
+		{
+			byte[] bytes = new byte[str.Length * sizeof(char)];
+			System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
+			return bytes;
+		}
+
+		public static int GetByteCount(string str)
+		{
+			byte[] bytes = new byte[str.Length * sizeof(char)];
+			System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
+			return bytes.Length;
+		}
+
+		public static string GetString(byte[] bytes)
+		{
+			char[] chars = new char[bytes.Length / sizeof(char)];
+			System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
+			return new string(chars);
 		}
 	}
 }

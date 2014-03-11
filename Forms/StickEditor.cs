@@ -74,12 +74,6 @@ namespace TISFAT_ZERO
 			InitializeComponent();
 		}
 
-		public StickEditor(bool loading)
-		{
-			InitializeComponent();
-			loaded = true;
-		}
-
 		private void StickEditor_Load(object sender, EventArgs e)
 		{
 			dlg_openBitmap.Filter = Functions.GetImageFilters();
