@@ -10,7 +10,7 @@ namespace TISFAT_ZERO
 {
 	static class Program
 	{
-		public static readonly string Version = "2.0.3.20";
+		public static readonly string Version = "2.0.3.21";
 		public static string loadFile = "";
 
 		[STAThread]
