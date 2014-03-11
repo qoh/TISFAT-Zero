@@ -824,6 +824,7 @@ namespace TISFAT_ZERO
 
 		public void recieveStickFigure(StickCustom figure, bool lean)
 		{
+			/*
 			CustomLayer c = (CustomLayer)Timeline.layers[Timeline.layer_sel];
 
 			List<StickJoint> ps = figure.Joints;
@@ -855,6 +856,7 @@ namespace TISFAT_ZERO
 			Timeline.layer_sel = Timeline.layer_cnt - 1;
 			mainForm.tline.setFrame(c.firstKF);
 			mainForm.tline.Invalidate();
+			 */
 		}
 
 		private void GL_GRAPHICS_Resize(object sender, EventArgs e)

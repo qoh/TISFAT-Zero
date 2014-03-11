@@ -492,7 +492,7 @@ namespace TISFAT_ZERO
 			for (int i = 0;i < jointCount;i++)
 			{
 				foreach (T0JointBitmap bitmap in bitmapList)
-					if (figure.Joints[i].Bitmap_IDs.Contains(bitmap.id))
+					if (figure.Joints[i].Bitmap_IDs.Contains(bitmap.id + 1))
 						bitmap.ApplyTo(figure.Joints[i]);
 
 				if (parentList[i] != -1)
@@ -583,7 +583,7 @@ namespace TISFAT_ZERO
 			for (int i = 0;i < jointCount;i++)
 			{
 				foreach (T0JointBitmap bitmap in bitmapList)
-					if (sticked.figure.Joints[i].Bitmap_IDs.Contains(bitmap.id))
+					if (sticked.figure.Joints[i].Bitmap_IDs.Contains(bitmap.id + 1))
 						bitmap.ApplyTo(sticked.figure.Joints[i]);
 
 				if (parentList[i] != -1)
