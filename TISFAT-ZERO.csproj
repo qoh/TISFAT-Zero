@@ -43,7 +43,7 @@
     <EmbeddedResource Include="Shaders\shadowMap_frag.glsl" />
     <EmbeddedResource Include="Shaders\shadowRender_frag.glsl" />
     <Reference Include="Gif.Components">
-      <HintPath>..\..\..\CS Libraries\nGif\Gif.Components.dll</HintPath>
+      <HintPath>.\Gif.Components.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">

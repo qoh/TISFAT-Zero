@@ -589,7 +589,7 @@ namespace TISFAT_ZERO
 			//Behaviour for dragging keyframes
 			if (frm_selType > 0 && frm_selType < 4)
 			{
-				// Note to Self: Remove constraints on dradding keyframes. Penis
+				// Note to Self: Remove constraints on dradding keyframes.
 
 				//This code makes sure that the selected frame doesn't go over/under the positions of it's neighbouring frames
 				if (frm_selected.pos == l.lastKF)
@@ -621,7 +621,7 @@ namespace TISFAT_ZERO
 
 				if (diff < 0 && l.firstKF < -1 * diff)
 				{
-					diff = -1 * l.firstKF; //To make sure you can't make things go negative
+					diff = -l.firstKF; //To make sure you can't make things go negative
 				}
 
 				if (diff == 0)
@@ -689,7 +689,7 @@ namespace TISFAT_ZERO
 			tst_removeKeyframe.Enabled = frameType == 1;
 			tst_setPosePrvKfrm.Enabled = frameType == 1 || frameType == 3;
 			tst_setPoseNxtKfrm.Enabled = frameType == 1 || frameType == 2;
-			tst_onionSkinning.Enabled = frameType != 0 | frameType != 4;
+			tst_onionSkinning.Enabled = frameType != 0 || frameType != 4;
 
 			tst_insertFrameset.Enabled = frameType == 0;
 			tst_removeFrameset.Enabled = frameType != 0;
@@ -699,7 +699,7 @@ namespace TISFAT_ZERO
 			tst_insertLayer.Enabled = true;
 			tst_removeLayer.Enabled = layer_cnt > 0;
 
-			tst_keyFrameAction.Enabled = frameType != 0 | frameType != 4;
+			tst_keyFrameAction.Enabled = frameType != 0 || frameType != 4;
 
 			tst_hideLayer.Enabled = true;
 			tst_showLayer.Enabled = true;
@@ -749,7 +749,7 @@ namespace TISFAT_ZERO
 					break;
 
 				case "tst_setPosePrvKfrm":
-					int pos = frm_selInd - 1;
+					int pos = frm_selInd;
 
 					if (pos - 1 != -1)
 						for (int a = 0;a < cLayer.keyFrames[pos].Joints.Count;a++)
