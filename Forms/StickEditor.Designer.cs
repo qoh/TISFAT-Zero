@@ -93,8 +93,9 @@ namespace TISFAT_ZERO
 			this.dlg_saveFile = new System.Windows.Forms.SaveFileDialog();
 			this.dlg_openBitmap = new System.Windows.Forms.OpenFileDialog();
 			this.GL_GRAPHICS = new OpenTK.GLControl();
-			this.lbl_bitmapID = new System.Windows.Forms.Label();
 			this.dlg_openLegacyFile = new System.Windows.Forms.OpenFileDialog();
+			this.num_jointLength = new System.Windows.Forms.NumericUpDown();
+			this.lbl_jointLength = new System.Windows.Forms.Label();
 			this.pnl_toolBox.SuspendLayout();
 			this.pnl_Stats.SuspendLayout();
 			this.pnl_brushProps.SuspendLayout();
@@ -114,6 +115,7 @@ namespace TISFAT_ZERO
 			((System.ComponentModel.ISupportInitialize)(this.num_handleAlpha)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pic_handleColor)).BeginInit();
 			this.mnu_Main.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_jointLength)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// pnl_toolBox
@@ -295,6 +297,8 @@ namespace TISFAT_ZERO
             | System.Windows.Forms.AnchorStyles.Left)));
 			this.pnl_lineProps.AutoScroll = true;
 			this.pnl_lineProps.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pnl_lineProps.Controls.Add(this.num_jointLength);
+			this.pnl_lineProps.Controls.Add(this.lbl_jointLength);
 			this.pnl_lineProps.Controls.Add(this.num_bitmapYOffs);
 			this.pnl_lineProps.Controls.Add(this.lbl_bitmapYOffs);
 			this.pnl_lineProps.Controls.Add(this.num_bitmapXOffs);
@@ -324,7 +328,7 @@ namespace TISFAT_ZERO
 			// 
 			// num_bitmapYOffs
 			// 
-			this.num_bitmapYOffs.Location = new System.Drawing.Point(92, 224);
+			this.num_bitmapYOffs.Location = new System.Drawing.Point(96, 224);
 			this.num_bitmapYOffs.Maximum = new decimal(new int[] {
             900000,
             0,
@@ -338,7 +342,7 @@ namespace TISFAT_ZERO
 			// lbl_bitmapYOffs
 			// 
 			this.lbl_bitmapYOffs.AutoSize = true;
-			this.lbl_bitmapYOffs.Location = new System.Drawing.Point(11, 227);
+			this.lbl_bitmapYOffs.Location = new System.Drawing.Point(7, 227);
 			this.lbl_bitmapYOffs.Name = "lbl_bitmapYOffs";
 			this.lbl_bitmapYOffs.Size = new System.Drawing.Size(74, 13);
 			this.lbl_bitmapYOffs.TabIndex = 20;
@@ -346,7 +350,7 @@ namespace TISFAT_ZERO
 			// 
 			// num_bitmapXOffs
 			// 
-			this.num_bitmapXOffs.Location = new System.Drawing.Point(92, 198);
+			this.num_bitmapXOffs.Location = new System.Drawing.Point(96, 199);
 			this.num_bitmapXOffs.Maximum = new decimal(new int[] {
             900000,
             0,
@@ -360,7 +364,7 @@ namespace TISFAT_ZERO
 			// lbl_bitmapXOffs
 			// 
 			this.lbl_bitmapXOffs.AutoSize = true;
-			this.lbl_bitmapXOffs.Location = new System.Drawing.Point(11, 201);
+			this.lbl_bitmapXOffs.Location = new System.Drawing.Point(7, 201);
 			this.lbl_bitmapXOffs.Name = "lbl_bitmapXOffs";
 			this.lbl_bitmapXOffs.Size = new System.Drawing.Size(74, 13);
 			this.lbl_bitmapXOffs.TabIndex = 18;
@@ -401,7 +405,7 @@ namespace TISFAT_ZERO
 			// 
 			// num_drawOrder
 			// 
-			this.num_drawOrder.Location = new System.Drawing.Point(91, 250);
+			this.num_drawOrder.Location = new System.Drawing.Point(96, 248);
 			this.num_drawOrder.Name = "num_drawOrder";
 			this.num_drawOrder.Size = new System.Drawing.Size(43, 20);
 			this.num_drawOrder.TabIndex = 14;
@@ -410,7 +414,7 @@ namespace TISFAT_ZERO
 			// lbl_drawOrder
 			// 
 			this.lbl_drawOrder.AutoSize = true;
-			this.lbl_drawOrder.Location = new System.Drawing.Point(21, 252);
+			this.lbl_drawOrder.Location = new System.Drawing.Point(7, 250);
 			this.lbl_drawOrder.Name = "lbl_drawOrder";
 			this.lbl_drawOrder.Size = new System.Drawing.Size(64, 13);
 			this.lbl_drawOrder.TabIndex = 13;
@@ -418,7 +422,7 @@ namespace TISFAT_ZERO
 			// 
 			// num_lineThickness
 			// 
-			this.num_lineThickness.Location = new System.Drawing.Point(91, 278);
+			this.num_lineThickness.Location = new System.Drawing.Point(96, 296);
 			this.num_lineThickness.Maximum = new decimal(new int[] {
             999,
             0,
@@ -432,7 +436,7 @@ namespace TISFAT_ZERO
 			// lbl_lineThickness
 			// 
 			this.lbl_lineThickness.AutoSize = true;
-			this.lbl_lineThickness.Location = new System.Drawing.Point(31, 280);
+			this.lbl_lineThickness.Location = new System.Drawing.Point(7, 298);
 			this.lbl_lineThickness.Name = "lbl_lineThickness";
 			this.lbl_lineThickness.Size = new System.Drawing.Size(59, 13);
 			this.lbl_lineThickness.TabIndex = 11;
@@ -441,7 +445,7 @@ namespace TISFAT_ZERO
 			// chk_lineVisible
 			// 
 			this.chk_lineVisible.AutoSize = true;
-			this.chk_lineVisible.Location = new System.Drawing.Point(49, 303);
+			this.chk_lineVisible.Location = new System.Drawing.Point(49, 319);
 			this.chk_lineVisible.Name = "chk_lineVisible";
 			this.chk_lineVisible.Size = new System.Drawing.Size(56, 17);
 			this.chk_lineVisible.TabIndex = 10;
@@ -773,26 +777,38 @@ namespace TISFAT_ZERO
 			this.GL_GRAPHICS.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GL_GRAPHICS_MouseUp);
 			this.GL_GRAPHICS.Resize += new System.EventHandler(this.GL_GRAPHICS_Resize);
 			// 
-			// lbl_bitmapID
-			// 
-			this.lbl_bitmapID.AutoSize = true;
-			this.lbl_bitmapID.Location = new System.Drawing.Point(375, 9);
-			this.lbl_bitmapID.Name = "lbl_bitmapID";
-			this.lbl_bitmapID.Size = new System.Drawing.Size(53, 13);
-			this.lbl_bitmapID.TabIndex = 8;
-			this.lbl_bitmapID.Text = "BitmapID:";
-			// 
 			// dlg_openLegacyFile
 			// 
 			this.dlg_openLegacyFile.FileName = "openFileDialog1";
 			this.dlg_openLegacyFile.FileOk += new System.ComponentModel.CancelEventHandler(this.dlg_openLegacyFile_FileOk);
+			// 
+			// num_jointLength
+			// 
+			this.num_jointLength.Location = new System.Drawing.Point(96, 272);
+			this.num_jointLength.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+			this.num_jointLength.Name = "num_jointLength";
+			this.num_jointLength.Size = new System.Drawing.Size(43, 20);
+			this.num_jointLength.TabIndex = 23;
+			this.num_jointLength.ValueChanged += new System.EventHandler(this.num_jointLength_ValueChanged);
+			// 
+			// lbl_jointLength
+			// 
+			this.lbl_jointLength.AutoSize = true;
+			this.lbl_jointLength.Location = new System.Drawing.Point(7, 274);
+			this.lbl_jointLength.Name = "lbl_jointLength";
+			this.lbl_jointLength.Size = new System.Drawing.Size(43, 13);
+			this.lbl_jointLength.TabIndex = 22;
+			this.lbl_jointLength.Text = "Length:";
 			// 
 			// StickEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(884, 511);
-			this.Controls.Add(this.lbl_bitmapID);
 			this.Controls.Add(this.GL_GRAPHICS);
 			this.Controls.Add(this.lbl_jointPosition);
 			this.Controls.Add(this.lbl_lineLength);
@@ -829,6 +845,7 @@ namespace TISFAT_ZERO
 			((System.ComponentModel.ISupportInitialize)(this.pic_handleColor)).EndInit();
 			this.mnu_Main.ResumeLayout(false);
 			this.mnu_Main.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_jointLength)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -892,7 +909,6 @@ namespace TISFAT_ZERO
 		private System.Windows.Forms.OpenFileDialog dlg_openBitmap;
 		private OpenTK.GLControl GL_GRAPHICS;
 		public System.Windows.Forms.ComboBox com_lineBitmap;
-		private System.Windows.Forms.Label lbl_bitmapID;
 		private System.Windows.Forms.NumericUpDown num_bitmapYOffs;
 		private System.Windows.Forms.Label lbl_bitmapYOffs;
 		private System.Windows.Forms.NumericUpDown num_bitmapXOffs;
@@ -901,6 +917,8 @@ namespace TISFAT_ZERO
 		private System.Windows.Forms.Label lbl_bitmapRotation;
 		private System.Windows.Forms.TrackBar tkb_Rotation;
 		private System.Windows.Forms.OpenFileDialog dlg_openLegacyFile;
+		private System.Windows.Forms.NumericUpDown num_jointLength;
+		private System.Windows.Forms.Label lbl_jointLength;
 
 	}
 }

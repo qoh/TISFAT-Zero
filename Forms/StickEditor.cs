@@ -600,6 +600,7 @@ namespace TISFAT_ZERO
 			num_lineAlpha.Value = selectedJoint.color.A;
 			num_lineThickness.Value = selectedJoint.thickness;
 			num_drawOrder.Value = selectedJoint.drawOrder;
+			num_jointLength.Value = (decimal)selectedJoint.length;
 
 			chk_handleVisible.Checked = selectedJoint.handleDrawn;
 			chk_lineVisible.Checked = selectedJoint.visible;
@@ -628,8 +629,6 @@ namespace TISFAT_ZERO
 					num_bitmapRotation.Value = 0;
 					num_bitmapXOffs.Value = 0;
 					num_bitmapYOffs.Value = 0;
-
-					lbl_bitmapID.Text = "Bitmap ID: <no bitmaps>";
 				}
 		}
 
@@ -894,6 +893,16 @@ namespace TISFAT_ZERO
 
 			selectedJoint.Bitmap_CurrentID -= 1;
 			updateToolboxInfo();
+			Refresh();
+		}
+
+		private void num_jointLength_ValueChanged(object sender, EventArgs e)
+		{
+			if (selectedJoint == null)
+				return;
+
+			selectedJoint.length = (double)num_jointLength.Value;
+			selectedJoint.SetPos(selectedJoint.location.X, selectedJoint.location.Y);
 			Refresh();
 		}
 	}
