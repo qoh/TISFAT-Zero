@@ -328,7 +328,7 @@ namespace TISFAT_ZERO
 			// 
 			// num_bitmapYOffs
 			// 
-			this.num_bitmapYOffs.Location = new System.Drawing.Point(96, 224);
+			this.num_bitmapYOffs.Location = new System.Drawing.Point(100, 224);
 			this.num_bitmapYOffs.Maximum = new decimal(new int[] {
             900000,
             0,
@@ -342,7 +342,7 @@ namespace TISFAT_ZERO
 			// lbl_bitmapYOffs
 			// 
 			this.lbl_bitmapYOffs.AutoSize = true;
-			this.lbl_bitmapYOffs.Location = new System.Drawing.Point(7, 227);
+			this.lbl_bitmapYOffs.Location = new System.Drawing.Point(11, 227);
 			this.lbl_bitmapYOffs.Name = "lbl_bitmapYOffs";
 			this.lbl_bitmapYOffs.Size = new System.Drawing.Size(74, 13);
 			this.lbl_bitmapYOffs.TabIndex = 20;
@@ -350,7 +350,7 @@ namespace TISFAT_ZERO
 			// 
 			// num_bitmapXOffs
 			// 
-			this.num_bitmapXOffs.Location = new System.Drawing.Point(96, 199);
+			this.num_bitmapXOffs.Location = new System.Drawing.Point(100, 199);
 			this.num_bitmapXOffs.Maximum = new decimal(new int[] {
             900000,
             0,
@@ -364,7 +364,7 @@ namespace TISFAT_ZERO
 			// lbl_bitmapXOffs
 			// 
 			this.lbl_bitmapXOffs.AutoSize = true;
-			this.lbl_bitmapXOffs.Location = new System.Drawing.Point(7, 201);
+			this.lbl_bitmapXOffs.Location = new System.Drawing.Point(11, 201);
 			this.lbl_bitmapXOffs.Name = "lbl_bitmapXOffs";
 			this.lbl_bitmapXOffs.Size = new System.Drawing.Size(74, 13);
 			this.lbl_bitmapXOffs.TabIndex = 18;
@@ -405,7 +405,7 @@ namespace TISFAT_ZERO
 			// 
 			// num_drawOrder
 			// 
-			this.num_drawOrder.Location = new System.Drawing.Point(96, 248);
+			this.num_drawOrder.Location = new System.Drawing.Point(100, 248);
 			this.num_drawOrder.Name = "num_drawOrder";
 			this.num_drawOrder.Size = new System.Drawing.Size(43, 20);
 			this.num_drawOrder.TabIndex = 14;
@@ -414,7 +414,7 @@ namespace TISFAT_ZERO
 			// lbl_drawOrder
 			// 
 			this.lbl_drawOrder.AutoSize = true;
-			this.lbl_drawOrder.Location = new System.Drawing.Point(7, 250);
+			this.lbl_drawOrder.Location = new System.Drawing.Point(11, 250);
 			this.lbl_drawOrder.Name = "lbl_drawOrder";
 			this.lbl_drawOrder.Size = new System.Drawing.Size(64, 13);
 			this.lbl_drawOrder.TabIndex = 13;
@@ -422,7 +422,7 @@ namespace TISFAT_ZERO
 			// 
 			// num_lineThickness
 			// 
-			this.num_lineThickness.Location = new System.Drawing.Point(96, 296);
+			this.num_lineThickness.Location = new System.Drawing.Point(100, 296);
 			this.num_lineThickness.Maximum = new decimal(new int[] {
             999,
             0,
@@ -436,7 +436,7 @@ namespace TISFAT_ZERO
 			// lbl_lineThickness
 			// 
 			this.lbl_lineThickness.AutoSize = true;
-			this.lbl_lineThickness.Location = new System.Drawing.Point(7, 298);
+			this.lbl_lineThickness.Location = new System.Drawing.Point(11, 298);
 			this.lbl_lineThickness.Name = "lbl_lineThickness";
 			this.lbl_lineThickness.Size = new System.Drawing.Size(59, 13);
 			this.lbl_lineThickness.TabIndex = 11;
@@ -784,7 +784,7 @@ namespace TISFAT_ZERO
 			// 
 			// num_jointLength
 			// 
-			this.num_jointLength.Location = new System.Drawing.Point(96, 272);
+			this.num_jointLength.Location = new System.Drawing.Point(100, 272);
 			this.num_jointLength.Maximum = new decimal(new int[] {
             999,
             0,
@@ -798,7 +798,7 @@ namespace TISFAT_ZERO
 			// lbl_jointLength
 			// 
 			this.lbl_jointLength.AutoSize = true;
-			this.lbl_jointLength.Location = new System.Drawing.Point(7, 274);
+			this.lbl_jointLength.Location = new System.Drawing.Point(11, 274);
 			this.lbl_jointLength.Name = "lbl_jointLength";
 			this.lbl_jointLength.Size = new System.Drawing.Size(43, 13);
 			this.lbl_jointLength.TabIndex = 22;

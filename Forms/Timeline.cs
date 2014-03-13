@@ -758,7 +758,7 @@ namespace TISFAT_ZERO
 					break;
 
 				case "tst_setPoseNxtKfrm":
-					pos = frm_selInd + 1;
+					pos = frm_selInd;
 
 					for (int a = 0; a < cLayer.keyFrames[pos].Joints.Count; a++)
 						frm_selected.Joints[a].location = new Point(cLayer.keyFrames[pos + 1].Joints[a].location.X, cLayer.keyFrames[pos].Joints[a].location.Y);
