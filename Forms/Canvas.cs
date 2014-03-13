@@ -169,8 +169,8 @@ namespace TISFAT_Zero
 					//tolerance of about 4 pixels.
 					f = activeFigure.selectPoint(new Point(e.X, e.Y), 6);
 
-					if(!hasLockedJoint)
-						activeFigure.setAsBase(activeFigure.FigureJoints[(activeFigure.FigureJoints.IndexOf(f) + 1) % activeFigure.FigureJoints.Count]);
+					//if(!hasLockedJoint)
+					//	activeFigure.setAsBase(activeFigure.FigureJoints[(activeFigure.FigureJoints.IndexOf(f) + 1) % activeFigure.FigureJoints.Count]);
 
 					//Sets the selectedJoint variable to the joint that we just selected.
 					selectedJoint = f;

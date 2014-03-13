@@ -479,8 +479,8 @@ namespace TISFAT_Zero
 				GL.Color3(Color.Red);
 				GL.Begin(PrimitiveType.LineStrip);
 
-				GL.Vertex2(x + 7, 0); GL.Vertex2(x + 7, 15);
-				GL.Vertex2(x, 14); GL.Vertex2(x, 0);
+				GL.Vertex2(x + 6, 0); GL.Vertex2(x + 6, 14);
+				GL.Vertex2(x-1, 14); GL.Vertex2(x-1, 0);
 				GL.Vertex2(x + 8, 0); GL.Vertex2(x + 8, 15);
 
 				x--;
