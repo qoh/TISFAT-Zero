@@ -14,7 +14,7 @@ namespace TISFAT_Zero
 {
 	partial class StickEditor : Form, ICanDraw
 	{
-		public StickCustom figure = null;
+		public StickObject figure = null;
 
 		public static StickEditor theSticked;
 
@@ -89,7 +89,7 @@ namespace TISFAT_Zero
 
 			if (!loaded)
 			{
-				figure = new StickCustom(true);
+				figure = new StickObject(true);
 				figure.drawFig = true;
 				figure.drawHandles = true;
 				figure.isActiveFig = true;
@@ -123,11 +123,11 @@ namespace TISFAT_Zero
 			glGraphics.Refresh();
 		}
 
-		public void loadFigure(StickCustom fig)
+		public void loadFigure(StickObject fig)
 		{
 			loaded = true;
 
-			this.figure = new StickCustom(true);
+			this.figure = new StickObject(true);
 			this.figure.drawFig = true;
 			this.figure.drawHandles = true;
 			this.figure.isActiveFig = true;

@@ -12,43 +12,42 @@ namespace TISFAT_Zero
 {
 	partial class Preferences : Form
 	{
-		private string folderPath = Environment.SpecialFolder.ApplicationData + "\\TISFAT\\";
+		private readonly string saveFile = Environment.SpecialFolder.MyDocuments + "/TISFAT - Zero/Preferences.txt";
 
-		private string[] saveFile;
 		public static byte currentBuild = 2; //current build version. 0 = stable, 1 = beta, 2 = nightly
-		private string buildName;
 		public static string[] buildNames = new string[] { "stable", "beta", "nightly" };
+
+		public static Attributes properties = new Attributes();
 
 		public Preferences()
 		{
 			InitializeComponent();
 		}
 
-		/* -Conf.Prop-
-			* Default Save Location
-			* Default Canvas Size X,Y
-			*
-			*
-			*/
-
 		//TODO: Fix all this crap.
 
 		private void Preferences_Load(object sender, EventArgs e)
 		{
+			if(!File.Exists(saveFile))
+			{
+				properties.addAttribute(new Size(460, 360), "CanvasSize");
+				properties.addAttribute(Color.White, "CanvasColor");
+				properties.addAttribute(true, "CheckForUpdates");
+				properties.addAttribute("200 190 245 255 0 0 170 170 170 255 0 0 70 120 255 0 0 0 0 0 0 255 255 255 255 0 0 220 220 220 255 0 0 40 230 255 255 192 203 0 0 0 140 140 140 200 200 200 30 100 255",
+										"Theme");
+				return;
+			}
+			
+			StreamReader filereader = new StreamReader(saveFile);
+
+
+			/*
 			buildName = buildNames[currentBuild];
 
 			label1.Text = "Build Version: v" + Program.Version;
 
 			listView1.Items[0].Selected = true;
 
-			if (Properties.User.Default.DefaultSavePath == "")
-			{
-				txt_defaultSavePath.Text = Environment.SpecialFolder.MyDocuments + "\\TISFAT\\";
-				Properties.User.Default.DefaultSavePath = txt_defaultSavePath.Text;
-				Properties.User.Default.Save();
-			}
-
-			txt_defaultSavePath.Text = Properties.User.Default.DefaultSavePath;
 			pic_ColorBox.BackColor = Properties.User.Default.CanvasColor;
 			lbl_ColorBox.Text = Properties.User.Default.CanvasColor.Name;
 
@@ -64,7 +63,7 @@ namespace TISFAT_Zero
 			}
 
 			comboBox1.SelectedIndex = currentBuild;
-			checkBox1.Checked = Properties.User.Default.autoCheck;
+			checkBox1.Checked = Properties.User.Default.autoCheck;*/
 
 			//Load the current theme into the timeline colors
 			string theme = Properties.User.Default.theme;
@@ -82,6 +81,10 @@ namespace TISFAT_Zero
 			
 			foreach (PictureBox x in boxes)
 				x.BackColor = Timeline.Colors[Int32.Parse((string)x.Tag)];
+
+			new ListView.SelectedListViewItemCollection(listView1);
+			listView1.SelectedIndices.Add(0);
+			
 		}
 
 		public IEnumerable<Control> GetAll(Control control, Type type)
@@ -91,14 +94,6 @@ namespace TISFAT_Zero
 			return controls.SelectMany(ctrl => GetAll(ctrl, type))
 									  .Concat(controls)
 									  .Where(c => c.GetType() == type);
-		}
-
-		private void btn_defSavPathBrowse_Click(object sender, EventArgs e)
-		{
-			if(!(dlg_folderBrowser.ShowDialog() == DialogResult.OK))
-				return;
-			if(!(dlg_folderBrowser.SelectedPath == ""))
-				txt_defaultSavePath.Text = dlg_folderBrowser.SelectedPath;
 		}
 
 		private void btn_submitButton_Click(object sender, EventArgs e)

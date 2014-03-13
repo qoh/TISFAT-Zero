@@ -3,6 +3,13 @@ using System.Windows.Forms;
 
 namespace TISFAT_Zero
 {
+	enum VersionType
+	{
+		Stable,
+		Beta,
+		Nightly
+	}
+	
 	internal static class Program
 	{
 		public static MainF TheMainForm;
@@ -11,6 +18,7 @@ namespace TISFAT_Zero
 		public static Toolbox TheToolbox;
 
 		public static readonly string Version = "3.0.0.0";
+		public static readonly VersionType VType = VersionType.Nightly;
 
 		/// <summary>
 		/// The main entry point for the application.

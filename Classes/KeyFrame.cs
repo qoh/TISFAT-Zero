@@ -13,7 +13,7 @@ namespace TISFAT_Zero
 		protected ushort frameType;
 
 		public int Position;
-		public List<StickJoint> FrameJoints;
+		public StickObject frameFig;
 		public Color figColor;
 		//public Layer parentLayer;
 
@@ -46,7 +46,7 @@ namespace TISFAT_Zero
 
 			frameType = New.frameType;
 			Position = NewPosition == -1 ? New.Position : NewPosition;
-			FrameJoints = New.FrameJoints;
+			frameFig = New.frameFig;
 			figColor = New.figColor;
 			Properties = New.Properties;
 		}
@@ -58,11 +58,11 @@ namespace TISFAT_Zero
 		protected KeyFrame(int framePosition, ushort ftype = 0)
 		{
 			frameType = ftype;
-			FrameJoints = (List<StickJoint>)(((Type)(this.GetType().GetProperty("ObjectType").GetValue(this, null))).GetProperty("DefaultPose").GetValue(this, null));
+			frameFig = (StickObject)(((Type)(this.GetType().GetProperty("ObjectType").GetValue(this, null))).GetConstructor(new Type[] { typeof(bool) }).Invoke(new object[] { true }));
 
 			Properties = new Attributes();
 
-			foreach (StickJoint j in FrameJoints)
+			foreach (StickJoint j in frameFig)
 			{
 				if (j.parentJoint != null)
 				{
@@ -87,7 +87,6 @@ namespace TISFAT_Zero
 		/// <returns>A new KeyFrame instance.</returns>
 		public KeyFrame createClone()
 		{
-			//Honestly not sure how to use all this, it was given to me in a StackOverflow question that I asked.
 			var method = typeof(KeyFrame).GetMethod("copyKeyFrameStep1", BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(this.GetType());
 			var value = method.Invoke(this, null);
 			return (KeyFrame)value;
@@ -103,13 +102,13 @@ namespace TISFAT_Zero
 			T newKeyFrame = new T();
 
 			//Copy all default properties
-			newKeyFrame.frameType = frameType;
-			newKeyFrame.Position = Position;
-			newKeyFrame.FrameJoints = StickObject.copyJoints(FrameJoints);
-			newKeyFrame.figColor = figColor;
+			//newKeyFrame.frameType = frameType;
+			//newKeyFrame.Position = Position;
+			//newKeyFrame.FrameJoints = StickObject.copyJoints(FrameJoints);
+			//newKeyFrame.figColor = figColor;
 
 			//The copyKeyFrameStep2 method is overridden by each keyframe class which has custom properties, and will make a new instance of the attributes class with values equivalent to the original.
-			newKeyFrame.copyKeyFrameStep2(Properties);
+			//newKeyFrame.copyKeyFrameStep2(Properties);
 
 			return newKeyFrame;
 		}
@@ -194,7 +193,7 @@ namespace TISFAT_Zero
 	{
 		new public static Type ObjectType
 		{
-			get { return typeof(StickCustom); }
+			get { return typeof(StickObject); }
 		}
 
 		/// <summary>
@@ -215,9 +214,9 @@ namespace TISFAT_Zero
 			get { return typeof(StickRect); }
 		}
 
-		public uint BitmapID
+		public int BitmapID
 		{
-			get { return (uint)Properties["BitmapID"]; }
+			get { return (int)Properties["BitmapID"]; }
 			set { Properties["BitmapID"] = value; }
 		}
 

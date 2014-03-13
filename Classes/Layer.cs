@@ -230,13 +230,7 @@ namespace TISFAT_Zero
 
 			Frameset set = Framesets[result[0]];
 
-			if (result[1] < 0)
-				return 4;
-
-			if (result[1] == 0)
-				return 2;
-
-			return result[1] == set.FrameCount - 1 ? (byte)3 : (byte)1;
+			return result[1] < 0 ? (byte)4 : result[1] == 0 ? (byte)2 : result[1] == set.FrameCount - 1 ? (byte)3 : (byte)1;
 		}
 
 		/// <summary>
@@ -547,7 +541,7 @@ namespace TISFAT_Zero
 				foreach (StickJoint j in LayerFigure)
 					j.parentFigure = null;
 
-				LayerFigure.FigureJoints = f.FrameJoints;
+				LayerFigure = f.frameFig;
 
 				foreach (StickJoint j in LayerFigure)
 					j.parentFigure = LayerFigure;
@@ -563,13 +557,13 @@ namespace TISFAT_Zero
 
 				float percent = (float)(position - S.Position) / (E.Position - S.Position);
 
-				LayerFigure.FigureJoints = StickObject.copyJoints(E.FrameJoints);
+				LayerFigure = E.frameFig;
 
 				foreach (StickJoint j in LayerFigure)
 					j.parentFigure = LayerFigure;
 
 				for (int a = 0; a < LayerFigure.FigureJoints.Count; a++)
-					LayerFigure.FigureJoints[a].Tween(S.FrameJoints[a], LayerFigure.FigureJoints[a], percent);
+					LayerFigure.FigureJoints[a].Tween(S.frameFig[a], LayerFigure.FigureJoints[a], percent);
 			}
 		}
 

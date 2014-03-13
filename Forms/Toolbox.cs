@@ -345,10 +345,10 @@ namespace TISFAT_Zero
 			argb[2] = Canvas.activeFigure.FigureJoints[0].jointColor.G;
 			argb[3] = Canvas.activeFigure.FigureJoints[0].jointColor.B;
 
-			List<StickJoint> sf = Program.TheTimeline.selectedKeyFrame.FrameJoints;
+			//List<StickJoint> sf = Program.TheTimeline.selectedKeyFrame.FrameJoints;
 
-			foreach (StickJoint a in sf)
-				a.jointColor = Color.FromArgb(argb[0], argb[1], argb[2], argb[3]);
+			//foreach (StickJoint a in sf)
+			//	a.jointColor = Color.FromArgb(argb[0], argb[1], argb[2], argb[3]);
 
 			Canvas.activeFigure.setJointsColor(Color.FromArgb(argb[0], argb[1], argb[2], argb[3]));
 			Program.TheCanvas.Refresh();
@@ -464,9 +464,9 @@ namespace TISFAT_Zero
 			if (!(dlg_Color.ShowDialog() == DialogResult.OK))
 				return;
 			pic_rectOLColor.BackColor = dlg_Color.Color;
-			Canvas.activeFigure.setJointsColor(dlg_Color.Color);
-			for (int i = 0; i < Program.TheTimeline.selectedKeyFrame.FrameJoints.Count; i++)
-				Program.TheTimeline.selectedKeyFrame.FrameJoints[i].jointColor = dlg_Color.Color;
+			//Canvas.activeFigure.setJointsColor(dlg_Color.Color);
+			//for (int i = 0; i < Program.TheTimeline.selectedKeyFrame.FrameJoints.Count; i++)
+			//	Program.TheTimeline.selectedKeyFrame.FrameJoints[i].jointColor = dlg_Color.Color;
 
 			Program.TheCanvas.Refresh();
 		}

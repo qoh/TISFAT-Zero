@@ -8,7 +8,7 @@ using System.IO;
 
 namespace TISFAT_Zero
 {
-	abstract class StickObject : IEnumerable<StickJoint>, IGLDrawable
+	class StickObject : IEnumerable<StickJoint>, IGLDrawable
 	{
 		#region Properties
 
@@ -17,6 +17,12 @@ namespace TISFAT_Zero
 		public Color figColor = Color.Black;
 		public byte figureType; //This is used to identify what kind of figure it is. For example, 3 is a line, and 1 is a stickman.
 		public Layer parentLayer;
+
+		public StickJoint this[int ind]
+		{
+			get { return FigureJoints[ind]; }
+			set { FigureJoints[ind] = value; }
+		}
 
 		public static List<StickJoint> DefaultPose
 		{
@@ -41,10 +47,20 @@ namespace TISFAT_Zero
 
 		#endregion Properties
 
-		protected StickObject(bool setAsActive = true)
+		public StickObject(bool setAsActive = true)
 		{
 			FigureJoints = DefaultPose;
+			setupFig(setAsActive);
+		}
 
+		protected StickObject(List<StickJoint> pose, bool setAsActive = true)
+		{
+			FigureJoints = pose;
+			setupFig(setAsActive);
+		}
+
+		private void setupFig(bool setAsActive)
+		{
 			foreach (StickJoint j in FigureJoints)
 				j.parentFigure = this;
 
@@ -83,24 +99,9 @@ namespace TISFAT_Zero
 
 		protected virtual void drawJoints(ICanDraw Canvas)
 		{
-			bool useStencil = false;
-
-			//there's probably a better way instead of looping to determine if any parts have transparency...
-			if (figureType != 3)
-			{
-				foreach (StickJoint j in FigureJoints)
-				{
-					if (j.parentJoint != null && j.jointColor.A != 255)
-					{
-						useStencil = true;
-						break;
-					}
-				}
-			}
-
 			GL.Disable(EnableCap.StencilTest);
 
-			if (useStencil)
+			if (figureType != 3)
 			{
 				GL.Clear(ClearBufferMask.StencilBufferBit);
 				GL.Enable(EnableCap.StencilTest);
@@ -108,9 +109,7 @@ namespace TISFAT_Zero
 				GL.StencilFunc(StencilFunction.Equal, 0, 0xFFFFFF);
 				GL.StencilOp(StencilOp.Keep, StencilOp.Keep, StencilOp.Incr);
 			}
-
-			if (figureType == 3)
-				if (((StickRect)this).isFilled)
+			else if (((StickRect)this).isFilled)
 					Canvas.drawGraphics(5, figColor, FigureJoints[0].location, FigureJoints[0].thickness, FigureJoints[0].thickness, FigureJoints[2].location);
 
 			foreach (StickJoint i in FigureJoints)
@@ -187,14 +186,14 @@ namespace TISFAT_Zero
 			return index;
 		}
 
-		//Saved for when we *might* implement multiple stick figures per layer.
+		
 		public StickJoint selectPoint(Point Coords, int Tolerance)
 		{
 			if (!drawHandles)
 				return null;
 
 			int index = getPointAt(Coords, Tolerance);
-
+			
 			if (index == -1)
 			{
 				for (int i = 0; i < FigureJoints.Count(); i++)
@@ -212,7 +211,7 @@ namespace TISFAT_Zero
 
 		public void onJointMoved()
 		{
-			//TO-DO: COPY IN ONJOINTMOVED CODE
+			//no idea what should go here
 		}
 
 		//Base as in it has no parent... I know the comparison is iffy at best. Just deal with it.
@@ -324,12 +323,13 @@ namespace TISFAT_Zero
 			return GetEnumerator();
 		}
 
-		protected abstract void saveStickJointList(Stream saveTo);
-
-		protected virtual List<StickJoint> loadStickJointList(Stream loadFrom)
+		public virtual void saveStickJointList(Stream saveTo)
 		{
-			MemoryStream blah = new MemoryStream();
-			
+
+		}
+
+		public virtual List<StickJoint> loadStickJointList(Stream loadFrom)
+		{
 			return new List<StickJoint>();
 		}
 
@@ -370,7 +370,7 @@ namespace TISFAT_Zero
 
 		#endregion Variables
 
-		public StickFigure(bool setAsActive = true) : base(setAsActive)
+		public StickFigure(bool setAsActive = true) : base(DefaultPose, setAsActive)
 		{
 			figureType = 1;
 		}
@@ -405,7 +405,7 @@ namespace TISFAT_Zero
 
 		#endregion Custom Methods
 
-		protected override void saveStickJointList(Stream saveTo)
+		public override void saveStickJointList(Stream saveTo)
 		{
 			MemoryStream tmp = new MemoryStream();
 			BinaryWriter bw = new BinaryWriter(tmp);
@@ -423,6 +423,15 @@ namespace TISFAT_Zero
 				bw.Write((short)s.location.X);
 				bw.Write((short)s.location.Y);
 			}
+		}
+
+		public override List<StickJoint> loadStickJointList(Stream loadFrom)
+		{
+			List<StickJoint> newjoints = new List<StickJoint>();
+
+
+
+			return newjoints;
 		}
 	}
 
@@ -449,7 +458,7 @@ namespace TISFAT_Zero
 
 		#endregion Properties
 
-		public StickLine(bool setAsActive = true) : base(setAsActive)
+		public StickLine(bool setAsActive = true) : base(DefaultPose, setAsActive)
 		{
 			figureType = 2;
 		}
@@ -464,9 +473,14 @@ namespace TISFAT_Zero
 
 		#endregion Custom Methods
 
-		protected override void saveStickJointList(Stream saveTo)
+		public override void saveStickJointList(Stream saveTo)
 		{
 			throw new NotImplementedException();
+		}
+
+		public override List<StickJoint> loadStickJointList(Stream loadFrom)
+		{
+			return new List<StickJoint>();
 		}
 	}
 
@@ -505,7 +519,7 @@ namespace TISFAT_Zero
 
 		#endregion Properties
 
-		public StickRect(bool setAsActive = true) : base(setAsActive)
+		public StickRect(bool setAsActive = true) : base(DefaultPose, setAsActive)
 		{
 			figureType = 3;
 
@@ -541,27 +555,14 @@ namespace TISFAT_Zero
 
 		#endregion Custom Methods
 
-		protected override void saveStickJointList(Stream saveTo)
+		public override void saveStickJointList(Stream saveTo)
 		{
 			throw new NotImplementedException();
 		}
-	}
 
-	class StickCustom : StickObject
-	{
-		new public static List<StickJoint> DefaultPose
+		public override List<StickJoint> loadStickJointList(Stream loadFrom)
 		{
-			get { return new List<StickJoint>(); }
-		}
-
-		public StickCustom(bool setAsActive = true) : base(setAsActive)
-		{
-			figureType = 4;
-		}
-
-		protected override void saveStickJointList(Stream saveTo)
-		{
-			throw new NotImplementedException();
+			return new List<StickJoint>();
 		}
 	}
 }

@@ -96,10 +96,8 @@ namespace TISFAT_Zero
 
 				//This prevents any other figures from becoming active as you are dragging a joint.
 				foreach (StickObject fig in figureList)
-				{
 					if (!(fig == activeFigure))
 						fig.isActiveFig = false;
-				}
 			}
 			else if (draw & e.Button == MouseButtons.Right)
 			{
@@ -680,15 +678,15 @@ namespace TISFAT_Zero
 			return File.ReadAllText(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetFullPath(shader)))) + "/Shaders/" + shader);
 		}
 
-		public void recieveStickFigure(StickCustom figure)
+		public void recieveStickFigure(StickObject figure)
 		{
 			CustomLayer c = (CustomLayer)(Timeline.Layers[Timeline.selectedLayer_Ind]);
 
 			List<StickJoint> ps = figure.FigureJoints;
 			c.LayerFigure = figure;
 
-			c[0][0].FrameJoints = ps;
-			c[0][1].FrameJoints = StickCustom.copyJoints(ps);
+			//c[0][0].FrameJoints = ps;
+			//c[0][1].FrameJoints = StickObject.copyJoints(ps);
 			
 			Timeline.selectedLayer_Ind = Timeline.Layers.Count - 1;
 			Timeline.selectedFrame_Ind = 0;
@@ -697,7 +695,7 @@ namespace TISFAT_Zero
 			Program.TheTimeline.Invalidate();
 		}
 
-		public void recieveStickFigure(StickCustom figure, bool lean)
+		public void recieveStickFigure(StickObject figure, bool lean)
 		{
 			//TODO: Make the current keyframe update with the new positions for the Custom Stick.
 		}
