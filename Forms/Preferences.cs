@@ -140,18 +140,4 @@ namespace TISFAT_ZERO
 			//The tag of the picture box is the name of the preferences property to save; Save those in the submit function.
 		}
 	}
-
-	namespace NumericEditBox
-	{
-		/// <summary>
-		/// Summary description for Class1.
-		/// </summary>
-		public class NumericEditBox : System.Windows.Forms.NumericUpDown
-		{
-			public NumericEditBox()
-			{
-				Controls[0].Visible = false;
-			}
-		}
-	}
 }

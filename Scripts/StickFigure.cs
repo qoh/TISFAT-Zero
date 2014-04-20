@@ -113,7 +113,6 @@ namespace TISFAT_ZERO
 
 			return true;
 		}
-
 		public bool Equals(StickJoint obj)
 		{
 			if (obj == null)

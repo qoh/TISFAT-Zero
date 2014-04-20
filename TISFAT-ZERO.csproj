@@ -39,6 +39,12 @@
     <ApplicationIcon>T0.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\Scenes.resx">
+      <DependentUpon>Scenes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Scripts\SceneControlObject.resx">
+      <DependentUpon>SceneControlObject.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Shaders\pass_vert.glsl" />
     <EmbeddedResource Include="Shaders\shadowMap_frag.glsl" />
     <EmbeddedResource Include="Shaders\shadowRender_frag.glsl" />
@@ -103,6 +109,12 @@
     <Compile Include="Forms\RenameLayer.Designer.cs">
       <DependentUpon>RenameLayer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Scenes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Scenes.Designer.cs">
+      <DependentUpon>Scenes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\StickEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -134,13 +146,17 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Scripts\Controls.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Scripts\Frames.cs" />
     <Compile Include="Scripts\Functions.cs" />
     <Compile Include="Scripts\Layers.cs" />
     <Compile Include="Scripts\FileIO.cs" />
+    <Compile Include="Scripts\SceneControlObject.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Scripts\SceneControlObject.Designer.cs">
+      <DependentUpon>SceneControlObject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Scripts\SceneObject.cs" />
     <Compile Include="Scripts\StickFigure.cs" />
     <Compile Include="Settings.cs" />
     <EmbeddedResource Include="Forms\About.resx">

@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Gif.Components;
+using TISFAT_ZERO.Forms;
 
 namespace TISFAT_ZERO
 {
@@ -15,6 +16,8 @@ namespace TISFAT_ZERO
 		public Toolbox theToolbox;
 		private Canvas theCanvas;
 		public Timeline tline;
+		public Scenes theScenes;
+
 		bool bChanged;
 		bool bOld;
 
@@ -37,6 +40,10 @@ namespace TISFAT_ZERO
 			t.TopLevel = false;
 			t.Parent = this.splitContainer1.Panel2;
 			splitContainer1.Panel2.Controls.Add(t);
+
+			t.StartPosition = FormStartPosition.Manual;
+			t.Location = new Point(0, 10);
+
 			t.Show();
 
 			Canvas f = new Canvas(this, t);
@@ -46,7 +53,7 @@ namespace TISFAT_ZERO
 			f.TopLevel = false;
 			f.Parent = this.splitContainer1.Panel2;
 			f.StartPosition = FormStartPosition.Manual;
-			f.Location = new Point(200, 10);
+			f.Location = new Point(t.Location.X + 4 + t.Width, 10);
 			splitContainer1.Panel2.Controls.Add(f);
 
 			tline = new Timeline(this, f);
@@ -56,6 +63,16 @@ namespace TISFAT_ZERO
 			tline.StartPosition = FormStartPosition.Manual;
 			tline.Location = new Point(0, 0);
 			splitContainer1.Panel1.Controls.Add(tline);
+
+			Scenes s = new Scenes();
+			s.TopLevel = false;
+			s.Parent = this.splitContainer1.Panel2;
+			splitContainer1.Panel2.Controls.Add(s);
+
+			s.StartPosition = FormStartPosition.Manual;
+			s.Location = new Point(f.Location.X + 4 + f.Width, 10);
+
+			s.Show();
 
 			int timelineLength = 1024;
 
@@ -67,6 +84,7 @@ namespace TISFAT_ZERO
 
 			theToolbox = t;
 			theCanvas = f;
+			theScenes = s;
 
 			if (Program.loadFile != "")
 			{
@@ -83,7 +101,6 @@ namespace TISFAT_ZERO
 			}
 		} 
 		
-
 		public void resetTimeline(bool loading)
 		{
 			splitContainer1.Panel1.Controls.RemoveAt(0);
