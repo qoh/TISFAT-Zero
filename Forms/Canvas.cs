@@ -23,9 +23,6 @@ namespace TISFAT_ZERO
 		public readonly float lightSize = 400.0f;
 		public static bool renderShadows = false;
 
-		public static MainF mainForm;
-		public static Toolbox theToolbox;
-		public static Canvas theCanvas;
 		public static Graphics theCanvasGraphics; //We need a list of objects to draw.
 		public static bool GLLoaded = false; //we can't touch GL until its fully loaded, this is a guard variable
 		public static int GL_WIDTH, GL_HEIGHT;
@@ -59,12 +56,8 @@ namespace TISFAT_ZERO
 		/// </summary>
 		/// <param name="f">The main form object</param>
 		/// <param name="t">The toolbox object</param>
-		public Canvas(MainF f, Toolbox t)
+		public Canvas()
 		{
-			mainForm = f;
-			theCanvas = this;
-			theToolbox = t;
-
 			int aa = 0;
 			do
 			{
@@ -88,8 +81,8 @@ namespace TISFAT_ZERO
 		private void Canvas_MouseMove(object sender, MouseEventArgs e)
 		{
 			//Set the cursor position in the toolbox
-			theToolbox.lbl_xPos.Text = "X Pos: " + e.X.ToString();
-			theToolbox.lbl_yPos.Text = "Y Pos: " + e.Y.ToString();
+			Program.ToolboxForm.lbl_xPos.Text = "X Pos: " + e.X.ToString();
+			Program.ToolboxForm.lbl_yPos.Text = "Y Pos: " + e.Y.ToString();
 
 			//If the canvas is to be drawn, and the user isn't holding down the right mouse button
 			//This is mostly so that you won't be dragging the entire figure at the same time
@@ -104,7 +97,7 @@ namespace TISFAT_ZERO
 						if (selectedJoint.ParentFigure.type != 3)
 						{
 							selectedJoint.SetPos(e.X, e.Y);
-							theToolbox.lbl_dbgAngleToParent.Text = "AngleToParent: " + selectedJoint.AngleToParent;
+							Program.ToolboxForm.lbl_dbgAngleToParent.Text = "AngleToParent: " + selectedJoint.AngleToParent;
 							Refresh();
 						}
 				}
@@ -196,14 +189,14 @@ namespace TISFAT_ZERO
 
 					//Sets the selectedJoint variable to the joint that we just selected.
 					selectedJoint = f;
-					theToolbox.updateBitmapList();
+					Program.ToolboxForm.updateBitmapList();
 
 					//This sets the labels in the debug menu.
 					if (selectedJoint != null)
 					{
-						theToolbox.lbl_selectedJoint.Text = "Selected Joint: " + f.name;
-						theToolbox.lbl_jointLength.Text = "Joint Length: " + f.CalcLength(null).ToString();
-						theToolbox.lbl_dbgAngleToParent.Text = "AngleToParent: " + f.AngleToParent;
+						Program.ToolboxForm.lbl_selectedJoint.Text = "Selected Joint: " + f.name;
+						Program.ToolboxForm.lbl_jointLength.Text = "Joint Length: " + f.CalcLength(null).ToString();
+						Program.ToolboxForm.lbl_dbgAngleToParent.Text = "AngleToParent: " + f.AngleToParent;
 					}
 
 					//This tells the form that the mouse button is being held down, and
@@ -222,7 +215,7 @@ namespace TISFAT_ZERO
 							hasLockedJoint = !hasLockedJoint;
 							GL_GRAPHICS.Invalidate();
 							selectedJoint = f;
-							theToolbox.updateBitmapList();
+							Program.ToolboxForm.updateBitmapList();
 							activeFigure.setAsBase(f);
 						}
 					}
@@ -648,7 +641,7 @@ namespace TISFAT_ZERO
 			//lights.Add(new Point(200, 200));
 			//lights.Add(new Point(300, 250));
 
-			mainForm.tline.addStickLayer("Stick Layer 1");
+			Program.TimelineForm.addStickLayer("Stick Layer 1");
 		}
 
 		public void setBackgroundColor(Color c)
@@ -818,8 +811,8 @@ namespace TISFAT_ZERO
 
 			addFigure(c.fig);
 			Timeline.layer_sel = Timeline.layer_cnt - 1;
-			mainForm.tline.setFrame(c.firstKF);
-			mainForm.tline.Invalidate();
+			Program.TimelineForm.setFrame(c.firstKF);
+			Program.TimelineForm.Invalidate();
 		}
 
 		public void recieveStickFigure(StickCustom figure, bool lean)
@@ -854,8 +847,8 @@ namespace TISFAT_ZERO
 				j.ParentFigure = c.tweenFig;
 
 			Timeline.layer_sel = Timeline.layer_cnt - 1;
-			mainForm.tline.setFrame(c.firstKF);
-			mainForm.tline.Invalidate();
+			Program.TimelineForm.setFrame(c.firstKF);
+			Program.TimelineForm.Invalidate();
 			 */
 		}
 

@@ -102,10 +102,8 @@ namespace TISFAT_ZERO
 					Btn_Cancel.Location = new Point(120, 36);
 
 					x.Close();
-					x.Dispose();
 
 					txt.Close();
-					txt.Dispose();
 					return;
 				}
 				else if (!needsUpdating && closeWhenUpToDate)
@@ -145,7 +143,6 @@ namespace TISFAT_ZERO
 
 				//Close and dispose the streams
 				x.Close();
-				x.Dispose();
 
 				txt.Close();
 				txt.Dispose();
@@ -201,10 +198,8 @@ namespace TISFAT_ZERO
 
 				//Close and dispose the streams
 				x.Close();
-				x.Dispose();
 
 				txt.Close();
-				txt.Dispose();
 			}
 
 			//If we're all done downloading things, close the form

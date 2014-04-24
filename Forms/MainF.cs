@@ -13,11 +13,6 @@ namespace TISFAT_ZERO
 	{
 
 		#region Variables
-		public Toolbox theToolbox;
-		private Canvas theCanvas;
-		public Timeline tline;
-		public Scenes theScenes;
-
 		bool bChanged;
 		bool bOld;
 
@@ -27,6 +22,8 @@ namespace TISFAT_ZERO
 		#region Form/Class Events
 		public MainF()
 		{
+			Program.MainformForm = this;
+
 			InitializeComponent();
 			this.IsMdiContainer = true;
 		}
@@ -36,60 +33,51 @@ namespace TISFAT_ZERO
 			//This is just temporary, until I get proper build selection and installation implemented.
 			Properties.User.Default.selectedBuilds = Preferences.buildNames[Preferences.currentBuild];
 
-			Toolbox t = new Toolbox(this);
-			t.TopLevel = false;
-			t.Parent = this.splitContainer1.Panel2;
-			splitContainer1.Panel2.Controls.Add(t);
+			Program.ToolboxForm = new Toolbox();
+			Program.ToolboxForm.Size = new Size(179, 375);
+			Program.ToolboxForm.TopLevel = false;
+			Program.ToolboxForm.Parent = this.splitContainer1.Panel2;
+			Program.ToolboxForm.StartPosition = FormStartPosition.Manual;
+			Program.ToolboxForm.Location = new Point(0, 10);
+			splitContainer1.Panel2.Controls.Add(Program.ToolboxForm);
 
-			t.StartPosition = FormStartPosition.Manual;
-			t.Location = new Point(0, 10);
+			Program.CanvasForm = new Canvas();
+			Program.CanvasForm.Size = Properties.User.Default.CanvasSize;
+			Program.CanvasForm.BackColor = Properties.User.Default.CanvasColor;
+			Program.CanvasForm.TopLevel = false;
+			Program.CanvasForm.Parent = this.splitContainer1.Panel2;
+			Program.CanvasForm.StartPosition = FormStartPosition.Manual;
+			Program.CanvasForm.Location = new Point(Program.ToolboxForm.Location.X + 4 + Program.ToolboxForm.Width, 10);
+			splitContainer1.Panel2.Controls.Add(Program.CanvasForm);
 
-			t.Show();
+			Program.ScenesForm = new Scenes();
+			Program.ScenesForm.TopLevel = false;
+			Program.ScenesForm.Parent = this.splitContainer1.Panel2;
+			Program.ScenesForm.StartPosition = FormStartPosition.Manual;
+			Program.ScenesForm.Location = new Point(Program.CanvasForm.Location.X + 4 + Program.CanvasForm.Width, 10);
+			splitContainer1.Panel2.Controls.Add(Program.ScenesForm);
 
-			Canvas f = new Canvas(this, t);
-			f.Size = Properties.User.Default.CanvasSize;
-			f.BackColor = Properties.User.Default.CanvasColor;
-
-			f.TopLevel = false;
-			f.Parent = this.splitContainer1.Panel2;
-			f.StartPosition = FormStartPosition.Manual;
-			f.Location = new Point(t.Location.X + 4 + t.Width, 10);
-			splitContainer1.Panel2.Controls.Add(f);
-
-			tline = new Timeline(this, f);
-			tline.TopLevel = false;
-			tline.Parent = this.splitContainer1.Panel1;
-			tline.Size = new Size(this.splitContainer1.Width - 2, splitContainer1.Panel1.Height);
-			tline.StartPosition = FormStartPosition.Manual;
-			tline.Location = new Point(0, 0);
-			splitContainer1.Panel1.Controls.Add(tline);
-
-			Scenes s = new Scenes();
-			s.TopLevel = false;
-			s.Parent = this.splitContainer1.Panel2;
-			splitContainer1.Panel2.Controls.Add(s);
-
-			s.StartPosition = FormStartPosition.Manual;
-			s.Location = new Point(f.Location.X + 4 + f.Width, 10);
-
-			s.Show();
+			Program.TimelineForm = new Timeline();
+			Program.TimelineForm.TopLevel = false;
+			Program.TimelineForm.Parent = this.splitContainer1.Panel1;
+			Program.TimelineForm.Size = new Size(this.splitContainer1.Width - 2, splitContainer1.Panel1.Height);
+			Program.TimelineForm.StartPosition = FormStartPosition.Manual;
+			Program.TimelineForm.Location = new Point(0, 0);
+			splitContainer1.Panel1.Controls.Add(Program.TimelineForm);
 
 			int timelineLength = 1024;
-
 			framesPanel.Location = new Point(timelineLength * 9, 0);
 
-			tline.Show();
 
-			f.Show();
+			//Timeline needs to be loaded first.
+			Program.TimelineForm.Show();
 
-			theToolbox = t;
-			theCanvas = f;
-			theScenes = s;
+			Program.ToolboxForm.Show();
+			Program.CanvasForm.Show();
+			Program.ScenesForm.Show();
 
 			if (Program.loadFile != "")
-			{
 				Loader.loadProjectFile(Program.loadFile);
-			}
 
 			//If the auto check updates value is true, then start the update checker in the background.
 			if (Properties.User.Default.autoCheck)
@@ -99,19 +87,21 @@ namespace TISFAT_ZERO
 				checker.Show();
 				this.Focus();
 			}
-		} 
+		}
 		
 		public void resetTimeline(bool loading)
 		{
+			//TODO: Update this function
+
 			splitContainer1.Panel1.Controls.RemoveAt(0);
-			tline.Dispose();
+			Program.TimelineForm.Dispose();
 			splitContainer1.Panel2.Controls.RemoveAt(1);
-			theCanvas.Dispose();
+			Program.CanvasForm.Dispose();
 
 			Canvas.figureList.Clear();
 
-			Canvas f = new Canvas(this, theToolbox);
-			theCanvas = f;
+			Canvas f = new Canvas();
+			Program.CanvasForm = f;
 			f.Size = Properties.User.Default.CanvasSize;
 			f.BackColor = Properties.User.Default.CanvasColor;
 			f.TopLevel = false;
@@ -120,14 +110,14 @@ namespace TISFAT_ZERO
 			splitContainer1.Panel2.Controls.Add(f);
 			f.Show();
 
-			tline = new Timeline(this, theCanvas);
-			tline.TopLevel = false;
-			tline.Parent = this.splitContainer1.Panel1;
-			tline.Size = new Size(this.splitContainer1.Width - 2, splitContainer1.Panel1.Height);
-			tline.StartPosition = FormStartPosition.Manual;
-			tline.Location = new Point(0, 0);
-			splitContainer1.Panel1.Controls.Add(tline);
-			tline.Show();
+			Program.TimelineForm = new Timeline();
+			Program.TimelineForm.TopLevel = false;
+			Program.TimelineForm.Parent = this.splitContainer1.Panel1;
+			Program.TimelineForm.Size = new Size(this.splitContainer1.Width - 2, splitContainer1.Panel1.Height);
+			Program.TimelineForm.StartPosition = FormStartPosition.Manual;
+			Program.TimelineForm.Location = new Point(0, 0);
+			splitContainer1.Panel1.Controls.Add(Program.TimelineForm);
+			Program.TimelineForm.Show();
 
 			if(loading)
 				Canvas.figureList.Clear();
@@ -135,8 +125,8 @@ namespace TISFAT_ZERO
 
 		public void doneLoading()
 		{
-			tline.setFrame(0);
-			theCanvas.Refresh();
+			Program.TimelineForm.setFrame(0);
+			Program.CanvasForm.Refresh();
 		}
 		#endregion
 
@@ -152,7 +142,7 @@ namespace TISFAT_ZERO
 		{
 			int height = layersCount * 16;
 
-			tline.Size = new Size(this.splitContainer1.Width - 2, height);
+			Program.TimelineForm.Size = new Size(this.splitContainer1.Width - 2, height);
 		}
 
 		private void splitContainer1_Panel1_Resize(object sender, EventArgs e)
@@ -160,14 +150,14 @@ namespace TISFAT_ZERO
 			if (splitContainer1.Panel1.Height < 51)
 				splitContainer1.SplitterDistance = 51;
 
-			if(tline != null)
-				tline.Size = new Size(this.Width, splitContainer1.SplitterDistance - 20);
+			if(Program.TimelineForm != null)
+				Program.TimelineForm.Size = new Size(this.Width, splitContainer1.SplitterDistance - 20);
 		}
 
 		private void splitContainer1_Panel1_Scroll(object sender, ScrollEventArgs e)
 		{
-			tline.Location = new Point(0, 0);
-			tline.Refresh();
+			Program.TimelineForm.Location = new Point(0, 0);
+			Program.TimelineForm.Refresh();
 		}
 
 		private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
@@ -213,7 +203,7 @@ namespace TISFAT_ZERO
 			if (Timeline.layer_sel == Timeline.layer_cnt)
 				Timeline.layer_sel--;
 
-			tline.Refresh();
+			Program.TimelineForm.Refresh();
 		}
 		#endregion
 
@@ -272,14 +262,14 @@ namespace TISFAT_ZERO
 		{
 			AnimatedGifEncoder x = new AnimatedGifEncoder();
 			x.Start(dlg_exportFile.FileName);
-			x.SetDelay(1000 / theToolbox.frameRate);
+			x.SetDelay(1000 / Program.ToolboxForm.frameRate);
 			x.SetRepeat(0);
 
 			if (dlg_exportFile.FileName.EndsWith(".gif"))
 			{
-				for (int i = 0;tline.hasFrames(i);i++)
+				for (int i = 0;Program.TimelineForm.hasFrames(i);i++)
 				{
-					x.AddFrame(tline.saveFrame(i));
+					x.AddFrame(Program.TimelineForm.saveFrame(i));
 				}
 			}
 			

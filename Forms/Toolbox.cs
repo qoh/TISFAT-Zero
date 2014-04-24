@@ -12,7 +12,6 @@ namespace TISFAT_ZERO
 {
 	public partial class Toolbox : Form
 	{
-		public static MainF mainForm;
 		public bool isPlaying = false;
 		public byte frameRate = 30;
 		public bool inMenu = false;
@@ -25,9 +24,8 @@ namespace TISFAT_ZERO
 		private bool reOpen = false;
 		private Panel reOpenPanel;
 
-		public Toolbox(MainF f)
+		public Toolbox()
 		{
-			mainForm = f;
 			InitializeComponent();
 		}
 
@@ -40,9 +38,9 @@ namespace TISFAT_ZERO
 		private void btn_playPause_Click(object sender, System.EventArgs e)
 		{
 			if (isPlaying)
-				mainForm.tline.stopTimer();
+				Program.TimelineForm.stopTimer();
 			else
-				mainForm.tline.startTimer(frameRate);
+				Program.TimelineForm.startTimer(frameRate);
 
 			isPlaying = !isPlaying;
 			btn_playPause.Text = isPlaying ? "Pause" : "Play";
@@ -142,7 +140,7 @@ namespace TISFAT_ZERO
 					}
 				}
 			}
-			Canvas.theCanvas.glGraphics.Refresh();
+			Program.CanvasForm.glGraphics.Refresh();
 		}
 
 		private void Toolbox_Load(object sender, EventArgs e)
@@ -163,7 +161,7 @@ namespace TISFAT_ZERO
 
 			pic_pnlLine_color.BackColor = dlg_Color.Color;
 			Canvas.activeFigure.setColor(dlg_Color.Color);
-			Canvas.theCanvas.Refresh();
+			Program.CanvasForm.Refresh();
 		}
 
 		private void num_pnlLine_thickness_ValueChanged(object sender, EventArgs e)
@@ -172,7 +170,7 @@ namespace TISFAT_ZERO
 			if (!(num_pnlLine_thickness.Value == -1))
 			{
 				line.setThickness((int)num_pnlLine_thickness.Value);
-				mainForm.tline.theCanvas.Refresh();
+				Program.CanvasForm.Refresh();
 			}
 		}
 
@@ -182,13 +180,13 @@ namespace TISFAT_ZERO
 				return;
 			pic_pnlStick_color.BackColor = dlg_Color.Color;
 			Canvas.activeFigure.setColor(dlg_Color.Color);
-			((StickFrame)mainForm.tline.frm_selected).figColor = dlg_Color.Color;
-			Canvas.theCanvas.Refresh();
+			((StickFrame)Program.TimelineForm.frm_selected).figColor = dlg_Color.Color;
+			Program.CanvasForm.Refresh();
 		}
 
 		private void fPropButton_Click_1(object sender, EventArgs e)
 		{
-			if (mainForm.tline.frm_selected != null)
+			if (Program.TimelineForm.frm_selected != null)
 			{
 				if (Canvas.activeFigure.type == 1)
 				{
@@ -197,9 +195,9 @@ namespace TISFAT_ZERO
 					pnl_Properties_Line.Visible = false;
 					pnl_Properties_Custom.Visible = false;
 
-					pic_pnlStick_color.BackColor = ((StickFrame)mainForm.tline.frm_selected).figColor;
-					tkb_alpha.Value = ((StickFrame)mainForm.tline.frm_selected).figColor.A;
-					num_alpha.Value = ((StickFrame)mainForm.tline.frm_selected).figColor.A;
+					pic_pnlStick_color.BackColor = ((StickFrame)Program.TimelineForm.frm_selected).figColor;
+					tkb_alpha.Value = ((StickFrame)Program.TimelineForm.frm_selected).figColor.A;
+					num_alpha.Value = ((StickFrame)Program.TimelineForm.frm_selected).figColor.A;
 					pnlOpen = panels[1];
 				}
 				else if (Canvas.activeFigure.type == 2)
@@ -276,7 +274,7 @@ namespace TISFAT_ZERO
 
 		private void setFigureAlpha(int value)
 		{
-			if (mainForm.tline.frm_selected == null || Timeline.layers[Timeline.layer_sel].type == 4)
+			if (Program.TimelineForm.frm_selected == null || Timeline.layers[Timeline.layer_sel].type == 4)
 				return;
 
 			int[] argb = new int[4];
@@ -294,18 +292,18 @@ namespace TISFAT_ZERO
 					a.color = Color.FromArgb(argb[0], argb[1], argb[2], argb[3]);
 			}
 
-			(mainForm.tline.frm_selected).figColor = Color.FromArgb(argb[0], argb[1], argb[2], argb[3]);
+			(Program.TimelineForm.frm_selected).figColor = Color.FromArgb(argb[0], argb[1], argb[2], argb[3]);
 
 			if (Canvas.activeFigure.type == 3)
 				Canvas.activeFigure.setFillColor(Color.FromArgb(argb[0], argb[1], argb[2], argb[3]));
 			else
 				Canvas.activeFigure.setColor(Color.FromArgb(argb[0], argb[1], argb[2], argb[3]));
-			Canvas.theCanvas.Refresh();
+			Program.CanvasForm.Refresh();
 		}
 
 		private void setOLAlpha(int value)
 		{
-			if (mainForm.tline.frm_selected == null | mainForm.tline.frm_selected.GetType() != typeof(RectFrame))
+			if (Program.TimelineForm.frm_selected == null | Program.TimelineForm.frm_selected.GetType() != typeof(RectFrame))
 				return;
 
 			int[] argb = new int[4];
@@ -315,13 +313,13 @@ namespace TISFAT_ZERO
 			argb[2] = Canvas.activeFigure.Joints[0].color.G;
 			argb[3] = Canvas.activeFigure.Joints[0].color.B;
 
-			List<StickJoint> sf = mainForm.tline.frm_selected.Joints;
+			List<StickJoint> sf = Program.TimelineForm.frm_selected.Joints;
 
 			foreach (StickJoint a in sf)
 				a.color = Color.FromArgb(argb[0], argb[1], argb[2], argb[3]);
 
 			Canvas.activeFigure.setColor(Color.FromArgb(argb[0], argb[1], argb[2], argb[3]));
-			Canvas.theCanvas.Refresh();
+			Program.CanvasForm.Refresh();
 		}
 
 		public void setColor(Color thecolor)
@@ -336,7 +334,7 @@ namespace TISFAT_ZERO
 		{
 			if (!(dlg_Color.ShowDialog() == DialogResult.OK))
 				return;
-			Canvas.theCanvas.setBackgroundColor(dlg_Color.Color);
+			Program.CanvasForm.setBackgroundColor(dlg_Color.Color);
 		}
 
 		private void AddObject(object sender, TreeNodeMouseClickEventArgs e)
@@ -347,11 +345,11 @@ namespace TISFAT_ZERO
 			{
 				case "0":
 					foreach (Layer l in Timeline.layers) { if (l.GetType() == typeof(StickLayer)) { x++; } }
-					mainForm.tline.addStickLayer("Stick Layer " + x);
+					Program.TimelineForm.addStickLayer("Stick Layer " + x);
 					break;
 				case "1":
 					foreach (Layer l in Timeline.layers) { if (l.GetType() == typeof(CustomLayer)) { x++; } }
-					mainForm.tline.addCustomLayer("Custom Layer " + x);
+					Program.TimelineForm.addCustomLayer("Custom Layer " + x);
 					Timeline.layer_sel = Timeline.layer_cnt - 1;
 					StickEditor f = new StickEditor();
 					f.ShowDialog(this);
@@ -359,15 +357,15 @@ namespace TISFAT_ZERO
 
 				case "2":
 					foreach (Layer l in Timeline.layers) { if (l.GetType() == typeof(LineLayer)) { x++; } }
-					mainForm.tline.addLineLayer("Line Layer " + x);
+					Program.TimelineForm.addLineLayer("Line Layer " + x);
 					break;
 				case "3":
 					foreach (Layer l in Timeline.layers) { if (l.GetType() == typeof(RectLayer)) { x++; } }
-					mainForm.tline.addRectLayer("Rect Layer " + x);
+					Program.TimelineForm.addRectLayer("Rect Layer " + x);
 					break;
 				case "4":
 					foreach (Layer l in Timeline.layers) { if (l.GetType() == typeof(LightLayer)) { x++; } }
-					mainForm.tline.addLightLayer("Light Layer " + x);
+					Program.TimelineForm.addLightLayer("Light Layer " + x);
 					return;
 
 				case "5":
@@ -377,7 +375,7 @@ namespace TISFAT_ZERO
 				default:
 					return;
 			}
-			mainForm.tline.Refresh();
+			Program.TimelineForm.Refresh();
 
 			pnl_addTools.Enabled = false;
 			slideOutObject = pnl_addTools;
@@ -389,7 +387,7 @@ namespace TISFAT_ZERO
 			if (pnlOpen == "None")
 				return;
 			int type = Canvas.activeFigure.type;
-			setColor(mainForm.tline.frm_selected.figColor);
+			setColor(Program.TimelineForm.frm_selected.figColor);
 
 			if (type == 1)
 			{
@@ -504,16 +502,16 @@ namespace TISFAT_ZERO
 				return;
 			pic_rectFillColor.BackColor = dlg_Color.Color;
 			Canvas.activeFigure.setFillColor(dlg_Color.Color);
-			mainForm.tline.frm_selected.figColor = dlg_Color.Color;
+			Program.TimelineForm.frm_selected.figColor = dlg_Color.Color;
 
-			Canvas.theCanvas.Refresh();
+			Program.CanvasForm.Refresh();
 		}
 
 		private void chk_rectFilled_CheckedChanged(object sender, EventArgs e)
 		{
 			((StickRect)Canvas.activeFigure).filled = chk_rectFilled.Checked;
 
-			Canvas.theCanvas.Refresh();
+			Program.CanvasForm.Refresh();
 		}
 
 		private void pic_rectOLColor_Click(object sender, EventArgs e)
@@ -522,44 +520,44 @@ namespace TISFAT_ZERO
 				return;
 			pic_rectOLColor.BackColor = dlg_Color.Color;
 			Canvas.activeFigure.setColor(dlg_Color.Color);
-			for (int i = 0;i < mainForm.tline.frm_selected.Joints.Count;i++)
-				mainForm.tline.frm_selected.Joints[i].color = dlg_Color.Color;
+			for (int i = 0;i < Program.TimelineForm.frm_selected.Joints.Count;i++)
+				Program.TimelineForm.frm_selected.Joints[i].color = dlg_Color.Color;
 
-			Canvas.theCanvas.Refresh();
+			Program.CanvasForm.Refresh();
 		}
 
 		private void num_rectFillAlpha_ValueChanged(object sender, EventArgs e)
 		{
 			setFigureAlpha((int)num_rectFillAlpha.Value);
-			Canvas.theCanvas.Refresh();
+			Program.CanvasForm.Refresh();
 		}
 
 		private void num_rectOLAlpha_ValueChanged(object sender, EventArgs e)
 		{
 			setOLAlpha((int)num_rectOLAlpha.Value);
-			Canvas.theCanvas.Refresh();
+			Program.CanvasForm.Refresh();
 		}
 
 		private void ckb_renderShadows_CheckedChanged(object sender, EventArgs e)
 		{
 			Canvas.renderShadows = ckb_renderShadows.Checked;
-			Canvas.theCanvas.Refresh();
+			Program.CanvasForm.Refresh();
 		}
 
 		private void com_Properties_Bitmap_SelectionChangeCommitted(object sender, EventArgs e)
 		{
-			mainForm.tline.frm_selected.Joints[Canvas.selectedJoint.ParentFigure.Joints.IndexOf(Canvas.selectedJoint)].Bitmap_CurrentID = com_Properties_Bitmap.SelectedIndex;
+			Program.TimelineForm.frm_selected.Joints[Canvas.selectedJoint.ParentFigure.Joints.IndexOf(Canvas.selectedJoint)].Bitmap_CurrentID = com_Properties_Bitmap.SelectedIndex;
 			//Canvas.selectedJoint.Bitmap_CurrentID = com_Properties_Bitmap.SelectedIndex;
 			((StickCustom)Timeline.layers[Timeline.layer_sel].tweenFig).Joints[Canvas.selectedJoint.ParentFigure.Joints.IndexOf(Canvas.selectedJoint)].Bitmap_CurrentID = com_Properties_Bitmap.SelectedIndex;
-			Canvas.theCanvas.Refresh();
+			Program.CanvasForm.Refresh();
 		}
 
 		private void btn_bitmapUseNone_Click(object sender, EventArgs e)
 		{
-			mainForm.tline.frm_selected.Joints[Canvas.selectedJoint.ParentFigure.Joints.IndexOf(Canvas.selectedJoint)].Bitmap_CurrentID = -1;
+			Program.TimelineForm.frm_selected.Joints[Canvas.selectedJoint.ParentFigure.Joints.IndexOf(Canvas.selectedJoint)].Bitmap_CurrentID = -1;
 			((StickCustom)Timeline.layers[Timeline.layer_sel].tweenFig).Joints[Canvas.selectedJoint.ParentFigure.Joints.IndexOf(Canvas.selectedJoint)].Bitmap_CurrentID = -1;
 			updateBitmapList();
-			Canvas.theCanvas.Refresh();
+			Program.CanvasForm.Refresh();
 		}
 
 		private void btn_Properties_Edit_Click(object sender, EventArgs e)

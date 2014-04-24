@@ -290,13 +290,11 @@ namespace TISFAT_ZERO
 			{
 				MessageBox.Show("Saving failed. Error Detail:\n" + ex.Message, "Saving Failed!");
 				bin.Close();
-				bin.Dispose();
 
 				return false;
 			}
 
 			bin.Close();
-			bin.Dispose();
 			return true;
 		}
 
@@ -592,7 +590,6 @@ namespace TISFAT_ZERO
 
 			sticked.recalcFigureJoints();
 			bin.Close();
-			bin.Dispose();
 		}
 	}
 
@@ -649,7 +646,6 @@ namespace TISFAT_ZERO
 			{
 				MessageBox.Show("Saving failed. Error Detail:\n" + ex.Message, "Saving Failed!");
 				memst.Close();
-				memst.Dispose();
 
 				return false;
 			}
@@ -661,10 +657,8 @@ namespace TISFAT_ZERO
 
 			//Close the streams and return.
 			file.Close();
-			file.Dispose();
 
 			memst.Close();
-			memst.Dispose();
 
 			return true;
 		}
@@ -675,11 +669,11 @@ namespace TISFAT_ZERO
 
 			bytes.AddRange(BitConverter.GetBytes((ushort)6));
 
-			Size canSize = Canvas.theCanvas.Size;
+			Size canSize = Program.CanvasForm.Size;
 			bytes.AddRange(BitConverter.GetBytes((ushort)canSize.Width));
 			bytes.AddRange(BitConverter.GetBytes((ushort)canSize.Height));
 
-			Color canColr = Canvas.theCanvas.BackColor;
+			Color canColr = Program.CanvasForm.BackColor;
 
 			bytes.Add((byte)canColr.R);
 			bytes.Add((byte)canColr.G);
@@ -838,7 +832,7 @@ namespace TISFAT_ZERO
 			//Clear everything in the timeline (prompts to come later)
 			Timeline.resetEverything(true);
 
-			Canvas zeCanvas = Canvas.theCanvas;
+			Canvas zeCanvas = Program.CanvasForm;
 
 			FileStream file;
 			try
@@ -1061,7 +1055,7 @@ namespace TISFAT_ZERO
 			}
 			Timeline.layers = layers;
 			Timeline.layer_cnt = layers.Count;
-			Timeline.mainForm.doneLoading();
+			Program.MainformForm.doneLoading();
 		}
 
 		private static Block readNextBlock(Stream file)

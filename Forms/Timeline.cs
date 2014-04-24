@@ -20,9 +20,6 @@ namespace TISFAT_ZERO
 		private readonly Point[] p1 = new Point[] { new Point(79, 0), new Point(79, 15), new Point(0, 15) };
 		private readonly Color layerColour = Color.FromArgb(70, 120, 255), tenthframe = Color.FromArgb(40, 230, 255);
 
-		public static MainF mainForm;
-		public Canvas theCanvas;
-
 		//List of layers
 		public static List<Layer> layers;
 		public static int layer_cnt = 0;
@@ -43,11 +40,9 @@ namespace TISFAT_ZERO
 		/// </summary>
 		/// <param name="m">The main form object.</param>
 		/// <param name="canvas">The canvas object.</param>
-		public Timeline(MainF m, Canvas canvas)
+		public Timeline()
 		{
 			InitializeComponent();
-			mainForm = m;
-			theCanvas = canvas;
 
 			layers = new List<Layer>();
 
@@ -112,9 +107,9 @@ namespace TISFAT_ZERO
 			}
 
 			if (frm_selected != null)
-				mainForm.theToolbox.updateOpenPanel();
+				Program.ToolboxForm.updateOpenPanel();
 
-			theCanvas.Refresh();
+			Program.CanvasForm.Refresh();
 		}
 
 		public Bitmap saveFrame(int pos)
@@ -132,14 +127,14 @@ namespace TISFAT_ZERO
 				Canvas.activeFigure = layers[layer_sel].fig;
 			}
 
-			theCanvas.Refresh();
+			Program.CanvasForm.Refresh();
 
 			if (GraphicsContext.CurrentContext == null)
 				throw new GraphicsContextMissingException();
 
-			Bitmap bmp = new Bitmap(theCanvas.glGraphics.Width, theCanvas.glGraphics.Height);
-			System.Drawing.Imaging.BitmapData data = bmp.LockBits(theCanvas.glGraphics.ClientRectangle, System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-			GL.ReadPixels(0, 0, theCanvas.glGraphics.Width, theCanvas.glGraphics.Height, PixelFormat.Rgba, PixelType.UnsignedByte, data.Scan0);
+			Bitmap bmp = new Bitmap(Program.CanvasForm.glGraphics.Width, Program.CanvasForm.glGraphics.Height);
+			System.Drawing.Imaging.BitmapData data = bmp.LockBits(Program.CanvasForm.glGraphics.ClientRectangle, System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+			GL.ReadPixels(0, 0, Program.CanvasForm.glGraphics.Width, Program.CanvasForm.glGraphics.Height, PixelFormat.Rgba, PixelType.UnsignedByte, data.Scan0);
 			bmp.UnlockBits(data);
 
 			bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
@@ -217,12 +212,12 @@ namespace TISFAT_ZERO
 		{
 			StickFigure x = new StickFigure(false);
 
-			StickLayer n = new StickLayer(name, x, theCanvas);
+			StickLayer n = new StickLayer(name, x, Program.CanvasForm);
 			layers.Add(n);
 
 			layer_sel = layer_cnt;
 
-			mainForm.updateByLayers(++layer_cnt);
+			Program.MainformForm.updateByLayers(++layer_cnt);
 
 			setFrame(n.firstKF);
 			return n;
@@ -237,12 +232,12 @@ namespace TISFAT_ZERO
 		{
 			StickLine x = new StickLine(false);
 
-			LineLayer n = new LineLayer(name, x, theCanvas);
+			LineLayer n = new LineLayer(name, x, Program.CanvasForm);
 			layers.Add(n);
 
 			layer_sel = layer_cnt;
 
-			mainForm.updateByLayers(++layer_cnt);
+			Program.MainformForm.updateByLayers(++layer_cnt);
 
 			setFrame(n.firstKF);
 			
@@ -253,12 +248,12 @@ namespace TISFAT_ZERO
 		{
 			LightObject x = new LightObject(false);
 
-			LightLayer n = new LightLayer(name, x, theCanvas);
+			LightLayer n = new LightLayer(name, x, Program.CanvasForm);
 			layers.Add(n);
 
 			layer_sel = layer_cnt;
 
-			mainForm.updateByLayers(++layer_cnt);
+			Program.MainformForm.updateByLayers(++layer_cnt);
 
 			setFrame(n.firstKF);
 
@@ -274,12 +269,12 @@ namespace TISFAT_ZERO
 		{
 			StickRect x = new StickRect(false);
 
-			RectLayer n = new RectLayer(name, x, theCanvas);
+			RectLayer n = new RectLayer(name, x, Program.CanvasForm);
 			layers.Add(n);
 
 			layer_sel = layer_cnt;
 
-			mainForm.updateByLayers(++layer_cnt);
+			Program.MainformForm.updateByLayers(++layer_cnt);
 
 			setFrame(n.firstKF);
 			return n;
@@ -289,12 +284,12 @@ namespace TISFAT_ZERO
 		{
 			StickCustom x = new StickCustom(1, false);
 
-			CustomLayer n = new CustomLayer(name, x, theCanvas);
+			CustomLayer n = new CustomLayer(name, x, Program.CanvasForm);
 			layers.Add(n);
 
 			layer_sel = layer_cnt;
 
-			mainForm.updateByLayers(++layer_cnt);
+			Program.MainformForm.updateByLayers(++layer_cnt);
 
 			setFrame(n.firstKF);
 			return n;
@@ -308,7 +303,7 @@ namespace TISFAT_ZERO
 		{
 			layers = new List<Layer>();
 			layer_cnt = layer_sel = 0; frm_selPos = 0;
-			mainForm.resetTimeline(keepDefaultLayer);
+			Program.MainformForm.resetTimeline(keepDefaultLayer);
 		}
 
 
@@ -340,12 +335,12 @@ namespace TISFAT_ZERO
 			Pen gray = new Pen(Color.FromArgb(140, 140, 140)), blk = new Pen(Color.Black);
 
 			//Calculate how many frames need to be drawn and what the offset is
-			int frames = (mainForm.Width - 80) / 9;
-			int scroll = mainForm.splitContainer1.Panel1.HorizontalScroll.Value;
-			int xOffset = scroll / 9, yOffset = (mainForm.splitContainer1.Panel1.VerticalScroll.Value / 16) * 16;
+			int frames = (Program.MainformForm.Width - 80) / 9;
+			int scroll = Program.MainformForm.splitContainer1.Panel1.HorizontalScroll.Value;
+			int xOffset = scroll / 9, yOffset = (Program.MainformForm.splitContainer1.Panel1.VerticalScroll.Value / 16) * 16;
 
 			int he = layers.Count * 16 + 16;
-			Height = Math.Min(he, mainForm.splitContainer1.SplitterDistance - 25);
+			Height = Math.Min(he, Program.MainformForm.splitContainer1.SplitterDistance - 25);
 
 			//Grab the font we need to use to draw strings
 			Font fo = DefaultFont;
@@ -517,14 +512,14 @@ namespace TISFAT_ZERO
 			if (isPlaying)
 				return;
 
-			int x = e.X, y = e.Y - mainForm.splitContainer1.Panel1.VerticalScroll.Value;
+			int x = e.X, y = e.Y - Program.MainformForm.splitContainer1.Panel1.VerticalScroll.Value;
 			downPoint = e.Location;
 
 			if (x > 80)
 			{
-				frm_selPos = (x - 80) / 9 + mainForm.splitContainer1.Panel1.HorizontalScroll.Value / 9;
+				frm_selPos = (x - 80) / 9 + Program.MainformForm.splitContainer1.Panel1.HorizontalScroll.Value / 9;
 
-				if (e.Y - mainForm.splitContainer1.Panel1.VerticalScroll.Value < 16)
+				if (e.Y - Program.MainformForm.splitContainer1.Panel1.VerticalScroll.Value < 16)
 					layer_sel = -1;
 				else if (y < layers.Count() * 16 + 16)
 					layer_sel = (y - 16) / 16;
@@ -535,7 +530,7 @@ namespace TISFAT_ZERO
 				if (e.Button == MouseButtons.Left)
 					mouseDown = true;
 				if (frm_selected != null)
-					mainForm.theToolbox.setColor(frm_selected.figColor);
+					Program.ToolboxForm.setColor(frm_selected.figColor);
 
 				Refresh();
 			}
@@ -555,7 +550,7 @@ namespace TISFAT_ZERO
 			int x = e.X;
 
 			//Do the selected frame calculation twice, once in both int and uint.
-			int newSelected = (x - 80) / 9 + mainForm.splitContainer1.Panel1.HorizontalScroll.Value / 9;
+			int newSelected = (x - 80) / 9 + Program.MainformForm.splitContainer1.Panel1.HorizontalScroll.Value / 9;
 
 			//If the int calculation is below zero, then set the selected value to 0 (as we don't want anything going negative)
 			if (newSelected < 0)
@@ -766,7 +761,7 @@ namespace TISFAT_ZERO
 					break;
 
 				case "tst_insertLayer":
-					mainForm.theToolbox.addButton_Click(new object(), new EventArgs());
+					Program.ToolboxForm.addButton_Click(new object(), new EventArgs());
 					break;
 
 				case "tst_removeLayer":
@@ -818,8 +813,8 @@ namespace TISFAT_ZERO
 			else
 			{
 				playTimer.Stop();
-				mainForm.theToolbox.btn_playPause.Text = "Play";
-				mainForm.theToolbox.isPlaying = isPlaying = false;
+				Program.ToolboxForm.btn_playPause.Text = "Play";
+				Program.ToolboxForm.isPlaying = isPlaying = false;
 			}
 
 		}

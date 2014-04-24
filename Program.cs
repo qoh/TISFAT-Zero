@@ -5,11 +5,18 @@ using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
 using System.Threading;
+using TISFAT_ZERO.Forms;
 
 namespace TISFAT_ZERO
 {
 	static class Program
 	{
+		public static MainF MainformForm;
+		public static Toolbox ToolboxForm;
+		public static Canvas CanvasForm;
+		public static Timeline TimelineForm;
+		public static Scenes ScenesForm;
+
 		public static readonly string Version = "2.0.3.21";
 		public static string loadFile = "";
 

@@ -782,11 +782,11 @@ namespace TISFAT_ZERO
 				figure.Joints[i].location = new Point(figure.Joints[0].location.X + Functions.calcFigureDiff(oldLoc, figure.Joints[i]).X, figure.Joints[0].location.Y + Functions.calcFigureDiff(oldLoc, figure.Joints[i]).Y);
 			}
 
-			Canvas.theCanvas.GL_GRAPHICS.MakeCurrent();
+			Program.CanvasForm.GL_GRAPHICS.MakeCurrent();
 			if (!loaded)
-				Canvas.theCanvas.recieveStickFigure(figure);
+				Program.CanvasForm.recieveStickFigure(figure);
 			else
-				Canvas.theCanvas.recieveStickFigure(figure, true);
+				Program.CanvasForm.recieveStickFigure(figure, true);
 		}
 		#endregion
 

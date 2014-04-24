@@ -577,7 +577,7 @@ namespace TISFAT_ZERO
 		{
 			if (!fromCanvas)
 			{
-				Canvas.theCanvas.Refresh();
+				Program.CanvasForm.Refresh();
 				return;
 			}
 
@@ -594,7 +594,7 @@ namespace TISFAT_ZERO
 		{
 			if (!fromCanvas)
 			{
-				Canvas.theCanvas.Refresh();
+				Program.CanvasForm.Refresh();
 				return;
 			}
 
@@ -719,7 +719,7 @@ namespace TISFAT_ZERO
 		{
 			if (!fromCanvas)
 			{
-				Canvas.theCanvas.Refresh();
+				Program.CanvasForm.Refresh();
 				return;
 			}
 
