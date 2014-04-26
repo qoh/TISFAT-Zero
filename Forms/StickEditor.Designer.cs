@@ -46,6 +46,8 @@ namespace TISFAT_ZERO
 			this.btn_toolPointer = new System.Windows.Forms.Button();
 			this.lbl_toolBox = new System.Windows.Forms.Label();
 			this.pnl_lineProps = new System.Windows.Forms.Panel();
+			this.num_jointLength = new System.Windows.Forms.NumericUpDown();
+			this.lbl_jointLength = new System.Windows.Forms.Label();
 			this.num_bitmapYOffs = new System.Windows.Forms.NumericUpDown();
 			this.lbl_bitmapYOffs = new System.Windows.Forms.Label();
 			this.num_bitmapXOffs = new System.Windows.Forms.NumericUpDown();
@@ -94,8 +96,6 @@ namespace TISFAT_ZERO
 			this.dlg_openBitmap = new System.Windows.Forms.OpenFileDialog();
 			this.GL_GRAPHICS = new OpenTK.GLControl();
 			this.dlg_openLegacyFile = new System.Windows.Forms.OpenFileDialog();
-			this.num_jointLength = new System.Windows.Forms.NumericUpDown();
-			this.lbl_jointLength = new System.Windows.Forms.Label();
 			this.pnl_toolBox.SuspendLayout();
 			this.pnl_Stats.SuspendLayout();
 			this.pnl_brushProps.SuspendLayout();
@@ -103,6 +103,7 @@ namespace TISFAT_ZERO
 			this.pnl_toolboxMain.SuspendLayout();
 			this.pnl_toolPanel.SuspendLayout();
 			this.pnl_lineProps.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_jointLength)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_bitmapYOffs)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_bitmapXOffs)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_bitmapRotation)).BeginInit();
@@ -115,7 +116,6 @@ namespace TISFAT_ZERO
 			((System.ComponentModel.ISupportInitialize)(this.num_handleAlpha)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pic_handleColor)).BeginInit();
 			this.mnu_Main.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.num_jointLength)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// pnl_toolBox
@@ -325,6 +325,28 @@ namespace TISFAT_ZERO
 			this.pnl_lineProps.Name = "pnl_lineProps";
 			this.pnl_lineProps.Size = new System.Drawing.Size(173, 139);
 			this.pnl_lineProps.TabIndex = 4;
+			// 
+			// num_jointLength
+			// 
+			this.num_jointLength.Location = new System.Drawing.Point(100, 272);
+			this.num_jointLength.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+			this.num_jointLength.Name = "num_jointLength";
+			this.num_jointLength.Size = new System.Drawing.Size(43, 20);
+			this.num_jointLength.TabIndex = 23;
+			this.num_jointLength.ValueChanged += new System.EventHandler(this.num_jointLength_ValueChanged);
+			// 
+			// lbl_jointLength
+			// 
+			this.lbl_jointLength.AutoSize = true;
+			this.lbl_jointLength.Location = new System.Drawing.Point(11, 274);
+			this.lbl_jointLength.Name = "lbl_jointLength";
+			this.lbl_jointLength.Size = new System.Drawing.Size(43, 13);
+			this.lbl_jointLength.TabIndex = 22;
+			this.lbl_jointLength.Text = "Length:";
 			// 
 			// num_bitmapYOffs
 			// 
@@ -782,28 +804,6 @@ namespace TISFAT_ZERO
 			this.dlg_openLegacyFile.FileName = "openFileDialog1";
 			this.dlg_openLegacyFile.FileOk += new System.ComponentModel.CancelEventHandler(this.dlg_openLegacyFile_FileOk);
 			// 
-			// num_jointLength
-			// 
-			this.num_jointLength.Location = new System.Drawing.Point(100, 272);
-			this.num_jointLength.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-			this.num_jointLength.Name = "num_jointLength";
-			this.num_jointLength.Size = new System.Drawing.Size(43, 20);
-			this.num_jointLength.TabIndex = 23;
-			this.num_jointLength.ValueChanged += new System.EventHandler(this.num_jointLength_ValueChanged);
-			// 
-			// lbl_jointLength
-			// 
-			this.lbl_jointLength.AutoSize = true;
-			this.lbl_jointLength.Location = new System.Drawing.Point(11, 274);
-			this.lbl_jointLength.Name = "lbl_jointLength";
-			this.lbl_jointLength.Size = new System.Drawing.Size(43, 13);
-			this.lbl_jointLength.TabIndex = 22;
-			this.lbl_jointLength.Text = "Length:";
-			// 
 			// StickEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -831,6 +831,7 @@ namespace TISFAT_ZERO
 			this.pnl_toolPanel.ResumeLayout(false);
 			this.pnl_lineProps.ResumeLayout(false);
 			this.pnl_lineProps.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_jointLength)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_bitmapYOffs)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_bitmapXOffs)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_bitmapRotation)).EndInit();
@@ -845,7 +846,6 @@ namespace TISFAT_ZERO
 			((System.ComponentModel.ISupportInitialize)(this.pic_handleColor)).EndInit();
 			this.mnu_Main.ResumeLayout(false);
 			this.mnu_Main.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.num_jointLength)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -907,7 +907,6 @@ namespace TISFAT_ZERO
 		private System.Windows.Forms.OpenFileDialog dlg_openFile;
 		private System.Windows.Forms.SaveFileDialog dlg_saveFile;
 		private System.Windows.Forms.OpenFileDialog dlg_openBitmap;
-		private OpenTK.GLControl GL_GRAPHICS;
 		public System.Windows.Forms.ComboBox com_lineBitmap;
 		private System.Windows.Forms.NumericUpDown num_bitmapYOffs;
 		private System.Windows.Forms.Label lbl_bitmapYOffs;
@@ -919,6 +918,7 @@ namespace TISFAT_ZERO
 		private System.Windows.Forms.OpenFileDialog dlg_openLegacyFile;
 		private System.Windows.Forms.NumericUpDown num_jointLength;
 		private System.Windows.Forms.Label lbl_jointLength;
+		public OpenTK.GLControl GL_GRAPHICS;
 
 	}
 }

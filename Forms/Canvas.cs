@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
+using TISFAT_ZERO.Scripts;
 
 namespace TISFAT_ZERO
 {
@@ -80,6 +81,9 @@ namespace TISFAT_ZERO
 		/// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
 		private void Canvas_MouseMove(object sender, MouseEventArgs e)
 		{
+			if (selectedJoint == null)
+				return;
+
 			//Set the cursor position in the toolbox
 			Program.ToolboxForm.lbl_xPos.Text = "X Pos: " + e.X.ToString();
 			Program.ToolboxForm.lbl_yPos.Text = "Y Pos: " + e.Y.ToString();
@@ -101,10 +105,12 @@ namespace TISFAT_ZERO
 							Refresh();
 						}
 				}
-				else if (selectedJoint != null && selectedJoint.ParentFigure.type == 3)
+				else if (selectedJoint != null && (selectedJoint.ParentFigure.type == 3) || (selectedJoint.ParentFigure.type == 6))
 				{
 					selectedJoint.SetPosAbs(e.X, e.Y);
-					((StickRect)selectedJoint.ParentFigure).onRectJointMoved(selectedJoint);
+					
+					if(selectedJoint.ParentFigure.type == 3)
+						((StickRect)selectedJoint.ParentFigure).onRectJointMoved(selectedJoint);
 				}
 
 				//This prevents any other figures from becoming active as you are dragging a joint.
@@ -255,7 +261,6 @@ namespace TISFAT_ZERO
 		{
 			if (e.Button == MouseButtons.Left)
 			{
-				//selectedJoint = new StickJoint("null", new Point(0, 0), 0, Color.Transparent, Color.Transparent);
 				draw = false;
 			}
 			if (e.Button == MouseButtons.Right)
@@ -266,188 +271,6 @@ namespace TISFAT_ZERO
 				draw = false;
 			}
 		}
-		#endregion
-
-		#region Graphics
-
-		/// <summary>
-		/// Draws the graphics.
-		/// </summary>
-		/// <param name="type">What we're drawing. 1 = Line, 1 = Circle, 2 = Handle, 3 = Hollow Handle</param>
-		/// <param name="color">The <see cref="Color">color</see> of what we're drawing.</param>
-		/// <param name="one">The origin point.</param>
-		/// <param name="width">The width.</param>
-		/// <param name="height">The height.</param>
-		/// <param name="two">The end point. (only used in line type)</param>
-		public static void drawGraphics(int type, Color color, Point one, int width, int height, Point two, int textureID = 0, float rotation = 0)
-		{
-			if (!GLLoaded)
-				return;
-
-			//Invert the y so OpenGL can draw it right-side up
-			one.Y = GL_HEIGHT - one.Y;
-			two.Y = GL_HEIGHT - two.Y;
-
-			GL.Enable(EnableCap.Blend);
-			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-
-			if (type == 0) //Line
-			{
-				//since some opengl cards don't support line widths past 1.0, we need to draw quads
-				GL.Color4(color);
-
-				//step 1: spam floats
-				float x1 = one.X;
-				float x2 = two.X;
-				float y1 = one.Y;
-				float y2 = two.Y;
-
-				//step 2: get slope/delta
-				float vecX = x1 - x2;
-				float vecY = y1 - y2;
-
-				//step 3: calculate distance
-				float dist = (float)Math.Sqrt(Math.Pow((x2 - x1), 2) + Math.Pow((y2 - y1), 2));
-
-				//step 4: normalize
-				float norm1X = (vecX / dist);
-				float norm1Y = (vecY / dist);
-
-				GL.Begin(BeginMode.Quads);
-
-				//step 5: get the perpindicular line to norm1, and scale it based on our width
-				float normX = norm1Y * width / 2;
-				float normY = -norm1X * width / 2;
-
-				//step 6: draw the quad from the points using the normal as the offset
-				GL.Vertex2((one.X - normX), (one.Y - normY));
-				GL.Vertex2((one.X + normX), (one.Y + normY));
-
-				GL.Vertex2((two.X + normX), (two.Y + normY));
-				GL.Vertex2((two.X - normX), (two.Y - normY));
-
-				GL.End();
-
-				DrawCircle(one.X, one.Y, width / 2);
-				DrawCircle(two.X, two.Y, width / 2);
-			}
-			else if (type == 1) //Circle
-			{
-				GL.Color4(color);
-				DrawCircle(one.X, one.Y, width);
-			}
-			else if (type == 2) //Handle
-			{
-				//Evar doesn't like antialiased handles :c
-				GL.Disable(EnableCap.Multisample);
-
-				GL.Color4(color);
-				GL.Begin(BeginMode.Quads);
-
-				GL.Vertex2(one.X - 2.5, one.Y - 2.5);
-				GL.Vertex2(one.X + 2.5, one.Y - 2.5);
-				GL.Vertex2(one.X + 2.5, one.Y + 2.5);
-				GL.Vertex2(one.X - 2.5, one.Y + 2.5);
-
-				GL.End();
-
-				GL.Enable(EnableCap.Multisample);
-			}
-			else if (type == 3) //Hollow Handle
-			{
-				GL.Disable(EnableCap.Multisample);
-
-				GL.Color4(color);
-				GL.Begin(BeginMode.LineLoop);
-
-				GL.Vertex2(one.X - 2.5, one.Y - 2.5);
-				GL.Vertex2(one.X + 2.5, one.Y - 2.5);
-				GL.Vertex2(one.X + 2.5, one.Y + 2.5);
-				GL.Vertex2(one.X - 2.5, one.Y + 2.5);
-
-				GL.End();
-
-				GL.Enable(EnableCap.Multisample);
-			}
-			else if (type == 5) //Rect Fill
-			{
-
-				GL.Color4(color);
-				GL.Begin(BeginMode.Quads);
-
-				GL.Vertex2(one.X, one.Y);
-				GL.Vertex2(two.X, one.Y);
-				GL.Vertex2(two.X, two.Y);
-				GL.Vertex2(one.X, two.Y);
-
-				GL.End();
-			}
-			else if (type == 6) //Texture
-			{
-				GL.Color4(color);
-
-				GL.Enable(EnableCap.Texture2D);
-				GL.Enable(EnableCap.Blend);
-				GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-
-				GL.BindTexture(TextureTarget.Texture2D, textureID);
-
-				GL.PushMatrix();
-
-				GL.Translate(one.X, one.Y, 0);
-				GL.Rotate(rotation, 0, 0, 1);
-
-				GL.Begin(BeginMode.Quads);
-
-				GL.TexCoord2(0.0, 1.0);
-				GL.Vertex2(0, 0);
-
-				GL.TexCoord2(0.0, 0.0);
-				GL.Vertex2(0, -height);
-
-				GL.TexCoord2(1.0, 0.0);
-				GL.Vertex2(width, -height);
-
-				GL.TexCoord2(1.0, 1.0);
-				GL.Vertex2(width, 0);
-
-				GL.End();
-
-				GL.PopMatrix();
-
-				GL.Disable(EnableCap.Blend);
-				GL.Disable(EnableCap.Texture2D);
-			}
-
-			GL.Disable(EnableCap.Blend);
-		}
-
-		private static void DrawCircle(float cx, float cy, float r)
-		{
-			int num_segments = 5 * (int)Math.Sqrt(r);
-
-			float theta = 6.28271f / num_segments;
-			float tangetial_factor = (float)Math.Tan(theta);
-
-			float radial_factor = (float)Math.Cos(theta);
-
-			float y = 0;
-
-			GL.Begin(BeginMode.TriangleFan);
-
-			for (int ii = 0;ii < num_segments;ii++)
-			{
-				GL.Vertex2(r + cx, y + cy);
-
-				float ty = r;
-
-				r = (r + -y * tangetial_factor) * radial_factor;
-				y = (y + ty * tangetial_factor) * radial_factor;
-			}
-
-			GL.End();
-		}
-
 		#endregion
 
 		#region Figures
@@ -546,6 +369,7 @@ namespace TISFAT_ZERO
 			//Since we are 2d, we don't need the depth test
 			GL.Disable(EnableCap.DepthTest);
 
+			#region Shader Initialization Stuff
 			//We need to generate a texture here so we can write what we're drawing to the FBO, and then we can sample it with a shader
 			GL.GenTextures(1, out OccludersTexture);
 			GL.BindTexture(TextureTarget.Texture2D, OccludersTexture);
@@ -635,7 +459,8 @@ namespace TISFAT_ZERO
 			GL.AttachShader(Program_passAndRender, Shader_shadowRender);
 
 			GL.LinkProgram(Program_passAndMap);
-			GL.LinkProgram(Program_passAndRender);
+			GL.LinkProgram(Program_passAndRender); 
+			#endregion
 
 			//lights.Add(new Point(100, 250));
 			//lights.Add(new Point(200, 200));
@@ -682,7 +507,9 @@ namespace TISFAT_ZERO
 
 		private void DrawShadows(Point pos)
 		{
-			drawGraphics(5, Color.FromArgb(255, 0, 255, 255), new Point(pos.X - 3, pos.Y - 3), 0, 0, new Point(pos.X + 3, pos.Y + 3));
+			Drawing.ReadyDraw(glGraphics);
+
+			Drawing.DrawGraphics(5, Color.FromArgb(255, 0, 255, 255), new Point(pos.X - 3, pos.Y - 3), 0, 0, new Point(pos.X + 3, pos.Y + 3));
 
 			createOccluderMap(new Point(pos.X - (int)lightSize / 2, pos.Y - (int)lightSize / 2));
 
@@ -699,7 +526,7 @@ namespace TISFAT_ZERO
 			GL.PushMatrix();
 
 			GL.Translate(-pos.X, -(GL_HEIGHT - pos.Y - (int)lightSize) - ((int)lightSize - 1), 0.0);
-			drawGraphics(6, Color.FromArgb(255, 255, 255, 255), new Point(pos.X, pos.Y), (int)lightSize, 1, pos, (int)OccludersTexture);
+			Drawing.DrawGraphics(6, Color.FromArgb(255, 255, 255, 255), new Point(pos.X, pos.Y), (int)lightSize, 1, pos, (int)OccludersTexture);
 
 			GL.PopMatrix();
 
@@ -714,7 +541,7 @@ namespace TISFAT_ZERO
 			GL.Uniform1(GL.GetUniformLocation(Program_passAndRender, "u_s2DTexture"), 0);
 			GL.Uniform2(GL.GetUniformLocation(Program_passAndRender, "u_vResolution"), new Vector2(lightSize, lightSize));
 
-			drawGraphics(6, Color.FromArgb(255, 255, 255, 255), new Point(pos.X - (int)lightSize / 2, (pos.Y - (int)lightSize / 2)), (int)lightSize, (int)lightSize, pos, (int)ShadowsTexture);
+			Drawing.DrawGraphics(6, Color.FromArgb(255, 255, 255, 255), new Point(pos.X - (int)lightSize / 2, (pos.Y - (int)lightSize / 2)), (int)lightSize, (int)lightSize, pos, (int)ShadowsTexture);
 
 			GL.UseProgram(0);
 		}

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace TISFAT_ZERO
@@ -130,6 +131,52 @@ namespace TISFAT_ZERO
 		}
 	}
 
+	public class PolyFrame : KeyFrame
+	{
+		public PolyFrame(List<StickJoint> ps, int po)
+		{
+			type = 6; pos = po;
+
+			Joints = ps;
+		}
+
+		public PolyFrame(int po, bool z, int jointCount)
+		{
+			type = 6; pos = po;
+
+			double max = 2 * Math.PI;
+			double delta = 2 * Math.PI / jointCount;
+
+			//Add all the stick joints to the figure.
+			for (double i = 0.0f;i < max;i += delta)
+			{
+				double x = Math.Sin(i) * 50;
+				double y = Math.Cos(i) * 50;
+
+				StickJoint t = new StickJoint("Poly Joint", new Point((int)x, (int)y), 1, Color.Black, Color.Red);
+				Joints.Add(t);
+
+				if (Joints.Count > 1)
+					t.parent = Joints[Joints.IndexOf(t) - 1];
+			}
+
+			//Position them correctly
+			Point oldLoc = Joints[0].location;
+			Joints[0].location = new Point(222, 195);
+			for (int i = 1;i < Joints.Count;i++)
+				Joints[i].location = new Point(Joints[0].location.X + Functions.calcFigureDiff(oldLoc, Joints[i]).X, Joints[0].location.Y + Functions.calcFigureDiff(oldLoc, Joints[i]).Y);
+
+			for (int i = 0;i < Joints.Count;i++)
+			{
+				if (Joints[i].parent != null)
+				{
+					Joints[i].CalcLength(null);
+					Joints[i].parent.children.Add(Joints[i]);
+				}
+			}
+		}
+	}
+
 	public class LightFrame : KeyFrame
 	{
 		public LightFrame(List<StickJoint> ps, int po)
@@ -141,7 +188,7 @@ namespace TISFAT_ZERO
 
 		public LightFrame(int po)
 		{
-			type = 4; pos = po;
+			type = 5; pos = po;
 
 			Joints.Add(new StickJoint("Light Source", new Point(30, 30), 1, Color.Black, Color.Green));
 		}

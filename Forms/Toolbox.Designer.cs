@@ -36,11 +36,13 @@
             treeNode2});
 			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Line");
 			System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Rectangle");
-			System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Shapes", new System.Windows.Forms.TreeNode[] {
+			System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Poly");
+			System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Shapes", new System.Windows.Forms.TreeNode[] {
             treeNode4,
-            treeNode5});
-			System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Light Source");
-			System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Text");
+            treeNode5,
+            treeNode6});
+			System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Light Source");
+			System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Text");
 			this.pnl_mainPanel = new System.Windows.Forms.Panel();
 			this.pnl_addTools = new System.Windows.Forms.Panel();
 			this.trv_addView = new System.Windows.Forms.TreeView();
@@ -185,24 +187,28 @@
 			treeNode5.Tag = "3";
 			treeNode5.Text = "Rectangle";
 			treeNode5.ToolTipText = "A basic rectangle with 4 control points.";
-			treeNode6.Checked = true;
-			treeNode6.Name = "nde_Shapes";
-			treeNode6.Tag = "-1";
-			treeNode6.Text = "Shapes";
-			treeNode6.ToolTipText = "Various primitive shapes";
-			treeNode7.Name = "nde_lightSource";
-			treeNode7.Tag = "4";
-			treeNode7.Text = "Light Source";
-			treeNode7.ToolTipText = "A source of light for the shading engine";
-			treeNode8.Name = "nde_Text";
-			treeNode8.Tag = "5";
-			treeNode8.Text = "Text";
-			treeNode8.ToolTipText = "A text object with 4 control points and configurable text.";
+			treeNode6.Name = "nde_Shape_Poly";
+			treeNode6.Tag = "6";
+			treeNode6.Text = "Poly";
+			treeNode6.ToolTipText = "A shape with a user-defined amount of points";
+			treeNode7.Checked = true;
+			treeNode7.Name = "nde_Shapes";
+			treeNode7.Tag = "-1";
+			treeNode7.Text = "Shapes";
+			treeNode7.ToolTipText = "Various primitive shapes";
+			treeNode8.Name = "nde_lightSource";
+			treeNode8.Tag = "4";
+			treeNode8.Text = "Light Source";
+			treeNode8.ToolTipText = "A source of light for the shading engine";
+			treeNode9.Name = "nde_Text";
+			treeNode9.Tag = "5";
+			treeNode9.Text = "Text";
+			treeNode9.ToolTipText = "A text object with 4 control points and configurable text.";
 			this.trv_addView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode3,
-            treeNode6,
             treeNode7,
-            treeNode8});
+            treeNode8,
+            treeNode9});
 			this.trv_addView.ShowLines = false;
 			this.trv_addView.Size = new System.Drawing.Size(151, 158);
 			this.trv_addView.TabIndex = 26;

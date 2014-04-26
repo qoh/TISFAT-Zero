@@ -260,6 +260,22 @@ namespace TISFAT_ZERO
 			return n;
 		}
 
+		public PolyLayer addPolyLayer(string name, int jointCount)
+		{
+			StickPoly x = new StickPoly(false, jointCount);
+
+			PolyLayer n = new PolyLayer(name, x, Program.CanvasForm, jointCount);
+			layers.Add(n);
+
+			layer_sel = layer_cnt;
+
+			Program.MainformForm.updateByLayers(++layer_cnt);
+
+			setFrame(n.firstKF);
+
+			return n;
+		}
+
 		/// <summary>
 		/// Adds a rectangle to the current project.
 		/// </summary>

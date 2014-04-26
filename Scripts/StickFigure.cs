@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenTK.Graphics.OpenGL;
+using TISFAT_ZERO.Scripts;
 
 namespace TISFAT_ZERO
 {
@@ -570,7 +571,7 @@ namespace TISFAT_ZERO
 			if (!drawFig)
 				return;
 
-			drawJoints(1, fromCanvas);
+			drawJoints(fromCanvas, 1);
 		}
 
 		public void drawWholeFigure(bool fromCanvas = true)
@@ -590,8 +591,13 @@ namespace TISFAT_ZERO
 				drawFigHandles();
 		}
 
-		private void drawJoints(bool fromCanvas = true)
+		private void drawJoints(bool fromCanvas = true, int? x = null)
 		{
+			if(x == null)
+				Drawing.ReadyDraw(Program.CanvasForm.glGraphics);
+			else
+				Drawing.ReadyDraw(StickEditor.theSticked.GL_GRAPHICS);
+
 			if (!fromCanvas)
 			{
 				Program.CanvasForm.Refresh();
@@ -625,16 +631,16 @@ namespace TISFAT_ZERO
 
 			if (type == 3)
 				if (((StickRect)this).filled)
-					Canvas.drawGraphics(5, figColor, Joints[0].location, Joints[0].thickness, Joints[0].thickness, Joints[2].location);
+					Drawing.DrawGraphics(5, figColor, Joints[0].location, Joints[0].thickness, Joints[0].thickness, Joints[2].location);
 			foreach (StickJoint i in Joints)
 			{
 				if (i.parent != null)
 				{
-					Canvas.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
+					Drawing.DrawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
 				}
 				else if (i.drawState != 0)
 				{
-					Canvas.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
+					Drawing.DrawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
 				}
 
 				if (i.Bitmap_CurrentID != -1)
@@ -642,7 +648,7 @@ namespace TISFAT_ZERO
 						if (i.textureIDs[i.Bitmap_CurrentID] != 0)
 						{
 							Point offset = rotate(i.Bitmap_Offsets[i.Bitmap_CurrentID], i.AngleToParent);
-							Canvas.drawGraphics(6, Color.White, new Point(i.location.X - offset.X, i.location.Y - offset.Y), i.bitmaps[i.Bitmap_CurrentID].Width, i.bitmaps[i.Bitmap_CurrentID].Height, new Point(0, 0), i.textureIDs[i.Bitmap_CurrentID], (float)i.AngleToParent - i.Bitmap_Rotations[i.Bitmap_CurrentID]);
+							Drawing.DrawGraphics(6, Color.White, new Point(i.location.X - offset.X, i.location.Y - offset.Y), i.bitmaps[i.Bitmap_CurrentID].Width, i.bitmaps[i.Bitmap_CurrentID].Height, new Point(0, 0), i.textureIDs[i.Bitmap_CurrentID], (float)i.AngleToParent - i.Bitmap_Rotations[i.Bitmap_CurrentID]);
 						}
 			}
 
@@ -659,64 +665,13 @@ namespace TISFAT_ZERO
 			return result;
 		}
 
-		private void drawJoints(int x, bool fromCanvas = true)
+		public void drawFigHandles(bool fromCanvas = true, int? x = null)
 		{
-			if (!fromCanvas)
-			{
-				StickEditor.theSticked.Refresh();
-				return;
-			}
+			if (x == null)
+				Drawing.ReadyDraw(Program.CanvasForm.glGraphics);
+			else
+				Drawing.ReadyDraw(StickEditor.theSticked.GL_GRAPHICS);
 
-			bool useStencil = false;
-			//there's probably a better way instead of looping to determine if any parts have transparency...
-			foreach (StickJoint i in Joints)
-			{
-				if (i.parent != null)
-				{
-					if (i.color.A != 255)
-					{
-						useStencil = true;
-						break;
-					}
-				}
-			}
-
-			GL.Disable(EnableCap.StencilTest);
-
-			if (useStencil)
-			{
-				GL.Clear(ClearBufferMask.StencilBufferBit);
-				GL.Enable(EnableCap.StencilTest);
-				GL.StencilMask(0xFFFFFF);
-				GL.StencilFunc(StencilFunction.Equal, 0, 0xFFFFFF);
-				GL.StencilOp(StencilOp.Keep, StencilOp.Keep, StencilOp.Incr);
-			}
-
-			foreach (StickJoint i in Joints)
-			{
-				if (i.parent != null)
-				{
-					StickEditor.theSticked.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
-				}
-				else if (i.drawState != 0)
-				{
-					StickEditor.theSticked.drawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
-				}
-
-				if (i.Bitmap_CurrentID != -1)
-					if (i.bitmaps.Count != 0)
-						if (i.textureIDs[i.Bitmap_CurrentID] != 0)
-						{
-							Point offset = rotate(i.Bitmap_Offsets[i.Bitmap_CurrentID], i.AngleToParent);
-							StickEditor.theSticked.drawGraphics(6, Color.White, new Point(i.location.X - offset.X, i.location.Y - offset.Y), i.bitmaps[i.Bitmap_CurrentID].Width, i.bitmaps[i.Bitmap_CurrentID].Height, new Point(0, 0), i.textureIDs[i.Bitmap_CurrentID], (float)i.AngleToParent - i.Bitmap_Rotations[i.Bitmap_CurrentID]);
-						}
-			}
-
-			GL.Disable(EnableCap.StencilTest);
-		}
-
-		public void drawFigHandles(bool fromCanvas = true)
-		{
 			if (!fromCanvas)
 			{
 				Program.CanvasForm.Refresh();
@@ -729,48 +684,18 @@ namespace TISFAT_ZERO
 				{
 					if (!isActiveFig)
 					{
-						Canvas.drawGraphics(2, Color.DimGray, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
+						Drawing.DrawGraphics(2, Color.DimGray, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
 						continue;
 					}
 
 					if (i.handleDrawn & isActiveFig)
-						Canvas.drawGraphics(2, i.handleColor, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
+						Drawing.DrawGraphics(2, i.handleColor, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
 
 					if (i.state == 1 | i.state == 3 | i.state == 4)
-						Canvas.drawGraphics(3, Color.WhiteSmoke, new Point(i.location.X - 1, i.location.Y - 1), 6, 6, new Point(0, 0));
+						Drawing.DrawGraphics(3, Color.WhiteSmoke, new Point(i.location.X - 1, i.location.Y - 1), 6, 6, new Point(0, 0));
 				}
 			}
 		}
-
-		public void drawFigHandles(int x, bool fromCanvas = true)
-		{
-			if (!fromCanvas)
-			{
-				StickEditor.theSticked.Refresh();
-				return;
-			}
-
-			foreach (StickJoint i in Joints)
-			{
-				if (drawHandles)
-				{
-					if (!isActiveFig)
-					{
-						StickEditor.theSticked.drawGraphics(2, Color.DimGray, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
-						continue;
-					}
-
-					if (i.handleDrawn & isActiveFig)
-						StickEditor.theSticked.drawGraphics(2, i.handleColor, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
-					else if (!i.handleDrawn & isActiveFig)
-						StickEditor.theSticked.drawGraphics(3, i.handleColor, new Point(i.location.X, i.location.Y), 4, 4, new Point(0, 0));
-
-					if (i.state == 1 | i.state == 3 | i.state == 4)
-						StickEditor.theSticked.drawGraphics(3, Color.WhiteSmoke, new Point(i.location.X - 1, i.location.Y - 1), 6, 6, new Point(0, 0));
-				}
-			}
-		}
-
 		#endregion Drawing
 
 		public void setAsActiveFigure()
@@ -1199,6 +1124,43 @@ namespace TISFAT_ZERO
 				Canvas.addTweenFigure(this);
 
 			Canvas.lights.Add(this);
+		}
+	}
+
+	public class StickPoly : StickObject
+	{
+		public StickPoly(bool isTweenFigure = false, int jointCount = 4)
+		{
+			type = 6;
+			Joints = new List<StickJoint>();
+
+			double max = 2 * Math.PI;
+			double delta = 2 * Math.PI / jointCount;
+
+			//Add all the stick joints to the figure.
+			for (double i = 0.0f;i < max;i += delta)
+			{
+				double x = Math.Sin(i) * 50;
+				double y = Math.Cos(i) * 50;
+
+				StickJoint t = new StickJoint("Poly Joint", new Point((int)x, (int)y), 1, Color.Black, Color.Red);
+				Joints.Add(t);
+
+				if(Joints.Count > 1)
+					t.parent = Joints[Joints.IndexOf(t) - 1];
+					
+			}
+
+			//Position them correctly
+			Point oldLoc = Joints[0].location;
+			Joints[0].location = new Point(222, 195);
+			for (int i = 1;i < Joints.Count;i++)
+				Joints[i].location = new Point(Joints[0].location.X + Functions.calcFigureDiff(oldLoc, Joints[i]).X, Joints[0].location.Y + Functions.calcFigureDiff(oldLoc, Joints[i]).Y);
+
+			if (!isTweenFigure)
+				Canvas.addFigure(this);
+			else
+				Canvas.addTweenFigure(this);
 		}
 	}
 }

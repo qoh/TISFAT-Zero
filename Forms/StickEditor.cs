@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing.Imaging;
+using TISFAT_ZERO.Scripts;
 
 
 namespace TISFAT_ZERO
@@ -141,7 +142,7 @@ namespace TISFAT_ZERO
 				}
 			}
 
-			for (int i = 0;i < figure.Joints.Count; i++)
+			for (int i = 0;i < figure.Joints.Count;i++)
 			{
 				foreach (StickJoint sj in figure.Joints[i].children)
 				{
@@ -150,15 +151,15 @@ namespace TISFAT_ZERO
 				}
 			}
 
-				for (int i = 0;i < figure.Joints.Count();i++)
+			for (int i = 0;i < figure.Joints.Count();i++)
+			{
+				if (figure.Joints[i].parent != null)
 				{
-					if (figure.Joints[i].parent != null)
-					{
-						if (!(figure.Joints[i].parent.children.IndexOf(figure.Joints[i]) >= 0))
-							figure.Joints[i].parent.children.Add(figure.Joints[i]);
-					}
-					figure.Joints[i].ParentFigure = figure;
+					if (!(figure.Joints[i].parent.children.IndexOf(figure.Joints[i]) >= 0))
+						figure.Joints[i].parent.children.Add(figure.Joints[i]);
 				}
+				figure.Joints[i].ParentFigure = figure;
+			}
 			glGraphics.Refresh();
 		}
 
@@ -193,193 +194,6 @@ namespace TISFAT_ZERO
 
 			recalcFigureJoints();
 		}
-
-		#region Drawing Grapics
-		public void drawGraphics(int type, Color color, Point one, int width, int height, Point two, int textureID = 0, float rotation = 0)
-		{
-			if (!GLLoaded)
-			{
-				return;
-			}
-
-			//Invert the y so OpenGL can draw it right-side up
-			one.Y = GL_HEIGHT - one.Y;
-			two.Y = GL_HEIGHT - two.Y;
-
-			GL.Enable(EnableCap.Blend);
-			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-
-			if (type == 0) //Line
-			{
-				//since some opengl cards don't support line widths past 1.0, we need to draw quads
-				GL.Color4(color);
-
-				//step 1: spam floats
-				float x1 = one.X;
-				float x2 = two.X;
-				float y1 = one.Y;
-				float y2 = two.Y;
-
-				//step 2: get slope/delta
-				float vecX = x1 - x2;
-				float vecY = y1 - y2;
-
-				//step 3: calculate distance
-				float dist = (float)Math.Sqrt(Math.Pow((x2 - x1), 2) + Math.Pow((y2 - y1), 2));
-
-				//step 4: normalize
-				float norm1X = (vecX / dist);
-				float norm1Y = (vecY / dist);
-
-				GL.Begin(BeginMode.Quads);
-
-				//step 5: get the perpindicular line to norm1, and scale it based on our width
-				float normX = norm1Y * width / 2;
-				float normY = -norm1X * width / 2;
-
-				//step 6: draw the quad from the points using the normal as the offset
-				GL.Vertex2((one.X - normX), (one.Y - normY));
-				GL.Vertex2((one.X + normX), (one.Y + normY));
-
-				GL.Vertex2((two.X + normX), (two.Y + normY));
-				GL.Vertex2((two.X - normX), (two.Y - normY));
-
-				GL.End();
-
-				DrawCircle(one.X, one.Y, width / 2);
-				DrawCircle(two.X, two.Y, width / 2);
-			}
-			else if (type == 1) //Circle
-			{
-				GL.Color4(color);
-				DrawCircle(one.X, one.Y, width);
-			}
-			else if (type == 2) //Handle
-			{
-				GL.Disable(EnableCap.Multisample);
-
-				GL.Color4(color);
-				GL.Begin(BeginMode.Quads);
-
-				GL.Vertex2(one.X - 2.5, one.Y - 2.5);
-				GL.Vertex2(one.X + 2.5, one.Y - 2.5);
-				GL.Vertex2(one.X + 2.5, one.Y + 2.5);
-				GL.Vertex2(one.X - 2.5, one.Y + 2.5);
-
-				GL.End();
-
-				GL.Enable(EnableCap.Multisample);
-			}
-			else if (type == 3) //Hollow Handle
-			{
-				GL.Disable(EnableCap.Multisample);
-
-				GL.Color4(color);
-				GL.Begin(BeginMode.LineLoop);
-
-				GL.Vertex2(one.X - 2.5, one.Y - 2.5);
-				GL.Vertex2(one.X + 2.5, one.Y - 2.5);
-				GL.Vertex2(one.X + 2.5, one.Y + 2.5);
-				GL.Vertex2(one.X - 2.5, one.Y + 2.5);
-
-				GL.End();
-
-				GL.Enable(EnableCap.Multisample);
-			}
-			else if (type == 4) //Selection Rect
-			{
-				GL.Disable(EnableCap.Multisample);
-
-				GL.Color4(color);
-				GL.Begin(BeginMode.LineLoop);
-
-				GL.Vertex2(one.X, one.Y);
-				GL.Vertex2(two.X, one.Y);
-				GL.Vertex2(two.X, two.Y);
-				GL.Vertex2(one.X, two.Y);
-
-				GL.End();
-
-				color = Color.FromArgb(color.A - 200, color);
-				GL.Color4(color);
-
-				GL.Begin(BeginMode.Quads);
-
-				GL.Vertex2(one.X, one.Y);
-				GL.Vertex2(two.X, one.Y);
-				GL.Vertex2(two.X, two.Y);
-				GL.Vertex2(one.X, two.Y);
-
-				GL.End();
-
-				GL.Enable(EnableCap.Multisample);
-			}
-
-			else if (type == 6) //Texture
-			{
-				GL.Color4(color);
-
-				GL.Enable(EnableCap.Texture2D);
-				GL.Enable(EnableCap.Blend);
-				GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-
-				GL.BindTexture(TextureTarget.Texture2D, textureID);
-
-				GL.PushMatrix();
-
-				GL.Translate(one.X, one.Y, 0);
-				GL.Rotate(rotation, 0, 0, 1);
-
-				GL.Begin(BeginMode.Quads);
-
-				GL.TexCoord2(0.0, 1.0);
-				GL.Vertex2(0, 0);
-
-				GL.TexCoord2(0.0, 0.0);
-				GL.Vertex2(0, -height);
-
-				GL.TexCoord2(1.0, 0.0);
-				GL.Vertex2(width, -height);
-
-				GL.TexCoord2(1.0, 1.0);
-				GL.Vertex2(width, 0);
-
-				GL.End();
-
-				GL.PopMatrix();
-
-				GL.Disable(EnableCap.Blend);
-				GL.Disable(EnableCap.Texture2D);
-			}
-			GL.Disable(EnableCap.Blend);
-		}
-
-		private static void DrawCircle(float cx, float cy, float r)
-		{
-			int num_segments = 5 * (int)Math.Sqrt(r);
-
-			float theta = 6.28271f / num_segments;
-			float tangetial_factor = (float)Math.Tan(theta);
-
-			float radial_factor = (float)Math.Cos(theta);
-
-			float y = 0;
-
-			GL.Begin(BeginMode.TriangleFan);
-
-			for (int ii = 0;ii < num_segments;ii++)
-			{
-				GL.Vertex2(r + cx, y + cy);
-
-				float ty = r;
-
-				r = (r + -y * tangetial_factor) * radial_factor;
-				y = (y + ty * tangetial_factor) * radial_factor;
-			}
-
-			GL.End();
-		}
-		#endregion
 
 		#region GL_GRAPHICS Callbacks
 		private void GL_GRAPHICS_Resize(object sender, EventArgs e)
@@ -528,9 +342,9 @@ namespace TISFAT_ZERO
 			}
 
 			if (!GLLoaded)
-			{
 				return;
-			}
+
+			Drawing.ReadyDraw(glGraphics);
 
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.StencilBufferBit);
 			GL_GRAPHICS.MakeCurrent();
@@ -540,40 +354,40 @@ namespace TISFAT_ZERO
 
 			if (!(selectedJoint == null) && drawHandles)
 			{
-				drawGraphics(2, Color.FromArgb(105, Color.SkyBlue), selectedJoint.location, 4, 4, new Point(selectedJoint.location.X + 7, selectedJoint.location.Y + 7));
-				drawGraphics(3, Color.Red, selectedJoint.location, 5, 5, new Point(selectedJoint.location.X + 7, selectedJoint.location.Y + 7));
+				Drawing.DrawGraphics(2, Color.FromArgb(105, Color.SkyBlue), selectedJoint.location, 4, 4, new Point(selectedJoint.location.X + 7, selectedJoint.location.Y + 7));
+				Drawing.DrawGraphics(3, Color.Red, selectedJoint.location, 5, 5, new Point(selectedJoint.location.X + 7, selectedJoint.location.Y + 7));
 			}
 
 			if (toolType == 0)
 			{
 				if (figure.selectPoint(mouseLoc, 4) != null)
 				{
-					drawGraphics(2, Color.Blue, figure.selectPoint(mouseLoc, 6).location, 1, 1, figure.selectPoint(mouseLoc, 6).location);
+					Drawing.DrawGraphics(2, Color.Blue, figure.selectPoint(mouseLoc, 6).location, 1, 1, figure.selectPoint(mouseLoc, 6).location);
 					this.Cursor = Cursors.Hand;
 				}
 				else
 					this.Cursor = Cursors.Default;
 
 				if (!mouseDown && !mouseHot)
-					drawGraphics(3, Color.Green, mouseLoc, 1, 1, mouseLoc);
+					Drawing.DrawGraphics(3, Color.Green, mouseLoc, 1, 1, mouseLoc);
 				else if (!mouseHot)
-					drawGraphics(4, Color.SkyBlue, pointClicked, 1, 1, mouseLoc);
+					Drawing.DrawGraphics(4, Color.SkyBlue, pointClicked, 1, 1, mouseLoc);
 			}
 
 			if (toolType == 2)
 			{
 				if (!(selectedJoint == null))
 				{
-					drawGraphics(0, Color.FromArgb(100, selectedJoint.color), selectedJoint.location, (int)num_brushThickness.Value, (int)num_brushThickness.Value, mouseLoc);
+					Drawing.DrawGraphics(0, Color.FromArgb(100, selectedJoint.color), selectedJoint.location, (int)num_brushThickness.Value, (int)num_brushThickness.Value, mouseLoc);
 				}
 
 				if (!mouseDown && !mouseHot)
-					drawGraphics(3, Color.Green, mouseLoc, 1, 1, mouseLoc);
+					Drawing.DrawGraphics(3, Color.Green, mouseLoc, 1, 1, mouseLoc);
 			}
 
 			if (!(figure == null))
 				if (drawHandles)
-					figure.drawFigHandles(1, true);
+					figure.drawFigHandles(true, 1);
 
 			GL_GRAPHICS.SwapBuffers();
 		}

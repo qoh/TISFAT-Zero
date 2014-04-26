@@ -464,6 +464,94 @@ namespace TISFAT_ZERO
 		}
 	}
 
+	public class PolyLayer : Layer
+	{
+		int jointCount;
+
+		public PolyLayer(string Name, StickPoly custom, Canvas _Canvas, int jointCount)
+		{
+			this.jointCount = jointCount;
+
+			name = Name;
+
+			fig = custom;
+			fig.parentLayer = this;
+
+			theCanvas = _Canvas;
+			tweenFig = new StickPoly(true, jointCount);
+
+			type = 6;
+
+			firstKF = 0;
+			lastKF = 19;
+
+			keyFrames = new List<KeyFrame>();
+
+			PolyFrame first = new PolyFrame(firstKF, false, jointCount), last = new PolyFrame(lastKF, false, jointCount);
+
+			foreach (StickJoint j in first.Joints)
+				j.ParentFigure = fig;
+
+			foreach (StickJoint j in last.Joints)
+				j.ParentFigure = fig;
+
+			keyFrames.Add(first);
+			keyFrames.Add(last);
+		}
+
+		public override int insertKeyFrame(int pos)
+		{
+			//If inserting before the first, then make the new keyframe the first and re-arrange list
+			if (pos < firstKF)
+			{
+				firstKF = pos;
+				PolyFrame x = new PolyFrame(pos, true, jointCount);
+
+				keyFrames.Insert(0, x);
+
+				return 0;
+			}
+			else if (pos > lastKF) //Do the same if it's more than the last
+			{
+				lastKF = pos;
+
+				PolyFrame x = new PolyFrame(keyFrames[keyFrames.Count - 1].Joints, pos);
+				x.pos = pos;
+
+				keyFrames.Add(x);
+
+				return keyFrames.Count - 1;
+			}
+
+			PolyFrame n = null;
+			int c = 0;
+
+			//Look through the list for the nearest keyframe (as we want to retain all it's properties except for the position in the timeline)
+			for (int a = 0;a < keyFrames.Count;a++)
+			{
+				PolyFrame k = (PolyFrame)keyFrames[a];
+				if (pos < k.pos)
+				{
+					n = new PolyFrame(keyFrames[c - 1].Joints, pos);
+					n.pos = pos;
+					break;
+				}
+				else if (pos > k.pos)
+					c++;
+				else if (pos == k.pos)
+					return -1;
+
+			}
+
+			foreach (StickJoint j in n.Joints)
+				j.ParentFigure = fig;
+
+			keyFrames.Insert(c, n);
+
+			return c;
+		}
+	}
+
 	public class LightLayer : Layer
 	{
 		public LightLayer(string Name, LightObject custom, Canvas _Canvas)

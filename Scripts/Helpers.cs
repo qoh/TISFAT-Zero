@@ -10,6 +10,17 @@ using OpenTK.Graphics.OpenGL;
 
 namespace TISFAT_ZERO
 {
+	public struct DoublePoint
+	{
+		public double X, Y;
+
+		public DoublePoint(double a, double b)
+		{
+			X = a;
+			Y = b;
+		}
+	}
+
 	public static class Functions
 	{
 		//Method for centering handles.

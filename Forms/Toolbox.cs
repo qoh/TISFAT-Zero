@@ -372,6 +372,16 @@ namespace TISFAT_ZERO
 					//layerType = typeof(TextLayer);
 					return;
 
+				case "6":
+					TISFAT_ZERO.Forms.Dialogs.PolyPrompt p = new Forms.Dialogs.PolyPrompt();
+
+					if(p.ShowDialog() == DialogResult.OK)
+					{
+						foreach (Layer l in Timeline.layers) { if (l.GetType() == typeof(PolyLayer)) { x++; } }
+						Program.TimelineForm.addPolyLayer("Poly Layer " + x, Convert.ToInt32(p.numericUpDown1.Value));
+					}
+					return;
+
 				default:
 					return;
 			}
