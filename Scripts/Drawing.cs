@@ -10,7 +10,8 @@ namespace TISFAT_ZERO.Scripts
 {
 	public class ContextNotDefinedException : Exception
 	{
-		public ContextNotDefinedException(string message) : base(message)
+		public ContextNotDefinedException(string message)
+			: base(message)
 		{ }
 	}
 
@@ -49,7 +50,7 @@ namespace TISFAT_ZERO.Scripts
 		public static void DrawGraphics(int type, Color color, Point one, int width, int height, Point two, int textureID = 0, float rotation = 0)
 		{
 			//if (!MadeCurrent)
-				//throw new ContextNotDefinedException("Call made to DrawGraphics without the correct context set; Be sure to call ReadyDraw(GLControl); before calling DrawGraphics!");
+			//throw new ContextNotDefinedException("Call made to DrawGraphics without the correct context set; Be sure to call ReadyDraw(GLControl); before calling DrawGraphics!");
 
 			//Invert the y so OpenGL can draw it right-side up
 			one.Y = GL_HEIGHT - one.Y;
@@ -221,7 +222,7 @@ namespace TISFAT_ZERO.Scripts
 					break;
 
 				//Polys
-				case(7):
+				case (7):
 					GL.Color4(color);
 
 					GL.Begin(BeginMode.TriangleFan);
@@ -234,6 +235,64 @@ namespace TISFAT_ZERO.Scripts
 			GL.Disable(EnableCap.Blend);
 
 			MadeCurrent = false;
+		}
+
+		public static void DrawPoly(Point[] positions, Color color)
+		{
+			Random rand = new Random();
+			int r, g, b;
+
+			//Draw it once with Always
+			GL.Enable(EnableCap.StencilTest);
+			GL.StencilMask(0xFFFFFF);
+			GL.StencilFunc(StencilFunction.Always, 1, 1);
+			GL.StencilOp(StencilOp.Keep, StencilOp.Keep, StencilOp.Incr);
+
+			GL.Begin(BeginMode.TriangleFan);
+
+			foreach (Point x in positions)
+			{
+				r = rand.Next(255);
+				g = rand.Next(255);
+				b = rand.Next(255);
+
+				color = Color.FromArgb(255, r, g, b);
+
+				GL.Color4(color);
+
+				//Invert the Y axis so it draws right
+				int i;
+				i = GL_HEIGHT - x.Y;
+
+				GL.Vertex2(x.X, i);
+			}
+
+
+			GL.End();
+
+			//Draw it once more with equal
+			GL.StencilFunc(StencilFunction.Equal, 1, 1);
+
+			GL.Begin(BeginMode.TriangleFan);
+
+			foreach (Point x in positions.Reverse())
+			{
+				r = rand.Next(255);
+				g = rand.Next(255);
+				b = rand.Next(255);
+
+				color = Color.FromArgb(255, r, g, b);
+
+				GL.Color4(color);
+
+				//Invert the Y axis so it draws right
+				int i;
+				i = GL_HEIGHT - x.Y;
+
+				GL.Vertex2(x.X, i);
+			}
+
+			GL.End();
 		}
 
 		private static void DrawCircle(float cx, float cy, float r)

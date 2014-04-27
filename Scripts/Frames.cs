@@ -156,8 +156,8 @@ namespace TISFAT_ZERO
 				StickJoint t = new StickJoint("Poly Joint", new Point((int)x, (int)y), 1, Color.Black, Color.Red);
 				Joints.Add(t);
 
-				if (Joints.Count > 1)
-					t.parent = Joints[Joints.IndexOf(t) - 1];
+				//if (Joints.Count > 1)
+				//	t.parent = Joints[Joints.IndexOf(t) - 1];
 			}
 
 			//Position them correctly
@@ -165,15 +165,6 @@ namespace TISFAT_ZERO
 			Joints[0].location = new Point(222, 195);
 			for (int i = 1;i < Joints.Count;i++)
 				Joints[i].location = new Point(Joints[0].location.X + Functions.calcFigureDiff(oldLoc, Joints[i]).X, Joints[0].location.Y + Functions.calcFigureDiff(oldLoc, Joints[i]).Y);
-
-			for (int i = 0;i < Joints.Count;i++)
-			{
-				if (Joints[i].parent != null)
-				{
-					Joints[i].CalcLength(null);
-					Joints[i].parent.children.Add(Joints[i]);
-				}
-			}
 		}
 	}
 
