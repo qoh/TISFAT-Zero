@@ -155,5 +155,15 @@ namespace TISFAT_ZERO
 			System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
 			return new string(chars);
 		}
+
+		public static double lerp(double t, double a, double b)
+		{
+			return a + (b - a) * t;
+		}
+
+		public static double sine(double t, double a, double b)
+		{
+			return lerp(Math.Sin(t * (Math.PI / 2)), a, b);
+		}
 	}
 }

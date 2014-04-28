@@ -29,6 +29,7 @@ namespace TISFAT_ZERO
 		public KeyFrame frm_selected;
 
 		private bool mouseDown = false, isPlaying = false;
+		public bool looping = true;
 
 		private List<string> layers_dispNames = new List<string>();
 
@@ -828,9 +829,18 @@ namespace TISFAT_ZERO
 			}
 			else
 			{
-				playTimer.Stop();
-				Program.ToolboxForm.btn_playPause.Text = "Play";
-				Program.ToolboxForm.isPlaying = isPlaying = false;
+				if (!looping)
+				{
+					playTimer.Stop();
+					Program.ToolboxForm.btn_playPause.Text = "Play";
+					Program.ToolboxForm.isPlaying = isPlaying = false;
+				}
+				else
+				{
+					frm_selPos = 0;
+					setFrame();
+					Refresh();
+				}
 			}
 
 		}
@@ -845,7 +855,7 @@ namespace TISFAT_ZERO
 		/// <param name="fps">The FPS.</param>
 		public void startTimer(byte fps)
 		{
-			int mspertick = 1000 / fps;
+			int mspertick = (int)((1000 / fps) / 1.03);
 			playTimer.Interval = mspertick;
 
 			layer_sel = -1; //the -1 layer is the timeline 'layer'

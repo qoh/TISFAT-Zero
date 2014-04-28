@@ -211,7 +211,7 @@ namespace TISFAT_ZERO
 					num_pnlLine_thickness.Value = Canvas.activeFigure.Joints[0].thickness;
 					pnlOpen = panels[2];
 				}
-				else if (Canvas.activeFigure.type == 3)
+				else if (Canvas.activeFigure.type == 3 || Canvas.activeFigure.type == 6)
 				{
 					pnl_Properties_Stick.Visible = false;
 					pnl_Properties_Rect.Visible = true;
@@ -220,7 +220,11 @@ namespace TISFAT_ZERO
 
 					pic_rectFillColor.BackColor = Canvas.activeFigure.figColor;
 					pic_rectOLColor.BackColor = Canvas.activeFigure.Joints[0].color;
-					chk_rectFilled.Checked = ((StickRect)Canvas.activeFigure).filled;
+
+					if (Canvas.activeFigure.type == 3)
+						chk_rectFilled.Checked = ((StickRect)Canvas.activeFigure).filled;
+					else
+						chk_rectFilled.Checked = ((StickPoly)Canvas.activeFigure).filled;
 
 					num_rectFillAlpha.Value = Canvas.activeFigure.figColor.A;
 					num_rectOLAlpha.Value = Canvas.activeFigure.Joints[0].color.A;
@@ -577,6 +581,11 @@ namespace TISFAT_ZERO
 
 			StickEditor sticked = new StickEditor(tempfile);
 			sticked.ShowDialog();
+		}
+
+		private void ckb_LoopAnim_CheckedChanged(object sender, EventArgs e)
+		{
+			Program.TimelineForm.looping = ckb_LoopAnim.Checked;
 		}
 	}
 }

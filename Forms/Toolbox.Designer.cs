@@ -29,20 +29,20 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Default Figure");
-			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Custom Figure..");
-			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Stick Figures", new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
-			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Line");
-			System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Rectangle");
-			System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Poly");
-			System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Shapes", new System.Windows.Forms.TreeNode[] {
-            treeNode4,
-            treeNode5,
-            treeNode6});
-			System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Light Source");
-			System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Text");
+			System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Default Figure");
+			System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Custom Figure..");
+			System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Stick Figures", new System.Windows.Forms.TreeNode[] {
+            treeNode10,
+            treeNode11});
+			System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Line");
+			System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Rectangle");
+			System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Poly");
+			System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Shapes", new System.Windows.Forms.TreeNode[] {
+            treeNode13,
+            treeNode14,
+            treeNode15});
+			System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("Light Source");
+			System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Text");
 			this.pnl_mainPanel = new System.Windows.Forms.Panel();
 			this.pnl_addTools = new System.Windows.Forms.Panel();
 			this.trv_addView = new System.Windows.Forms.TreeView();
@@ -108,6 +108,7 @@
 			this.btn_cancelButtonDraw = new System.Windows.Forms.Button();
 			this.animTimer = new System.Windows.Forms.Timer(this.components);
 			this.dlg_Color = new System.Windows.Forms.ColorDialog();
+			this.ckb_LoopAnim = new System.Windows.Forms.CheckBox();
 			this.pnl_mainPanel.SuspendLayout();
 			this.pnl_addTools.SuspendLayout();
 			this.pnl_Properties.SuspendLayout();
@@ -148,7 +149,7 @@
 			this.pnl_mainPanel.Location = new System.Drawing.Point(0, 0);
 			this.pnl_mainPanel.Margin = new System.Windows.Forms.Padding(0);
 			this.pnl_mainPanel.Name = "pnl_mainPanel";
-			this.pnl_mainPanel.Size = new System.Drawing.Size(1021, 785);
+			this.pnl_mainPanel.Size = new System.Drawing.Size(163, 336);
 			this.pnl_mainPanel.TabIndex = 2;
 			// 
 			// pnl_addTools
@@ -166,49 +167,49 @@
 			this.trv_addView.FullRowSelect = true;
 			this.trv_addView.Location = new System.Drawing.Point(0, 0);
 			this.trv_addView.Name = "trv_addView";
-			treeNode1.Name = "nde_Stick_Default";
-			treeNode1.Tag = "0";
-			treeNode1.Text = "Default Figure";
-			treeNode1.ToolTipText = "The default stick figure";
-			treeNode2.Name = "nde_Stick_Custom";
-			treeNode2.Tag = "1";
-			treeNode2.Text = "Custom Figure..";
-			treeNode2.ToolTipText = "Create your own figure, or load an existing one";
-			treeNode3.Checked = true;
-			treeNode3.Name = "nde_StickFigures";
-			treeNode3.Tag = "-1";
-			treeNode3.Text = "Stick Figures";
-			treeNode3.ToolTipText = "Various stick figure objects";
-			treeNode4.Name = "nde_Shape_Line";
-			treeNode4.Tag = "2";
-			treeNode4.Text = "Line";
-			treeNode4.ToolTipText = "A primitive line, from point A to point B.";
-			treeNode5.Name = "nde_Shape_Rect";
-			treeNode5.Tag = "3";
-			treeNode5.Text = "Rectangle";
-			treeNode5.ToolTipText = "A basic rectangle with 4 control points.";
-			treeNode6.Name = "nde_Shape_Poly";
-			treeNode6.Tag = "6";
-			treeNode6.Text = "Poly";
-			treeNode6.ToolTipText = "A shape with a user-defined amount of points";
-			treeNode7.Checked = true;
-			treeNode7.Name = "nde_Shapes";
-			treeNode7.Tag = "-1";
-			treeNode7.Text = "Shapes";
-			treeNode7.ToolTipText = "Various primitive shapes";
-			treeNode8.Name = "nde_lightSource";
-			treeNode8.Tag = "4";
-			treeNode8.Text = "Light Source";
-			treeNode8.ToolTipText = "A source of light for the shading engine";
-			treeNode9.Name = "nde_Text";
-			treeNode9.Tag = "5";
-			treeNode9.Text = "Text";
-			treeNode9.ToolTipText = "A text object with 4 control points and configurable text.";
+			treeNode10.Name = "nde_Stick_Default";
+			treeNode10.Tag = "0";
+			treeNode10.Text = "Default Figure";
+			treeNode10.ToolTipText = "The default stick figure";
+			treeNode11.Name = "nde_Stick_Custom";
+			treeNode11.Tag = "1";
+			treeNode11.Text = "Custom Figure..";
+			treeNode11.ToolTipText = "Create your own figure, or load an existing one";
+			treeNode12.Checked = true;
+			treeNode12.Name = "nde_StickFigures";
+			treeNode12.Tag = "-1";
+			treeNode12.Text = "Stick Figures";
+			treeNode12.ToolTipText = "Various stick figure objects";
+			treeNode13.Name = "nde_Shape_Line";
+			treeNode13.Tag = "2";
+			treeNode13.Text = "Line";
+			treeNode13.ToolTipText = "A primitive line, from point A to point B.";
+			treeNode14.Name = "nde_Shape_Rect";
+			treeNode14.Tag = "3";
+			treeNode14.Text = "Rectangle";
+			treeNode14.ToolTipText = "A basic rectangle with 4 control points.";
+			treeNode15.Name = "nde_Shape_Poly";
+			treeNode15.Tag = "6";
+			treeNode15.Text = "Poly";
+			treeNode15.ToolTipText = "A shape with a user-defined amount of points";
+			treeNode16.Checked = true;
+			treeNode16.Name = "nde_Shapes";
+			treeNode16.Tag = "-1";
+			treeNode16.Text = "Shapes";
+			treeNode16.ToolTipText = "Various primitive shapes";
+			treeNode17.Name = "nde_lightSource";
+			treeNode17.Tag = "4";
+			treeNode17.Text = "Light Source";
+			treeNode17.ToolTipText = "A source of light for the shading engine";
+			treeNode18.Name = "nde_Text";
+			treeNode18.Tag = "5";
+			treeNode18.Text = "Text";
+			treeNode18.ToolTipText = "A text object with 4 control points and configurable text.";
 			this.trv_addView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode7,
-            treeNode8,
-            treeNode9});
+            treeNode12,
+            treeNode16,
+            treeNode17,
+            treeNode18});
 			this.trv_addView.ShowLines = false;
 			this.trv_addView.Size = new System.Drawing.Size(151, 158);
 			this.trv_addView.TabIndex = 26;
@@ -701,7 +702,7 @@
 			this.pnl_ctrlPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this.pnl_ctrlPanel.Location = new System.Drawing.Point(0, 0);
 			this.pnl_ctrlPanel.Name = "pnl_ctrlPanel";
-			this.pnl_ctrlPanel.Size = new System.Drawing.Size(1021, 140);
+			this.pnl_ctrlPanel.Size = new System.Drawing.Size(163, 140);
 			this.pnl_ctrlPanel.TabIndex = 1;
 			// 
 			// tabControl1
@@ -712,12 +713,13 @@
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(1021, 140);
+			this.tabControl1.Size = new System.Drawing.Size(163, 140);
 			this.tabControl1.TabIndex = 1;
 			// 
 			// tabPage1
 			// 
 			this.tabPage1.BackColor = System.Drawing.Color.LightGray;
+			this.tabPage1.Controls.Add(this.ckb_LoopAnim);
 			this.tabPage1.Controls.Add(this.maskedTextBox1);
 			this.tabPage1.Controls.Add(this.btn_playPause);
 			this.tabPage1.Controls.Add(this.lbl_FPS);
@@ -725,13 +727,13 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(1013, 114);
+			this.tabPage1.Size = new System.Drawing.Size(155, 114);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Control";
 			// 
 			// maskedTextBox1
 			// 
-			this.maskedTextBox1.Location = new System.Drawing.Point(80, 44);
+			this.maskedTextBox1.Location = new System.Drawing.Point(74, 34);
 			this.maskedTextBox1.Maximum = new decimal(new int[] {
             120,
             0,
@@ -756,7 +758,7 @@
 			// 
 			this.btn_playPause.Font = new System.Drawing.Font("Lucida Sans", 8.25F);
 			this.btn_playPause.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(129)))), ((int)(((byte)(145)))));
-			this.btn_playPause.Location = new System.Drawing.Point(41, 85);
+			this.btn_playPause.Location = new System.Drawing.Point(40, 85);
 			this.btn_playPause.Name = "btn_playPause";
 			this.btn_playPause.Size = new System.Drawing.Size(75, 23);
 			this.btn_playPause.TabIndex = 3;
@@ -767,7 +769,7 @@
 			// lbl_FPS
 			// 
 			this.lbl_FPS.AutoSize = true;
-			this.lbl_FPS.Location = new System.Drawing.Point(47, 47);
+			this.lbl_FPS.Location = new System.Drawing.Point(41, 37);
 			this.lbl_FPS.Name = "lbl_FPS";
 			this.lbl_FPS.Size = new System.Drawing.Size(30, 13);
 			this.lbl_FPS.TabIndex = 2;
@@ -776,7 +778,7 @@
 			// lbl_frameCount
 			// 
 			this.lbl_frameCount.AutoSize = true;
-			this.lbl_frameCount.Location = new System.Drawing.Point(43, 7);
+			this.lbl_frameCount.Location = new System.Drawing.Point(50, 7);
 			this.lbl_frameCount.Name = "lbl_frameCount";
 			this.lbl_frameCount.Size = new System.Drawing.Size(54, 13);
 			this.lbl_frameCount.TabIndex = 0;
@@ -892,12 +894,25 @@
 			this.animTimer.Interval = 24;
 			this.animTimer.Tick += new System.EventHandler(this.animTimer_Tick);
 			// 
+			// ckb_LoopAnim
+			// 
+			this.ckb_LoopAnim.AutoSize = true;
+			this.ckb_LoopAnim.Checked = true;
+			this.ckb_LoopAnim.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.ckb_LoopAnim.Location = new System.Drawing.Point(52, 62);
+			this.ckb_LoopAnim.Name = "ckb_LoopAnim";
+			this.ckb_LoopAnim.Size = new System.Drawing.Size(50, 17);
+			this.ckb_LoopAnim.TabIndex = 5;
+			this.ckb_LoopAnim.Text = "Loop";
+			this.ckb_LoopAnim.UseVisualStyleBackColor = true;
+			this.ckb_LoopAnim.CheckedChanged += new System.EventHandler(this.ckb_LoopAnim_CheckedChanged);
+			// 
 			// Toolbox
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.White;
-			this.ClientSize = new System.Drawing.Size(1021, 785);
+			this.ClientSize = new System.Drawing.Size(163, 336);
 			this.ControlBox = false;
 			this.Controls.Add(this.pnl_mainPanel);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -1010,5 +1025,6 @@
 		private System.Windows.Forms.Button btn_Properties_Edit;
 		private System.Windows.Forms.Label lbl_Properties_Bitmap;
 		private System.Windows.Forms.Button btn_bitmapUseNone;
+		private System.Windows.Forms.CheckBox ckb_LoopAnim;
 	}
 }

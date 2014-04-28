@@ -97,28 +97,31 @@ namespace TISFAT_ZERO
 				if (selectedJoint != null)
 				{
 					if (selectedJoint.ParentFigure != null)
-
-						if (selectedJoint.ParentFigure.type != 3)
+						if (!(selectedJoint.ParentFigure.type == 3 || selectedJoint.ParentFigure.type == 6))
 						{
 							selectedJoint.SetPos(e.X, e.Y);
 							Program.ToolboxForm.lbl_dbgAngleToParent.Text = "AngleToParent: " + selectedJoint.AngleToParent;
 							Refresh();
 						}
-				}
-				else if (selectedJoint != null && (selectedJoint.ParentFigure.type == 3) || (selectedJoint.ParentFigure.type == 6))
-				{
-					selectedJoint.SetPosAbs(e.X, e.Y);
-					
-					if(selectedJoint.ParentFigure.type == 3)
-						((StickRect)selectedJoint.ParentFigure).onRectJointMoved(selectedJoint);
+						else
+						{
+							selectedJoint.SetPosAbs(e.X, e.Y);
+
+							if (selectedJoint.ParentFigure.type == 3)
+								((StickRect)selectedJoint.ParentFigure).onRectJointMoved(selectedJoint);
+						}
 				}
 
 				//This prevents any other figures from becoming active as you are dragging a joint.
+				//Deprecated for now, possibly of some use in the future.
+
+				/*
 				foreach (StickObject fig in figureList)
 				{
 					if (!(fig == activeFigure))
 						fig.isActiveFig = false;
 				}
+				*/
 			}
 			else if (draw & e.Button == MouseButtons.Right)
 			{
@@ -139,7 +142,8 @@ namespace TISFAT_ZERO
 			}
 
 			//This is what sets the active figure to whatever figure owns the joint that you
-			//moused over.
+			//moused over. I'm pretty sure that activeFigure is deprecated because multiple figures can't be on the same 
+			//layer anymore (for now).
 			for (int i = 0;i < figureList.Count;i++)
 			{
 				if (figureList[i].getPointAt(new Point(e.X, e.Y), 6) != -1 && figureList[i].drawHandles)
@@ -170,7 +174,7 @@ namespace TISFAT_ZERO
 		/// <summary>
 		/// Handles the MouseDown event of the Canvas control.
 		/// </summary>
-		/// <param name="sender">The source of the event.</param>
+		/// <param name="sender">The source of the event.</param>y
 		/// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
 		private void Canvas_MouseDown(object sender, MouseEventArgs e)
 		{
@@ -231,7 +235,7 @@ namespace TISFAT_ZERO
 					}
 				}
 			}
-			if (e.Button == MouseButtons.Right & !(e.Button == MouseButtons.Left))
+			if (e.Button == MouseButtons.Right)
 			{
 				if (activeFigure == null)
 					return;
@@ -557,6 +561,10 @@ namespace TISFAT_ZERO
 
 		private void GL_GRAPHICS_Paint(object sender, PaintEventArgs e)
 		{
+			//Reverse the figure / tweenfigure list.
+			figureList.Reverse();
+			tweenFigs.Reverse();
+
 			if (!GLLoaded)
 				return;
 
@@ -586,6 +594,10 @@ namespace TISFAT_ZERO
 
 			for (int i = figureList.Count;i > 0;i--)
 				figureList[i - 1].drawFigHandles();
+
+			//Re-reverse the figure / tweenfigure list.
+			figureList.Reverse();
+			tweenFigs.Reverse();
 
 			GL_GRAPHICS.SwapBuffers();
 		}

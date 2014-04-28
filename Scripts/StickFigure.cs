@@ -402,16 +402,6 @@ namespace TISFAT_ZERO
 			Bitmap_CurrentID = pEnd.Bitmap_CurrentID;
 		}
 
-		private double lerp(double t, double a, double b)
-		{
-			return a + (b - a) * t;
-		}
-
-		private double sine(double t, double a, double b)
-		{
-			return lerp(Math.Sin(t * (Math.PI / 2)), a, b);
-		}
-
 		public void removeChildren()
 		{
 			for (int i = children.Count;i > 0;i--)
@@ -649,7 +639,7 @@ namespace TISFAT_ZERO
 				foreach(StickJoint j in Joints)
 					pos.Add(j.location);
 
-				Drawing.DrawPoly(pos.ToArray(), Color.FromArgb(100, 0, 148, 255));
+				Drawing.DrawPoly(pos.ToArray(), figColor);
 			}
 			foreach (StickJoint i in Joints)
 			{
@@ -1148,6 +1138,8 @@ namespace TISFAT_ZERO
 
 	public class StickPoly : StickObject
 	{
+		public bool filled = true;
+
 		public StickPoly(bool isTweenFigure = false, int jointCount = 4)
 		{
 			type = 6;
@@ -1164,10 +1156,10 @@ namespace TISFAT_ZERO
 
 				StickJoint t = new StickJoint("Poly Joint", new Point((int)x, (int)y), 1, Color.Black, Color.Red);
 				Joints.Add(t);
+				t.ParentFigure = this;
 
 				//if(Joints.Count > 1)
 				//	t.parent = Joints[Joints.IndexOf(t) - 1];
-					
 			}
 
 			//Position them correctly
