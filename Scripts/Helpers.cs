@@ -167,3 +167,16 @@ namespace TISFAT_ZERO
 		}
 	}
 }
+
+namespace TISFAT_ZERO.ExtensionMethods
+{
+	public static class Extensions
+	{
+		public static byte[] ToByteArray(this Bitmap bitty)
+		{
+			ImageConverter converter = new ImageConverter();
+			return (byte[])converter.ConvertTo(bitty, typeof(byte[]));
+		}
+
+	}
+}
