@@ -6,7 +6,7 @@ TISFAT:Zero is a program made by Evar678 (Evar Smith), and Ipquarx (Ryan Froese)
 
 Features
 ===========
-(Content coming soon)
+(Content coming August+)
 
 Libraries
 ===========
