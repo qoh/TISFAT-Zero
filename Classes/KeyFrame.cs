@@ -69,6 +69,8 @@ namespace TISFAT_Zero
 					j.CalcLength();
 					j.parentJoint.childJoints.Add(j);
 				}
+
+				j.parentFigure = frameFig;
 			}
 
 			Position = framePosition;

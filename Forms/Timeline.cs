@@ -579,6 +579,19 @@ namespace TISFAT_Zero
 			Timeline_Resize(null, null);
 		}
 
+		public void FirstLoad()
+		{
+			selectedLayer = Layers[0];
+			selectedLayer_Ind = 0;
+
+			Layers[0].layerIsSelected = true;
+
+			selectedFrameset = selectedLayer.GetFramesetAt(0);
+			selectedKeyFrame = selectedFrameset.GetKeyFrameAt(0);
+
+			setFrame();
+		}
+
 		public static Layer addNewLayer(Type layerType, string name = null)
 		{
 			//Make sure the given type is a type derived from Layer

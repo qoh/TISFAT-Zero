@@ -46,7 +46,8 @@ namespace TISFAT_Zero
 			Program.TheToolbox.Show();
 			Program.TheCanvas.Show();
 
-			Timeline.setFrame();
+			Timeline.setFrame(0);
+			Program.TheTimeline.FirstLoad();
 			Timeline.doRender();
 		}
 
