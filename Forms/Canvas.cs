@@ -97,7 +97,7 @@ namespace TISFAT_ZERO
 				if (selectedJoint != null)
 				{
 					if (selectedJoint.ParentFigure != null)
-						if (!(selectedJoint.ParentFigure.type == 3 || selectedJoint.ParentFigure.type == 6))
+						if (!(selectedJoint.ParentFigure.type == 3 || selectedJoint.ParentFigure.type == 6 || selectedJoint.ParentFigure.type == 7))
 						{
 							selectedJoint.SetPos(e.X, e.Y);
 							Program.ToolboxForm.lbl_dbgAngleToParent.Text = "AngleToParent: " + selectedJoint.AngleToParent;
@@ -107,8 +107,13 @@ namespace TISFAT_ZERO
 						{
 							selectedJoint.SetPosAbs(e.X, e.Y);
 
-							if (selectedJoint.ParentFigure.type == 3)
-								((StickRect)selectedJoint.ParentFigure).onRectJointMoved(selectedJoint);
+							if (selectedJoint.ParentFigure.type == 3 || selectedJoint.ParentFigure.type == 7)
+							{
+								if (selectedJoint.ParentFigure.type == 3)
+									((StickRect)selectedJoint.ParentFigure).onRectJointMoved(selectedJoint);
+								else
+									((StickImage)selectedJoint.ParentFigure).onJointMoved(selectedJoint);
+							}
 						}
 				}
 
@@ -559,6 +564,11 @@ namespace TISFAT_ZERO
 			GL_GRAPHICS.Invalidate();
 		}
 
+		/// <summary>
+		/// Handles the Paint event of the GL_GRAPHICS control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="PaintEventArgs"/> instance containing the event data.</param>
 		private void GL_GRAPHICS_Paint(object sender, PaintEventArgs e)
 		{
 			//Reverse the figure / tweenfigure list.

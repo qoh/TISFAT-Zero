@@ -7,6 +7,7 @@ using System.Text;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL;
+using TISFAT_ZERO.Scripts;
 
 namespace TISFAT_ZERO
 {
@@ -39,6 +40,33 @@ namespace TISFAT_ZERO
 		public static int compareDrawOrder(StickJoint x, StickJoint y)
 		{
 			return x.drawOrder - y.drawOrder;
+		}
+
+		public static PointF getFigureCenter(StickObject fig)
+		{
+			float? x1 = null, y1 = null;
+			float? x2 = null, y2 = null;
+
+			foreach(StickJoint joint in fig.Joints)
+			{
+				x1 = x1 != null ? Math.Min(x1.Value, joint.location.X) : joint.location.X;
+				y1 = y1 != null ? Math.Min(y1.Value, joint.location.Y) : joint.location.Y;
+				x2 = x2 != null ? Math.Max(x2.Value, joint.location.X) : joint.location.X;
+				y2 = y2 != null ? Math.Max(y2.Value, joint.location.Y) : joint.location.Y;
+			}
+
+			// Drawing.DrawGraphics(0, Color.Green, new Point((int)Math.Round(x1.Value), (int)Math.Round(y1.Value)), 2, 0, new Point((int)Math.Round(x1.Value), (int)Math.Round(y2.Value)));
+			// Drawing.DrawGraphics(0, Color.Green, new Point((int)Math.Round(x1.Value), (int)Math.Round(y2.Value)), 2, 0, new Point((int)Math.Round(x2.Value), (int)Math.Round(y2.Value)));
+			// Drawing.DrawGraphics(0, Color.Green, new Point((int)Math.Round(x2.Value), (int)Math.Round(y2.Value)), 2, 0, new Point((int)Math.Round(x2.Value), (int)Math.Round(y1.Value)));
+			// Drawing.DrawGraphics(0, Color.Green, new Point((int)Math.Round(x2.Value), (int)Math.Round(y1.Value)), 2, 0, new Point((int)Math.Round(x1.Value), (int)Math.Round(y1.Value)));
+
+			return new PointF((x2.Value + x1.Value) / 2, (y2.Value + y1.Value) / 2);
+		}
+
+		public static Point getFigureCenter(StickObject fig, int derp)
+		{
+			PointF center = getFigureCenter(fig);
+			return new Point((int)Math.Round(center.X), (int)Math.Round(center.Y));
 		}
 
 		public static Point calcFigureDiff(StickJoint a, StickJoint b)
@@ -120,11 +148,12 @@ namespace TISFAT_ZERO
 			}
 			catch(Exception e)
 			{
-				Console.WriteLine(e.Message);
+				Console.WriteLine("Adding texture ID Failed! Reason: " + e.Message);
 				return;
 			}
 
 			joint.textureIDs.Add(GL.GenTexture());
+			Console.WriteLine("Texture ID Added");
 
 			GL.BindTexture(TextureTarget.Texture2D, joint.textureIDs[i]);
 

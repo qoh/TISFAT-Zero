@@ -706,6 +706,9 @@ namespace TISFAT_ZERO
 			if (l.type == 4)
 				writeCustomFigBlock(l, stream);
 
+			if (l.type == 7)
+				writeImageBlock(l, stream);
+
 			for (int x = 0;x < l.keyFrames.Count;x++)
 				writeFrameBlock(l.keyFrames[x], stream);
 
@@ -715,6 +718,21 @@ namespace TISFAT_ZERO
 			b2.Add(0);
 
 			stream.Write(b2.ToArray(), 0, 7);
+		}
+
+		private static void writeImageBlock(Layer l, Stream s)
+		{
+			List<byte> bytes = new List<byte>();
+
+			bytes.AddRange(BitConverter.GetBytes((ushort)8));
+
+			Bitmap b = ((ImageLayer)l).img;
+			ImageConverter converter = new ImageConverter();
+			bytes.AddRange((byte[])converter.ConvertTo(b, typeof(byte[])));
+
+			bytes.InsertRange(0, BitConverter.GetBytes(bytes.Count));
+
+			s.Write(bytes.ToArray(), 0, bytes.Count);
 		}
 
 		private static void writeCustomFigBlock(Layer l, Stream s)
@@ -813,6 +831,8 @@ namespace TISFAT_ZERO
 			{
 				bytes.AddRange(BitConverter.GetBytes((short)s.location.X));
 				bytes.AddRange(BitConverter.GetBytes((short)s.location.Y));
+				bytes.AddRange(BitConverter.GetBytes((short)s.thickness));
+				bytes.AddRange(BitConverter.GetBytes((short)s.length));
 			}
 
 			bytes.InsertRange(0, BitConverter.GetBytes(bytes.Count));
@@ -915,6 +935,15 @@ namespace TISFAT_ZERO
 				}
 				else if (layerType == 5)
 					newLayer = new LightLayer(name, new LightObject(false), zeCanvas);
+				else if (layerType == 7)
+				{
+					otherTmpBlock = readNextBlock(file);
+
+					Stream s = new MemoryStream(otherTmpBlock.data);
+					Bitmap b = (Bitmap)Bitmap.FromStream(s);
+
+					newLayer = new ImageLayer(name, new StickImage(b, false), zeCanvas, b);
+				}
 				else
 					continue; //Only 1, 2, 3, 4, and 5 have been coded so far, so only load those types.
 
@@ -941,6 +970,7 @@ namespace TISFAT_ZERO
 						StickCustom figure = CustomFigLoader.loadStickFile(otherTmpBlock.data);
 
 						//figure.reSortJoints(); //For the love of GOD do not uncomment this!!!
+						
 
 						for (int i = 0;i < figure.Joints.Count();i++)
 						{
@@ -976,6 +1006,13 @@ namespace TISFAT_ZERO
 					}
 					else if (layerType == 5)
 						f = new LightFrame(0);
+					else if (layerType == 7)
+					{
+						Stream s = new MemoryStream(otherTmpBlock.data);
+						Bitmap b = (Bitmap)Bitmap.FromStream(s);
+
+						f = new ImageFrame(0, b);
+					}
 					else
 						continue; //Nothing past layer type 5 has even begun implementation, so if we encounter any just skip.
 
@@ -1026,13 +1063,15 @@ namespace TISFAT_ZERO
 					{
 						for (int a = 0;a < jointcount;a++)
 						{
-							int x = 4 * a + 2;
+							int x = 8 * a + 2;
 
 							if (layerType != 4 && layerType != 3)
 								f.Joints[a].color = figColor;
 
 							f.Joints[a].location = new Point(BitConverter.ToInt16(posblk.data, x),
 															BitConverter.ToInt16(posblk.data, x + 2));
+							f.Joints[a].thickness = BitConverter.ToInt16(posblk.data, x + 4);
+							f.Joints[a].length = BitConverter.ToInt16(posblk.data, x + 6);
 
 							if (layerType == 2)
 								f.Joints[a].thickness = propBlock.data[5];

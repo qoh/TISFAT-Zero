@@ -59,6 +59,9 @@
     <EmbeddedResource Include="Forms\Dialogs\PolyPrompt.resx">
       <DependentUpon>PolyPrompt.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Dialogs\ScalePrompt.resx">
+      <DependentUpon>ScalePrompt.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Scenes.resx">
       <DependentUpon>Scenes.cs</DependentUpon>
     </EmbeddedResource>
@@ -116,6 +119,12 @@
     </Compile>
     <Compile Include="Forms\Dialogs\PolyPrompt.Designer.cs">
       <DependentUpon>PolyPrompt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Dialogs\ScalePrompt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Dialogs\ScalePrompt.Designer.cs">
+      <DependentUpon>ScalePrompt.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\MainF.cs">
       <SubType>Form</SubType>

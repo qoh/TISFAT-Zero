@@ -402,6 +402,39 @@ namespace TISFAT_ZERO
 			Bitmap_CurrentID = pEnd.Bitmap_CurrentID;
 		}
 
+		public void Scale(Single sPercent, PointF center)
+		{
+			StickJoint Child;
+
+			this.thickness = (int)Math.Round(this.thickness * sPercent);
+
+			// loop thorugh joints here pls
+
+			float centerX = center.X;
+			float centerY = center.Y;
+
+			float relativeX = this.location.X - centerX;
+			float relativeY = this.location.Y - centerY;
+
+			relativeX *= sPercent;
+			relativeY *= sPercent;
+
+			this.location.X = (int)Math.Round(centerX + relativeX);
+			this.location.Y = (int)Math.Round(centerY + relativeY);
+
+			//this.location.X = (int)Math.Round(this.location.X * sPercent);
+			//this.location.Y = (int)Math.Round(this.location.Y * sPercent);
+
+			this.length = (int)Math.Round(this.length * sPercent);
+			/*
+			for(int i = 0; i < this.children.Count; i++)
+			{
+				Child = children[i];
+				Child.Scale(sPercent);
+			}
+			*/
+		}
+
 		public void removeChildren()
 		{
 			for (int i = children.Count;i > 0;i--)
@@ -593,7 +626,9 @@ namespace TISFAT_ZERO
 
 		private void drawJoints(bool fromCanvas = true, int? x = null)
 		{
-			if(x == null)
+			bool drawLines = true;
+
+			if (x == null)
 				Drawing.ReadyDraw(Program.CanvasForm.glGraphics);
 			else
 				Drawing.ReadyDraw(StickEditor.theSticked.GL_GRAPHICS);
@@ -636,30 +671,40 @@ namespace TISFAT_ZERO
 			if (type == 6)
 			{
 				List<Point> pos = new List<Point>();
-				foreach(StickJoint j in Joints)
+				foreach (StickJoint j in Joints)
 					pos.Add(j.location);
 
 				Drawing.DrawPoly(pos.ToArray(), figColor);
 			}
-			foreach (StickJoint i in Joints)
-			{
-				if (i.parent != null)
-				{
-					Drawing.DrawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
-				}
-				else if (i.drawState != 0)
-				{
-					Drawing.DrawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
-				}
 
-				if (i.Bitmap_CurrentID != -1)
-					if (i.bitmaps.Count != 0)
-						if (i.textureIDs[i.Bitmap_CurrentID] != 0)
-						{
-							Point offset = rotate(i.Bitmap_Offsets[i.Bitmap_CurrentID], i.AngleToParent);
-							Drawing.DrawGraphics(6, Color.White, new Point(i.location.X - offset.X, i.location.Y - offset.Y), i.bitmaps[i.Bitmap_CurrentID].Width, i.bitmaps[i.Bitmap_CurrentID].Height, new Point(0, 0), i.textureIDs[i.Bitmap_CurrentID], (float)i.AngleToParent - i.Bitmap_Rotations[i.Bitmap_CurrentID]);
-						}
+			if (type == 7)
+			{
+				drawLines = false;
+
+				if(Joints[0].textureIDs.Count > 0)
+					Drawing.DrawGraphics(6, Color.White, new Point(Joints[0].location.X, Joints[1].location.Y), Joints[3].location.X - Joints[0].location.X, Joints[0].location.Y - Joints[1].location.Y, new Point(0, 0), Joints[0].textureIDs[0]);
 			}
+
+			if (drawLines)
+				foreach (StickJoint i in Joints)
+				{
+					if (i.parent != null)
+					{
+						Drawing.DrawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.parent.location.X, i.parent.location.Y));
+					}
+					else if (i.drawState != 0)
+					{
+						Drawing.DrawGraphics(i.drawState, i.color, new Point(i.location.X, i.location.Y), i.thickness, i.thickness, new Point(i.location.X, i.location.Y));
+					}
+
+					if (i.Bitmap_CurrentID != -1)
+						if (i.bitmaps.Count != 0)
+							if (i.textureIDs[i.Bitmap_CurrentID] != 0)
+							{
+								Point offset = rotate(i.Bitmap_Offsets[i.Bitmap_CurrentID], i.AngleToParent);
+								Drawing.DrawGraphics(6, Color.White, new Point(i.location.X - offset.X, i.location.Y - offset.Y), i.bitmaps[i.Bitmap_CurrentID].Width, i.bitmaps[i.Bitmap_CurrentID].Height, new Point(0, 0), i.textureIDs[i.Bitmap_CurrentID], (float)i.AngleToParent - i.Bitmap_Rotations[i.Bitmap_CurrentID]);
+							}
+				}
 
 			GL.Disable(EnableCap.StencilTest);
 		}
@@ -1035,7 +1080,7 @@ namespace TISFAT_ZERO
 			Joints.Add(new StickJoint("CornerLL", new Point(30, 70), 3, Color.Black, Color.Yellow, 0, 0, false, Joints[0]));
 			Joints.Add(new StickJoint("CornerLR", new Point(150, 70), 3, Color.Black, Color.Red, 0, 0, false, Joints[1]));
 			Joints.Add(new StickJoint("CornerTR", new Point(150, 30), 3, Color.Black, Color.Blue, 0, 0, false, Joints[2]));
-
+			
 			foreach (StickJoint j in Joints)
 				j.ParentFigure = this;
 
@@ -1172,6 +1217,66 @@ namespace TISFAT_ZERO
 				Canvas.addFigure(this);
 			else
 				Canvas.addTweenFigure(this);
+		}
+	}
+
+	public class StickImage : StickObject
+	{
+		public StickImage(Bitmap image, bool isTweenFigure = false)
+		{
+			type = 7;
+
+			Joints = new List<StickJoint>(4);
+
+			Joints.Add(new StickJoint("CornerTL", new Point(30, 30), 3, Color.Black, Color.LimeGreen, 0, 0, false, null));
+			Joints.Add(new StickJoint("CornerLL", new Point(30, 70), 3, Color.Black, Color.ForestGreen, 0, 0, false, Joints[0]));
+			Joints.Add(new StickJoint("CornerLR", new Point(150, 70), 3, Color.Black, Color.Red, 0, 0, false, Joints[1]));
+			Joints.Add(new StickJoint("CornerTR", new Point(150, 30), 3, Color.Black, Color.Blue, 0, 0, false, Joints[2]));
+
+			foreach (StickJoint j in Joints)
+				j.ParentFigure = this;
+
+			Joints[0].parent = Joints[3];
+			Joints[3].children.Add(Joints[0]);
+
+			Joints[0].bitmaps.Add(image);
+
+			Joints[0].Bitmap_IDs.Add(0);
+			Joints[0].Bitmap_names.Add("bitmap");
+			Joints[0].Bitmap_CurrentID = 0;
+			Joints[0].Bitmap_Rotations.Add(0);
+			Joints[0].Bitmap_Offsets.Add(new Point(0, 0));
+
+			Functions.AssignGlid(Joints[0], 0);
+
+			if (!isTweenFigure)
+				Canvas.addFigure(this);
+			else
+				Canvas.addTweenFigure(this);
+		}
+
+		public void onJointMoved(StickJoint j)
+		{
+			if (j.name == "CornerTL")
+			{
+				Joints[1].location.X = j.location.X;
+				Joints[3].location.Y = j.location.Y;
+			}
+			else if (j.name == "CornerLL")
+			{
+				Joints[0].location.X = j.location.X;
+				Joints[2].location.Y = j.location.Y;
+			}
+			else if (j.name == "CornerLR")
+			{
+				Joints[3].location.X = j.location.X;
+				Joints[1].location.Y = j.location.Y;
+			}
+			else if (j.name == "CornerTR")
+			{
+				Joints[2].location.X = j.location.X;
+				Joints[0].location.Y = j.location.Y;
+			}
 		}
 	}
 }

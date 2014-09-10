@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Globalization;
+using TISFAT_ZERO.Forms.Dialogs;
 
 namespace TISFAT_ZERO
 {
@@ -386,6 +387,16 @@ namespace TISFAT_ZERO
 					}
 					return;
 
+				case "7":
+					dlg_File.Filter = Functions.GetImageFilters();
+
+					if(dlg_File.ShowDialog() == DialogResult.OK)
+					{
+						foreach (Layer l in Timeline.layers) { if (l.GetType() == typeof(ImageLayer)) { x++; } }
+						Program.TimelineForm.addImageLayer("Image Layer " + x, (Bitmap)Image.FromFile(dlg_File.FileName));
+					}
+					return;
+
 				default:
 					return;
 			}
@@ -586,6 +597,12 @@ namespace TISFAT_ZERO
 		private void ckb_LoopAnim_CheckedChanged(object sender, EventArgs e)
 		{
 			Program.TimelineForm.looping = ckb_LoopAnim.Checked;
+		}
+
+		private void btn_scaleButton_Click(object sender, EventArgs e)
+		{
+			ScalePrompt s = new ScalePrompt();
+			s.ShowDialog();
 		}
 	}
 }

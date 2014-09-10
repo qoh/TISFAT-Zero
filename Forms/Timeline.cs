@@ -312,6 +312,21 @@ namespace TISFAT_ZERO
 			return n;
 		}
 
+		public ImageLayer addImageLayer(string name, Bitmap img)
+		{
+			StickImage x = new StickImage(img, false);
+
+			ImageLayer n = new ImageLayer(name, x, Program.CanvasForm, img);
+			layers.Add(n);
+
+			layer_sel = layer_cnt;
+
+			Program.MainformForm.updateByLayers(++layer_cnt);
+
+			setFrame(n.firstKF);
+			return n;
+		}
+
 		/// <summary>
 		/// Resets the timeline as if you restarted the program.
 		/// </summary>
@@ -765,15 +780,23 @@ namespace TISFAT_ZERO
 
 					if (pos - 1 != -1)
 						for (int a = 0;a < cLayer.keyFrames[pos].Joints.Count;a++)
+						{
 							cLayer.keyFrames[pos].Joints[a].location = cLayer.keyFrames[pos - 1].Joints[a].location;
+							cLayer.keyFrames[pos].Joints[a].thickness = cLayer.keyFrames[pos - 1].Joints[a].thickness;
+							cLayer.keyFrames[pos].Joints[a].length = cLayer.keyFrames[pos - 1].Joints[a].length;
+						}
 
 					break;
 
 				case "tst_setPoseNxtKfrm":
 					pos = frm_selInd;
 
-					for (int a = 0; a < cLayer.keyFrames[pos].Joints.Count; a++)
-						frm_selected.Joints[a].location = new Point(cLayer.keyFrames[pos + 1].Joints[a].location.X, cLayer.keyFrames[pos].Joints[a].location.Y);
+					for (int a = 0;a < cLayer.keyFrames[pos].Joints.Count;a++)
+					{
+						cLayer.keyFrames[pos].Joints[a].location = cLayer.keyFrames[pos + 1].Joints[a].location;
+						cLayer.keyFrames[pos].Joints[a].thickness = cLayer.keyFrames[pos + 1].Joints[a].thickness;
+						cLayer.keyFrames[pos].Joints[a].length = cLayer.keyFrames[pos + 1].Joints[a].length;
+					}
 
 					break;
 

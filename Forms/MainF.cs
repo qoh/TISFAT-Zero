@@ -50,12 +50,15 @@ namespace TISFAT_ZERO
 			Program.CanvasForm.Location = new Point(Program.ToolboxForm.Location.X + 4 + Program.ToolboxForm.Width, 10);
 			splitContainer1.Panel2.Controls.Add(Program.CanvasForm);
 
+			//TODO: Finish scenes
+			/*
 			Program.ScenesForm = new Scenes();
 			Program.ScenesForm.TopLevel = false;
 			Program.ScenesForm.Parent = this.splitContainer1.Panel2;
 			Program.ScenesForm.StartPosition = FormStartPosition.Manual;
 			Program.ScenesForm.Location = new Point(Program.CanvasForm.Location.X + 4 + Program.CanvasForm.Width, 10);
 			splitContainer1.Panel2.Controls.Add(Program.ScenesForm);
+			*/
 
 			Program.TimelineForm = new Timeline();
 			Program.TimelineForm.TopLevel = false;
@@ -74,7 +77,7 @@ namespace TISFAT_ZERO
 
 			Program.ToolboxForm.Show();
 			Program.CanvasForm.Show();
-			Program.ScenesForm.Show();
+			//Program.ScenesForm.Show();
 
 			if (Program.loadFile != "")
 				Loader.loadProjectFile(Program.loadFile);
@@ -95,20 +98,6 @@ namespace TISFAT_ZERO
 
 			splitContainer1.Panel1.Controls.RemoveAt(0);
 			Program.TimelineForm.Dispose();
-			splitContainer1.Panel2.Controls.RemoveAt(1);
-			Program.CanvasForm.Dispose();
-
-			Canvas.figureList.Clear();
-
-			Canvas f = new Canvas();
-			Program.CanvasForm = f;
-			f.Size = Properties.User.Default.CanvasSize;
-			f.BackColor = Properties.User.Default.CanvasColor;
-			f.TopLevel = false;
-			f.StartPosition = FormStartPosition.Manual;
-			f.Location = new Point(200, 10);
-			splitContainer1.Panel2.Controls.Add(f);
-			f.Show();
 
 			Program.TimelineForm = new Timeline();
 			Program.TimelineForm.TopLevel = false;
@@ -117,6 +106,11 @@ namespace TISFAT_ZERO
 			Program.TimelineForm.StartPosition = FormStartPosition.Manual;
 			Program.TimelineForm.Location = new Point(0, 0);
 			splitContainer1.Panel1.Controls.Add(Program.TimelineForm);
+
+			Canvas.figureList = new List<StickObject>();
+
+			Program.TimelineForm.addStickLayer("Stick Layer 1");
+
 			Program.TimelineForm.Show();
 
 			if(loading)
@@ -143,6 +137,7 @@ namespace TISFAT_ZERO
 			int height = layersCount * 16;
 
 			Program.TimelineForm.Size = new Size(this.splitContainer1.Width - 2, height);
+			Program.TimelineForm.Refresh();
 		}
 
 		private void splitContainer1_Panel1_Resize(object sender, EventArgs e)

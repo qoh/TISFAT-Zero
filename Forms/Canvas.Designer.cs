@@ -36,15 +36,11 @@ namespace TISFAT_ZERO
 		{
 			this.components = new System.ComponentModel.Container();
 			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.moveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.copyPoseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.applyPoseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.setPoseToPreviousKeyframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.setPoseToNextKeyframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.changeMouthStateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.changeFaceDirectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.flipHorizontallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.flipVerticallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.flipLegsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,36 +52,28 @@ namespace TISFAT_ZERO
 			// contextMenuStrip1
 			// 
 			this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.moveToolStripMenuItem,
             this.copyPoseToolStripMenuItem,
             this.applyPoseToolStripMenuItem,
             this.setPoseToPreviousKeyframeToolStripMenuItem,
             this.setPoseToNextKeyframeToolStripMenuItem,
             this.toolStripSeparator1,
-            this.changeMouthStateToolStripMenuItem,
-            this.changeFaceDirectionToolStripMenuItem,
-            this.toolStripSeparator2,
             this.flipHorizontallyToolStripMenuItem,
             this.flipVerticallyToolStripMenuItem,
             this.flipLegsToolStripMenuItem,
             this.flipArmsToolStripMenuItem});
 			this.contextMenuStrip1.Name = "contextMenuStrip1";
-			this.contextMenuStrip1.Size = new System.Drawing.Size(233, 258);
-			// 
-			// moveToolStripMenuItem
-			// 
-			this.moveToolStripMenuItem.Name = "moveToolStripMenuItem";
-			this.moveToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-			this.moveToolStripMenuItem.Text = "Move";
+			this.contextMenuStrip1.Size = new System.Drawing.Size(233, 208);
 			// 
 			// copyPoseToolStripMenuItem
 			// 
+			this.copyPoseToolStripMenuItem.Enabled = false;
 			this.copyPoseToolStripMenuItem.Name = "copyPoseToolStripMenuItem";
 			this.copyPoseToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
 			this.copyPoseToolStripMenuItem.Text = "Copy Pose";
 			// 
 			// applyPoseToolStripMenuItem
 			// 
+			this.applyPoseToolStripMenuItem.Enabled = false;
 			this.applyPoseToolStripMenuItem.Name = "applyPoseToolStripMenuItem";
 			this.applyPoseToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
 			this.applyPoseToolStripMenuItem.Text = "Apply Pose";
@@ -107,31 +95,16 @@ namespace TISFAT_ZERO
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			this.toolStripSeparator1.Size = new System.Drawing.Size(229, 6);
 			// 
-			// changeMouthStateToolStripMenuItem
-			// 
-			this.changeMouthStateToolStripMenuItem.Name = "changeMouthStateToolStripMenuItem";
-			this.changeMouthStateToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-			this.changeMouthStateToolStripMenuItem.Text = "Change mouth state";
-			// 
-			// changeFaceDirectionToolStripMenuItem
-			// 
-			this.changeFaceDirectionToolStripMenuItem.Name = "changeFaceDirectionToolStripMenuItem";
-			this.changeFaceDirectionToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-			this.changeFaceDirectionToolStripMenuItem.Text = "Change face direction";
-			// 
-			// toolStripSeparator2
-			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(229, 6);
-			// 
 			// flipHorizontallyToolStripMenuItem
 			// 
+			this.flipHorizontallyToolStripMenuItem.Enabled = false;
 			this.flipHorizontallyToolStripMenuItem.Name = "flipHorizontallyToolStripMenuItem";
 			this.flipHorizontallyToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
 			this.flipHorizontallyToolStripMenuItem.Text = "Flip Horizontally";
 			// 
 			// flipVerticallyToolStripMenuItem
 			// 
+			this.flipVerticallyToolStripMenuItem.Enabled = false;
 			this.flipVerticallyToolStripMenuItem.Name = "flipVerticallyToolStripMenuItem";
 			this.flipVerticallyToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
 			this.flipVerticallyToolStripMenuItem.Text = "Flip Vertically";
@@ -186,15 +159,11 @@ namespace TISFAT_ZERO
 		#endregion
 
 		private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-		private System.Windows.Forms.ToolStripMenuItem moveToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem copyPoseToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem applyPoseToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem setPoseToPreviousKeyframeToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem setPoseToNextKeyframeToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-		private System.Windows.Forms.ToolStripMenuItem changeMouthStateToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem changeFaceDirectionToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem flipHorizontallyToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem flipVerticallyToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem flipLegsToolStripMenuItem;

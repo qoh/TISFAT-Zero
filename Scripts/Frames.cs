@@ -185,6 +185,53 @@ namespace TISFAT_ZERO
 		}
 	}
 
+	public class ImageFrame : KeyFrame
+	{
+		public bool filled = true;
+
+		public ImageFrame(List<StickJoint> ps, int po, Bitmap image)
+		{
+			type = 7; pos = po;
+
+			Joints.Add(new StickJoint(ps[0], null));
+			Joints.Add(new StickJoint(ps[1], Joints[0]));
+			Joints.Add(new StickJoint(ps[2], Joints[1]));
+			Joints.Add(new StickJoint(ps[3], Joints[2]));
+			Joints[0].parent = Joints[3];
+
+			Joints[0].bitmaps.Add(image);
+
+			Joints[0].Bitmap_IDs.Add(0);
+			Joints[0].Bitmap_names.Add("bitmap");
+			Joints[0].Bitmap_CurrentID = 0;
+			Joints[0].Bitmap_Rotations.Add(0);
+			Joints[0].Bitmap_Offsets.Add(new Point(0, 0));
+
+			Functions.AssignGlid(Joints[0], 0);
+		}
+
+		public ImageFrame(int po, Bitmap image)
+		{
+			type = 7; pos = po;
+
+			Joints.Add(new StickJoint("CornerTL", new Point(30, 30), 3, Color.Black, Color.LimeGreen, 0, 0, false, null));
+			Joints.Add(new StickJoint("CornerLL", new Point(30, 70), 3, Color.Black, Color.ForestGreen, 0, 0, false, Joints[0]));
+			Joints.Add(new StickJoint("CornerLR", new Point(150, 70), 3, Color.Black, Color.Red, 0, 0, false, Joints[1]));
+			Joints.Add(new StickJoint("CornerTR", new Point(150, 30), 3, Color.Black, Color.Blue, 0, 0, false, Joints[2]));
+			Joints[0].parent = Joints[3];
+
+			Joints[0].bitmaps.Add(image);
+
+			Joints[0].Bitmap_IDs.Add(0);
+			Joints[0].Bitmap_names.Add("bitmap");
+			Joints[0].Bitmap_CurrentID = 0;
+			Joints[0].Bitmap_Rotations.Add(0);
+			Joints[0].Bitmap_Offsets.Add(new Point(0, 0));
+
+			Functions.AssignGlid(Joints[0], 0);
+		}
+	}
+
 	public class custObjectFrame : KeyFrame
 	{
 		public custObjectFrame(List<StickJoint> ps, int po)

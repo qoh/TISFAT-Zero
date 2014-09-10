@@ -635,4 +635,91 @@ namespace TISFAT_ZERO
 			return c;
 		}
 	}
+
+	public class ImageLayer : Layer
+	{
+		public Bitmap img;
+
+		public ImageLayer(string Name, StickImage rect, Canvas _Canvas, Bitmap img)
+		{
+			this.img = img;
+
+			name = Name;
+
+			fig = rect;
+			fig.parentLayer = this;
+
+			theCanvas = _Canvas;
+			tweenFig = new StickImage(img, true);
+			type = 7;
+
+			firstKF = 0;
+			lastKF = 19;
+
+			keyFrames = new List<KeyFrame>();
+
+			ImageFrame first = new ImageFrame(firstKF, img), last = new ImageFrame(lastKF, img);
+
+			foreach (StickJoint j in first.Joints)
+				j.ParentFigure = fig;
+
+			foreach (StickJoint j in last.Joints)
+				j.ParentFigure = fig;
+
+			keyFrames.Add(first);
+			keyFrames.Add(last);
+		}
+
+		public override int insertKeyFrame(int pos)
+		{
+			//If inserting before the first, then make the new keyframe the first and re-arrange list
+			if (pos < firstKF)
+			{
+				firstKF = pos;
+				ImageFrame x = new ImageFrame(keyFrames[0].Joints, pos, img);
+
+				keyFrames.Insert(0, x);
+
+				return 0;
+			}
+			else if (pos > lastKF) //Do the same if it's more than the last
+			{
+				lastKF = pos;
+
+				ImageFrame x = new ImageFrame(keyFrames[keyFrames.Count - 1].Joints, pos, img);
+				x.pos = pos;
+
+				keyFrames.Add(x);
+
+				return keyFrames.Count - 1;
+			}
+
+			ImageFrame n = null;
+			int c = 0;
+
+			//Look through the list for the nearest keyframe (as we want to retain all it's properties except for the position in the timeline)
+			for (int a = 0;a < keyFrames.Count;a++)
+			{
+				ImageFrame k = (ImageFrame)keyFrames[a];
+				if (pos < k.pos)
+				{
+					n = new ImageFrame(keyFrames[c - 1].Joints, pos, img);
+					n.pos = pos;
+					break;
+				}
+				else if (pos > k.pos)
+					c++;
+				else if (pos == k.pos)
+					return -1;
+
+			}
+
+			foreach (StickJoint j in n.Joints)
+				j.ParentFigure = fig;
+
+			keyFrames.Insert(c, n);
+
+			return c;
+		}
+	}
 }
