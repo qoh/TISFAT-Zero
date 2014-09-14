@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("An open source stick figure animation program.")]
 [assembly: AssemblyDescription("TISFAT : Zero")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Palladium Productions")]
+[assembly: AssemblyCompany("http://www.github.com/Evar678")]
 [assembly: AssemblyProduct("TISFAT : Zero")]
-[assembly: AssemblyCopyright("Copyright ©Palladium Productions  2013")]
+[assembly: AssemblyCopyright("http://www.github.com/Evar678")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
