@@ -251,6 +251,10 @@ namespace TISFAT_ZERO
 
 					pnlOpen = panels[6];
 				}
+				else if (Canvas.activeFigure.type == 5 || Canvas.activeFigure.type == 7)
+				{
+					return;
+				}
 
 				pnl_mainTools.Enabled = false;
 				slideOutObject = pnl_Properties;
@@ -601,6 +605,12 @@ namespace TISFAT_ZERO
 
 		private void btn_scaleButton_Click(object sender, EventArgs e)
 		{
+			if (Canvas.activeFigure == null)
+				return;
+
+			if (Canvas.activeFigure.type == 5)
+				return;
+
 			ScalePrompt s = new ScalePrompt();
 			s.ShowDialog();
 		}

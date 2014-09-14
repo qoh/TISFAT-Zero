@@ -82,7 +82,7 @@
 			// 
 			// btn_OK
 			// 
-			this.btn_OK.Location = new System.Drawing.Point(62, 74);
+			this.btn_OK.Location = new System.Drawing.Point(30, 74);
 			this.btn_OK.Name = "btn_OK";
 			this.btn_OK.Size = new System.Drawing.Size(75, 23);
 			this.btn_OK.TabIndex = 3;
@@ -92,7 +92,8 @@
 			// 
 			// btn_Cancel
 			// 
-			this.btn_Cancel.Location = new System.Drawing.Point(148, 74);
+			this.btn_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.btn_Cancel.Location = new System.Drawing.Point(180, 74);
 			this.btn_Cancel.Name = "btn_Cancel";
 			this.btn_Cancel.Size = new System.Drawing.Size(75, 23);
 			this.btn_Cancel.TabIndex = 4;
@@ -102,8 +103,10 @@
 			// 
 			// ScalePrompt
 			// 
+			this.AcceptButton = this.btn_OK;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.CancelButton = this.btn_Cancel;
 			this.ClientSize = new System.Drawing.Size(284, 101);
 			this.Controls.Add(this.btn_Cancel);
 			this.Controls.Add(this.btn_OK);
@@ -113,7 +116,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "ScalePrompt";
-			this.Text = "ScalePrompt";
+			this.Text = "Scale Figure";
 			this.Load += new System.EventHandler(this.ScalePrompt_Load);
 			((System.ComponentModel.ISupportInitialize)(this.tkb_Scale)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_Scale)).EndInit();

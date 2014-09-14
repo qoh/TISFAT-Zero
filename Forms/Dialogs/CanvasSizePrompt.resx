@@ -117,29 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label4.Text" xml:space="preserve">
-    <value>Meet the devlopers:
-
-NIRS - NIRS (aka Evar678) is a 17 year old programmer, and the main developer of TISFAT:Zero and a hobbiest Animator. He attends college at DeVry University. NIRS works on the graphical user interface, and the figures.
-
-Ipquarx - Ipquarx is a 17 year old programmer, and the second main developer of TISFAT:Zero. He is one of NIRS's best friends, and TISFAT:Zero could not be made without him. Ipquarx works on the timeline, and behind-the-scenes aspects such as saving and loading.
-
-Valcle - Valcle is the newest member of the development team. At 14, he's also the youngest member of the team. Don't let his age decieve you, as he's on the same grounds with NIRS and Ipquarx. Valcle works on rendering and optimizations.
-
-Port - NIRS's best friend in the world. An extraordinarily accomplished programmer, has helped behind the scenes on many aspects of T0, and continues to do so! (He's cute, too!)
-</value>
-  </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>A Special thanks goes to the following members of The Sektorz community for showing their support by donating:
-
-Challa - $5
-CANDYdisturber - $25
-ChinaShima - $50
-
-An extra special thanks goes to CANDYdisturber for creating the icons that makes TISFAT look so nice
-Thanks, guys!</value>
-  </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>TISFAT:Zero is an updated version of Noshbar's old program TISFAT, rewritten from the ground up. The goal of this program is to give users an amazing animation experience, with a much more stable platform and robust codebase.</value>
-  </data>
 </root>

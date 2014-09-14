@@ -105,12 +105,14 @@ namespace TISFAT_ZERO
 						}
 						else
 						{
+							Point p = selectedJoint.location;
+
 							selectedJoint.SetPosAbs(e.X, e.Y);
 
 							if (selectedJoint.ParentFigure.type == 3 || selectedJoint.ParentFigure.type == 7)
 							{
 								if (selectedJoint.ParentFigure.type == 3)
-									((StickRect)selectedJoint.ParentFigure).onRectJointMoved(selectedJoint);
+									((StickRect)selectedJoint.ParentFigure).onRectJointMoved(selectedJoint, p);
 								else
 									((StickImage)selectedJoint.ParentFigure).onJointMoved(selectedJoint);
 							}
@@ -593,7 +595,8 @@ namespace TISFAT_ZERO
 						}
 					}
 					else
-						DrawShadows(lights[i - 1].Joints[0].location);
+						if(lights[i - 1].drawFig)
+							DrawShadows(lights[i - 1].Joints[0].location);
 				}
 
 			for (int i = figureList.Count;i > 0;i--)
@@ -617,8 +620,8 @@ namespace TISFAT_ZERO
 		private string readShader(string shader)
 		{
 			Assembly _assembly = Assembly.GetExecutingAssembly();
-			foreach (string s in _assembly.GetManifestResourceNames())
-				Console.WriteLine(s);
+			//foreach (string s in _assembly.GetManifestResourceNames())
+			//	Console.WriteLine(s);
 
 			StreamReader _textStreamReader = new StreamReader(_assembly.GetManifestResourceStream("TISFAT_ZERO.Shaders." + shader));
 

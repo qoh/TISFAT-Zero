@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Gif.Components;
 using TISFAT_ZERO.Forms;
+using TISFAT_ZERO.Forms.Dialogs;
 
 namespace TISFAT_ZERO
 {
@@ -209,6 +210,7 @@ namespace TISFAT_ZERO
 
 		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			dlg_saveFile.InitialDirectory = Properties.User.Default.DefaultSavePath;
 			dlg_saveFile.ShowDialog();
 		}
 
@@ -269,6 +271,17 @@ namespace TISFAT_ZERO
 			}
 			
 			x.Finish();
+		}
+
+		private void canvasSizeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			CanvasSizePrompt p = new CanvasSizePrompt();
+			p.ShowDialog();
+		}
+
+		private void splitContainer1_Panel2_Scroll(object sender, ScrollEventArgs e)
+		{
+			Program.CanvasForm.Refresh();
 		}
 	}
 }

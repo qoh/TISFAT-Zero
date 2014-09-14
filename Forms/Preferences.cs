@@ -15,7 +15,7 @@ namespace TISFAT_ZERO
 		private string folderPath = Environment.SpecialFolder.ApplicationData + "\\TISFAT\\";
 
 		private string[] saveFile;
-		public static byte currentBuild = 2; //current build version. 0 = stable, 1 = beta, 2 = nightly
+		public static byte currentBuild = 0; //current build version. 0 = stable, 1 = beta, 2 = nightly
 		private string buildName;
 		public static string[] buildNames = new string[] { "stable", "beta", "nightly" };
 
@@ -43,12 +43,18 @@ namespace TISFAT_ZERO
 
 			if (Properties.User.Default.DefaultSavePath == "")
 			{
-				txt_defaultSavePath.Text = Environment.SpecialFolder.MyDocuments + "\\TISFAT\\";
+				Directory.CreateDirectory(Environment.SpecialFolder.MyDocuments + "/TISFAT/");
+				Directory.CreateDirectory(Environment.SpecialFolder.MyDocuments + "/TISFAT/Animations");
+				DirectoryInfo DI = new DirectoryInfo(Environment.SpecialFolder.MyDocuments + "/TISFAT/Animations");
+
+				txt_defaultSavePath.Text = DI.FullName;
 				Properties.User.Default.DefaultSavePath = txt_defaultSavePath.Text;
 				Properties.User.Default.Save();
 			}
 
-			txt_defaultSavePath.Text = Properties.User.Default.DefaultSavePath;
+			DirectoryInfo di = new DirectoryInfo(Properties.User.Default.DefaultSavePath);
+
+			txt_defaultSavePath.Text = di.FullName;
 			pic_ColorBox.BackColor = Properties.User.Default.CanvasColor;
 			lbl_ColorBox.Text = Properties.User.Default.CanvasColor.Name;
 
@@ -106,8 +112,8 @@ namespace TISFAT_ZERO
 				pnl_Updates.BringToFront();
 				checkBox1_CheckedChanged(new object(), new EventArgs());
 			}
-			if (listView1.Items[2].Selected)
-				pnl_TimelineTheme.BringToFront();
+			//if (listView1.Items[2].Selected)
+			//	pnl_TimelineTheme.BringToFront();
 		}
 
 		private void checkBox1_CheckedChanged(object sender, EventArgs e)

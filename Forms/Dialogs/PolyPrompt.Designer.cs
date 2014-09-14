@@ -47,6 +47,7 @@
 			// 
 			// btn_Cancel
 			// 
+			this.btn_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.btn_Cancel.Location = new System.Drawing.Point(197, 60);
 			this.btn_Cancel.Name = "btn_Cancel";
 			this.btn_Cancel.Size = new System.Drawing.Size(75, 23);
@@ -73,8 +74,10 @@
 			// 
 			// PolyPrompt
 			// 
+			this.AcceptButton = this.btn_OK;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.CancelButton = this.btn_Cancel;
 			this.ClientSize = new System.Drawing.Size(284, 101);
 			this.Controls.Add(this.numericUpDown1);
 			this.Controls.Add(this.lbl_numSides);
@@ -84,7 +87,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "PolyPrompt";
-			this.Text = "PolyPrompt";
+			this.Text = "Polygon Creator";
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();

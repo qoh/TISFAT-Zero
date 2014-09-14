@@ -31,12 +31,12 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(About));
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.pnl_Thanks = new System.Windows.Forms.Panel();
+			this.label3 = new System.Windows.Forms.Label();
 			this.pnl_Developers = new System.Windows.Forms.Panel();
 			this.label4 = new System.Windows.Forms.Label();
 			this.pnl_About = new System.Windows.Forms.Panel();
 			this.label2 = new System.Windows.Forms.Label();
-			this.pnl_Thanks = new System.Windows.Forms.Panel();
-			this.label3 = new System.Windows.Forms.Label();
 			this.listBox1 = new System.Windows.Forms.ListBox();
 			this.splitter1 = new System.Windows.Forms.Splitter();
 			this.label1 = new System.Windows.Forms.Label();
@@ -45,9 +45,9 @@
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
+			this.pnl_Thanks.SuspendLayout();
 			this.pnl_Developers.SuspendLayout();
 			this.pnl_About.SuspendLayout();
-			this.pnl_Thanks.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// panel1
@@ -73,8 +73,8 @@
 			// splitContainer1.Panel1
 			// 
 			this.splitContainer1.Panel1.BackColor = System.Drawing.Color.Gainsboro;
-			this.splitContainer1.Panel1.Controls.Add(this.pnl_Thanks);
 			this.splitContainer1.Panel1.Controls.Add(this.pnl_Developers);
+			this.splitContainer1.Panel1.Controls.Add(this.pnl_Thanks);
 			this.splitContainer1.Panel1.Controls.Add(this.pnl_About);
 			this.splitContainer1.Panel1.Padding = new System.Windows.Forms.Padding(1);
 			// 
@@ -86,6 +86,24 @@
 			this.splitContainer1.Size = new System.Drawing.Size(364, 177);
 			this.splitContainer1.SplitterDistance = 240;
 			this.splitContainer1.TabIndex = 2;
+			// 
+			// pnl_Thanks
+			// 
+			this.pnl_Thanks.Controls.Add(this.label3);
+			this.pnl_Thanks.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnl_Thanks.Location = new System.Drawing.Point(1, 1);
+			this.pnl_Thanks.Name = "pnl_Thanks";
+			this.pnl_Thanks.Size = new System.Drawing.Size(236, 173);
+			this.pnl_Thanks.TabIndex = 1;
+			// 
+			// label3
+			// 
+			this.label3.Location = new System.Drawing.Point(4, 4);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(233, 164);
+			this.label3.TabIndex = 0;
+			this.label3.Text = resources.GetString("label3.Text");
+			this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// pnl_Developers
 			// 
@@ -102,7 +120,7 @@
 			// 
 			this.label4.Location = new System.Drawing.Point(3, 3);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(213, 328);
+			this.label4.Size = new System.Drawing.Size(213, 403);
 			this.label4.TabIndex = 0;
 			this.label4.Text = resources.GetString("label4.Text");
 			this.label4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -125,24 +143,6 @@
 			this.label2.TabIndex = 0;
 			this.label2.Text = resources.GetString("label2.Text");
 			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// pnl_Thanks
-			// 
-			this.pnl_Thanks.Controls.Add(this.label3);
-			this.pnl_Thanks.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnl_Thanks.Location = new System.Drawing.Point(1, 1);
-			this.pnl_Thanks.Name = "pnl_Thanks";
-			this.pnl_Thanks.Size = new System.Drawing.Size(236, 173);
-			this.pnl_Thanks.TabIndex = 1;
-			// 
-			// label3
-			// 
-			this.label3.Location = new System.Drawing.Point(4, 4);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(233, 164);
-			this.label3.TabIndex = 0;
-			this.label3.Text = resources.GetString("label3.Text");
-			this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// listBox1
 			// 
@@ -202,9 +202,9 @@
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 			this.splitContainer1.ResumeLayout(false);
+			this.pnl_Thanks.ResumeLayout(false);
 			this.pnl_Developers.ResumeLayout(false);
 			this.pnl_About.ResumeLayout(false);
-			this.pnl_Thanks.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}

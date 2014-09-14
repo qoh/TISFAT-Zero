@@ -221,6 +221,8 @@ namespace TISFAT_ZERO
 			Program.MainformForm.updateByLayers(++layer_cnt);
 
 			setFrame(n.firstKF);
+
+			Refresh();
 			return n;
 		}
 
@@ -241,7 +243,8 @@ namespace TISFAT_ZERO
 			Program.MainformForm.updateByLayers(++layer_cnt);
 
 			setFrame(n.firstKF);
-			
+
+			Refresh();
 			return n;
 		}
 
@@ -258,6 +261,7 @@ namespace TISFAT_ZERO
 
 			setFrame(n.firstKF);
 
+			Refresh();
 			return n;
 		}
 
@@ -274,6 +278,7 @@ namespace TISFAT_ZERO
 
 			setFrame(n.firstKF);
 
+			Refresh();
 			return n;
 		}
 
@@ -294,6 +299,8 @@ namespace TISFAT_ZERO
 			Program.MainformForm.updateByLayers(++layer_cnt);
 
 			setFrame(n.firstKF);
+
+			Refresh();
 			return n;
 		}
 
@@ -309,6 +316,8 @@ namespace TISFAT_ZERO
 			Program.MainformForm.updateByLayers(++layer_cnt);
 
 			setFrame(n.firstKF);
+
+			Refresh();
 			return n;
 		}
 
@@ -324,6 +333,8 @@ namespace TISFAT_ZERO
 			Program.MainformForm.updateByLayers(++layer_cnt);
 
 			setFrame(n.firstKF);
+
+			Refresh();
 			return n;
 		}
 
@@ -716,20 +727,20 @@ namespace TISFAT_ZERO
 			tst_removeKeyframe.Enabled = frameType == 1;
 			tst_setPosePrvKfrm.Enabled = frameType == 1 || frameType == 3;
 			tst_setPoseNxtKfrm.Enabled = frameType == 1 || frameType == 2;
-			tst_onionSkinning.Enabled = frameType != 0 || frameType != 4;
+			//tst_onionSkinning.Enabled = frameType != 0 || frameType != 4;
 
-			tst_insertFrameset.Enabled = frameType == 0;
-			tst_removeFrameset.Enabled = frameType != 0;
+			//tst_insertFrameset.Enabled = frameType == 0;
+			//tst_removeFrameset.Enabled = frameType != 0;
 
-			tst_moveLayerUp.Enabled = true;
-			tst_moveLayerDown.Enabled = true;
-			tst_insertLayer.Enabled = true;
-			tst_removeLayer.Enabled = layer_cnt > 0;
+			tst_moveLayerUp.Enabled = layer_sel != 0 && frameType != 5;
+			tst_moveLayerDown.Enabled = layer_sel != layer_cnt - 1 && frameType != 5;
+			//tst_insertLayer.Enabled = true;
+			tst_removeLayer.Enabled = layer_cnt > 0 && frameType != 5;
 
-			tst_keyFrameAction.Enabled = frameType != 0 || frameType != 4;
+			//tst_keyFrameAction.Enabled = frameType != 0 || frameType != 4;
 
-			tst_hideLayer.Enabled = true;
-			tst_showLayer.Enabled = true;
+			//tst_hideLayer.Enabled = true;
+			//tst_showLayer.Enabled = true;
 
 			tst_gotoFrame.Enabled = true;
 		}
@@ -744,6 +755,8 @@ namespace TISFAT_ZERO
 			//Get the name of the clicked item and the currently selected layer
 			string name = e.ClickedItem.Name;
 			Layer cLayer = layers[layer_sel];
+
+			int i1, i2, i3;
 
 			//Decide what to do based on the clicked menu item was.
 			switch (name)
@@ -784,6 +797,8 @@ namespace TISFAT_ZERO
 							cLayer.keyFrames[pos].Joints[a].location = cLayer.keyFrames[pos - 1].Joints[a].location;
 							cLayer.keyFrames[pos].Joints[a].thickness = cLayer.keyFrames[pos - 1].Joints[a].thickness;
 							cLayer.keyFrames[pos].Joints[a].length = cLayer.keyFrames[pos - 1].Joints[a].length;
+
+							cLayer.keyFrames[pos].Joints[a].color = cLayer.keyFrames[pos - 1].Joints[a].color;
 						}
 
 					break;
@@ -796,6 +811,8 @@ namespace TISFAT_ZERO
 						cLayer.keyFrames[pos].Joints[a].location = cLayer.keyFrames[pos + 1].Joints[a].location;
 						cLayer.keyFrames[pos].Joints[a].thickness = cLayer.keyFrames[pos + 1].Joints[a].thickness;
 						cLayer.keyFrames[pos].Joints[a].length = cLayer.keyFrames[pos + 1].Joints[a].length;
+
+						cLayer.keyFrames[pos].Joints[a].color = cLayer.keyFrames[pos + 1].Joints[a].color;
 					}
 
 					break;
@@ -825,6 +842,40 @@ namespace TISFAT_ZERO
 
 					Refresh();
 
+					break;
+
+				case "tst_moveLayerUp":
+					i1 = layers.IndexOf(cLayer);
+
+					layers.Remove(cLayer);
+					layers.Insert(i1 - 1, cLayer);
+
+					i2 = Canvas.figureList.IndexOf(cLayer.fig);
+					Canvas.figureList.Remove(cLayer.fig);
+					Canvas.figureList.Insert(i2 - 1, cLayer.fig);
+
+					i3 = Canvas.tweenFigs.IndexOf(cLayer.tweenFig);
+					Canvas.tweenFigs.Remove(cLayer.tweenFig);
+					Canvas.tweenFigs.Insert(i3 - 1, cLayer.tweenFig);
+
+					Refresh();
+					break;
+
+				case "tst_moveLayerDown":
+					i1 = layers.IndexOf(cLayer);
+
+					layers.Remove(cLayer);
+					layers.Insert(i1 + 1, cLayer);
+
+					i2 = Canvas.figureList.IndexOf(cLayer.fig);
+					Canvas.figureList.Remove(cLayer.fig);
+					Canvas.figureList.Insert(i2 + 1, cLayer.fig);
+
+					i3 = Canvas.tweenFigs.IndexOf(cLayer.tweenFig);
+					Canvas.tweenFigs.Remove(cLayer.tweenFig);
+					Canvas.tweenFigs.Insert(i3 + 1, cLayer.tweenFig);
+
+					Refresh();
 					break;
 
 				default:

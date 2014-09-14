@@ -1093,7 +1093,7 @@ namespace TISFAT_ZERO
 				Canvas.addTweenFigure(this);
 		}
 
-		public void onRectJointMoved(StickJoint j)
+		public void onRectJointMoved(StickJoint j, Point pos)
 		{
 			if (j.name == "CornerTL")
 			{

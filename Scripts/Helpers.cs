@@ -153,7 +153,7 @@ namespace TISFAT_ZERO
 			}
 
 			joint.textureIDs.Add(GL.GenTexture());
-			Console.WriteLine("Texture ID Added");
+			//Console.WriteLine("Texture ID Added");
 
 			GL.BindTexture(TextureTarget.Texture2D, joint.textureIDs[i]);
 

@@ -146,7 +146,7 @@ namespace TISFAT_ZERO
 			{
 				foreach (StickJoint sj in figure.Joints[i].children)
 				{
-					Console.WriteLine(figure.Joints.Contains(sj));
+					//Console.WriteLine(figure.Joints.Contains(sj));
 					sj.parent = figure.Joints[i];
 				}
 			}

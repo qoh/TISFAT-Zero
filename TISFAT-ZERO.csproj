@@ -56,6 +56,9 @@
     <ApplicationIcon>T0.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\Dialogs\CanvasSizePrompt.resx">
+      <DependentUpon>CanvasSizePrompt.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Dialogs\PolyPrompt.resx">
       <DependentUpon>PolyPrompt.cs</DependentUpon>
     </EmbeddedResource>
@@ -113,6 +116,12 @@
     </Compile>
     <Compile Include="Forms\CheckUpdatesForm.Designer.cs">
       <DependentUpon>CheckUpdatesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Dialogs\CanvasSizePrompt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Dialogs\CanvasSizePrompt.Designer.cs">
+      <DependentUpon>CanvasSizePrompt.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Dialogs\PolyPrompt.cs">
       <SubType>Form</SubType>
