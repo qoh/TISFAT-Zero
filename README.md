@@ -12,6 +12,12 @@ Features
 * Export your animations to .gif format, which can be used as-is or imported into a video editor for further processing
 
 
+Downloads
+===========
+TISFAT-Zero is available to download for Windows via sourceforge: https://sourceforge.net/projects/tisfat-zero/
+Note that TISFAT Zero requires .NET Framework 4.0 or higher!
+
+
 Libraries
 ===========
 TISFAT:Zero makes use of the following libraries:
