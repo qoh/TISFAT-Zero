@@ -1063,15 +1063,23 @@ namespace TISFAT_ZERO
 					{
 						for (int a = 0;a < jointcount;a++)
 						{
-							int x = 8 * a + 2;
+							int x;
+							if (layerType == 7)
+								x = 8 * a + 2;
+							else
+								x = 4 * a + 2;
 
 							if (layerType != 4 && layerType != 3)
 								f.Joints[a].color = figColor;
 
 							f.Joints[a].location = new Point(BitConverter.ToInt16(posblk.data, x),
 															BitConverter.ToInt16(posblk.data, x + 2));
-							f.Joints[a].thickness = BitConverter.ToInt16(posblk.data, x + 4);
-							f.Joints[a].length = BitConverter.ToInt16(posblk.data, x + 6);
+
+							if (layerType == 7)
+							{
+								f.Joints[a].thickness = BitConverter.ToInt16(posblk.data, x + 4);
+								f.Joints[a].length = BitConverter.ToInt16(posblk.data, x + 6);
+							}
 
 							if (layerType == 2)
 								f.Joints[a].thickness = propBlock.data[5];
