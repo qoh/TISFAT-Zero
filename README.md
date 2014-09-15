@@ -14,7 +14,10 @@ Features
 
 Downloads
 ===========
-TISFAT-Zero is available to download for Windows via sourceforge: https://sourceforge.net/projects/tisfat-zero/
+TISFAT-Zero is available to download for Windows via sourceforge: 
+
+https://sourceforge.net/projects/tisfat-zero/
+
 Note that TISFAT Zero requires .NET Framework 4.0 or higher!
 
 
