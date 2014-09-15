@@ -6,7 +6,11 @@ TISFAT:Zero is a program made by Evar678 (Evar Smith), and Ipquarx; Two teenage 
 
 Features
 ===========
-(Content coming August+)
+* Animate stick figures in 2D using Keyframe Animation!
+* Inverse Kinematic movement physics to help smooth out movements of figures
+* Create custom figures to use in your animations, including full support for bitmaps!
+* Export your animations to .gif format, which can be used as-is or imported into a video editor for further processing
+
 
 Libraries
 ===========
