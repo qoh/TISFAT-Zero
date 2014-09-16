@@ -1023,7 +1023,6 @@
 		private System.Windows.Forms.NumericUpDown num_rectOLAlpha;
 		private System.Windows.Forms.NumericUpDown num_rectFillAlpha;
 		private System.Windows.Forms.TreeView trv_addView;
-		private System.Windows.Forms.CheckBox ckb_renderShadows;
 		public System.Windows.Forms.Label lbl_dbgAngleToParent;
 		private System.Windows.Forms.Panel pnl_Properties_Custom;
 		private System.Windows.Forms.ComboBox com_Properties_Bitmap;
@@ -1032,5 +1031,6 @@
 		private System.Windows.Forms.Button btn_bitmapUseNone;
 		private System.Windows.Forms.CheckBox ckb_LoopAnim;
 		private System.Windows.Forms.OpenFileDialog dlg_File;
+		public System.Windows.Forms.CheckBox ckb_renderShadows;
 	}
 }

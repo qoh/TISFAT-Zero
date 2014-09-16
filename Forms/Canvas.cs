@@ -26,6 +26,7 @@ namespace TISFAT_ZERO
 
 		public static Graphics theCanvasGraphics; //We need a list of objects to draw.
 		public static bool GLLoaded = false; //we can't touch GL until its fully loaded, this is a guard variable
+		public static bool ShadersCanLoad = true;
 		public static int GL_WIDTH, GL_HEIGHT;
 
 		private static int maxaa;
@@ -381,101 +382,119 @@ namespace TISFAT_ZERO
 			GL.Disable(EnableCap.DepthTest);
 
 			#region Shader Initialization Stuff
-			//We need to generate a texture here so we can write what we're drawing to the FBO, and then we can sample it with a shader
-			GL.GenTextures(1, out OccludersTexture);
-			GL.BindTexture(TextureTarget.Texture2D, OccludersTexture);
 
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+			try
+			{
+				GL.GenFramebuffers(1, out OccluderFBO);
+			}
+			catch (Exception x)
+			{
+				Console.WriteLine("Shader Initialization failed! We can't have shaders.. :C");
+				MessageBox.Show("Shader initialization failed with reason: " + x.Message + ", Sorry, but shadows have been disabled. Light object is still usable, but you won't be able to see the result on your machine.", "Shader problem!");
+				Program.ToolboxForm.ckb_renderShadows.Enabled = false;
+				ShadersCanLoad = false;
+			}
 
-			//make it the size of our lights
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, (int)lightSize, (int)lightSize, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
 
-			//This texture will be used with the shadowMap
-			GL.GenTextures(1, out ShadowsTexture);
-			GL.BindTexture(TextureTarget.Texture2D, ShadowsTexture);
+			if (ShadersCanLoad)
+			{
+				Program.ToolboxForm.ckb_renderShadows.Enabled = true;
 
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-			//GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-			//GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+				//We need to generate a texture here so we can write what we're drawing to the FBO, and then we can sample it with a shader
+				GL.GenTextures(1, out OccludersTexture);
+				GL.BindTexture(TextureTarget.Texture2D, OccludersTexture);
 
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, (int)lightSize, 1, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 
-			GL.BindTexture(TextureTarget.Texture2D, 0);
+				//make it the size of our lights
+				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, (int)lightSize, (int)lightSize, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
 
-			//Generate a FBO for writing to the sampling texture
-			GL.GenFramebuffers(1, out OccluderFBO);
+				//This texture will be used with the shadowMap
+				GL.GenTextures(1, out ShadowsTexture);
+				GL.BindTexture(TextureTarget.Texture2D, ShadowsTexture);
 
-			GL.BindFramebuffer(FramebufferTarget.Framebuffer, OccluderFBO);
-			GL.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, OccludersTexture, 0);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+				//GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
+				//GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
 
-			DrawBuffersEnum[] buf = new DrawBuffersEnum[1] { (DrawBuffersEnum)FramebufferAttachment.ColorAttachment0 };
-			GL.DrawBuffers(buf.Length, buf);
+				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, (int)lightSize, 1, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
 
-			//and for our shadowMap, which is going to be 1xlightSize...
-			GL.GenFramebuffers(1, out ShadowsFBO);
+				GL.BindTexture(TextureTarget.Texture2D, 0);
 
-			GL.BindFramebuffer(FramebufferTarget.Framebuffer, ShadowsFBO);
-			GL.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, ShadowsTexture, 0);
+				//Generate a FBO for writing to the sampling texture
 
-			DrawBuffersEnum[] bufferEnum = new DrawBuffersEnum[1] { (DrawBuffersEnum)FramebufferAttachment.ColorAttachment0 };
-			GL.DrawBuffers(bufferEnum.Length, bufferEnum);
+				// GL.GenFramebuffers(1, out OccluderFBO);
+				//Moved to the beginning of the shader init
 
-			GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+				GL.BindFramebuffer(FramebufferTarget.Framebuffer, OccluderFBO);
+				GL.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, OccludersTexture, 0);
 
-			//Create our shaders for drawing shadows
-			Shader_pass = GL.CreateShader(ShaderType.VertexShader);
-			Shader_shadowMap = GL.CreateShader(ShaderType.FragmentShader);
-			Shader_shadowRender = GL.CreateShader(ShaderType.FragmentShader);
+				DrawBuffersEnum[] buf = new DrawBuffersEnum[1] { (DrawBuffersEnum)FramebufferAttachment.ColorAttachment0 };
+				GL.DrawBuffers(buf.Length, buf);
 
-			Program_passAndMap = GL.CreateProgram();
-			Program_passAndRender = GL.CreateProgram();
+				//and for our shadowMap, which is going to be 1xlightSize...
 
-			//pass will fill in the needed variables that are not accessable in fragment shaders (but only in vertex shaders)
-			//uniforms: u_projTrans
-			GL.ShaderSource(Shader_pass, readShader("pass_vert.glsl"));
-			GL.CompileShader(Shader_pass);
+				GL.GenFramebuffers(1, out ShadowsFBO);
 
-			int status;
-			GL.GetShader(Shader_pass, ShaderParameter.CompileStatus, out status);
+				GL.BindFramebuffer(FramebufferTarget.Framebuffer, ShadowsFBO);
+				GL.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, ShadowsTexture, 0);
 
-			if (status != 1)
-				Console.WriteLine("Shader_pass failed to compile:\n" + GL.GetShaderInfoLog(Shader_pass));
+				DrawBuffersEnum[] bufferEnum = new DrawBuffersEnum[1] { (DrawBuffersEnum)FramebufferAttachment.ColorAttachment0 };
+				GL.DrawBuffers(bufferEnum.Length, bufferEnum);
 
-			//shadowMap will "map" the shadows onto a 1D texture
-			//uniforms: u_texture, resolution
-			GL.ShaderSource(Shader_shadowMap, readShader("shadowMap_frag.glsl"));
-			GL.CompileShader(Shader_shadowMap);
+				GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
 
-			GL.GetShader(Shader_shadowMap, ShaderParameter.CompileStatus, out status);
+				//Create our shaders for drawing shadows
+				Shader_pass = GL.CreateShader(ShaderType.VertexShader);
+				Shader_shadowMap = GL.CreateShader(ShaderType.FragmentShader);
+				Shader_shadowRender = GL.CreateShader(ShaderType.FragmentShader);
 
-			if (status != 1)
-				Console.WriteLine("Shader_shadowMap failed to compile:\n" + GL.GetShaderInfoLog(Shader_shadowMap));
+				Program_passAndMap = GL.CreateProgram();
+				Program_passAndRender = GL.CreateProgram();
 
-			//and finally, shadowRender will take this map and render it onto the screen
-			//uniforms: u_texture, resolution, softShadows
-			GL.ShaderSource(Shader_shadowRender, readShader("shadowRender_frag.glsl"));
-			GL.CompileShader(Shader_shadowRender);
+				//pass will fill in the needed variables that are not accessable in fragment shaders (but only in vertex shaders)
+				//uniforms: u_projTrans
+				GL.ShaderSource(Shader_pass, readShader("pass_vert.glsl"));
+				GL.CompileShader(Shader_pass);
 
-			GL.GetShader(Shader_shadowRender, ShaderParameter.CompileStatus, out status);
+				int status;
+				GL.GetShader(Shader_pass, ShaderParameter.CompileStatus, out status);
 
-			if (status != 1)
-				Console.WriteLine("Shader_shadowRender failed to compile:\n" + GL.GetShaderInfoLog(Shader_shadowRender));
+				if (status != 1)
+					Console.WriteLine("Shader_pass failed to compile:\n" + GL.GetShaderInfoLog(Shader_pass));
 
-			GL.AttachShader(Program_passAndMap, Shader_pass);
-			GL.AttachShader(Program_passAndMap, Shader_shadowMap);
+				//shadowMap will "map" the shadows onto a 1D texture
+				//uniforms: u_texture, resolution
+				GL.ShaderSource(Shader_shadowMap, readShader("shadowMap_frag.glsl"));
+				GL.CompileShader(Shader_shadowMap);
 
-			GL.AttachShader(Program_passAndRender, Shader_pass);
-			GL.AttachShader(Program_passAndRender, Shader_shadowRender);
+				GL.GetShader(Shader_shadowMap, ShaderParameter.CompileStatus, out status);
 
-			GL.LinkProgram(Program_passAndMap);
-			GL.LinkProgram(Program_passAndRender); 
+				if (status != 1)
+					Console.WriteLine("Shader_shadowMap failed to compile:\n" + GL.GetShaderInfoLog(Shader_shadowMap));
+
+				//and finally, shadowRender will take this map and render it onto the screen
+				//uniforms: u_texture, resolution, softShadows
+				GL.ShaderSource(Shader_shadowRender, readShader("shadowRender_frag.glsl"));
+				GL.CompileShader(Shader_shadowRender);
+
+				GL.GetShader(Shader_shadowRender, ShaderParameter.CompileStatus, out status);
+
+				if (status != 1)
+					Console.WriteLine("Shader_shadowRender failed to compile:\n" + GL.GetShaderInfoLog(Shader_shadowRender));
+
+				GL.AttachShader(Program_passAndMap, Shader_pass);
+				GL.AttachShader(Program_passAndMap, Shader_shadowMap);
+
+				GL.AttachShader(Program_passAndRender, Shader_pass);
+				GL.AttachShader(Program_passAndRender, Shader_shadowRender);
+
+				GL.LinkProgram(Program_passAndMap);
+				GL.LinkProgram(Program_passAndRender);
+			}
 			#endregion
-
-			//lights.Add(new Point(100, 250));
-			//lights.Add(new Point(200, 200));
-			//lights.Add(new Point(300, 250));
 
 			Program.TimelineForm.addStickLayer("Stick Layer 1");
 		}
