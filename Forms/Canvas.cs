@@ -98,7 +98,7 @@ namespace TISFAT_ZERO
 				if (selectedJoint != null)
 				{
 					if (selectedJoint.ParentFigure != null)
-						if (!(selectedJoint.ParentFigure.type == 3 || selectedJoint.ParentFigure.type == 6 || selectedJoint.ParentFigure.type == 7))
+						if (!(selectedJoint.ParentFigure.type == 3 || selectedJoint.ParentFigure.type == 10 || selectedJoint.ParentFigure.type == 7))
 						{
 							selectedJoint.SetPos(e.X, e.Y);
 							Program.ToolboxForm.lbl_dbgAngleToParent.Text = "AngleToParent: " + selectedJoint.AngleToParent;

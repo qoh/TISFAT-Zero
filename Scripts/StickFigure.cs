@@ -668,7 +668,7 @@ namespace TISFAT_ZERO
 				if (((StickRect)this).filled)
 					Drawing.DrawGraphics(5, figColor, Joints[0].location, Joints[0].thickness, Joints[0].thickness, Joints[2].location);
 
-			if (type == 6)
+			if (type == 10)
 			{
 				List<Point> pos = new List<Point>();
 				foreach (StickJoint j in Joints)
@@ -1187,7 +1187,7 @@ namespace TISFAT_ZERO
 
 		public StickPoly(bool isTweenFigure = false, int jointCount = 4)
 		{
-			type = 6;
+			type = 10;
 			Joints = new List<StickJoint>();
 
 			double max = 2 * Math.PI;

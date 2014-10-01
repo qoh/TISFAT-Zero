@@ -109,13 +109,19 @@ namespace TISFAT_ZERO
 			splitContainer1.Panel1.Controls.Add(Program.TimelineForm);
 
 			Canvas.figureList = new List<StickObject>();
+			Canvas.tweenFigs = new List<StickObject>();
+			Canvas.lights = new List<LightObject>();
 
 			Program.TimelineForm.addStickLayer("Stick Layer 1");
 
 			Program.TimelineForm.Show();
 
-			if(loading)
+			if (loading)
+			{
 				Canvas.figureList.Clear();
+				Canvas.tweenFigs.Clear();
+				Canvas.lights.Clear();
+			}
 		}
 
 		public void doneLoading()

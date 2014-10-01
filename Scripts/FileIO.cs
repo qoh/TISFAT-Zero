@@ -673,7 +673,7 @@ namespace TISFAT_ZERO
 			bytes.AddRange(BitConverter.GetBytes((ushort)canSize.Width));
 			bytes.AddRange(BitConverter.GetBytes((ushort)canSize.Height));
 
-			Color canColr = Program.CanvasForm.BackColor;
+			Color canColr = Program.CanvasForm.bkgColor;
 
 			bytes.Add((byte)canColr.R);
 			bytes.Add((byte)canColr.G);
@@ -811,7 +811,9 @@ namespace TISFAT_ZERO
 			}
 
 			if (k.type == 2)
+			{
 				bytes.Add((byte)k.Joints[0].thickness);
+			}
 
 			bytes.InsertRange(0, BitConverter.GetBytes(bytes.Count));
 
@@ -886,7 +888,7 @@ namespace TISFAT_ZERO
 						Color canColor = Color.FromArgb(layer.data[4], layer.data[5], layer.data[6]);
 
 						zeCanvas.Size = new Size(width, height);
-						zeCanvas.BackColor = canColor;
+						zeCanvas.setBackgroundColor(canColor);
 					}
 					catch
 					{
@@ -943,6 +945,10 @@ namespace TISFAT_ZERO
 					Bitmap b = (Bitmap)Bitmap.FromStream(s);
 
 					newLayer = new ImageLayer(name, new StickImage(b, false), zeCanvas, b);
+				}
+				else if (layerType == 10)
+				{
+					newLayer = new PolyLayer(name, new StickPoly(false), zeCanvas, 0);
 				}
 				else
 					continue; //Only 1, 2, 3, 4, and 5 have been coded so far, so only load those types.
@@ -1012,7 +1018,11 @@ namespace TISFAT_ZERO
 						Bitmap b = (Bitmap)Bitmap.FromStream(s);
 
 						f = new ImageFrame(0, b);
-					}
+					} //TODO: Implement poly saving
+					//else if (layerType == 10)
+					//{
+						
+					//}
 					else
 						continue; //Nothing past layer type 5 has even begun implementation, so if we encounter any just skip.
 
@@ -1036,6 +1046,7 @@ namespace TISFAT_ZERO
 
 					Block posblk = propBlock;
 					Color figColor = Color.Black;
+					int thickness = 0;
 
 					if (propBlock.type == 4)
 					{
@@ -1046,6 +1057,8 @@ namespace TISFAT_ZERO
 						if (layerType == 3)
 						{
 							((RectFrame)f).figColor = figColor;
+
+							((RectFrame)f).filled = BitConverter.ToBoolean(propBlock.data, 4);
 
 							Color outlineColor = Color.FromArgb(propBlock.data[5], propBlock.data[6], propBlock.data[7], propBlock.data[8]);
 
@@ -1063,27 +1076,18 @@ namespace TISFAT_ZERO
 					{
 						for (int a = 0;a < jointcount;a++)
 						{
-							int x;
-							if (layerType == 7)
-								x = 8 * a + 2;
-							else
-								x = 4 * a + 2;
+							int x = 8 * a + 2;
 
 							if (layerType != 4 && layerType != 3)
 								f.Joints[a].color = figColor;
 
-							f.Joints[a].location = new Point(BitConverter.ToInt16(posblk.data, x),
-															BitConverter.ToInt16(posblk.data, x + 2));
+							f.Joints[a].location = new Point(BitConverter.ToInt16(posblk.data, x), BitConverter.ToInt16(posblk.data, x + 2));
 
-							if (layerType == 7)
-							{
-								f.Joints[a].thickness = BitConverter.ToInt16(posblk.data, x + 4);
-								f.Joints[a].length = BitConverter.ToInt16(posblk.data, x + 6);
-							}
-
-							if (layerType == 2)
-								f.Joints[a].thickness = propBlock.data[5];
+							f.Joints[a].thickness = BitConverter.ToInt16(posblk.data, x + 4);
+							f.Joints[a].length = BitConverter.ToInt16(posblk.data, x + 6);
 						}
+
+						f.figColor = figColor;
 					}
 					catch
 					{
@@ -1092,6 +1096,9 @@ namespace TISFAT_ZERO
 
 					foreach (StickJoint x in f.Joints)
 						x.ParentFigure = newLayer.fig;
+
+					if (layerType == 3)
+						((StickRect)newLayer.fig).filled = ((RectFrame)f).filled;
 
 					thingy.Add(f);
 				}
@@ -1103,6 +1110,8 @@ namespace TISFAT_ZERO
 			Timeline.layers = layers;
 			Timeline.layer_cnt = layers.Count;
 			Program.MainformForm.doneLoading();
+
+			file.Close();
 		}
 
 		private static Block readNextBlock(Stream file)

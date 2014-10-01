@@ -17,7 +17,7 @@ namespace TISFAT_ZERO
 		public static Timeline TimelineForm;
 		public static Scenes ScenesForm;
 
-		public static readonly string Version = "2.5.0.2";
+		public static readonly string Version = "2.5.0.5";
 		public static string loadFile = "";
 
 		[STAThread]

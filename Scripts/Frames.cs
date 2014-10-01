@@ -135,7 +135,7 @@ namespace TISFAT_ZERO
 	{
 		public PolyFrame(List<StickJoint> ps, int po)
 		{
-			type = 6; pos = po;
+			type = 10; pos = po;
 
 			Joints = ps;
 		}

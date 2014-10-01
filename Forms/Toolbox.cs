@@ -162,6 +162,7 @@ namespace TISFAT_ZERO
 
 			pic_pnlLine_color.BackColor = dlg_Color.Color;
 			Canvas.activeFigure.setColor(dlg_Color.Color);
+			Program.TimelineForm.frm_selected.figColor = dlg_Color.Color;
 			Program.CanvasForm.Refresh();
 		}
 
@@ -212,7 +213,7 @@ namespace TISFAT_ZERO
 					num_pnlLine_thickness.Value = Canvas.activeFigure.Joints[0].thickness;
 					pnlOpen = panels[2];
 				}
-				else if (Canvas.activeFigure.type == 3 || Canvas.activeFigure.type == 6)
+				else if (Canvas.activeFigure.type == 3 || Canvas.activeFigure.type == 10)
 				{
 					pnl_Properties_Stick.Visible = false;
 					pnl_Properties_Rect.Visible = true;

@@ -480,7 +480,7 @@ namespace TISFAT_ZERO
 			theCanvas = _Canvas;
 			tweenFig = new StickPoly(true, jointCount);
 
-			type = 6;
+			type = 10;
 
 			firstKF = 0;
 			lastKF = 19;
