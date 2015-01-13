@@ -35,6 +35,12 @@
 			System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Timeline");
 			this.dlg_folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.pnl_Updates = new System.Windows.Forms.Panel();
+			this.label3 = new System.Windows.Forms.Label();
+			this.label2 = new System.Windows.Forms.Label();
+			this.comboBox1 = new System.Windows.Forms.ComboBox();
+			this.checkBox1 = new System.Windows.Forms.CheckBox();
+			this.label1 = new System.Windows.Forms.Label();
 			this.pnl_General = new System.Windows.Forms.Panel();
 			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
 			this.num_Height = new System.Windows.Forms.NumericUpDown();
@@ -118,12 +124,6 @@
 			this.pnl_keyframeTopBarColor = new System.Windows.Forms.Panel();
 			this.lbl_TkeyframeTopBarColorGeneral = new System.Windows.Forms.Label();
 			this.pic_TkeyframeTopBarColorGeneral = new System.Windows.Forms.PictureBox();
-			this.pnl_Updates = new System.Windows.Forms.Panel();
-			this.label3 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
-			this.comboBox1 = new System.Windows.Forms.ComboBox();
-			this.checkBox1 = new System.Windows.Forms.CheckBox();
-			this.label1 = new System.Windows.Forms.Label();
 			this.listView1 = new System.Windows.Forms.ListView();
 			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.pnl_Submit = new System.Windows.Forms.Panel();
@@ -133,6 +133,7 @@
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
+			this.pnl_Updates.SuspendLayout();
 			this.pnl_General.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
 			this.splitContainer2.Panel1.SuspendLayout();
@@ -169,7 +170,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.pic_TtweenFrameGeneral)).BeginInit();
 			this.pnl_keyframeTopBarColor.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pic_TkeyframeTopBarColorGeneral)).BeginInit();
-			this.pnl_Updates.SuspendLayout();
 			this.pnl_Submit.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -198,6 +198,74 @@
 			this.splitContainer1.Size = new System.Drawing.Size(524, 292);
 			this.splitContainer1.SplitterDistance = 398;
 			this.splitContainer1.TabIndex = 0;
+			// 
+			// pnl_Updates
+			// 
+			this.pnl_Updates.Controls.Add(this.label3);
+			this.pnl_Updates.Controls.Add(this.label2);
+			this.pnl_Updates.Controls.Add(this.comboBox1);
+			this.pnl_Updates.Controls.Add(this.checkBox1);
+			this.pnl_Updates.Controls.Add(this.label1);
+			this.pnl_Updates.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnl_Updates.Location = new System.Drawing.Point(0, 0);
+			this.pnl_Updates.Name = "pnl_Updates";
+			this.pnl_Updates.Size = new System.Drawing.Size(398, 292);
+			this.pnl_Updates.TabIndex = 1;
+			// 
+			// label3
+			// 
+			this.label3.AutoSize = true;
+			this.label3.Location = new System.Drawing.Point(166, 75);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(67, 13);
+			this.label3.TabIndex = 3;
+			this.label3.Text = "Use Version:";
+			// 
+			// label2
+			// 
+			this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F);
+			this.label2.ForeColor = System.Drawing.SystemColors.ControlDark;
+			this.label2.Location = new System.Drawing.Point(12, 115);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(372, 29);
+			this.label2.TabIndex = 2;
+			this.label2.Text = "You shouldn\'t see this";
+			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// comboBox1
+			// 
+			this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboBox1.FormattingEnabled = true;
+			this.comboBox1.Items.AddRange(new object[] {
+            "Stable (Reccomended)",
+            "Beta",
+            "Nightly (Not Reccomended)"});
+			this.comboBox1.Location = new System.Drawing.Point(93, 91);
+			this.comboBox1.Name = "comboBox1";
+			this.comboBox1.Size = new System.Drawing.Size(212, 21);
+			this.comboBox1.TabIndex = 1;
+			// 
+			// checkBox1
+			// 
+			this.checkBox1.AutoSize = true;
+			this.checkBox1.Checked = true;
+			this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkBox1.Location = new System.Drawing.Point(104, 266);
+			this.checkBox1.Name = "checkBox1";
+			this.checkBox1.Size = new System.Drawing.Size(191, 17);
+			this.checkBox1.TabIndex = 1;
+			this.checkBox1.Text = "Automatically Update TISFAT:Zero";
+			this.checkBox1.UseVisualStyleBackColor = true;
+			this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(13, 13);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(113, 13);
+			this.label1.TabIndex = 0;
+			this.label1.Text = "Build Version: 2.0.1.12";
 			// 
 			// pnl_General
 			// 
@@ -372,7 +440,6 @@
 			this.pnl_TimelineTheme.Name = "pnl_TimelineTheme";
 			this.pnl_TimelineTheme.Size = new System.Drawing.Size(398, 292);
 			this.pnl_TimelineTheme.TabIndex = 1;
-			this.pnl_TimelineTheme.Visible = false;
 			// 
 			// btn_saveTheme
 			// 
@@ -1131,74 +1198,6 @@
 			this.pic_TkeyframeTopBarColorGeneral.Tag = "6";
 			this.pic_TkeyframeTopBarColorGeneral.Click += new System.EventHandler(this.ColorBoxItem_Click);
 			// 
-			// pnl_Updates
-			// 
-			this.pnl_Updates.Controls.Add(this.label3);
-			this.pnl_Updates.Controls.Add(this.label2);
-			this.pnl_Updates.Controls.Add(this.comboBox1);
-			this.pnl_Updates.Controls.Add(this.checkBox1);
-			this.pnl_Updates.Controls.Add(this.label1);
-			this.pnl_Updates.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnl_Updates.Location = new System.Drawing.Point(0, 0);
-			this.pnl_Updates.Name = "pnl_Updates";
-			this.pnl_Updates.Size = new System.Drawing.Size(398, 292);
-			this.pnl_Updates.TabIndex = 1;
-			// 
-			// label3
-			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(166, 75);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(67, 13);
-			this.label3.TabIndex = 3;
-			this.label3.Text = "Use Version:";
-			// 
-			// label2
-			// 
-			this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F);
-			this.label2.ForeColor = System.Drawing.SystemColors.ControlDark;
-			this.label2.Location = new System.Drawing.Point(12, 115);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(372, 29);
-			this.label2.TabIndex = 2;
-			this.label2.Text = "You shouldn\'t see this";
-			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// comboBox1
-			// 
-			this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboBox1.FormattingEnabled = true;
-			this.comboBox1.Items.AddRange(new object[] {
-            "Stable (Reccomended)",
-            "Beta",
-            "Nightly (Not Reccomended)"});
-			this.comboBox1.Location = new System.Drawing.Point(93, 91);
-			this.comboBox1.Name = "comboBox1";
-			this.comboBox1.Size = new System.Drawing.Size(212, 21);
-			this.comboBox1.TabIndex = 1;
-			// 
-			// checkBox1
-			// 
-			this.checkBox1.AutoSize = true;
-			this.checkBox1.Checked = true;
-			this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.checkBox1.Location = new System.Drawing.Point(104, 266);
-			this.checkBox1.Name = "checkBox1";
-			this.checkBox1.Size = new System.Drawing.Size(191, 17);
-			this.checkBox1.TabIndex = 1;
-			this.checkBox1.Text = "Automatically Update TISFAT:Zero";
-			this.checkBox1.UseVisualStyleBackColor = true;
-			this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-			// 
-			// label1
-			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(13, 13);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(113, 13);
-			this.label1.TabIndex = 0;
-			this.label1.Text = "Build Version: 2.0.1.12";
-			// 
 			// listView1
 			// 
 			this.listView1.Activation = System.Windows.Forms.ItemActivation.OneClick;
@@ -1271,6 +1270,8 @@
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 			this.splitContainer1.ResumeLayout(false);
+			this.pnl_Updates.ResumeLayout(false);
+			this.pnl_Updates.PerformLayout();
 			this.pnl_General.ResumeLayout(false);
 			this.pnl_General.PerformLayout();
 			this.splitContainer2.Panel1.ResumeLayout(false);
@@ -1317,8 +1318,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.pic_TtweenFrameGeneral)).EndInit();
 			this.pnl_keyframeTopBarColor.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.pic_TkeyframeTopBarColorGeneral)).EndInit();
-			this.pnl_Updates.ResumeLayout(false);
-			this.pnl_Updates.PerformLayout();
 			this.pnl_Submit.ResumeLayout(false);
 			this.ResumeLayout(false);
 

@@ -505,7 +505,7 @@ namespace TISFAT_Zero
 		/// Updates the joints of the layer figure as if someone had just selected the given frame.
 		/// </summary>
 		/// <param name="position">The frame position.</param>
-		public virtual void updateFigure(int position)
+		public void updateFigure(int position)
 		{
 			if (position < 0)
 				throw new ArgumentOutOfRangeException("position", "Argument must be >= 0");
@@ -557,6 +557,7 @@ namespace TISFAT_Zero
 
 				float percent = (float)(position - S.Position) / (E.Position - S.Position);
 
+				LayerFigure.FigureJoints = E.frameFig.copyJoints();
 				LayerFigure = E.frameFig;
 
 				foreach (StickJoint j in LayerFigure)
@@ -565,6 +566,16 @@ namespace TISFAT_Zero
 				for (int a = 0; a < LayerFigure.FigureJoints.Count; a++)
 					LayerFigure.FigureJoints[a].Tween(S.frameFig[a], LayerFigure.FigureJoints[a], percent);
 			}
+		}
+
+		protected void copyFigProperties(StickObject to, StickObject from)
+		{
+			to.isActiveFig = from.isActiveFig;
+			to.drawFig = from.drawFig;
+			to.drawHandles = from.drawHandles;
+			to.figColor = from.figColor;
+			to.figureType = from.figureType;
+			to.parentLayer = from.parentLayer;
 		}
 
 		public virtual void renderLayer(ICanDraw Canvas)

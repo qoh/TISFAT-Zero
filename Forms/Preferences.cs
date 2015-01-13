@@ -35,6 +35,13 @@ namespace TISFAT_Zero
 				properties.addAttribute(true, "CheckForUpdates");
 				properties.addAttribute("200 190 245 255 0 0 170 170 170 255 0 0 70 120 255 0 0 0 0 0 0 255 255 255 255 0 0 220 220 220 255 0 0 40 230 255 255 192 203 0 0 0 140 140 140 200 200 200 30 100 255",
 										"Theme");
+
+				//Gets all the picture boxes in the theme panel, then set the colors
+				PictureBox[] boxes2 = GetAll(Controls.Find("pnl_themeScrollPanel", true)[0], typeof(PictureBox)).Cast<PictureBox>().ToArray();
+
+				foreach (PictureBox x in boxes2)
+					x.BackColor = Timeline.Colors[Int32.Parse((string)x.Tag)];
+
 				return;
 			}
 			
@@ -78,13 +85,9 @@ namespace TISFAT_Zero
 
 			//Gets all the picture boxes in the theme panel, then set the colors
 			PictureBox[] boxes = GetAll(Controls.Find("pnl_themeScrollPanel", true)[0], typeof(PictureBox)).Cast<PictureBox>().ToArray();
-			
+
 			foreach (PictureBox x in boxes)
 				x.BackColor = Timeline.Colors[Int32.Parse((string)x.Tag)];
-
-			new ListView.SelectedListViewItemCollection(listView1);
-			listView1.SelectedIndices.Add(0);
-			
 		}
 
 		public IEnumerable<Control> GetAll(Control control, Type type)
@@ -101,7 +104,8 @@ namespace TISFAT_Zero
 			Properties.User.Default.DefaultSavePath = txt_defaultSavePath.Text;
 			Properties.User.Default.CanvasColor = pic_ColorBox.BackColor;
 			Properties.User.Default.CanvasSize = new System.Drawing.Size((int)num_Width.Value, (int)num_Height.Value);
-
+			
+			/* Disabled until I get everything working
 			if (comboBox1.SelectedIndex != currentBuild)
 			{
 				Properties.User.Default.Save();
@@ -113,6 +117,7 @@ namespace TISFAT_Zero
 
 				return;
 			}
+			*/
 
 			Properties.User.Default.Save();
 			this.Close();
