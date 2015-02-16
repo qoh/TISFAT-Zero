@@ -51,6 +51,15 @@ namespace TISFAT_ZERO
 			Program.CanvasForm.Location = new Point(Program.ToolboxForm.Location.X + 4 + Program.ToolboxForm.Width, 10);
 			splitContainer1.Panel2.Controls.Add(Program.CanvasForm);
 
+			Program.RenderViewForm = new RenderView();
+			Program.RenderViewForm.Size = Properties.User.Default.CanvasSize;
+			Program.RenderViewForm.BackColor = Properties.User.Default.CanvasColor;
+			Program.RenderViewForm.TopLevel = false;
+			Program.RenderViewForm.Parent = this.splitContainer1.Panel2;
+			Program.RenderViewForm.StartPosition = FormStartPosition.Manual;
+			Program.RenderViewForm.Location = new Point(Program.CanvasForm.Location.X + 4 + Program.CanvasForm.Width, 10);
+			splitContainer1.Panel2.Controls.Add(Program.RenderViewForm);
+
 			//TODO: Finish scenes
 			/*
 			Program.ScenesForm = new Scenes();
@@ -78,6 +87,8 @@ namespace TISFAT_ZERO
 
 			Program.ToolboxForm.Show();
 			Program.CanvasForm.Show();
+
+			//Program.RenderViewForm.Show();
 			//Program.ScenesForm.Show();
 
 			if (Program.loadFile != "")

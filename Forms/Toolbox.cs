@@ -539,7 +539,7 @@ namespace TISFAT_ZERO
 
 		private void chk_rectFilled_CheckedChanged(object sender, EventArgs e)
 		{
-			((StickRect)Canvas.activeFigure).filled = chk_rectFilled.Checked;
+			((StickPoly)Canvas.activeFigure).filled = chk_rectFilled.Checked;
 
 			Program.CanvasForm.Refresh();
 		}

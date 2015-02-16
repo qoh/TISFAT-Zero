@@ -16,8 +16,9 @@ namespace TISFAT_ZERO
 		public static Canvas CanvasForm;
 		public static Timeline TimelineForm;
 		public static Scenes ScenesForm;
+		public static RenderView RenderViewForm;
 
-		public static readonly string Version = "2.5.0.5";
+		public static readonly string Version = "2.5.0.6";
 		public static string loadFile = "";
 
 		[STAThread]
