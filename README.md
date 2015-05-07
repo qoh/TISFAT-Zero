@@ -18,6 +18,8 @@ TISFAT-Zero is available to download for Windows via sourceforge:
 
 https://sourceforge.net/projects/tisfat-zero/
 
+[![Download TISFAT-Zero](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/tisfat-zero/files/latest/download)
+
 Note that TISFAT Zero requires .NET Framework 4.0 or higher!
 
 
