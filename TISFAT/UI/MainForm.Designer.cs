@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.sc_MainContainer = new System.Windows.Forms.SplitContainer();
+            this.GLContext = new OpenTK.GLControl();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,7 +49,6 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.GLContext = new OpenTK.GLControl();
             ((System.ComponentModel.ISupportInitialize)(this.sc_MainContainer)).BeginInit();
             this.sc_MainContainer.Panel1.SuspendLayout();
             this.sc_MainContainer.SuspendLayout();
@@ -60,6 +60,7 @@
             this.sc_MainContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.sc_MainContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.sc_MainContainer.Location = new System.Drawing.Point(0, 24);
             this.sc_MainContainer.Margin = new System.Windows.Forms.Padding(0);
             this.sc_MainContainer.Name = "sc_MainContainer";
@@ -68,15 +69,33 @@
             // sc_MainContainer.Panel1
             // 
             this.sc_MainContainer.Panel1.AutoScroll = true;
+            this.sc_MainContainer.Panel1.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.sc_MainContainer.Panel1.Controls.Add(this.GLContext);
-            this.sc_MainContainer.Panel1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.sc_MainContainer_Panel1_Scroll);
             // 
             // sc_MainContainer.Panel2
             // 
             this.sc_MainContainer.Panel2.AutoScroll = true;
+            this.sc_MainContainer.Panel2.BackColor = System.Drawing.SystemColors.ControlDark;
             this.sc_MainContainer.Size = new System.Drawing.Size(752, 437);
             this.sc_MainContainer.SplitterDistance = 125;
+            this.sc_MainContainer.SplitterWidth = 2;
             this.sc_MainContainer.TabIndex = 0;
+            this.sc_MainContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.sc_MainContainer_SplitterMoved);
+            // 
+            // GLContext
+            // 
+            this.GLContext.BackColor = System.Drawing.Color.Black;
+            this.GLContext.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.GLContext.Location = new System.Drawing.Point(0, 0);
+            this.GLContext.Name = "GLContext";
+            this.GLContext.Size = new System.Drawing.Size(750, 123);
+            this.GLContext.TabIndex = 0;
+            this.GLContext.VSync = false;
+            this.GLContext.Paint += new System.Windows.Forms.PaintEventHandler(this.GLContext_Paint);
+            this.GLContext.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GLContext_MouseDown);
+            this.GLContext.MouseLeave += new System.EventHandler(this.GLContext_MouseLeave);
+            this.GLContext.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GLContext_MouseMove);
+            this.GLContext.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GLContext_MouseUp);
             // 
             // menuStrip1
             // 
@@ -214,16 +233,6 @@
             this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.checkForUpdatesToolStripMenuItem.Text = "Check for Updates";
             // 
-            // GLContext
-            // 
-            this.GLContext.BackColor = System.Drawing.Color.Black;
-            this.GLContext.Location = new System.Drawing.Point(0, 0);
-            this.GLContext.Name = "GLContext";
-            this.GLContext.Size = new System.Drawing.Size(752, 123);
-            this.GLContext.TabIndex = 0;
-            this.GLContext.VSync = false;
-            this.GLContext.Paint += new System.Windows.Forms.PaintEventHandler(this.GLContext_Paint);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -234,6 +243,7 @@
             this.Name = "MainForm";
             this.Text = "TISFAT Zero";
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.sc_MainContainer.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.sc_MainContainer)).EndInit();
             this.sc_MainContainer.ResumeLayout(false);

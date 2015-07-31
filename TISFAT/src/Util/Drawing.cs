@@ -1,11 +1,7 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TISFAT.Util
 {
@@ -71,6 +67,28 @@ namespace TISFAT.Util
                 ));
             }
 
+            GL.End();
+        }
+
+        public static void Rectangle(PointF position, SizeF size, Color color)
+        {
+            GL.Begin(PrimitiveType.Quads);
+            GL.Color3(color);
+            GL.Vertex2(PointToVector(position));
+            GL.Vertex2(position.X + size.Width, position.Y);
+            GL.Vertex2(position.X + size.Width, position.Y + size.Height);
+            GL.Vertex2(position.X, position.Y + size.Height);
+            GL.End();
+        }
+
+        public static void RectangleLine(PointF position, SizeF size, Color color)
+        {
+            GL.Begin(PrimitiveType.LineLoop);
+            GL.Color3(color);
+            GL.Vertex2(PointToVector(position));
+            GL.Vertex2(position.X + size.Width, position.Y);
+            GL.Vertex2(position.X + size.Width, position.Y + size.Height);
+            GL.Vertex2(position.X, position.Y + size.Height);
             GL.End();
         }
     }

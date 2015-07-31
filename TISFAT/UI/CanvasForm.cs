@@ -8,14 +8,16 @@ using TISFAT.Util;
 
 namespace TISFAT
 {
-    public partial class Canvas : Form
+    public partial class CanvasForm : Form
     {
         GLControl GLContext;
+        bool Loaded;
         static int MSAASamples = 8;
-        
-        public Canvas(Control parent)
+
+        public CanvasForm(Control parent)
         {
             InitializeComponent();
+            Loaded = false;
 
             GraphicsMode mode = new GraphicsMode(
                 new ColorFormat(8, 8, 8, 8),
@@ -35,6 +37,12 @@ namespace TISFAT
 
         private void Canvas_Load(object sender, EventArgs e)
         {
+            GLContext_Init();
+            Loaded = true;
+        }
+
+        private void GLContext_Init()
+        {
             GLContext.MakeCurrent();
 
             GL.MatrixMode(MatrixMode.Projection);
@@ -52,12 +60,18 @@ namespace TISFAT
 
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            // Drawing.CappedLine(new PointF(50, 50), new PointF(250, 200), 6, Color.Black);
+            //Drawing.CappedLine(new PointF(50, 50), new PointF(250, 200), 6, Color.Black);
 
             Program.Form.ActiveProject.Draw((float)(DateTime.Now.Millisecond) / 1000.0f);
-            
+
             GLContext.SwapBuffers();
             GLContext.Invalidate();
+        }
+
+        private void CanvasForm_Resize(object sender, EventArgs e)
+        {
+            if (Loaded)
+                GLContext_Init();
         }
     }
 }

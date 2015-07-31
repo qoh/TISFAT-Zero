@@ -1,5 +1,4 @@
-﻿using OpenTK.Graphics.OpenGL;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
 using TISFAT.Entities;
@@ -8,8 +7,9 @@ namespace TISFAT
 {
     public partial class MainForm : Form
     {
-        public Canvas MdiCanvas;
         public Project ActiveProject;
+        public CanvasForm Canvas;
+        public Timeline MainTimeline;
 
         public MainForm()
         {
@@ -19,8 +19,9 @@ namespace TISFAT
 
             #region General Init
             // Create and show forms
-            MdiCanvas = new Canvas(sc_MainContainer.Panel2);
-            MdiCanvas.Show();
+            Canvas = new CanvasForm(sc_MainContainer.Panel2);
+            Canvas.Show();
+            MainTimeline = new Timeline(GLContext);
 
             // Do this the wrong place
             ActiveProject = new Project();
@@ -57,29 +58,45 @@ namespace TISFAT
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            GLContext.MakeCurrent();
+            MainTimeline.GLContext_Init();
+        }
 
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadIdentity();
-            GL.Viewport(0, 0, GLContext.Width, GLContext.Height);
-            GL.Ortho(0, GLContext.Width, GLContext.Height, 0, -1, 1);
-            GL.Disable(EnableCap.DepthTest);
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            MainTimeline.GLContext_Init();
+            MainTimeline.Resize();
+        }
+
+        #region GLContext <-> Timeline hooks
+        private void sc_MainContainer_SplitterMoved(object sender, SplitterEventArgs e)
+        {
+            MainTimeline.GLContext_Init();
         }
 
         private void GLContext_Paint(object sender, PaintEventArgs e)
         {
-            GLContext.MakeCurrent();
-
-            GL.ClearColor(Color.Black);
-
-            GL.Clear(ClearBufferMask.ColorBufferBit);
-
-            GLContext.SwapBuffers();
+            MainTimeline.GLContext_Paint();
         }
 
-        private void sc_MainContainer_Panel1_Scroll(object sender, ScrollEventArgs e)
+        private void GLContext_MouseMove(object sender, MouseEventArgs e)
         {
-            GLContext.Invalidate();
+            MainTimeline.MouseMoved(e.Location);
         }
+
+        private void GLContext_MouseLeave(object sender, EventArgs e)
+        {
+            MainTimeline.MouseLeft();
+        }
+
+        private void GLContext_MouseDown(object sender, MouseEventArgs e)
+        {
+            MainTimeline.MouseDown(e.Location);
+        }
+
+        private void GLContext_MouseUp(object sender, MouseEventArgs e)
+        {
+            MainTimeline.MouseUp();
+        }
+        #endregion
     }
 }

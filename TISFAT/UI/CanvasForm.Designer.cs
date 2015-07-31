@@ -1,6 +1,6 @@
 ﻿namespace TISFAT
 {
-    partial class Canvas
+    partial class CanvasForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@
         {
             this.SuspendLayout();
             // 
-            // Canvas
+            // CanvasForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -39,10 +39,11 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Canvas";
+            this.Name = "CanvasForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Canvas";
             this.Load += new System.EventHandler(this.Canvas_Load);
+            this.Resize += new System.EventHandler(this.CanvasForm_Resize);
             this.ResumeLayout(false);
 
         }
