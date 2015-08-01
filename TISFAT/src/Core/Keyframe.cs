@@ -31,6 +31,11 @@ namespace TISFAT
         public void Read(BinaryReader reader, UInt16 version)
         {
             Time = reader.ReadUInt32();
+            Type type = FileFormat.ResolveEntityStateID(reader.ReadUInt16());
+            Type[] args = { };
+            object[] values = { };
+            State = (IEntityState)type.GetConstructor(args).Invoke(values);
+            State.Read(reader, version);
         }
     }
 }

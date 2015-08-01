@@ -52,7 +52,7 @@ namespace TISFAT
             GL.Disable(EnableCap.DepthTest);
         }
 
-        private void GLContext_Paint(object sender, PaintEventArgs e)
+        public void GLContext_Paint(object sender, PaintEventArgs e)
         {
             GLContext.MakeCurrent();
 
@@ -62,10 +62,13 @@ namespace TISFAT
 
             //Drawing.CappedLine(new PointF(50, 50), new PointF(250, 200), 6, Color.Black);
 
-            Program.Form.ActiveProject.Draw((float)(DateTime.Now.Millisecond) / 1000.0f);
+            Font fo = new Font("Segoe UI", 12);
+
+            Drawing.Text("T I M E L I N E", new PointF(40, 40), fo, Color.Black);
+
+            Program.Form.ActiveProject.Draw(Program.Form.MainTimeline.GetCurrentFrame());
 
             GLContext.SwapBuffers();
-            GLContext.Invalidate();
         }
 
         private void CanvasForm_Resize(object sender, EventArgs e)

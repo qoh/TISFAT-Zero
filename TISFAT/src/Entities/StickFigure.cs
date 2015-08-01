@@ -8,9 +8,9 @@ namespace TISFAT.Entities
 {
     class StickFigure : IEntity
     {
-        public class Joint
+        public class Joint : ISaveable
         {
-            public class State
+            public class State : ISaveable
             {
                 public State Parent;
                 public List<State> Children;
@@ -19,7 +19,16 @@ namespace TISFAT.Entities
                 public Color JointColor;
                 public float Thickness;
 
-                public State(State parent=null)
+                public State()
+                {
+                    Parent = null;
+                    Children = new List<State>();
+                    Location = new PointF();
+                    JointColor = Color.Black;
+                    Thickness = 6;
+                }
+
+                public State(State parent)
                 {
                     Parent = parent;
                     Children = new List<State>();
@@ -42,6 +51,36 @@ namespace TISFAT.Entities
 
                     return state;
                 }
+
+                public void Write(BinaryWriter writer)
+                {
+                    writer.Write((double)Location.X);
+                    writer.Write((double)Location.Y);
+                    writer.Write(JointColor.A);
+                    writer.Write(JointColor.R);
+                    writer.Write(JointColor.G);
+                    writer.Write(JointColor.B);
+                    writer.Write((double)Thickness);
+                    FileFormat.WriteList(writer, Children);
+                }
+
+                public void Read(BinaryReader reader, UInt16 version)
+                {
+                    float x = (float)reader.ReadDouble();
+                    float y = (float)reader.ReadDouble();
+                    Location = new PointF(x, y);
+                    byte a = reader.ReadByte();
+                    byte r = reader.ReadByte();
+                    byte g = reader.ReadByte();
+                    byte b = reader.ReadByte();
+                    JointColor = Color.FromArgb(a, r, g, b);
+                    Thickness = (float)reader.ReadDouble();
+
+                    Children = FileFormat.ReadList<Joint.State>(reader, version);
+
+                    foreach (Joint.State child in Children)
+                        child.Parent = this;
+                }
             }
 
             public Joint Parent;
@@ -51,7 +90,13 @@ namespace TISFAT.Entities
             public Color JointColor;
             public float Thickness;
 
-            public Joint(Joint parent=null)
+            public Joint()
+            {
+                Parent = null;
+                Children = new List<Joint>();
+            }
+
+            public Joint(Joint parent)
             {
                 Parent = parent;
                 Children = new List<Joint>();
@@ -70,15 +115,54 @@ namespace TISFAT.Entities
                     Children[i].Draw(state.Children[i]);
                 }
             }
+
+            public void Write(BinaryWriter writer)
+            {
+                writer.Write((double)Location.X);
+                writer.Write((double)Location.Y);
+                writer.Write(JointColor.A);
+                writer.Write(JointColor.R);
+                writer.Write(JointColor.G);
+                writer.Write(JointColor.B);
+                writer.Write((double)Thickness);
+                FileFormat.WriteList(writer, Children);
+            }
+
+            public void Read(BinaryReader reader, UInt16 version)
+            {
+                float x = (float)reader.ReadDouble();
+                float y = (float)reader.ReadDouble();
+                Location = new PointF(x, y);
+                byte a = reader.ReadByte();
+                byte r = reader.ReadByte();
+                byte g = reader.ReadByte();
+                byte b = reader.ReadByte();
+                JointColor = Color.FromArgb(a, r, g, b);
+                Thickness = (float)reader.ReadDouble();
+                
+                Children = FileFormat.ReadList<Joint>(reader, version);
+
+                foreach (Joint child in Children)
+                    child.Parent = this;
+            }
         }
 
-        public class State : IEntityState
+        public class State : IEntityState, ISaveable
         {
             public Joint.State Root;
 
             public State() { }
-            public void Write(BinaryWriter reader) { }
-            public void Read(BinaryReader reader, UInt16 version) { }
+
+            public void Write(BinaryWriter writer)
+            {
+                Root.Write(writer);
+            }
+
+            public void Read(BinaryReader reader, UInt16 version)
+            {
+                Root = new Joint.State();
+                Root.Read(reader, version);
+            }
         }
 
         public Joint Root;
@@ -100,7 +184,14 @@ namespace TISFAT.Entities
             Root.Draw(state.Root);
         }
 
-        public void Write(BinaryWriter reader) { }
-        public void Read(BinaryReader reader, UInt16 version) { }
+        public void Write(BinaryWriter writer)
+        {
+            Root.Write(writer);
+        }
+        public void Read(BinaryReader reader, UInt16 version)
+        {
+            Root = new Joint();
+            Root.Read(reader, version);
+        }
     }
 }

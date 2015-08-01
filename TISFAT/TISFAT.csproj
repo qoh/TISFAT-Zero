@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Core\Frameset.cs" />
     <Compile Include="src\Entities\StickFigure.cs" />
     <Compile Include="src\Util\Drawing.cs" />
     <Compile Include="src\Util\FileFormat.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="src\Util\Interpolation.cs" />
     <Compile Include="src\Util\ScrollController.cs" />
     <Compile Include="UI\Timeline.cs" />
+    <Compile Include="UI\TimelineDrawing.cs" />
     <EmbeddedResource Include="UI\CanvasForm.resx">
       <DependentUpon>CanvasForm.cs</DependentUpon>
     </EmbeddedResource>

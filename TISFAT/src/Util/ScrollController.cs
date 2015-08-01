@@ -31,21 +31,20 @@ namespace TISFAT.Util
             DragStartOffset = xOffset;
         }
 
-        public void Drag(int xLoc, int viewLength)
+        public void Drag(int xLoc, int contentLength, int viewLength)
         {
-            xOffset = Math.Max(0, Math.Min(viewLength, DragStartOffset + (xLoc - DragStartMouse)));
+            xOffset = Math.Max(0, Math.Min((contentLength - viewLength), DragStartOffset + (xLoc - DragStartMouse)));
         }
 
         public void Resize(int contentLength, int viewLength)
         {
             if (xOffset + Width >= viewLength)
             {
-                GetScrollbarLength(contentLength, viewLength);
-
                 if (xOffset > 0)
                     xOffset -= (Width - LastWidth);
                 else
                     xOffset = 0;
+                GetScrollbarLength(contentLength, viewLength);
             }
         }
 

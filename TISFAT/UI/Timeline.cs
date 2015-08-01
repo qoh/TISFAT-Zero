@@ -3,6 +3,7 @@ using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,16 +12,59 @@ using TISFAT.Util;
 
 namespace TISFAT
 {
-    public class Timeline
+    public partial class Timeline
     {
         public GLControl GLContext;
         public ScrollController HorizScrollBar;
         public bool LastHovered = false;
+        public bool IsDragging = false;
+
+        private float Frame;
+        private DateTime? PlayStart;
 
         public Timeline(GLControl context)
         {
             GLContext = context;
             HorizScrollBar = new ScrollController();
+
+            Frame = 0.0f;
+            PlayStart = null;
+        }
+
+        public void Rewind()
+        {
+            Frame = 0.0f;
+        }
+
+        public void TogglePause()
+        {
+            if (PlayStart != null)
+            {
+                Frame = GetCurrentFrame();
+                PlayStart = null;
+            }
+            else
+            {
+                PlayStart = DateTime.Now;
+                GLContext.Invalidate();
+            }
+        }
+
+        public float GetCurrentFrame()
+        {
+            float frame;
+
+            if (PlayStart != null)
+                frame = ((float)(DateTime.Now - (DateTime)PlayStart).TotalSeconds) * 10.0f;
+            else
+                frame = 0.0f;
+
+            return Frame + frame;
+        }
+
+        public bool IsRedrawing()
+        {
+            return PlayStart != null;
         }
 
         public void GLContext_Init()
@@ -34,71 +78,57 @@ namespace TISFAT
             GL.Disable(EnableCap.DepthTest);
         }
 
-        public void GLContext_Paint()
+        public float FrameToPixels(float frame)
         {
-            bool cont = true;
+            return 80 + frame * 9;
+        }
 
-            if (cont)
-            {
-                List<Layer> Layers = Program.Form.ActiveProject.Layers;
-                int dist = ((SplitContainer)GLContext.Parent.Parent).SplitterDistance - HorizScrollBar.Height + 2;
+        public void GLContext_Paint(object sender, PaintEventArgs e)
+        {
+            List<Layer> Layers = Program.Form.ActiveProject.Layers;
 
-                // Calculate number of visible frames
-                int frames = (Program.Form.Width - 80) / 9;
+            float lastFrame = 0;
 
-                // Calculate height of visible frames
-                int TotalLayerHeight = Math.Min(Layers.Count * 16 + 16, dist);
+            foreach (Layer layer in Layers)
+                lastFrame = Math.Max(lastFrame, layer.Framesets[layer.Framesets.Count - 1].EndTime);
 
-                GLContext.MakeCurrent();
+            int frameCount = (int)Math.Ceiling(lastFrame + 101);
+            int frameWidth = frameCount * 9;
+            int layerHeight = Layers.Count * 16;
+            int LastTime = 0;
 
-                GL.ClearColor(Color.FromArgb(220, 220, 220));
+            int dist = ((SplitContainer)GLContext.Parent.Parent).SplitterDistance - HorizScrollBar.Height + 2;
 
-                GL.Clear(ClearBufferMask.ColorBufferBit);
+            // Calculate height of visible frames
+            int TotalLayerHeight = Math.Min(Layers.Count * 16 + 16, dist);
 
-                #region Keyframes & Frames
-                // Translate the drawing, draw keyframes
-                int LastTime = 0;
-                GL.Translate(-HorizScrollBar.xOffset, 0, 0);
-                for (int i = 0; i < Layers.Count; i++)
-                {
-                    // Draw keyframes
-                    foreach (Keyframe keyframe in Layers[i].Keyframes)
-                    {
-                        LastTime = (int)Math.Max(keyframe.Time, LastTime);
-                        Drawing.Rectangle(new PointF(80 + (keyframe.Time * 9), 16 * (i + 1)), new SizeF(9, 16), Color.Yellow);
-                    }
-                }
+            GLContext.MakeCurrent();
 
-                // Draw frame outlines
-                Drawing.Line(new PointF(80, 1), new PointF((LastTime + 100) * 9 + 80, 1), Color.FromArgb(140, 140, 140));
-                for (double a = 0, b = 88; a < (LastTime + 100); a++, b = 88 + 9 * a)
-                    Drawing.Line(new PointF((float)Math.Floor(b), 0), new PointF((float)Math.Floor(b), TotalLayerHeight), Color.FromArgb(140, 140, 140));
-                for (double a = 0, b = 16; a <= Layers.Count; a++, b = 16 * a + 16)
-                    Drawing.Line(new PointF(80, (float)Math.Floor(b)), new PointF((LastTime + 100) * 9 + 80, (float)Math.Floor(b)), Color.FromArgb(140, 140, 140));
+            GL.ClearColor(Color.FromArgb(220, 220, 220));
 
-                // Stop translating the drawing
-                GL.Translate(HorizScrollBar.xOffset, 0, 0); 
-                #endregion
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+            
+            // Translate the drawing, draw keyframes
+            GL.Translate(-HorizScrollBar.xOffset, 0, 0);
 
-                // Draw TIMELINE layer
-                Drawing.Rectangle(new PointF(0, 0), new SizeF(80, 16), Color.FromArgb(70, 120, 255));
-                Drawing.RectangleLine(new PointF(0, 1), new SizeF(79, 15), Color.Black);
+            DrawBackground(frameCount, layerHeight);
 
-                // Draw layers
-                for (int i = 0; i < Layers.Count; i++)
-                {
-                    Layer layer = Layers[i];
+            DrawKeyframes(Layers);
 
-                    // Draw layer name here
-                    Drawing.Rectangle(new PointF(0, 16 * (i + 1)), new SizeF(80, 16), Color.Blue);
-                    Drawing.RectangleLine(new PointF(0, 16 * (i + 1)), new SizeF(79, 16), Color.Black);
-                }
+            DrawMisc(Layers, layerHeight, frameWidth, frameCount);
 
-                // Draw scrollbar
-                HorizScrollBar.Draw((LastTime + 100) * 9 + 80, GLContext.Size);
+            DrawPlayhead();
 
-                GLContext.SwapBuffers();
-            }
+            // Stop translating the drawing
+            GL.Translate(HorizScrollBar.xOffset, 0, 0);
+
+            DrawLabels(Layers);
+
+            // Draw scrollbar
+            HorizScrollBar.Draw((LastTime + 100) * 9 + 80, GLContext.Size);
+
+            GLContext.SwapBuffers();
+            Program.Form.Canvas.GLContext_Paint(sender, e);
         }
 
         public void Resize()
@@ -107,9 +137,8 @@ namespace TISFAT
 
             int LastTime = 0;
 
-            foreach(Layer layer in Layers)
-                foreach (Keyframe keyframe in layer.Keyframes)
-                    LastTime = (int)Math.Max(keyframe.Time, LastTime);
+            foreach (Layer layer in Layers)
+                LastTime = (int)Math.Max(layer.Framesets[layer.Framesets.Count - 1].EndTime, LastTime);
 
             HorizScrollBar.Resize((LastTime + 100) * 9 + 80, GLContext.Width);
         }
@@ -120,14 +149,15 @@ namespace TISFAT
             {
                 HorizScrollBar.StartDragging(location);
             }
+            else if (location.Y < 16)
+                IsDragging = true;
         }
 
         public void MouseUp()
         {
-            if (HorizScrollBar.Dragging)
-            {
-                HorizScrollBar.Dragging = false;
-            }
+            HorizScrollBar.Dragging = false;
+            IsDragging = false;
+            GLContext.Invalidate();
         }
 
         public void MouseMoved(Point location)
@@ -139,7 +169,22 @@ namespace TISFAT
             }
             if (HorizScrollBar.Dragging)
             {
-                HorizScrollBar.Drag(location.X, GLContext.Width);
+                List<Layer> Layers = Program.Form.ActiveProject.Layers;
+
+                int LastTime = 0;
+
+                foreach (Layer layer in Layers)
+                    LastTime = (int)Math.Max(layer.Framesets[layer.Framesets.Count - 1].EndTime, LastTime);
+
+                HorizScrollBar.Drag(location.X, (LastTime + 100) * 9 + 80, GLContext.Width);
+                GLContext.Invalidate();
+            }
+            if (IsDragging)
+            {
+                if (PlayStart != null)
+                    PlayStart = DateTime.Now;
+
+                Frame = (float)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
                 GLContext.Invalidate();
             }
         }
@@ -147,6 +192,7 @@ namespace TISFAT
         public void MouseLeft()
         {
             HorizScrollBar.Hovered = false;
+            IsDragging = false;
             GLContext.Invalidate();
         }
     }
