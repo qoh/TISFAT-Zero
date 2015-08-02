@@ -88,20 +88,26 @@ namespace TISFAT.Entities
 
             public PointF Location;
             public Color JointColor;
+            public Color HandleColor;
             public float Thickness;
 
+            #region Constructors
             public Joint()
             {
                 Parent = null;
                 Children = new List<Joint>();
+                JointColor = Color.Blue;
             }
 
             public Joint(Joint parent)
             {
                 Parent = parent;
                 Children = new List<Joint>();
-            }
+                JointColor = Color.Blue;
+            } 
+            #endregion
 
+            #region Drawing
             public void Draw(State state)
             {
                 if (Parent != null)
@@ -116,6 +122,39 @@ namespace TISFAT.Entities
                 }
             }
 
+            public void DrawHandle(State state)
+            {
+                PointF Loc = new PointF(state.Location.X - 4, state.Location.Y - 4);
+                SizeF Siz = new SizeF(6, 6);
+
+                Drawing.Rectangle(Loc, Siz, JointColor);
+                Drawing.RectangleLine(Loc, Siz, Color.Black);
+
+                for (var i = 0; i < Children.Count; i++)
+                {
+                    Children[i].DrawHandle(state.Children[i]);
+                }
+            }
+            #endregion
+
+            public bool JointAtLocation(State state, Point _location)
+            {
+                if (state.Location.X + 4 > _location.X &&
+                    state.Location.X - 4 < _location.X &&
+                    state.Location.Y + 4 > _location.Y &&
+                    state.Location.Y - 4 < _location.Y)
+                    return true;
+
+                for(var i = 0; i < Children.Count; i++)
+                {
+                    if (Children[i].JointAtLocation(state.Children[i], _location))
+                        return true;
+                }
+
+                return false;
+            }
+
+            #region File Saving / Loading
             public void Write(BinaryWriter writer)
             {
                 writer.Write((double)Location.X);
@@ -124,6 +163,10 @@ namespace TISFAT.Entities
                 writer.Write(JointColor.R);
                 writer.Write(JointColor.G);
                 writer.Write(JointColor.B);
+                writer.Write(HandleColor.A);
+                writer.Write(HandleColor.R);
+                writer.Write(HandleColor.G);
+                writer.Write(HandleColor.B);
                 writer.Write((double)Thickness);
                 FileFormat.WriteList(writer, Children);
             }
@@ -133,18 +176,24 @@ namespace TISFAT.Entities
                 float x = (float)reader.ReadDouble();
                 float y = (float)reader.ReadDouble();
                 Location = new PointF(x, y);
-                byte a = reader.ReadByte();
-                byte r = reader.ReadByte();
-                byte g = reader.ReadByte();
-                byte b = reader.ReadByte();
-                JointColor = Color.FromArgb(a, r, g, b);
+                byte joint_a = reader.ReadByte();
+                byte joint_r = reader.ReadByte();
+                byte joint_g = reader.ReadByte();
+                byte joint_b = reader.ReadByte();
+                JointColor = Color.FromArgb(joint_a, joint_r, joint_g, joint_b);
+                byte handle_a = reader.ReadByte();
+                byte handle_r = reader.ReadByte();
+                byte handle_g = reader.ReadByte();
+                byte handle_b = reader.ReadByte();
+                HandleColor = Color.FromArgb(handle_a, handle_r, handle_g, handle_b);
                 Thickness = (float)reader.ReadDouble();
-                
+
                 Children = FileFormat.ReadList<Joint>(reader, version);
 
                 foreach (Joint child in Children)
                     child.Parent = this;
-            }
+            } 
+            #endregion
         }
 
         public class State : IEntityState, ISaveable
@@ -184,6 +233,34 @@ namespace TISFAT.Entities
             Root.Draw(state.Root);
         }
 
+        public void DrawEditable(IEntityState _state)
+        {
+            State state = _state as State;
+            Root.DrawHandle(state.Root);
+        }
+
+        public bool TryManipulate(IEntityState _state, Point location)
+        {
+            State state = _state as State;
+            return Root.JointAtLocation(state.Root, location);
+        }
+
+        public void ManipulateStart(IEntityState state, Point location)
+        {
+            
+        }
+
+        public void ManipulateUpdate(IEntityState state, Point location)
+        {
+            
+        }
+
+        public void ManipulateEnd(IEntityState state, Point location)
+        {
+            
+        }
+
+        #region File Saving / Loading
         public void Write(BinaryWriter writer)
         {
             Root.Write(writer);
@@ -192,6 +269,7 @@ namespace TISFAT.Entities
         {
             Root = new Joint();
             Root.Read(reader, version);
-        }
+        } 
+        #endregion
     }
 }

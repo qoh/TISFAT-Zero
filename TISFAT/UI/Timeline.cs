@@ -3,10 +3,6 @@ using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TISFAT.Util;
 
@@ -19,15 +15,22 @@ namespace TISFAT
         public bool LastHovered = false;
         public bool IsDragging = false;
 
-        private float Frame;
+        private float FrameNum;
         private DateTime? PlayStart;
+        
+        public Layer SelectedLayer;
+        public Frameset SelectedFrameset;
+        public Keyframe SelectedKeyframe;
+        private int SelectedBlankFrame = -1;
+        private int SelectedNullFrame = -1;
 
+        #region CTOR | OpenGL core functions
         public Timeline(GLControl context)
         {
             GLContext = context;
             HorizScrollBar = new ScrollController();
 
-            Frame = 0.0f;
+            FrameNum = 0.0f;
             PlayStart = null;
         }
 
@@ -42,9 +45,25 @@ namespace TISFAT
             GL.Disable(EnableCap.DepthTest);
         }
 
+        public void Resize()
+        {
+            // Reinit OpenGL
+            GLContext_Init();
+
+            // Resize horizontal scrollbar
+            List<Layer> Layers = Program.Form.ActiveProject.Layers;
+            int LastTime = 0;
+            foreach (Layer layer in Layers)
+                LastTime = (int)Math.Max(layer.Framesets[layer.Framesets.Count - 1].EndTime, LastTime);
+            HorizScrollBar.Resize((LastTime + 100) * 9 + 80, GLContext.Width);
+        } 
+        #endregion
+
+        #region Seeking / Playback Functions
         public void SeekStart()
         {
-            Frame = 0.0f;
+            FrameNum = 0.0f;
+            SelectedKeyframe = null;
             GLContext.Invalidate();
         }
 
@@ -53,8 +72,9 @@ namespace TISFAT
             Project project = Program.Form.ActiveProject;
 
             foreach (Layer layer in project.Layers)
-                Frame = Math.Min(Frame, layer.Framesets[0].StartTime);
+                FrameNum = Math.Min(FrameNum, layer.Framesets[0].StartTime);
 
+            SelectedKeyframe = null;
             GLContext.Invalidate();
         }
 
@@ -63,16 +83,19 @@ namespace TISFAT
             Project project = Program.Form.ActiveProject;
 
             foreach (Layer layer in project.Layers)
-                Frame = Math.Max(Frame, layer.Framesets[layer.Framesets.Count - 1].EndTime);
+                FrameNum = Math.Max(FrameNum, layer.Framesets[layer.Framesets.Count - 1].EndTime);
 
+            ClearSelection();
             GLContext.Invalidate();
         }
 
         public void TogglePause()
         {
+            ClearSelection();
+
             if (PlayStart != null)
             {
-                Frame = GetCurrentFrame();
+                FrameNum = GetCurrentFrame();
                 PlayStart = null;
             }
             else
@@ -84,6 +107,15 @@ namespace TISFAT
 
         public float GetCurrentFrame()
         {
+            if (SelectedKeyframe != null)
+                return SelectedKeyframe.Time;
+
+            if (SelectedBlankFrame != -1)
+                return SelectedBlankFrame;
+
+            if (SelectedNullFrame != -1)
+                return SelectedNullFrame;
+
             float frame;
 
             if (PlayStart != null)
@@ -91,17 +123,68 @@ namespace TISFAT
             else
                 frame = 0.0f;
 
-            return Frame + frame;
+            return FrameNum + frame;
         }
 
         public bool IsPlaying()
         {
             return PlayStart != null;
         }
+        #endregion
 
-        public float FrameToPixels(float frame)
+        public void ClearSelection()
         {
-            return 80 + frame * 9;
+            SelectedLayer = null;
+            SelectedFrameset = null;
+            SelectedKeyframe = null;
+            SelectedBlankFrame = -1;
+            SelectedNullFrame = -1;
+        }
+
+        public void SelectFrame(Point location)
+        {
+            // Select keyframes
+            Project project = Program.Form.ActiveProject;
+
+            int frameIndex = (int)Math.Floor((location.X - 80) / 9.0);
+            int layerIndex = (int)Math.Floor((location.Y - 16) / 16.0);
+
+            if (layerIndex < 0 || layerIndex >= project.Layers.Count)
+                return;
+
+            Layer layer = project.Layers[layerIndex];
+
+            ClearSelection();
+
+            foreach (Frameset frameset in layer.Framesets)
+            {
+                foreach (Keyframe keyframe in frameset.Keyframes)
+                {
+                    if (keyframe.Time == frameIndex)
+                    {
+                        SelectedLayer = layer;
+                        SelectedFrameset = frameset;
+                        SelectedKeyframe = keyframe;
+                        GLContext.Invalidate();
+
+                        return;
+                    }
+                }
+
+                if (frameIndex > frameset.StartTime && frameIndex < frameset.EndTime)
+                {
+                    SelectedLayer = layer;
+                    SelectedFrameset = frameset;
+                    SelectedBlankFrame = frameIndex;
+                    GLContext.Invalidate();
+
+                    return;
+                }
+            }
+
+            SelectedLayer = layer;
+            SelectedNullFrame = frameIndex;
+            GLContext.Invalidate();
         }
 
         public void GLContext_Paint(object sender, PaintEventArgs e)
@@ -147,6 +230,10 @@ namespace TISFAT
 
             DrawLabels(Layers);
 
+            // Draw rect below layers to hide bottom of playhead when
+            // scrolling past the displayed layers.
+            Drawing.Rectangle(new PointF(0, Layers.Count * 16 + 17), new SizeF(81, GLContext.Height - (Layers.Count * 16 + 16)), Color.FromArgb(220, 220, 220));
+
             HorizScrollBar.Draw((LastTime + 100) * 9 + 80, GLContext.Size);
 
             //GL.Disable(EnableCap.LineSmooth);
@@ -155,33 +242,33 @@ namespace TISFAT
             Program.Form.Canvas.GLContext_Paint(sender, e);
         }
 
-        public void Resize()
-        {
-            List<Layer> Layers = Program.Form.ActiveProject.Layers;
-
-            int LastTime = 0;
-
-            foreach (Layer layer in Layers)
-                LastTime = (int)Math.Max(layer.Framesets[layer.Framesets.Count - 1].EndTime, LastTime);
-
-            HorizScrollBar.Resize((LastTime + 100) * 9 + 80, GLContext.Width);
-        }
-
+        #region Mouse Events
         public void MouseDown(Point location)
         {
             if (HorizScrollBar.CheckIsHovered(location))
             {
                 HorizScrollBar.StartDragging(location);
+
+                return;
             }
             else if (location.Y < 16)
-                IsDragging = true;
-        }
+            {
+                ClearSelection();
 
-        public void MouseUp()
-        {
-            HorizScrollBar.Dragging = false;
-            IsDragging = false;
-            GLContext.Invalidate();
+                IsDragging = true;
+                if (PlayStart != null)
+                    PlayStart = DateTime.Now;
+
+                FrameNum = (float)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
+                GLContext.Invalidate();
+
+                return;
+            }
+
+            if (IsPlaying())
+                return;
+
+            SelectFrame(location);
         }
 
         public void MouseMoved(Point location)
@@ -208,9 +295,16 @@ namespace TISFAT
                 if (PlayStart != null)
                     PlayStart = DateTime.Now;
 
-                Frame = (float)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
+                FrameNum = (float)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
                 GLContext.Invalidate();
             }
+        }
+
+        public void MouseUp()
+        {
+            HorizScrollBar.Dragging = false;
+            IsDragging = false;
+            GLContext.Invalidate();
         }
 
         public void MouseLeft()
@@ -218,6 +312,7 @@ namespace TISFAT
             HorizScrollBar.Hovered = false;
             IsDragging = false;
             GLContext.Invalidate();
-        }
+        } 
+        #endregion
     }
 }

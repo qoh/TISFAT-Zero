@@ -28,6 +28,7 @@ namespace TISFAT
             GLContext.Dock = DockStyle.Fill;
             GLContext.VSync = true;
             GLContext.Paint += new PaintEventHandler(this.GLContext_Paint);
+            GLContext.MouseMove += new MouseEventHandler(this.GLContext_MouseMove);
             Controls.Add(GLContext);
 
             // Setup stuff
@@ -41,6 +42,7 @@ namespace TISFAT
             Loaded = true;
         }
 
+        #region GL Core Init
         private void GLContext_Init()
         {
             GLContext.MakeCurrent();
@@ -51,6 +53,13 @@ namespace TISFAT
             GL.Ortho(0, GLContext.Width, GLContext.Height, 0, -1, 1);
             GL.Disable(EnableCap.DepthTest);
         }
+
+        private void CanvasForm_Resize(object sender, EventArgs e)
+        {
+            if (Loaded)
+                GLContext_Init();
+        } 
+        #endregion
 
         public void GLContext_Paint(object sender, PaintEventArgs e)
         {
@@ -65,10 +74,9 @@ namespace TISFAT
             GLContext.SwapBuffers();
         }
 
-        private void CanvasForm_Resize(object sender, EventArgs e)
+        public void GLContext_MouseMove(object sender, MouseEventArgs e)
         {
-            if (Loaded)
-                GLContext_Init();
+            Cursor = Program.Form.ActiveProject.TryManipulate(Program.Form.MainTimeline.GetCurrentFrame(), e.Location) ? Cursors.Hand : Cursors.Default;
         }
     }
 }

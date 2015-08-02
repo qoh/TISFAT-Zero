@@ -15,6 +15,7 @@ namespace TISFAT
 
         public CanvasForm Canvas;
         public Timeline MainTimeline;
+        public ToolboxForm Toolbox;
 
         private static Random Why = new Random();
 
@@ -30,7 +31,11 @@ namespace TISFAT
             // Create and show forms
             Canvas = new CanvasForm(sc_MainContainer.Panel2);
             Canvas.Show();
+
             MainTimeline = new Timeline(GLContext);
+
+            Toolbox = new ToolboxForm(sc_MainContainer.Panel2);
+            Toolbox.Show();
 
             ProjectNew();
             AddTestLayer();
@@ -77,7 +82,7 @@ namespace TISFAT
         public void SetDirty(bool dirty)
         {
             ProjectDirty = dirty;
-            Text = "TISFAT Zero - " + (ProjectFileName ?? "Untitled") + (dirty ? " *" : "");
+            Text = "TISFAT Zero - " + (Path.GetFileNameWithoutExtension(ProjectFileName) ?? "Untitled") + (dirty ? " *" : "");
         }
 
         private void SetFileName(string filename)
@@ -94,7 +99,6 @@ namespace TISFAT
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            MainTimeline.GLContext_Init();
             MainTimeline.Resize();
         }
 
@@ -243,6 +247,7 @@ namespace TISFAT
         }
         #endregion
 
+        #region Live update view when splitter is moved
         private void sc_MainContainer_MouseDown(object sender, MouseEventArgs e)
         {
             // This disables the normal move behavior
@@ -297,11 +302,7 @@ namespace TISFAT
                     ((SplitContainer)sender).IsSplitterFixed = false;
                 }
             }
-        }
-
-        private void sc_MainContainer_Panel2_Paint(object sender, PaintEventArgs e)
-        {
-            Canvas.Invalidate();
-        }
+        } 
+        #endregion
     }
 }

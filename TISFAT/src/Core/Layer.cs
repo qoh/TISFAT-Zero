@@ -16,6 +16,7 @@ namespace TISFAT
         public IEntity Data;
         public List<Frameset> Framesets;
 
+        #region Constructors
         public Layer()
         {
             Name = "Layer " + (++ShouldntBeStatic);
@@ -31,7 +32,8 @@ namespace TISFAT
             TimelineColor = Color.DodgerBlue;
             Data = data;
             Framesets = new List<Frameset>();
-        }
+        } 
+        #endregion
 
         public Frameset FindFrameset(float time)
         {
@@ -46,19 +48,19 @@ namespace TISFAT
             return null;
         }
 
-        public void Draw(float time)
+        public IEntityState FindCurrentState(float time)
         {
             if (!Visible || Data == null)
             {
                 // die;
-                return;
+                return null;
             }
-            
+
             Frameset frameset = FindFrameset(time);
-            
+
             if (frameset == null)
-                return;
-            
+                return null;
+
             int nextIndex;
 
             for (nextIndex = 1; nextIndex < frameset.Keyframes.Count; nextIndex++)
@@ -73,9 +75,40 @@ namespace TISFAT
             Keyframe target = frameset.Keyframes[nextIndex];
             float t = (time - current.Time) / (target.Time - current.Time);
 
-            Data.Draw(Data.Interpolate(t, current.State, target.State));
+            return Data.Interpolate(t, current.State, target.State);
         }
 
+        public void Draw(float time)
+        {
+            IEntityState state = FindCurrentState(time);
+
+            if (state == null)
+                return;
+
+            Data.Draw(state);
+        }
+
+        public void DrawEditable(float time)
+        {
+            IEntityState state = FindCurrentState(time);
+
+            if (state == null)
+                return;
+
+            Data.DrawEditable(state);
+        }
+
+        public bool TryManipulate(float time, Point location)
+        {
+            IEntityState state = FindCurrentState(time);
+
+            if (state == null || Program.Form.MainTimeline.SelectedKeyframe == null)
+                return false;
+
+            return Data.TryManipulate(state, location);
+        }
+
+        #region File Saving / Loading
         public void Write(BinaryWriter writer)
         {
             if (Data == null)
@@ -107,6 +140,7 @@ namespace TISFAT
             Data = (IEntity)type.GetConstructor(args).Invoke(values);
             Data.Read(reader, version);
             Framesets = FileFormat.ReadList<Frameset>(reader, version);
-        }
+        } 
+        #endregion
     }
 }

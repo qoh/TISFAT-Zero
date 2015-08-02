@@ -7,10 +7,25 @@ namespace TISFAT
 {
     public partial class Timeline
     {
+        public float FrameToPixels(float frame)
+        {
+            return 80 + frame * 9;
+        }
+
         private void DrawBackground(int frameCount, int layerHeight)
         {
             Drawing.Rectangle(new PointF(80, 0), new SizeF(frameCount * 9, 16), Color.FromArgb(220, 220, 220));
             Drawing.Rectangle(new PointF(80, 16), new SizeF(frameCount * 9, layerHeight), Color.FromArgb(200, 200, 200));
+
+            // Selected layer highlighting
+            if (SelectedLayer != null)
+            {
+                int selectedIndex = Program.Form.ActiveProject.Layers.IndexOf(SelectedLayer);
+
+                if (selectedIndex != -1)
+                    Drawing.Rectangle(new PointF(80, (selectedIndex + 1) * 16), new SizeF(frameCount * 9, 16), Color.FromArgb(220, 220, 220));
+            }
+
             for (int frame = 0; frame < frameCount; frame++)
             {
                 if ((frame + 1) % 100 == 0)
@@ -37,30 +52,46 @@ namespace TISFAT
                 {
                     Drawing.Rectangle(new PointF(FrameToPixels(frameset.StartTime), y), new SizeF(frameset.Duration * 9, 16), Color.White);
 
+                    // (Selected) Keyframes
                     foreach (Keyframe keyframe in frameset.Keyframes)
                     {
-                        Drawing.Rectangle(new PointF(FrameToPixels(keyframe.Time), y), new SizeF(9, 16), Color.Gold);
+                        Color color = Color.Gold;
+
+                        if (keyframe == SelectedKeyframe)
+                            color = Color.Red;
+
+                        Drawing.Rectangle(new PointF(FrameToPixels(keyframe.Time), y), new SizeF(9, 16), color);
                         Drawing.Rectangle(new PointF(FrameToPixels(keyframe.Time) + 3, y + 6), new SizeF(3, 3), Color.Black);
                     }
 
+                    // Selected blank frame
+                    if(SelectedFrameset == frameset && SelectedBlankFrame != -1)
+                        Drawing.Rectangle(new PointF(FrameToPixels(SelectedBlankFrame), y), new SizeF(9, 16), Color.Red);
+
+                    // Frameset line
                     Drawing.Line(
                         new PointF(FrameToPixels(frameset.StartTime + 0.5f), y + 8),
                         new PointF(FrameToPixels(frameset.EndTime + 0.5f), y + 8),
                         Color.Black
                     );
                 }
+
+                if (SelectedLayer == Layers[i] && SelectedNullFrame != -1)
+                    Drawing.Rectangle(new PointF(FrameToPixels(SelectedNullFrame), y), new SizeF(9, 16), Color.Red);
             }
         }
 
         public void DrawMisc(List <Layer> Layers, int layerHeight, int frameWidth, int frameCount)
         {
-            // Draw outline outlines
+            // Layer separators
             Drawing.Line(new PointF(80, 16), new PointF(80 + frameWidth, 16), Color.Gray);
             for (int i = 0; i < Layers.Count; i++)
             {
                 int y = 16 * (i + 2);
                 Drawing.Line(new PointF(80, y), new PointF(80 + frameWidth, y), Color.Gray);
             }
+
+            // Frame outline / numbers
             for (int frame = 0; frame < frameCount; frame++)
             {
                 int x = 80 + 9 * (frame + 1);
@@ -71,6 +102,9 @@ namespace TISFAT
 
         public void DrawPlayhead()
         {
+            if (SelectedKeyframe != null || SelectedBlankFrame != -1 || SelectedNullFrame != -1)
+                return;
+
             int tx = 79 + (int)Math.Floor(GetCurrentFrame() * 9);
             Drawing.Rectangle(new PointF(tx + 4, 16), new SizeF(3, GLContext.Height - 16), Color.Red);
             Drawing.RectangleLine(new PointF(tx + 2, 0), new SizeF(7, 15), Color.Red);

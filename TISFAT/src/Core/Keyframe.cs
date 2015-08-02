@@ -21,6 +21,7 @@ namespace TISFAT
             State = state;
         }
 
+        #region File Saving / Loading
         public void Write(BinaryWriter writer)
         {
             writer.Write(Time);
@@ -36,6 +37,7 @@ namespace TISFAT
             object[] values = { };
             State = (IEntityState)type.GetConstructor(args).Invoke(values);
             State.Read(reader, version);
-        }
+        } 
+        #endregion
     }
 }

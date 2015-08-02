@@ -32,6 +32,7 @@ namespace TISFAT
             Keyframes = new List<Keyframe>();
         }
 
+        #region File Saving / Loading
         public void Write(BinaryWriter writer)
         {
             FileFormat.WriteList(writer, Keyframes);
@@ -40,6 +41,7 @@ namespace TISFAT
         public void Read(BinaryReader reader, UInt16 version)
         {
             Keyframes = FileFormat.ReadList<Keyframe>(reader, version);
-        }
+        } 
+        #endregion
     }
 }
