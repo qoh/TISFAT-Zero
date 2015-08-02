@@ -68,12 +68,25 @@ namespace TISFAT
             var sneck2 = new StickFigure.Joint.State(ship2);
             sneck2.Location = new PointF(100f, 147f);
             ship2.Children.Add(sneck2);
-            layer.Framesets[0].Keyframes.Add(new Keyframe((uint)Why.Next(4, 12), state2));
+            layer.Framesets[0].Keyframes.Add(new Keyframe((uint)Why.Next(4, 40), state2));
 
             ActiveProject.Layers.Add(layer);
             MainTimeline.GLContext.Invalidate();
         }
+        
+        public void SetDirty(bool dirty)
+        {
+            ProjectDirty = dirty;
+            Text = "TISFAT Zero - " + (ProjectFileName ?? "Untitled") + (dirty ? " *" : "");
+        }
 
+        private void SetFileName(string filename)
+        {
+            ProjectFileName = filename;
+            SetDirty(filename == null);
+        }
+
+        #region MainForm Hooks
         private void MainForm_Load(object sender, EventArgs e)
         {
             MainTimeline.GLContext_Init();
@@ -85,6 +98,16 @@ namespace TISFAT
             MainTimeline.Resize();
         }
 
+        private void MainForm_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Q)
+                MainTimeline.SeekStart();
+
+            if (e.KeyChar == (char)Keys.Space)
+                MainTimeline.TogglePause();
+        } 
+        #endregion
+
         #region GLContext <-> Timeline hooks
         private void sc_MainContainer_SplitterMoved(object sender, SplitterEventArgs e)
         {
@@ -95,7 +118,7 @@ namespace TISFAT
         {
             MainTimeline.GLContext_Paint(sender, e);
 
-            if (MainTimeline.IsRedrawing())
+            if (MainTimeline.IsPlaying())
                 MainTimeline.GLContext.Invalidate();
         }
 
@@ -120,18 +143,7 @@ namespace TISFAT
         }
         #endregion
 
-        public void SetDirty(bool dirty)
-        {
-            ProjectDirty = dirty;
-            Text = "TISFAT Zero - " + (ProjectFileName ?? "Untitled") + (dirty ? " *" : "");
-        }
-
-        private void SetFileName(string filename)
-        {
-            ProjectFileName = filename;
-            SetDirty(filename == null);
-        }
-
+        #region File Saving / Loading
         public void ProjectNew()
         {
             ActiveProject = new Project();
@@ -175,8 +187,8 @@ namespace TISFAT
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.AddExtension = true;
             dialog.Filter = "TISFAT Zero Project|*.tzp";
-            
-            if(dialog.ShowDialog() == DialogResult.OK)
+
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
                 ProjectOpen(dialog.FileName);
             }
@@ -200,16 +212,96 @@ namespace TISFAT
             {
                 ProjectSave(dialog.FileName);
             }
+        } 
+        #endregion
+
+        #region Timeline Control Hooks
+        private void btn_PlayPause_MouseEnter(object sender, EventArgs e)
+        {
+            btn_PlayPause.Image = MainTimeline.IsPlaying() ? Properties.Resources.pause_hover : Properties.Resources.play_hover;
         }
 
-        private void MainForm_KeyPress(object sender, KeyPressEventArgs e)
+        private void btn_PlayPause_MouseLeave(object sender, EventArgs e)
         {
-            Console.WriteLine("keypress");
-            if (e.KeyChar == (char)Keys.Q)
-                MainTimeline.Rewind();
+            btn_PlayPause.Image = MainTimeline.IsPlaying() ? Properties.Resources.pause_normal : Properties.Resources.play_normal;
+        }
 
-            if (e.KeyChar == (char)Keys.Space)
-                MainTimeline.TogglePause();
+        private void btn_PlayPause_Click(object sender, EventArgs e)
+        {
+            MainTimeline.TogglePause();
+            btn_PlayPause.Image = MainTimeline.IsPlaying() ? Properties.Resources.pause_hover : Properties.Resources.play_hover;
+        }
+
+        private void btn_Start_Click(object sender, EventArgs e)
+        {
+            MainTimeline.SeekStart();
+        }
+
+        private void btn_End_Click(object sender, EventArgs e)
+        {
+            MainTimeline.SeekLastFrame();
+        }
+        #endregion
+
+        private void sc_MainContainer_MouseDown(object sender, MouseEventArgs e)
+        {
+            // This disables the normal move behavior
+            ((SplitContainer)sender).IsSplitterFixed = true;
+        }
+
+        private void sc_MainContainer_MouseUp(object sender, MouseEventArgs e)
+        {
+            // This allows the splitter to be moved normally again
+            ((SplitContainer)sender).IsSplitterFixed = false;
+        }
+
+        private void sc_MainContainer_MouseMove(object sender, MouseEventArgs e)
+        {
+            // Check to make sure the splitter won't be updated by the
+            // normal move behavior also
+            if (((SplitContainer)sender).IsSplitterFixed)
+            {
+                // Make sure that the button used to move the splitter
+                // is the left mouse button
+                if (e.Button.Equals(MouseButtons.Left))
+                {
+                    // Checks to see if the splitter is aligned Vertically
+                    if (((SplitContainer)sender).Orientation.Equals(Orientation.Vertical))
+                    {
+                        // Only move the splitter if the mouse is within
+                        // the appropriate bounds
+                        if (e.X > 0 && e.X < ((SplitContainer)sender).Width)
+                        {
+                            // Move the splitter
+                            ((SplitContainer)sender).SplitterDistance = e.X;
+                        }
+                    }
+                    // If it isn't aligned vertically then it must be
+                    // horizontal
+                    else
+                    {
+                        // Only move the splitter if the mouse is within
+                        // the appropriate bounds
+                        if (e.Y > 0 && e.Y < ((SplitContainer)sender).Height)
+                        {
+                            // Move the splitter
+                            ((SplitContainer)sender).SplitterDistance = e.Y;
+                        }
+                    }
+                }
+                // If a button other than left is pressed or no button
+                // at all
+                else
+                {
+                    // This allows the splitter to be moved normally again
+                    ((SplitContainer)sender).IsSplitterFixed = false;
+                }
+            }
+        }
+
+        private void sc_MainContainer_Panel2_Paint(object sender, PaintEventArgs e)
+        {
+            Canvas.Invalidate();
         }
     }
 }

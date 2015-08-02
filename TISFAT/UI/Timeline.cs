@@ -31,9 +31,41 @@ namespace TISFAT
             PlayStart = null;
         }
 
-        public void Rewind()
+        public void GLContext_Init()
+        {
+            GLContext.MakeCurrent();
+
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadIdentity();
+            GL.Viewport(0, 0, GLContext.Width, GLContext.Height);
+            GL.Ortho(0, GLContext.Width, GLContext.Height, 0, -1, 1);
+            GL.Disable(EnableCap.DepthTest);
+        }
+
+        public void SeekStart()
         {
             Frame = 0.0f;
+            GLContext.Invalidate();
+        }
+
+        public void SeekFirstFrame()
+        {
+            Project project = Program.Form.ActiveProject;
+
+            foreach (Layer layer in project.Layers)
+                Frame = Math.Min(Frame, layer.Framesets[0].StartTime);
+
+            GLContext.Invalidate();
+        }
+
+        public void SeekLastFrame()
+        {
+            Project project = Program.Form.ActiveProject;
+
+            foreach (Layer layer in project.Layers)
+                Frame = Math.Max(Frame, layer.Framesets[layer.Framesets.Count - 1].EndTime);
+
+            GLContext.Invalidate();
         }
 
         public void TogglePause()
@@ -62,20 +94,9 @@ namespace TISFAT
             return Frame + frame;
         }
 
-        public bool IsRedrawing()
+        public bool IsPlaying()
         {
             return PlayStart != null;
-        }
-
-        public void GLContext_Init()
-        {
-            GLContext.MakeCurrent();
-
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadIdentity();
-            GL.Viewport(0, 0, GLContext.Width, GLContext.Height);
-            GL.Ortho(0, GLContext.Width, GLContext.Height, 0, -1, 1);
-            GL.Disable(EnableCap.DepthTest);
         }
 
         public float FrameToPixels(float frame)
@@ -107,8 +128,10 @@ namespace TISFAT
             GL.ClearColor(Color.FromArgb(220, 220, 220));
 
             GL.Clear(ClearBufferMask.ColorBufferBit);
+
+            //GL.Enable(EnableCap.LineSmooth);
             
-            // Translate the drawing, draw keyframes
+            // Translate the drawing
             GL.Translate(-HorizScrollBar.xOffset, 0, 0);
 
             DrawBackground(frameCount, layerHeight);
@@ -124,8 +147,9 @@ namespace TISFAT
 
             DrawLabels(Layers);
 
-            // Draw scrollbar
             HorizScrollBar.Draw((LastTime + 100) * 9 + 80, GLContext.Size);
+
+            //GL.Disable(EnableCap.LineSmooth);
 
             GLContext.SwapBuffers();
             Program.Form.Canvas.GLContext_Paint(sender, e);

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TISFAT.Util;
 
 namespace TISFAT
@@ -75,15 +72,15 @@ namespace TISFAT
         public void DrawPlayhead()
         {
             int tx = 79 + (int)Math.Floor(GetCurrentFrame() * 9);
-            Drawing.Rectangle(new PointF(tx + 3, 16), new SizeF(3, GLContext.Height - 16), Color.Red);
-            Drawing.RectangleLine(new PointF(tx, 0), new SizeF(9, 16), Color.Red);
+            Drawing.Rectangle(new PointF(tx + 4, 16), new SizeF(3, GLContext.Height - 16), Color.Red);
+            Drawing.RectangleLine(new PointF(tx + 2, 0), new SizeF(7, 15), Color.Red);
         }
 
         public void DrawLabels(List<Layer> Layers)
         {
             // Draw TIMELINE layer
             Drawing.Rectangle(new PointF(0, 0), new SizeF(80, 16), Color.FromArgb(70, 120, 255));
-            Drawing.RectangleLine(new PointF(0, 1), new SizeF(79, 15), Color.Black);
+            Drawing.RectangleLine(new PointF(0, 0), new SizeF(80, 16), Color.Black);
             Drawing.TextRect("Timeline", new PointF(0, 1), new Size(80, 16), new Font("Segoe UI", 9, FontStyle.Bold), Color.Black, StringAlignment.Center);
 
             // Draw layers
@@ -93,7 +90,7 @@ namespace TISFAT
 
                 // Draw layer name here
                 Drawing.Rectangle(new PointF(0, 16 * (i + 1)), new SizeF(80, 16), layer.TimelineColor);
-                Drawing.RectangleLine(new PointF(0, 16 * (i + 1)), new SizeF(79, 16), Color.Black);
+                Drawing.RectangleLine(new PointF(0, 16 * (i + 1)), new SizeF(80, 16), Color.Black);
                 Drawing.TextRect(layer.Name, new PointF(1, 16 * (i + 1) - 1), new Size(79, 16), new Font("Segoe UI", 9), Color.White, StringAlignment.Near);
             }
         }

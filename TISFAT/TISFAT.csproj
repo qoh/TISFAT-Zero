@@ -110,7 +110,30 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\pause-hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pause-normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\play-hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\play-normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\seek-end.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\seek-start.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\forward_normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rewind_normal.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

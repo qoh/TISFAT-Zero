@@ -95,8 +95,10 @@ namespace TISFAT.Util
         {
             GL.Begin(PrimitiveType.Lines);
             GL.Color3(color);
-            GL.Vertex2(PointToVector(start));
-            GL.Vertex2(PointToVector(end));
+            //GL.Vertex2(PointToVector(start));
+            //GL.Vertex2(PointToVector(end));
+            GL.Vertex2(Math.Floor(start.X) + 0.5, Math.Floor(start.Y) + 0.5);
+            GL.Vertex2(Math.Floor(end.X) + 0.5, Math.Floor(end.Y) + 0.5);
             GL.End();
         }
 
@@ -164,10 +166,14 @@ namespace TISFAT.Util
         {
             GL.Begin(PrimitiveType.LineLoop);
             GL.Color3(color);
-            GL.Vertex2(PointToVector(position));
-            GL.Vertex2(position.X + size.Width, position.Y);
-            GL.Vertex2(position.X + size.Width, position.Y + size.Height);
-            GL.Vertex2(position.X, position.Y + size.Height);
+            //GL.Vertex2(PointToVector(position));
+            //GL.Vertex2(position.X + size.Width, position.Y);
+            //GL.Vertex2(position.X + size.Width, position.Y + size.Height);
+            //GL.Vertex2(position.X, position.Y + size.Height);
+            GL.Vertex2(Math.Floor(position.X) + 0.5, Math.Floor(position.Y) + 0.5);
+            GL.Vertex2(Math.Floor(position.X + size.Width) + 0.5, Math.Floor(position.Y) + 0.5);
+            GL.Vertex2(Math.Floor(position.X + size.Width) + 0.5, Math.Floor(position.Y + size.Height) + 0.5);
+            GL.Vertex2(Math.Floor(position.X) + 0.5, Math.Floor(position.Y + size.Height) + 0.5);
             GL.End();
         }
 

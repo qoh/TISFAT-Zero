@@ -59,13 +59,7 @@ namespace TISFAT
             GL.ClearColor(Color.White);
 
             GL.Clear(ClearBufferMask.ColorBufferBit);
-
-            //Drawing.CappedLine(new PointF(50, 50), new PointF(250, 200), 6, Color.Black);
-
-            Font fo = new Font("Segoe UI", 12);
-
-            Drawing.Text("T I M E L I N E", new PointF(40, 40), fo, Color.Black);
-
+            
             Program.Form.ActiveProject.Draw(Program.Form.MainTimeline.GetCurrentFrame());
 
             GLContext.SwapBuffers();

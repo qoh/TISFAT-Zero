@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.sc_MainContainer = new System.Windows.Forms.SplitContainer();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.GLContext = new OpenTK.GLControl();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,10 +50,16 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btn_Rewind = new System.Windows.Forms.Button();
+            this.btn_FastForward = new System.Windows.Forms.Button();
+            this.btn_End = new System.Windows.Forms.Button();
+            this.btn_Start = new System.Windows.Forms.Button();
+            this.btn_PlayPause = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.sc_MainContainer)).BeginInit();
             this.sc_MainContainer.Panel1.SuspendLayout();
             this.sc_MainContainer.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // sc_MainContainer
@@ -68,27 +75,50 @@
             // 
             // sc_MainContainer.Panel1
             // 
-            this.sc_MainContainer.Panel1.AutoScroll = true;
             this.sc_MainContainer.Panel1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.sc_MainContainer.Panel1.Controls.Add(this.panel1);
             this.sc_MainContainer.Panel1.Controls.Add(this.GLContext);
             // 
             // sc_MainContainer.Panel2
             // 
             this.sc_MainContainer.Panel2.AutoScroll = true;
             this.sc_MainContainer.Panel2.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.sc_MainContainer.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.sc_MainContainer_Panel2_Paint);
             this.sc_MainContainer.Size = new System.Drawing.Size(752, 437);
-            this.sc_MainContainer.SplitterDistance = 125;
+            this.sc_MainContainer.SplitterDistance = 149;
             this.sc_MainContainer.SplitterWidth = 2;
             this.sc_MainContainer.TabIndex = 0;
             this.sc_MainContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.sc_MainContainer_SplitterMoved);
+            this.sc_MainContainer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.sc_MainContainer_MouseDown);
+            this.sc_MainContainer.MouseMove += new System.Windows.Forms.MouseEventHandler(this.sc_MainContainer_MouseMove);
+            this.sc_MainContainer.MouseUp += new System.Windows.Forms.MouseEventHandler(this.sc_MainContainer_MouseUp);
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.panel1.Controls.Add(this.btn_Rewind);
+            this.panel1.Controls.Add(this.btn_FastForward);
+            this.panel1.Controls.Add(this.btn_End);
+            this.panel1.Controls.Add(this.btn_Start);
+            this.panel1.Controls.Add(this.btn_PlayPause);
+            this.panel1.Location = new System.Drawing.Point(0, 117);
+            this.panel1.Margin = new System.Windows.Forms.Padding(0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(750, 30);
+            this.panel1.TabIndex = 1;
             // 
             // GLContext
             // 
+            this.GLContext.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.GLContext.BackColor = System.Drawing.Color.Black;
-            this.GLContext.Dock = System.Windows.Forms.DockStyle.Fill;
             this.GLContext.Location = new System.Drawing.Point(0, 0);
+            this.GLContext.Margin = new System.Windows.Forms.Padding(0);
             this.GLContext.Name = "GLContext";
-            this.GLContext.Size = new System.Drawing.Size(750, 123);
+            this.GLContext.Size = new System.Drawing.Size(750, 117);
             this.GLContext.TabIndex = 0;
             this.GLContext.VSync = false;
             this.GLContext.Paint += new System.Windows.Forms.PaintEventHandler(this.GLContext_Paint);
@@ -237,6 +267,81 @@
             this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.checkForUpdatesToolStripMenuItem.Text = "Check for Updates";
             // 
+            // btn_Rewind
+            // 
+            this.btn_Rewind.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btn_Rewind.FlatAppearance.BorderSize = 0;
+            this.btn_Rewind.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_Rewind.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_Rewind.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Rewind.Image = global::TISFAT.Properties.Resources.rewind_normal;
+            this.btn_Rewind.Location = new System.Drawing.Point(303, 3);
+            this.btn_Rewind.Name = "btn_Rewind";
+            this.btn_Rewind.Size = new System.Drawing.Size(24, 24);
+            this.btn_Rewind.TabIndex = 5;
+            this.btn_Rewind.UseVisualStyleBackColor = true;
+            // 
+            // btn_FastForward
+            // 
+            this.btn_FastForward.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btn_FastForward.FlatAppearance.BorderSize = 0;
+            this.btn_FastForward.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_FastForward.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_FastForward.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_FastForward.Image = global::TISFAT.Properties.Resources.forward_normal;
+            this.btn_FastForward.Location = new System.Drawing.Point(423, 3);
+            this.btn_FastForward.Name = "btn_FastForward";
+            this.btn_FastForward.Size = new System.Drawing.Size(24, 24);
+            this.btn_FastForward.TabIndex = 4;
+            this.btn_FastForward.UseVisualStyleBackColor = true;
+            // 
+            // btn_End
+            // 
+            this.btn_End.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btn_End.FlatAppearance.BorderSize = 0;
+            this.btn_End.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_End.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_End.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_End.Image = global::TISFAT.Properties.Resources.seek_end;
+            this.btn_End.Location = new System.Drawing.Point(393, 3);
+            this.btn_End.Name = "btn_End";
+            this.btn_End.Size = new System.Drawing.Size(24, 24);
+            this.btn_End.TabIndex = 3;
+            this.btn_End.UseVisualStyleBackColor = true;
+            this.btn_End.Click += new System.EventHandler(this.btn_End_Click);
+            // 
+            // btn_Start
+            // 
+            this.btn_Start.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btn_Start.FlatAppearance.BorderSize = 0;
+            this.btn_Start.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_Start.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_Start.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Start.Image = global::TISFAT.Properties.Resources.seek_start;
+            this.btn_Start.Location = new System.Drawing.Point(333, 3);
+            this.btn_Start.Name = "btn_Start";
+            this.btn_Start.Size = new System.Drawing.Size(24, 24);
+            this.btn_Start.TabIndex = 2;
+            this.btn_Start.UseVisualStyleBackColor = true;
+            this.btn_Start.Click += new System.EventHandler(this.btn_Start_Click);
+            // 
+            // btn_PlayPause
+            // 
+            this.btn_PlayPause.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btn_PlayPause.FlatAppearance.BorderSize = 0;
+            this.btn_PlayPause.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btn_PlayPause.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btn_PlayPause.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_PlayPause.Image = global::TISFAT.Properties.Resources.play_normal;
+            this.btn_PlayPause.Location = new System.Drawing.Point(363, 3);
+            this.btn_PlayPause.Name = "btn_PlayPause";
+            this.btn_PlayPause.Size = new System.Drawing.Size(24, 24);
+            this.btn_PlayPause.TabIndex = 1;
+            this.btn_PlayPause.UseVisualStyleBackColor = true;
+            this.btn_PlayPause.Click += new System.EventHandler(this.btn_PlayPause_Click);
+            this.btn_PlayPause.MouseEnter += new System.EventHandler(this.btn_PlayPause_MouseEnter);
+            this.btn_PlayPause.MouseLeave += new System.EventHandler(this.btn_PlayPause_MouseLeave);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -254,6 +359,7 @@
             this.sc_MainContainer.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -282,6 +388,12 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
         private OpenTK.GLControl GLContext;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btn_PlayPause;
+        private System.Windows.Forms.Button btn_End;
+        private System.Windows.Forms.Button btn_Start;
+        private System.Windows.Forms.Button btn_Rewind;
+        private System.Windows.Forms.Button btn_FastForward;
     }
 }
 
