@@ -22,14 +22,16 @@ namespace TISFAT
         public int HScrollVal
         {
             get { return scrl_HTimeline.Value; }
-            set { scrl_HTimeline.Value = value; }
         }
+
+        public bool HScrollVisible { get { return scrl_HTimeline.Visible; } }
 
         public int VScrollVal
         {
             get { return scrl_VTimeline.Value; }
-            set { scrl_VTimeline.Value = value; }
         }
+
+        public bool VScrollVisible { get { return scrl_VTimeline.Visible; } }
 
         public MainForm()
         {
@@ -37,7 +39,9 @@ namespace TISFAT
             
             InitializeComponent();
 
+            GLContext.VSync = true;
             GLContext.KeyPress += MainForm_KeyPress;
+            GLContext.MouseWheel += GLContext_MouseWheel;
 
             #region General Init
             // Create and show forms
@@ -60,6 +64,28 @@ namespace TISFAT
             #endregion
         }
 
+        private void GLContext_MouseWheel(object sender, MouseEventArgs e)
+        {
+            ScrollBar bar = scrl_VTimeline;
+
+            if(ModifierKeys == Keys.Shift)
+                bar = scrl_HTimeline;
+
+            if (!bar.Visible)
+                return;
+
+            int scrollAmount = bar.SmallChange * -(e.Delta / 100);
+
+            if (bar.Value + scrollAmount > 1 + bar.Maximum - bar.LargeChange)
+                bar.Value = 1 + bar.Maximum - bar.LargeChange;
+            else if (bar.Value + scrollAmount < bar.Minimum)
+                bar.Value = bar.Minimum;
+            else
+                bar.Value += scrollAmount;
+
+            MainTimeline.GLContext.Invalidate();
+        }
+
         public void CalcScrollBars(int HContentSize, int VContentSize, int HViewSize, int VViewSize)
         {
             scrl_HTimeline.Visible = HViewSize < HContentSize;
@@ -75,7 +101,6 @@ namespace TISFAT
                 scrl_HTimeline.Maximum = HContentSize - HViewSize;
                 scrl_HTimeline.Maximum += scrl_HTimeline.LargeChange;
             }
-
             if(scrl_VTimeline.Visible)
             {
                 scrl_VTimeline.Minimum = 0;
@@ -87,7 +112,12 @@ namespace TISFAT
                 scrl_VTimeline.Maximum += scrl_VTimeline.LargeChange;
             }
 
-            pnl_ScrollSquare.Visible = scrl_HTimeline.Visible || scrl_HTimeline.Visible;
+            if (!scrl_HTimeline.Visible)
+                scrl_HTimeline.Value = 0;
+            if (!scrl_VTimeline.Visible)
+                scrl_VTimeline.Value = 0;
+
+            pnl_ScrollSquare.Visible = scrl_HTimeline.Visible || scrl_VTimeline.Visible;
         }
 
         private void AddTestLayer()
@@ -169,7 +199,7 @@ namespace TISFAT
         #region GLContext <-> Timeline hooks
         private void sc_MainContainer_SplitterMoved(object sender, SplitterEventArgs e)
         {
-            MainTimeline.GLContext_Init();
+            MainTimeline.Resize();
         }
         
         private void GLContext_Paint(object sender, PaintEventArgs e)

@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.sc_MainContainer = new System.Windows.Forms.SplitContainer();
+            this.pnl_ScrollSquare = new System.Windows.Forms.Panel();
             this.scrl_VTimeline = new System.Windows.Forms.VScrollBar();
             this.scrl_HTimeline = new System.Windows.Forms.HScrollBar();
             this.pnl_ToolboxPanel = new System.Windows.Forms.Panel();
@@ -58,7 +59,6 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pnl_ScrollSquare = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.sc_MainContainer)).BeginInit();
             this.sc_MainContainer.Panel1.SuspendLayout();
             this.sc_MainContainer.SuspendLayout();
@@ -85,19 +85,29 @@
             this.sc_MainContainer.Panel1.Controls.Add(this.scrl_HTimeline);
             this.sc_MainContainer.Panel1.Controls.Add(this.pnl_ToolboxPanel);
             this.sc_MainContainer.Panel1.Controls.Add(this.GLContext);
+            this.sc_MainContainer.Panel1MinSize = 130;
             // 
             // sc_MainContainer.Panel2
             // 
             this.sc_MainContainer.Panel2.AutoScroll = true;
             this.sc_MainContainer.Panel2.BackColor = System.Drawing.SystemColors.ControlDark;
             this.sc_MainContainer.Size = new System.Drawing.Size(752, 517);
-            this.sc_MainContainer.SplitterDistance = 176;
+            this.sc_MainContainer.SplitterDistance = 181;
             this.sc_MainContainer.SplitterWidth = 2;
             this.sc_MainContainer.TabIndex = 0;
             this.sc_MainContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.sc_MainContainer_SplitterMoved);
             this.sc_MainContainer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.sc_MainContainer_MouseDown);
             this.sc_MainContainer.MouseMove += new System.Windows.Forms.MouseEventHandler(this.sc_MainContainer_MouseMove);
             this.sc_MainContainer.MouseUp += new System.Windows.Forms.MouseEventHandler(this.sc_MainContainer_MouseUp);
+            // 
+            // pnl_ScrollSquare
+            // 
+            this.pnl_ScrollSquare.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnl_ScrollSquare.BackColor = System.Drawing.SystemColors.Control;
+            this.pnl_ScrollSquare.Location = new System.Drawing.Point(734, 132);
+            this.pnl_ScrollSquare.Name = "pnl_ScrollSquare";
+            this.pnl_ScrollSquare.Size = new System.Drawing.Size(17, 17);
+            this.pnl_ScrollSquare.TabIndex = 4;
             // 
             // scrl_VTimeline
             // 
@@ -107,7 +117,7 @@
             this.scrl_VTimeline.Location = new System.Drawing.Point(734, 0);
             this.scrl_VTimeline.Maximum = 0;
             this.scrl_VTimeline.Name = "scrl_VTimeline";
-            this.scrl_VTimeline.Size = new System.Drawing.Size(17, 127);
+            this.scrl_VTimeline.Size = new System.Drawing.Size(17, 132);
             this.scrl_VTimeline.TabIndex = 3;
             this.scrl_VTimeline.Scroll += new System.Windows.Forms.ScrollEventHandler(this.scrl_Timeline_Scroll);
             // 
@@ -116,7 +126,7 @@
             this.scrl_HTimeline.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.scrl_HTimeline.LargeChange = 1;
-            this.scrl_HTimeline.Location = new System.Drawing.Point(-1, 127);
+            this.scrl_HTimeline.Location = new System.Drawing.Point(-1, 132);
             this.scrl_HTimeline.Maximum = 0;
             this.scrl_HTimeline.Name = "scrl_HTimeline";
             this.scrl_HTimeline.Size = new System.Drawing.Size(735, 17);
@@ -133,7 +143,7 @@
             this.pnl_ToolboxPanel.Controls.Add(this.btn_End);
             this.pnl_ToolboxPanel.Controls.Add(this.btn_Start);
             this.pnl_ToolboxPanel.Controls.Add(this.btn_PlayPause);
-            this.pnl_ToolboxPanel.Location = new System.Drawing.Point(0, 144);
+            this.pnl_ToolboxPanel.Location = new System.Drawing.Point(0, 149);
             this.pnl_ToolboxPanel.Margin = new System.Windows.Forms.Padding(0);
             this.pnl_ToolboxPanel.Name = "pnl_ToolboxPanel";
             this.pnl_ToolboxPanel.Size = new System.Drawing.Size(750, 30);
@@ -223,7 +233,7 @@
             this.GLContext.Location = new System.Drawing.Point(0, 0);
             this.GLContext.Margin = new System.Windows.Forms.Padding(0);
             this.GLContext.Name = "GLContext";
-            this.GLContext.Size = new System.Drawing.Size(750, 144);
+            this.GLContext.Size = new System.Drawing.Size(750, 149);
             this.GLContext.TabIndex = 0;
             this.GLContext.VSync = false;
             this.GLContext.Paint += new System.Windows.Forms.PaintEventHandler(this.GLContext_Paint);
@@ -372,15 +382,6 @@
             this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.checkForUpdatesToolStripMenuItem.Text = "Check for Updates";
             // 
-            // pnl_ScrollSquare
-            // 
-            this.pnl_ScrollSquare.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnl_ScrollSquare.BackColor = System.Drawing.SystemColors.Control;
-            this.pnl_ScrollSquare.Location = new System.Drawing.Point(734, 127);
-            this.pnl_ScrollSquare.Name = "pnl_ScrollSquare";
-            this.pnl_ScrollSquare.Size = new System.Drawing.Size(17, 17);
-            this.pnl_ScrollSquare.TabIndex = 4;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -388,6 +389,7 @@
             this.ClientSize = new System.Drawing.Size(752, 541);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.sc_MainContainer);
+            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "TISFAT Zero";

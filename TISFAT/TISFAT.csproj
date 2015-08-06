@@ -81,7 +81,6 @@
     <Compile Include="src\Interfaces\ISaveable.cs" />
     <Compile Include="src\Core\Layer.cs" />
     <Compile Include="src\Util\Interpolation.cs" />
-    <Compile Include="src\Util\ScrollController.cs" />
     <Compile Include="UI\Timeline.cs" />
     <Compile Include="UI\TimelineDrawing.cs" />
     <Compile Include="UI\ToolboxForm.cs">

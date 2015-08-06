@@ -50,13 +50,22 @@ namespace TISFAT
             // Reinit OpenGL
             GLContext_Init();
 
-            // Resize horizontal scrollbar
+            // Resize scrollbars
             int LastTime = GetLastTime();
             
             int HContentLength = (LastTime + 101) * 9;
             int VContentLength = (Program.Form.ActiveProject.Layers.Count) * 16 + 16;
 
-            Program.Form.CalcScrollBars(HContentLength, VContentLength, GLContext.Width - 80 - 17, GLContext.Height - 17);
+            int TotWidth = GLContext.Width - 80;
+            int TotHeight = GLContext.Height;
+
+            if (Program.Form.VScrollVisible)
+                TotWidth -= 17;
+
+            if (Program.Form.HScrollVisible)
+                TotHeight -= 18;
+
+            Program.Form.CalcScrollBars(HContentLength, VContentLength, TotWidth, TotHeight);
         }
         #endregion
 
@@ -210,11 +219,8 @@ namespace TISFAT
             int frameCount = (int)Math.Ceiling(lastFrame + 101);
             int frameWidth = frameCount * 9;
             int layerHeight = Layers.Count * 16;
-
-            //int dist = ((SplitContainer)GLContext.Parent.Parent).SplitterDistance - HorizScrollBar.Height + 2;
+            
             int dist = ((SplitContainer)GLContext.Parent.Parent).SplitterDistance - 17;
-
-            // Calculate height of visible frames
             int TotalLayerHeight = Math.Min(Layers.Count * 16 + 16, dist);
 
             GLContext.MakeCurrent();
@@ -225,11 +231,8 @@ namespace TISFAT
 
             //GL.Enable(EnableCap.LineSmooth);
 
-            // Translate the drawing
-            //GL.Translate(-HorizScrollBar.xOffset, 0, 0);
-            //int scrollX = (int)(Program.Form.HScrollVal / 100.0f * Program.Form.HScrollMax);
             int scrollX = Program.Form.HScrollVal;
-            int scrollY = Program.Form.VScrollVal;
+            int scrollY = Program.Form.VScrollVal > 0 ? Program.Form.VScrollVal - 1 : 0;
 
             GL.Translate(-scrollX, -scrollY, 0);
 
@@ -239,7 +242,12 @@ namespace TISFAT
 
             DrawMisc(Layers, layerHeight, frameWidth, frameCount);
 
+            GL.Translate(0, scrollY, 0);
+            DrawTimelineNumbers(frameCount, layerHeight);
             DrawPlayhead();
+            GL.Translate(0, -scrollY, 0);
+
+            DrawTimelineOutlines(frameCount, layerHeight);
 
             // Stop translating the drawing by x
             GL.Translate(scrollX, 0, 0);
@@ -249,13 +257,11 @@ namespace TISFAT
             // Stop translating the drawing by y
             GL.Translate(0, scrollY, 0);
 
+            DrawTimelineLayer();
+
             // Draw rect below layers to hide bottom of playhead when
             // scrolling past the displayed layers.
             Drawing.Rectangle(new PointF(0, Layers.Count * 16 + 17), new SizeF(81, GLContext.Height - (Layers.Count * 16 + 16)), Color.FromArgb(220, 220, 220));
-
-            //HorizScrollBar.Draw((LastTime + 100) * 9 + 80, GLContext.Size);
-
-            //GL.Disable(EnableCap.LineSmooth);
 
             GLContext.SwapBuffers();
             Program.Form.Canvas.GLContext_Paint(sender, e);
@@ -264,52 +270,23 @@ namespace TISFAT
         #region Mouse Events
         public void MouseDown(Point location)
         {
-            //if (HorizScrollBar.CheckIsHovered(location))
-            //{
-            //    HorizScrollBar.StartDragging(location);
-
-            //    return;
-            //}
-            //else if (location.Y < 16)
-            if (location.Y < 16)
-            {
-                ClearSelection();
-
-                IsDragging = true;
-                if (PlayStart != null)
-                    PlayStart = DateTime.Now;
-
-                FrameNum = (float)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
-                GLContext.Invalidate();
-
-                return;
-            }
-
             if (IsPlaying())
                 return;
+
+            ClearSelection();
+
+            IsDragging = true;
+            if (PlayStart != null)
+                PlayStart = DateTime.Now;
+
+            FrameNum = (float)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
+            GLContext.Invalidate();
 
             SelectFrame(location);
         }
 
         public void MouseMoved(Point location)
         {
-            //if (HorizScrollBar.CheckIsHovered(location) != LastHovered && !HorizScrollBar.Dragging)
-            //{
-            //    LastHovered = !LastHovered;
-            //    GLContext.Invalidate();
-            //}
-            //if (HorizScrollBar.Dragging)
-            //{
-            //    List<Layer> Layers = Program.Form.ActiveProject.Layers;
-
-            //    int LastTime = 0;
-
-            //    foreach (Layer layer in Layers)
-            //        LastTime = (int)Math.Max(layer.Framesets[layer.Framesets.Count - 1].EndTime, LastTime);
-
-            //    HorizScrollBar.Drag(location.X, (LastTime + 100) * 9 + 80, GLContext.Width);
-            //    GLContext.Invalidate();
-            //}
             if (IsDragging)
             {
                 if (PlayStart != null)
@@ -322,14 +299,12 @@ namespace TISFAT
 
         public void MouseUp()
         {
-            //HorizScrollBar.Dragging = false;
             IsDragging = false;
             GLContext.Invalidate();
         }
 
         public void MouseLeft()
         {
-            //HorizScrollBar.Hovered = false;
             IsDragging = false;
             GLContext.Invalidate();
         } 

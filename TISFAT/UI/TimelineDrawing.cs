@@ -96,14 +96,6 @@ namespace TISFAT
                 int y = 16 * (i + 2);
                 Drawing.Line(new PointF(80, y), new PointF(80 + frameWidth, y), Color.Gray);
             }
-
-            // Frame outline / numbers
-            for (int frame = 0; frame < frameCount; frame++)
-            {
-                int x = 80 + 9 * (frame + 1);
-                Drawing.Line(new PointF(x, 0), new PointF(x, 16 + layerHeight), Color.Gray);
-                Drawing.TextRect("" + (frame + 1) % 10, new PointF(x - 9, 0), new Size(9, 16), new Font("Segoe UI", 8), Color.Black, StringAlignment.Center);
-            }
         }
 
         public void DrawPlayhead()
@@ -116,19 +108,59 @@ namespace TISFAT
             Drawing.RectangleLine(new PointF(tx + 2, 0), new SizeF(7, 15), Color.Red);
         }
 
-        public void DrawLabels(List<Layer> Layers)
+        public void DrawTimelineLayer()
         {
             // Draw TIMELINE layer
             Drawing.Rectangle(new PointF(0, 0), new SizeF(80, 16), Color.FromArgb(70, 120, 255));
             Drawing.RectangleLine(new PointF(0, 0), new SizeF(80, 16), Color.Black);
             Drawing.TextRect("Timeline", new PointF(0, 1), new Size(80, 16), new Font("Segoe UI", 9, FontStyle.Bold), Color.Black, StringAlignment.Center);
+        }
 
+        public void DrawTimelineNumbers(int frameCount, int layerHeight)
+        {
+            // Number background
+            Drawing.Rectangle(new PointF(80, 0), new SizeF(frameCount * 9, 16), Color.FromArgb(220, 220, 220));
+
+            for (int frame = 0; frame < frameCount; frame++)
+            {
+                if ((frame + 1) % 100 == 0)
+                {
+                    int x = 80 + 9 * frame;
+                    Drawing.Rectangle(new PointF(x, 0), new SizeF(9, 16), Color.HotPink);
+                }
+                else if ((frame + 1) % 10 == 0)
+                {
+                    int x = 80 + 9 * frame;
+                    Drawing.Rectangle(new PointF(x, 0), new SizeF(9, 16), Color.FromArgb(40, 230, 255));
+                }
+            }
+
+            // Frame numbers
+            for (int frame = 0; frame < frameCount; frame++)
+            {
+                int x = 80 + 9 * (frame + 1);
+                Drawing.TextRect("" + (frame + 1) % 10, new PointF(x - 9, 0), new Size(9, 16), new Font("Segoe UI", 8), Color.Black, StringAlignment.Center);
+            }
+
+            Drawing.Line(new PointF(80, 16), new PointF(frameCount * 9, 16), Color.Gray);
+        }
+
+        public void DrawTimelineOutlines(int frameCount, int layerHeight)
+        {
+            for (int frame = 0; frame < frameCount; frame++)
+            {
+                int x = 80 + 9 * (frame + 1);
+                Drawing.Line(new PointF(x, 0), new PointF(x, 16 + layerHeight), Color.Gray);
+            }
+        }
+
+        public void DrawLabels(List<Layer> Layers)
+        {
             // Draw layers
             for (int i = 0; i < Layers.Count; i++)
             {
                 Layer layer = Layers[i];
 
-                // Draw layer name here
                 Drawing.Rectangle(new PointF(0, 16 * (i + 1)), new SizeF(80, 16), layer.TimelineColor);
                 Drawing.RectangleLine(new PointF(0, 16 * (i + 1)), new SizeF(80, 16), Color.Black);
                 Drawing.TextRect(layer.Name, new PointF(1, 16 * (i + 1) - 1), new Size(79, 16), new Font("Segoe UI", 9), Color.White, StringAlignment.Near);
