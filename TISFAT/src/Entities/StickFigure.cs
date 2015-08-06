@@ -131,14 +131,15 @@ namespace TISFAT.Entities
             #region Drawing
             public void Draw(State state)
             {
-                if (Parent != null)
-                    Drawing.CappedLine(state.Location, state.Parent.Location, state.Thickness, state.JointColor);
+                //if (Parent != null)
+                //    Drawing.CappedLine(state.Location, state.Parent.Location, state.Thickness, state.JointColor);
 
                 if (Children.Count != state.Children.Count)
                     throw new ArgumentException("State does not match this Joint");
 
                 for (var i = 0; i < Children.Count; i++)
                 {
+                    Drawing.CappedLine(state.Location, state.Children[i].Location, state.Thickness, state.JointColor);
                     Children[i].Draw(state.Children[i]);
                 }
             }

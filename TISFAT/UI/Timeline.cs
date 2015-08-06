@@ -11,7 +11,7 @@ namespace TISFAT
     public partial class Timeline
     {
         public GLControl GLContext;
-        public ScrollController HorizScrollBar;
+        //public ScrollController HorizScrollBar;
         public bool LastHovered = false;
         public bool IsDragging = false;
 
@@ -28,7 +28,7 @@ namespace TISFAT
         public Timeline(GLControl context)
         {
             GLContext = context;
-            HorizScrollBar = new ScrollController();
+            //HorizScrollBar = new ScrollController();
 
             FrameNum = 0.0f;
             PlayStart = null;
@@ -51,13 +51,24 @@ namespace TISFAT
             GLContext_Init();
 
             // Resize horizontal scrollbar
+            int LastTime = GetLastTime();
+            
+            int HContentLength = (LastTime + 101) * 9;
+            int VContentLength = (Program.Form.ActiveProject.Layers.Count) * 16 + 16;
+
+            Program.Form.CalcScrollBars(HContentLength, VContentLength, GLContext.Width - 80 - 17, GLContext.Height - 17);
+        }
+        #endregion
+
+        public int GetLastTime()
+        {
             List<Layer> Layers = Program.Form.ActiveProject.Layers;
             int LastTime = 0;
             foreach (Layer layer in Layers)
                 LastTime = (int)Math.Max(layer.Framesets[layer.Framesets.Count - 1].EndTime, LastTime);
-            HorizScrollBar.Resize((LastTime + 100) * 9 + 80, GLContext.Width);
-        } 
-        #endregion
+
+            return LastTime;
+        }
 
         #region Seeking / Playback Functions
         public void SeekStart()
@@ -199,9 +210,9 @@ namespace TISFAT
             int frameCount = (int)Math.Ceiling(lastFrame + 101);
             int frameWidth = frameCount * 9;
             int layerHeight = Layers.Count * 16;
-            int LastTime = 0;
 
-            int dist = ((SplitContainer)GLContext.Parent.Parent).SplitterDistance - HorizScrollBar.Height + 2;
+            //int dist = ((SplitContainer)GLContext.Parent.Parent).SplitterDistance - HorizScrollBar.Height + 2;
+            int dist = ((SplitContainer)GLContext.Parent.Parent).SplitterDistance - 17;
 
             // Calculate height of visible frames
             int TotalLayerHeight = Math.Min(Layers.Count * 16 + 16, dist);
@@ -213,9 +224,14 @@ namespace TISFAT
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
             //GL.Enable(EnableCap.LineSmooth);
-            
+
             // Translate the drawing
-            GL.Translate(-HorizScrollBar.xOffset, 0, 0);
+            //GL.Translate(-HorizScrollBar.xOffset, 0, 0);
+            //int scrollX = (int)(Program.Form.HScrollVal / 100.0f * Program.Form.HScrollMax);
+            int scrollX = Program.Form.HScrollVal;
+            int scrollY = Program.Form.VScrollVal;
+
+            GL.Translate(-scrollX, -scrollY, 0);
 
             DrawBackground(frameCount, layerHeight);
 
@@ -225,16 +241,19 @@ namespace TISFAT
 
             DrawPlayhead();
 
-            // Stop translating the drawing
-            GL.Translate(HorizScrollBar.xOffset, 0, 0);
+            // Stop translating the drawing by x
+            GL.Translate(scrollX, 0, 0);
 
             DrawLabels(Layers);
+
+            // Stop translating the drawing by y
+            GL.Translate(0, scrollY, 0);
 
             // Draw rect below layers to hide bottom of playhead when
             // scrolling past the displayed layers.
             Drawing.Rectangle(new PointF(0, Layers.Count * 16 + 17), new SizeF(81, GLContext.Height - (Layers.Count * 16 + 16)), Color.FromArgb(220, 220, 220));
 
-            HorizScrollBar.Draw((LastTime + 100) * 9 + 80, GLContext.Size);
+            //HorizScrollBar.Draw((LastTime + 100) * 9 + 80, GLContext.Size);
 
             //GL.Disable(EnableCap.LineSmooth);
 
@@ -245,13 +264,14 @@ namespace TISFAT
         #region Mouse Events
         public void MouseDown(Point location)
         {
-            if (HorizScrollBar.CheckIsHovered(location))
-            {
-                HorizScrollBar.StartDragging(location);
+            //if (HorizScrollBar.CheckIsHovered(location))
+            //{
+            //    HorizScrollBar.StartDragging(location);
 
-                return;
-            }
-            else if (location.Y < 16)
+            //    return;
+            //}
+            //else if (location.Y < 16)
+            if (location.Y < 16)
             {
                 ClearSelection();
 
@@ -273,23 +293,23 @@ namespace TISFAT
 
         public void MouseMoved(Point location)
         {
-            if (HorizScrollBar.CheckIsHovered(location) != LastHovered && !HorizScrollBar.Dragging)
-            {
-                LastHovered = !LastHovered;
-                GLContext.Invalidate();
-            }
-            if (HorizScrollBar.Dragging)
-            {
-                List<Layer> Layers = Program.Form.ActiveProject.Layers;
+            //if (HorizScrollBar.CheckIsHovered(location) != LastHovered && !HorizScrollBar.Dragging)
+            //{
+            //    LastHovered = !LastHovered;
+            //    GLContext.Invalidate();
+            //}
+            //if (HorizScrollBar.Dragging)
+            //{
+            //    List<Layer> Layers = Program.Form.ActiveProject.Layers;
 
-                int LastTime = 0;
+            //    int LastTime = 0;
 
-                foreach (Layer layer in Layers)
-                    LastTime = (int)Math.Max(layer.Framesets[layer.Framesets.Count - 1].EndTime, LastTime);
+            //    foreach (Layer layer in Layers)
+            //        LastTime = (int)Math.Max(layer.Framesets[layer.Framesets.Count - 1].EndTime, LastTime);
 
-                HorizScrollBar.Drag(location.X, (LastTime + 100) * 9 + 80, GLContext.Width);
-                GLContext.Invalidate();
-            }
+            //    HorizScrollBar.Drag(location.X, (LastTime + 100) * 9 + 80, GLContext.Width);
+            //    GLContext.Invalidate();
+            //}
             if (IsDragging)
             {
                 if (PlayStart != null)
@@ -302,14 +322,14 @@ namespace TISFAT
 
         public void MouseUp()
         {
-            HorizScrollBar.Dragging = false;
+            //HorizScrollBar.Dragging = false;
             IsDragging = false;
             GLContext.Invalidate();
         }
 
         public void MouseLeft()
         {
-            HorizScrollBar.Hovered = false;
+            //HorizScrollBar.Hovered = false;
             IsDragging = false;
             GLContext.Invalidate();
         } 

@@ -56,12 +56,18 @@ namespace TISFAT
                     foreach (Keyframe keyframe in frameset.Keyframes)
                     {
                         Color color = Color.Gold;
+                        Color color2 = Color.FromArgb(127, 106, 0);
 
                         if (keyframe == SelectedKeyframe)
+                        {
                             color = Color.Red;
+                            color2 = Color.FromArgb(127, 0, 0);
+                        }
 
                         Drawing.Rectangle(new PointF(FrameToPixels(keyframe.Time), y), new SizeF(9, 16), color);
-                        Drawing.Rectangle(new PointF(FrameToPixels(keyframe.Time) + 3, y + 6), new SizeF(3, 3), Color.Black);
+                        Drawing.Rectangle(new PointF(FrameToPixels(keyframe.Time), y), new SizeF(9, 2), color2);
+                        Drawing.Rectangle(new PointF(FrameToPixels(keyframe.Time) + 3, y + 9), new SizeF(4, 4), Color.Black);
+                        Drawing.Rectangle(new PointF(FrameToPixels(keyframe.Time) + 4, y + 10), new SizeF(2, 2), Color.White);
                     }
 
                     // Selected blank frame
@@ -70,9 +76,9 @@ namespace TISFAT
 
                     // Frameset line
                     Drawing.Line(
-                        new PointF(FrameToPixels(frameset.StartTime + 0.5f), y + 8),
-                        new PointF(FrameToPixels(frameset.EndTime + 0.5f), y + 8),
-                        Color.Black
+                        new PointF(FrameToPixels(frameset.StartTime) + 12, y + 8),
+                        new PointF(FrameToPixels(frameset.EndTime) - 3, y + 8),
+                        Color.FromArgb(127, 127, 127)
                     );
                 }
 

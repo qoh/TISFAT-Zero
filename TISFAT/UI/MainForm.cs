@@ -19,6 +19,18 @@ namespace TISFAT
 
         private static Random Why = new Random();
 
+        public int HScrollVal
+        {
+            get { return scrl_HTimeline.Value; }
+            set { scrl_HTimeline.Value = value; }
+        }
+
+        public int VScrollVal
+        {
+            get { return scrl_VTimeline.Value; }
+            set { scrl_VTimeline.Value = value; }
+        }
+
         public MainForm()
         {
             this.DoubleBuffered = true;
@@ -39,10 +51,43 @@ namespace TISFAT
 
             ProjectNew();
             AddTestLayer();
-            //AddTestLayer();
-            //AddTestLayer();
-            //AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
             #endregion
+        }
+
+        public void CalcScrollBars(int HContentSize, int VContentSize, int HViewSize, int VViewSize)
+        {
+            scrl_HTimeline.Visible = HViewSize < HContentSize;
+            scrl_VTimeline.Visible = VViewSize < VContentSize;
+
+            if (scrl_HTimeline.Visible)
+            {
+                scrl_HTimeline.Minimum = 0;
+
+                scrl_HTimeline.SmallChange = HViewSize / 10;
+                scrl_HTimeline.LargeChange = HViewSize / 5;
+
+                scrl_HTimeline.Maximum = HContentSize - HViewSize;
+                scrl_HTimeline.Maximum += scrl_HTimeline.LargeChange;
+            }
+
+            if(scrl_VTimeline.Visible)
+            {
+                scrl_VTimeline.Minimum = 0;
+
+                scrl_VTimeline.SmallChange = VViewSize / 10;
+                scrl_VTimeline.LargeChange = VViewSize / 5;
+
+                scrl_VTimeline.Maximum = VContentSize - VViewSize;
+                scrl_VTimeline.Maximum += scrl_VTimeline.LargeChange;
+            }
+
+            pnl_ScrollSquare.Visible = scrl_HTimeline.Visible || scrl_HTimeline.Visible;
         }
 
         private void AddTestLayer()
@@ -103,6 +148,7 @@ namespace TISFAT
         private void MainForm_Load(object sender, EventArgs e)
         {
             MainTimeline.GLContext_Init();
+            MainTimeline.Resize();
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
@@ -310,7 +356,12 @@ namespace TISFAT
                     ((SplitContainer)sender).IsSplitterFixed = false;
                 }
             }
-        } 
+        }
         #endregion
+
+        private void scrl_Timeline_Scroll(object sender, ScrollEventArgs e)
+        {
+            MainTimeline.GLContext.Invalidate();
+        }
     }
 }

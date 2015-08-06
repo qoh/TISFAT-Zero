@@ -30,7 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.sc_MainContainer = new System.Windows.Forms.SplitContainer();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.scrl_VTimeline = new System.Windows.Forms.VScrollBar();
+            this.scrl_HTimeline = new System.Windows.Forms.HScrollBar();
+            this.pnl_ToolboxPanel = new System.Windows.Forms.Panel();
             this.btn_Rewind = new System.Windows.Forms.Button();
             this.btn_FastForward = new System.Windows.Forms.Button();
             this.btn_End = new System.Windows.Forms.Button();
@@ -56,10 +58,11 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pnl_ScrollSquare = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.sc_MainContainer)).BeginInit();
             this.sc_MainContainer.Panel1.SuspendLayout();
             this.sc_MainContainer.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.pnl_ToolboxPanel.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -77,7 +80,10 @@
             // sc_MainContainer.Panel1
             // 
             this.sc_MainContainer.Panel1.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.sc_MainContainer.Panel1.Controls.Add(this.panel1);
+            this.sc_MainContainer.Panel1.Controls.Add(this.pnl_ScrollSquare);
+            this.sc_MainContainer.Panel1.Controls.Add(this.scrl_VTimeline);
+            this.sc_MainContainer.Panel1.Controls.Add(this.scrl_HTimeline);
+            this.sc_MainContainer.Panel1.Controls.Add(this.pnl_ToolboxPanel);
             this.sc_MainContainer.Panel1.Controls.Add(this.GLContext);
             // 
             // sc_MainContainer.Panel2
@@ -93,21 +99,45 @@
             this.sc_MainContainer.MouseMove += new System.Windows.Forms.MouseEventHandler(this.sc_MainContainer_MouseMove);
             this.sc_MainContainer.MouseUp += new System.Windows.Forms.MouseEventHandler(this.sc_MainContainer_MouseUp);
             // 
-            // panel1
+            // scrl_VTimeline
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.scrl_VTimeline.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.SystemColors.Control;
-            this.panel1.Controls.Add(this.btn_Rewind);
-            this.panel1.Controls.Add(this.btn_FastForward);
-            this.panel1.Controls.Add(this.btn_End);
-            this.panel1.Controls.Add(this.btn_Start);
-            this.panel1.Controls.Add(this.btn_PlayPause);
-            this.panel1.Location = new System.Drawing.Point(0, 144);
-            this.panel1.Margin = new System.Windows.Forms.Padding(0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(750, 30);
-            this.panel1.TabIndex = 1;
+            this.scrl_VTimeline.LargeChange = 1;
+            this.scrl_VTimeline.Location = new System.Drawing.Point(734, 0);
+            this.scrl_VTimeline.Maximum = 0;
+            this.scrl_VTimeline.Name = "scrl_VTimeline";
+            this.scrl_VTimeline.Size = new System.Drawing.Size(17, 127);
+            this.scrl_VTimeline.TabIndex = 3;
+            this.scrl_VTimeline.Scroll += new System.Windows.Forms.ScrollEventHandler(this.scrl_Timeline_Scroll);
+            // 
+            // scrl_HTimeline
+            // 
+            this.scrl_HTimeline.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.scrl_HTimeline.LargeChange = 1;
+            this.scrl_HTimeline.Location = new System.Drawing.Point(-1, 127);
+            this.scrl_HTimeline.Maximum = 0;
+            this.scrl_HTimeline.Name = "scrl_HTimeline";
+            this.scrl_HTimeline.Size = new System.Drawing.Size(735, 17);
+            this.scrl_HTimeline.TabIndex = 2;
+            this.scrl_HTimeline.Scroll += new System.Windows.Forms.ScrollEventHandler(this.scrl_Timeline_Scroll);
+            // 
+            // pnl_ToolboxPanel
+            // 
+            this.pnl_ToolboxPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnl_ToolboxPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.pnl_ToolboxPanel.Controls.Add(this.btn_Rewind);
+            this.pnl_ToolboxPanel.Controls.Add(this.btn_FastForward);
+            this.pnl_ToolboxPanel.Controls.Add(this.btn_End);
+            this.pnl_ToolboxPanel.Controls.Add(this.btn_Start);
+            this.pnl_ToolboxPanel.Controls.Add(this.btn_PlayPause);
+            this.pnl_ToolboxPanel.Location = new System.Drawing.Point(0, 144);
+            this.pnl_ToolboxPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.pnl_ToolboxPanel.Name = "pnl_ToolboxPanel";
+            this.pnl_ToolboxPanel.Size = new System.Drawing.Size(750, 30);
+            this.pnl_ToolboxPanel.TabIndex = 1;
             // 
             // btn_Rewind
             // 
@@ -342,6 +372,15 @@
             this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.checkForUpdatesToolStripMenuItem.Text = "Check for Updates";
             // 
+            // pnl_ScrollSquare
+            // 
+            this.pnl_ScrollSquare.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnl_ScrollSquare.BackColor = System.Drawing.SystemColors.Control;
+            this.pnl_ScrollSquare.Location = new System.Drawing.Point(734, 127);
+            this.pnl_ScrollSquare.Name = "pnl_ScrollSquare";
+            this.pnl_ScrollSquare.Size = new System.Drawing.Size(17, 17);
+            this.pnl_ScrollSquare.TabIndex = 4;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -358,7 +397,7 @@
             this.sc_MainContainer.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.sc_MainContainer)).EndInit();
             this.sc_MainContainer.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
+            this.pnl_ToolboxPanel.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -389,12 +428,15 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
         private OpenTK.GLControl GLContext;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pnl_ToolboxPanel;
         private System.Windows.Forms.Button btn_PlayPause;
         private System.Windows.Forms.Button btn_End;
         private System.Windows.Forms.Button btn_Start;
         private System.Windows.Forms.Button btn_Rewind;
         private System.Windows.Forms.Button btn_FastForward;
+        private System.Windows.Forms.HScrollBar scrl_HTimeline;
+        private System.Windows.Forms.VScrollBar scrl_VTimeline;
+        private System.Windows.Forms.Panel pnl_ScrollSquare;
     }
 }
 
