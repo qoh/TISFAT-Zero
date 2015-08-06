@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.sc_MainContainer = new System.Windows.Forms.SplitContainer();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btn_Rewind = new System.Windows.Forms.Button();
@@ -348,6 +349,7 @@
             this.ClientSize = new System.Drawing.Size(752, 541);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.sc_MainContainer);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "TISFAT Zero";
             this.Load += new System.EventHandler(this.MainForm_Load);

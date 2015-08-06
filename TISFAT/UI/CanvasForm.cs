@@ -14,6 +14,8 @@ namespace TISFAT
         bool Loaded;
         static int MSAASamples = 8;
 
+        private IManipulatable ActiveDragObject;
+
         public CanvasForm(Control parent)
         {
             InitializeComponent();
@@ -28,7 +30,9 @@ namespace TISFAT
             GLContext.Dock = DockStyle.Fill;
             GLContext.VSync = true;
             GLContext.Paint += new PaintEventHandler(this.GLContext_Paint);
+            GLContext.MouseDown += new MouseEventHandler(this.GLContext_MouseDown);
             GLContext.MouseMove += new MouseEventHandler(this.GLContext_MouseMove);
+            GLContext.MouseUp += new MouseEventHandler(this.GLContext_MouseUp);
             Controls.Add(GLContext);
 
             // Setup stuff
@@ -74,9 +78,37 @@ namespace TISFAT
             GLContext.SwapBuffers();
         }
 
+        public void GLContext_MouseDown(object sender, MouseEventArgs e)
+        {
+            ActiveDragObject = null;
+            Timeline timeline = Program.Form.MainTimeline;
+
+            if (timeline.SelectedKeyframe == null)
+                return;
+            
+            ActiveDragObject = timeline.SelectedLayer.Data.TryManipulate(timeline.SelectedKeyframe.State, e.Location);
+        }
+
         public void GLContext_MouseMove(object sender, MouseEventArgs e)
         {
-            Cursor = Program.Form.ActiveProject.TryManipulate(Program.Form.MainTimeline.GetCurrentFrame(), e.Location) ? Cursors.Hand : Cursors.Default;
+            Timeline timeline = Program.Form.MainTimeline;
+
+            if (timeline.SelectedKeyframe == null)
+                return;
+
+            if (ActiveDragObject == null)
+                Cursor = timeline.SelectedLayer.Data.TryManipulate(timeline.SelectedKeyframe.State, e.Location) != null ? Cursors.Hand : Cursors.Default;
+            else
+            {
+                Cursor = Cursors.Hand;
+                timeline.SelectedLayer.Data.ManipulateUpdate(ActiveDragObject, e.Location);
+                GLContext.Invalidate();
+            }
+        }
+
+        public void GLContext_MouseUp(object sender, MouseEventArgs e)
+        {
+            ActiveDragObject = null;
         }
     }
 }

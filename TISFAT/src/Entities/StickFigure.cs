@@ -10,7 +10,7 @@ namespace TISFAT.Entities
     {
         public class Joint : ISaveable
         {
-            public class State : ISaveable
+            public class State : ISaveable, IManipulatable
             {
                 public State Parent;
                 public List<State> Children;
@@ -52,6 +52,27 @@ namespace TISFAT.Entities
                     return state;
                 }
 
+                public State JointAtLocation(PointF location)
+                {
+                    if (
+                        Location.X + 4 > location.X &&
+                        Location.X - 4 < location.X &&
+                        Location.Y + 4 > location.Y &&
+                        Location.Y - 4 < location.Y
+                    )
+                        return this;
+
+                    foreach (State state in Children)
+                    {
+                        State found = state.JointAtLocation(location);
+
+                        if (found != null)
+                            return found;
+                    }
+
+                    return null;
+                }
+                
                 public void Write(BinaryWriter writer)
                 {
                     writer.Write((double)Location.X);
@@ -136,22 +157,12 @@ namespace TISFAT.Entities
                 }
             }
             #endregion
-
-            public bool JointAtLocation(State state, Point _location)
+            
+            public void Move(object _state, Point location)
             {
-                if (state.Location.X + 4 > _location.X &&
-                    state.Location.X - 4 < _location.X &&
-                    state.Location.Y + 4 > _location.Y &&
-                    state.Location.Y - 4 < _location.Y)
-                    return true;
+                State state = _state as State;
 
-                for(var i = 0; i < Children.Count; i++)
-                {
-                    if (Children[i].JointAtLocation(state.Children[i], _location))
-                        return true;
-                }
-
-                return false;
+                state.Location = location;
             }
 
             #region File Saving / Loading
@@ -239,23 +250,24 @@ namespace TISFAT.Entities
             Root.DrawHandle(state.Root);
         }
 
-        public bool TryManipulate(IEntityState _state, Point location)
+        public IManipulatable TryManipulate(IEntityState _state, Point location)
         {
             State state = _state as State;
-            return Root.JointAtLocation(state.Root, location);
+            return state.Root.JointAtLocation(location);
         }
 
-        public void ManipulateStart(IEntityState state, Point location)
+        public void ManipulateStart(IManipulatable _target, Point location)
         {
             
         }
-
-        public void ManipulateUpdate(IEntityState state, Point location)
+        
+        public void ManipulateUpdate(IManipulatable _target, Point location)
         {
-            
+            Joint.State target = _target as Joint.State;
+            target.Location = location;
         }
 
-        public void ManipulateEnd(IEntityState state, Point location)
+        public void ManipulateEnd(IManipulatable _target, Point location)
         {
             
         }

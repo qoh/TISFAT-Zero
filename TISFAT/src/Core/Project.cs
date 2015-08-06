@@ -30,21 +30,7 @@ namespace TISFAT
             if (selectedLayer != null)
                 selectedLayer.DrawEditable(time);
         }
-
-        public bool TryManipulate(float time, Point location)
-        {
-            if (Program.Form.MainTimeline.SelectedLayer == null)
-                return false;
-
-            foreach (Layer layer in Layers)
-            {
-                if (Program.Form.MainTimeline.SelectedLayer == layer)
-                    return layer.TryManipulate(time, location);
-            }
-
-            return false;
-        }
-
+        
         #region File Saving / Loading
         public void Write(BinaryWriter writer)
         {

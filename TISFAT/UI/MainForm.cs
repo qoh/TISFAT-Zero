@@ -39,9 +39,9 @@ namespace TISFAT
 
             ProjectNew();
             AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
+            //AddTestLayer();
+            //AddTestLayer();
+            //AddTestLayer();
             #endregion
         }
 
@@ -53,6 +53,8 @@ namespace TISFAT
             figure.Root = hip;
             var neck = new StickFigure.Joint(hip);
             hip.Children.Add(neck);
+            var boop = new StickFigure.Joint(neck);
+            neck.Children.Add(boop);
 
             Layer layer = new Layer(figure);
             layer.Framesets.Add(new Frameset());
@@ -64,6 +66,9 @@ namespace TISFAT
             var sneck = new StickFigure.Joint.State(ship);
             sneck.Location = new PointF(200f, 147f);
             ship.Children.Add(sneck);
+            var sboop = new StickFigure.Joint.State(sneck);
+            sboop.Location = new PointF(300f, 225f);
+            sneck.Children.Add(sboop);
             layer.Framesets[0].Keyframes.Add(new Keyframe(0, state1));
 
             StickFigure.State state2 = new StickFigure.State();
@@ -73,6 +78,9 @@ namespace TISFAT
             var sneck2 = new StickFigure.Joint.State(ship2);
             sneck2.Location = new PointF(100f, 147f);
             ship2.Children.Add(sneck2);
+            var sboop2 = new StickFigure.Joint.State(sneck2);
+            sboop2.Location = new PointF(250f, 257f);
+            sneck2.Children.Add(sboop2);
             layer.Framesets[0].Keyframes.Add(new Keyframe((uint)Why.Next(4, 40), state2));
 
             ActiveProject.Layers.Add(layer);
@@ -108,7 +116,7 @@ namespace TISFAT
                 MainTimeline.SeekStart();
 
             if (e.KeyChar == (char)Keys.Space)
-                MainTimeline.TogglePause();
+                btn_PlayPause_Click(null, null);
         } 
         #endregion
 

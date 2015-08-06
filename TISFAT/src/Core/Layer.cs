@@ -92,22 +92,12 @@ namespace TISFAT
         {
             IEntityState state = FindCurrentState(time);
 
-            if (state == null)
+            if (state == null || Program.Form.MainTimeline.SelectedKeyframe == null)
                 return;
 
             Data.DrawEditable(state);
         }
-
-        public bool TryManipulate(float time, Point location)
-        {
-            IEntityState state = FindCurrentState(time);
-
-            if (state == null || Program.Form.MainTimeline.SelectedKeyframe == null)
-                return false;
-
-            return Data.TryManipulate(state, location);
-        }
-
+        
         #region File Saving / Loading
         public void Write(BinaryWriter writer)
         {
