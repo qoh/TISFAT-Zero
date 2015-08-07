@@ -229,8 +229,6 @@ namespace TISFAT
 
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            //GL.Enable(EnableCap.LineSmooth);
-
             int scrollX = Program.Form.HScrollVal;
             int scrollY = Program.Form.VScrollVal > 0 ? Program.Form.VScrollVal - 1 : 0;
 

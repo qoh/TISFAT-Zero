@@ -15,6 +15,7 @@ namespace TISFAT
         static int MSAASamples = 8;
 
         private IManipulatable ActiveDragObject;
+        private IManipulatableParams ActiveDragParams;
 
         public CanvasForm(Control parent)
         {
@@ -86,7 +87,14 @@ namespace TISFAT
             if (timeline.SelectedKeyframe == null)
                 return;
             
-            ActiveDragObject = timeline.SelectedLayer.Data.TryManipulate(timeline.SelectedKeyframe.State, e.Location);
+            ManipulateResult result = timeline.SelectedLayer.Data.TryManipulate(
+                timeline.SelectedKeyframe.State, e.Location, e.Button, ModifierKeys);
+
+            if (result != null)
+            {
+                ActiveDragObject = result.Target;
+                ActiveDragParams = result.Params;
+            }
         }
 
         public void GLContext_MouseMove(object sender, MouseEventArgs e)
@@ -97,11 +105,11 @@ namespace TISFAT
                 return;
 
             if (ActiveDragObject == null)
-                Cursor = timeline.SelectedLayer.Data.TryManipulate(timeline.SelectedKeyframe.State, e.Location) != null ? Cursors.Hand : Cursors.Default;
+                Cursor = timeline.SelectedLayer.Data.TryManipulate(timeline.SelectedKeyframe.State, e.Location, e.Button, ModifierKeys) != null ? Cursors.Hand : Cursors.Default;
             else
             {
                 Cursor = Cursors.Hand;
-                timeline.SelectedLayer.Data.ManipulateUpdate(ActiveDragObject, e.Location);
+                timeline.SelectedLayer.Data.ManipulateUpdate(ActiveDragObject, ActiveDragParams, e.Location);
                 GLContext.Invalidate();
             }
         }

@@ -28,6 +28,7 @@ namespace TISFAT.Util
                     return id;
                 }
             }
+            // EntityTypes.ContainsValue
 
             throw new ArgumentException("Type is not present in EntityTypes table");
         }

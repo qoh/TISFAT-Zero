@@ -9,6 +9,7 @@ namespace TISFAT
 {
     public partial class MainForm : Form
     {
+        #region Properties
         public Project ActiveProject;
         private string ProjectFileName;
         private bool ProjectDirty;
@@ -29,7 +30,8 @@ namespace TISFAT
         public int VScrollVal
         {
             get { return scrl_VTimeline.Value; }
-        }
+        } 
+        #endregion
 
         public bool VScrollVisible { get { return scrl_VTimeline.Visible; } }
 
@@ -54,6 +56,25 @@ namespace TISFAT
             Toolbox.Show();
 
             ProjectNew();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
+            AddTestLayer();
             AddTestLayer();
             AddTestLayer();
             AddTestLayer();
@@ -125,38 +146,67 @@ namespace TISFAT
             StickFigure figure = new StickFigure();
 
             var hip = new StickFigure.Joint();
+            hip.Location = new PointF(200, 200);
             figure.Root = hip;
-            var neck = new StickFigure.Joint(hip);
-            hip.Children.Add(neck);
-            var boop = new StickFigure.Joint(neck);
-            neck.Children.Add(boop);
+            var shoulder = StickFigure.Joint.RelativeTo(hip, new PointF(0, -53));
+            var lElbow = StickFigure.Joint.RelativeTo(shoulder, new PointF(-21, 22));
+            var lHand = StickFigure.Joint.RelativeTo(lElbow, new PointF(-5, 35));
+            var rElbow = StickFigure.Joint.RelativeTo(shoulder, new PointF(21, 22));
+            var rHand = StickFigure.Joint.RelativeTo(rElbow, new PointF(5, 35));
+            var lKnee = StickFigure.Joint.RelativeTo(hip, new PointF(-16, 33));
+            var lFoot = StickFigure.Joint.RelativeTo(lKnee, new PointF(-5, 41));
+            var rKnee = StickFigure.Joint.RelativeTo(hip, new PointF(16, 33));
+            var rFoot = StickFigure.Joint.RelativeTo(rKnee, new PointF(5, 41));
+            var head = StickFigure.Joint.RelativeTo(shoulder, new PointF(0, -36));
+
+            shoulder.HandleColor = Color.Yellow;
+            hip.HandleColor = Color.Yellow;
+            rElbow.HandleColor = Color.Red;
+            rHand.HandleColor = Color.Red;
+            rKnee.HandleColor = Color.Red;
+            rFoot.HandleColor = Color.Red;
+
+            head.HandleColor = Color.Yellow;
+            head.IsCircle = true;
+
+            //var hip = new StickFigure.Joint();
+            //hip.Location = new PointF(200f, 200f);
+            //figure.Root = hip;
+            //var neck = new StickFigure.Joint(hip);
+            //neck.Location = new PointF(200f, 147f);
+            //hip.Children.Add(neck);
+            //var boop = new StickFigure.Joint(neck);
+            //boop.Location = new PointF(300f, 225f);
+            //neck.Children.Add(boop);
 
             Layer layer = new Layer(figure);
             layer.Framesets.Add(new Frameset());
+            layer.Framesets[0].Keyframes.Add(new Keyframe(0, figure.CreateRefState()));
+            layer.Framesets[0].Keyframes.Add(new Keyframe(20, figure.CreateRefState()));
 
-            StickFigure.State state1 = new StickFigure.State();
-            var ship = new StickFigure.Joint.State();
-            ship.Location = new PointF(200f, 200f);
-            state1.Root = ship;
-            var sneck = new StickFigure.Joint.State(ship);
-            sneck.Location = new PointF(200f, 147f);
-            ship.Children.Add(sneck);
-            var sboop = new StickFigure.Joint.State(sneck);
-            sboop.Location = new PointF(300f, 225f);
-            sneck.Children.Add(sboop);
-            layer.Framesets[0].Keyframes.Add(new Keyframe(0, state1));
+            //StickFigure.State state1 = new StickFigure.State();
+            //var ship = new StickFigure.Joint.State();
+            //ship.Location = new PointF(200f, 200f);
+            //state1.Root = ship;
+            //var sneck = new StickFigure.Joint.State(ship);
+            //sneck.Location = new PointF(200f, 147f);
+            //ship.Children.Add(sneck);
+            //var sboop = new StickFigure.Joint.State(sneck);
+            //sboop.Location = new PointF(300f, 225f);
+            //sneck.Children.Add(sboop);
+            //layer.Framesets[0].Keyframes.Add(new Keyframe(0, state1));
 
-            StickFigure.State state2 = new StickFigure.State();
-            var ship2 = new StickFigure.Joint.State();
-            ship2.Location = new PointF(200f, 200f);
-            state2.Root = ship2;
-            var sneck2 = new StickFigure.Joint.State(ship2);
-            sneck2.Location = new PointF(100f, 147f);
-            ship2.Children.Add(sneck2);
-            var sboop2 = new StickFigure.Joint.State(sneck2);
-            sboop2.Location = new PointF(250f, 257f);
-            sneck2.Children.Add(sboop2);
-            layer.Framesets[0].Keyframes.Add(new Keyframe((uint)Why.Next(4, 40), state2));
+            //StickFigure.State state2 = new StickFigure.State();
+            //var ship2 = new StickFigure.Joint.State();
+            //ship2.Location = new PointF(200f, 200f);
+            //state2.Root = ship2;
+            //var sneck2 = new StickFigure.Joint.State(ship2);
+            //sneck2.Location = new PointF(100f, 147f);
+            //ship2.Children.Add(sneck2);
+            //var sboop2 = new StickFigure.Joint.State(sneck2);
+            //sboop2.Location = new PointF(250f, 257f);
+            //sneck2.Children.Add(sboop2);
+            //layer.Framesets[0].Keyframes.Add(new Keyframe((uint)Why.Next(4, 40), state2));
 
             ActiveProject.Layers.Add(layer);
             MainTimeline.GLContext.Invalidate();

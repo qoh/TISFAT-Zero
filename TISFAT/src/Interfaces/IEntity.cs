@@ -15,13 +15,13 @@ namespace TISFAT
 
         void DrawEditable(IEntityState state);
 
-        IManipulatable TryManipulate(IEntityState state, Point location);
+        ManipulateResult TryManipulate(IEntityState state, Point location, System.Windows.Forms.MouseButtons button, System.Windows.Forms.Keys modifiers);
 
-        void ManipulateStart(IManipulatable target, Point location);
+        void ManipulateStart(IManipulatable target, IManipulatableParams mparams, Point location);
 
-        void ManipulateUpdate(IManipulatable target, Point location);
+        void ManipulateUpdate(IManipulatable target, IManipulatableParams mparams, Point location);
 
-        void ManipulateEnd(IManipulatable target, Point location);
+        void ManipulateEnd(IManipulatable target, IManipulatableParams mparams, Point location);
 
     }
 

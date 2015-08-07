@@ -58,6 +58,15 @@
   <ItemGroup>
     <Compile Include="src\Core\Frameset.cs" />
     <Compile Include="src\Entities\StickFigure.cs" />
+    <Compile Include="src\Entities\StickFigure.Joint.cs">
+      <DependentUpon>StickFigure.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\Entities\StickFigure.Joint.State.cs">
+      <DependentUpon>StickFigure.Joint.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\Entities\StickFigure.State.cs">
+      <DependentUpon>StickFigure.cs</DependentUpon>
+    </Compile>
     <Compile Include="src\Interfaces\IManipulatable.cs" />
     <Compile Include="src\Util\Drawing.cs" />
     <Compile Include="src\Util\FileFormat.cs" />
@@ -82,7 +91,9 @@
     <Compile Include="src\Core\Layer.cs" />
     <Compile Include="src\Util\Interpolation.cs" />
     <Compile Include="UI\Timeline.cs" />
-    <Compile Include="UI\TimelineDrawing.cs" />
+    <Compile Include="UI\TimelineDrawing.cs">
+      <DependentUpon>Timeline.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\ToolboxForm.cs">
       <SubType>Form</SubType>
     </Compile>

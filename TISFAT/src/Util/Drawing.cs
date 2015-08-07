@@ -11,7 +11,9 @@ namespace TISFAT.Util
 {
     public static class Drawing
     {
-        private static Dictionary<Font, Dictionary<Color, Dictionary<Size, Dictionary<StringAlignment, Dictionary<string, int>>>>> TextRectCache = new Dictionary<Font, Dictionary<Color, Dictionary<Size, Dictionary<StringAlignment, Dictionary<string, int>>>>>();
+        #region MONSTER INSIDE PLEASE NO STAY IN THE CAGE
+        private static Dictionary<Font, Dictionary<Color, Dictionary<Size, Dictionary<StringAlignment, Dictionary<string, int>>>>> TextRectCache = new Dictionary<Font, Dictionary<Color, Dictionary<Size, Dictionary<StringAlignment, Dictionary<string, int>>>>>(); 
+        #endregion
 
         private static Vector2 PointToVector(PointF point)
         {
