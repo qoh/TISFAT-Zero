@@ -169,44 +169,10 @@ namespace TISFAT
             head.HandleColor = Color.Yellow;
             head.IsCircle = true;
 
-            //var hip = new StickFigure.Joint();
-            //hip.Location = new PointF(200f, 200f);
-            //figure.Root = hip;
-            //var neck = new StickFigure.Joint(hip);
-            //neck.Location = new PointF(200f, 147f);
-            //hip.Children.Add(neck);
-            //var boop = new StickFigure.Joint(neck);
-            //boop.Location = new PointF(300f, 225f);
-            //neck.Children.Add(boop);
-
             Layer layer = new Layer(figure);
             layer.Framesets.Add(new Frameset());
             layer.Framesets[0].Keyframes.Add(new Keyframe(0, figure.CreateRefState()));
             layer.Framesets[0].Keyframes.Add(new Keyframe(20, figure.CreateRefState()));
-
-            //StickFigure.State state1 = new StickFigure.State();
-            //var ship = new StickFigure.Joint.State();
-            //ship.Location = new PointF(200f, 200f);
-            //state1.Root = ship;
-            //var sneck = new StickFigure.Joint.State(ship);
-            //sneck.Location = new PointF(200f, 147f);
-            //ship.Children.Add(sneck);
-            //var sboop = new StickFigure.Joint.State(sneck);
-            //sboop.Location = new PointF(300f, 225f);
-            //sneck.Children.Add(sboop);
-            //layer.Framesets[0].Keyframes.Add(new Keyframe(0, state1));
-
-            //StickFigure.State state2 = new StickFigure.State();
-            //var ship2 = new StickFigure.Joint.State();
-            //ship2.Location = new PointF(200f, 200f);
-            //state2.Root = ship2;
-            //var sneck2 = new StickFigure.Joint.State(ship2);
-            //sneck2.Location = new PointF(100f, 147f);
-            //ship2.Children.Add(sneck2);
-            //var sboop2 = new StickFigure.Joint.State(sneck2);
-            //sboop2.Location = new PointF(250f, 257f);
-            //sneck2.Children.Add(sboop2);
-            //layer.Framesets[0].Keyframes.Add(new Keyframe((uint)Why.Next(4, 40), state2));
 
             ActiveProject.Layers.Add(layer);
             MainTimeline.GLContext.Invalidate();
@@ -227,13 +193,17 @@ namespace TISFAT
         #region MainForm Hooks
         private void MainForm_Load(object sender, EventArgs e)
         {
-            MainTimeline.GLContext_Init();
-            MainTimeline.Resize();
+            if (MainTimeline != null)
+            {
+                MainTimeline.GLContext_Init();
+                MainTimeline.Resize();
+            }
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            MainTimeline.Resize();
+            if(MainTimeline != null)
+                MainTimeline.Resize();
         }
 
         private void MainForm_KeyPress(object sender, KeyPressEventArgs e)
@@ -249,11 +219,15 @@ namespace TISFAT
         #region GLContext <-> Timeline hooks
         private void sc_MainContainer_SplitterMoved(object sender, SplitterEventArgs e)
         {
-            MainTimeline.Resize();
+            if (MainTimeline != null)
+                MainTimeline.Resize();
         }
         
         private void GLContext_Paint(object sender, PaintEventArgs e)
         {
+            if (MainTimeline == null)
+                return;
+
             MainTimeline.GLContext_Paint(sender, e);
 
             if (MainTimeline.IsPlaying())
@@ -262,22 +236,26 @@ namespace TISFAT
 
         private void GLContext_MouseMove(object sender, MouseEventArgs e)
         {
-            MainTimeline.MouseMoved(e.Location);
+            if (MainTimeline != null)
+                MainTimeline.MouseMoved(e.Location);
         }
 
         private void GLContext_MouseLeave(object sender, EventArgs e)
         {
-            MainTimeline.MouseLeft();
+            if (MainTimeline != null)
+                MainTimeline.MouseLeft();
         }
 
         private void GLContext_MouseDown(object sender, MouseEventArgs e)
         {
-            MainTimeline.MouseDown(e.Location);
+            if (MainTimeline != null)
+                MainTimeline.MouseDown(e.Location);
         }
 
         private void GLContext_MouseUp(object sender, MouseEventArgs e)
         {
-            MainTimeline.MouseUp();
+            if (MainTimeline != null)
+                MainTimeline.MouseUp();
         }
         #endregion
 
@@ -291,6 +269,9 @@ namespace TISFAT
 
         public void ProjectOpen(string filename)
         {
+            if (MainTimeline == null)
+                return;
+
             ActiveProject = new Project();
 
             using (var reader = new BinaryReader(new FileStream(filename, FileMode.Open)))
@@ -305,6 +286,9 @@ namespace TISFAT
 
         public void ProjectSave(string filename)
         {
+            if (MainTimeline == null)
+                return;
+
             using (var writer = new BinaryWriter(new FileStream(filename, FileMode.Create)))
             {
                 writer.Write(FileFormat.Version);
@@ -366,18 +350,23 @@ namespace TISFAT
 
         private void btn_PlayPause_Click(object sender, EventArgs e)
         {
+            if (MainTimeline == null)
+                return;
+
             MainTimeline.TogglePause();
             btn_PlayPause.Image = MainTimeline.IsPlaying() ? Properties.Resources.pause_hover : Properties.Resources.play_hover;
         }
 
         private void btn_Start_Click(object sender, EventArgs e)
         {
-            MainTimeline.SeekStart();
+            if (MainTimeline != null)
+                MainTimeline.SeekStart();
         }
 
         private void btn_End_Click(object sender, EventArgs e)
         {
-            MainTimeline.SeekLastFrame();
+            if (MainTimeline != null)
+                MainTimeline.SeekLastFrame();
         }
         #endregion
 
@@ -441,7 +430,8 @@ namespace TISFAT
 
         private void scrl_Timeline_Scroll(object sender, ScrollEventArgs e)
         {
-            MainTimeline.GLContext.Invalidate();
+            if (MainTimeline != null)
+                MainTimeline.GLContext.Invalidate();
         }
     }
 }
