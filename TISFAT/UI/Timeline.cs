@@ -289,6 +289,8 @@ namespace TISFAT
 		#region Mouse Events
 		public void MouseDown(Point location, MouseButtons button)
 		{
+            location = new Point(location.X + Program.Form.HScrollVal, location.Y + Program.Form.VScrollVal);
+
 			IsMouseDown = true;
             MouseDragStart = location;
 
@@ -316,7 +318,9 @@ namespace TISFAT
 
 		public void MouseMoved(Point location)
 		{
-            if(IsMouseDown)
+            location = new Point(location.X + Program.Form.HScrollVal, location.Y + Program.Form.VScrollVal);
+
+            if (IsMouseDown)
 			    IsDragging = true;
 
 			if (IsDraggingKeyframe)
@@ -338,22 +342,28 @@ namespace TISFAT
 				SelectedKeyframe.Time = TargetTime;
                 SelectedFrameset.Keyframes = SelectedFrameset.Keyframes.OrderBy(o => o.Time).ToList();
 
+                // Recalc Scrollbars
+                Resize();
                 GLContext.Invalidate();
             }
 			else if (IsDraggingFrameset)
 			{
-                uint StartTime = (uint)Math.Max(0, Math.Floor((MouseDragStart.X - 79.0f) / 9.0f));
-                uint TargetTime = (uint)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
-                uint NewTime = TargetTime - StartTime;
+                int StartTime = (int)Math.Max(0, Math.Floor((MouseDragStart.X - 79.0f) / 9.0f));
+                int TargetTime = (int)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
+                int NewTime = TargetTime - StartTime;
 
-                if (SelectedFrameset.Keyframes[0].Time + 1 + NewTime > 0)
+                if (SelectedFrameset.Keyframes[0].Time + NewTime < 0)
+                    return;
+                else
                     foreach (Keyframe frame in SelectedFrameset.Keyframes)
-                        frame.Time += NewTime;
+                        frame.Time = (uint)(frame.Time + NewTime);
 
                 SelectedBlankFrame = (int)TargetTime;
 
                 MouseDragStart = location;
 
+                // Recalc Scrollbars
+                Resize();
                 GLContext.Invalidate();
             }
 			else if (IsDragging)
