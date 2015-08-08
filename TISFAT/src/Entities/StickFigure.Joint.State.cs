@@ -135,6 +135,20 @@ namespace TISFAT.Entities
                     return null;
                 }
 
+                public State Clone(State from = null)
+                {
+                    State ret = new State(from);
+
+                    ret.JointColor = JointColor;
+                    ret.Location = Location;
+                    ret.Thickness = Thickness;
+
+                    foreach (State child in Children)
+                        ret.Children.Add(child.Clone(ret));
+
+                    return ret;
+                }
+
                 public void Write(BinaryWriter writer)
                 {
                     writer.Write((double)Location.X);

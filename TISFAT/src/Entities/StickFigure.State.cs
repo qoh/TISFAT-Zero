@@ -11,6 +11,11 @@ namespace TISFAT.Entities
 
             public State() { }
 
+            public IEntityState CreateRefState()
+            {
+                return new State { Root = this.Root.Clone() };
+            }
+
             public void Write(BinaryWriter writer)
             {
                 Root.Write(writer);

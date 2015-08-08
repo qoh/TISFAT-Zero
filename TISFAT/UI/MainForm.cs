@@ -30,7 +30,7 @@ namespace TISFAT
         public int VScrollVal
         {
             get { return scrl_VTimeline.Value; }
-        } 
+        }
         #endregion
 
         public bool VScrollVisible { get { return scrl_VTimeline.Visible; } }
@@ -38,7 +38,7 @@ namespace TISFAT
         public MainForm()
         {
             this.DoubleBuffered = true;
-            
+
             InitializeComponent();
 
             GLContext.VSync = true;
@@ -58,30 +58,6 @@ namespace TISFAT
             ProjectNew();
             AddTestLayer();
             AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
-            AddTestLayer();
             #endregion
         }
 
@@ -89,7 +65,7 @@ namespace TISFAT
         {
             ScrollBar bar = scrl_VTimeline;
 
-            if(ModifierKeys == Keys.Shift)
+            if (ModifierKeys == Keys.Shift)
                 bar = scrl_HTimeline;
 
             if (!bar.Visible)
@@ -122,7 +98,7 @@ namespace TISFAT
                 scrl_HTimeline.Maximum = HContentSize - HViewSize;
                 scrl_HTimeline.Maximum += scrl_HTimeline.LargeChange;
             }
-            if(scrl_VTimeline.Visible)
+            if (scrl_VTimeline.Visible)
             {
                 scrl_VTimeline.Minimum = 0;
 
@@ -177,7 +153,7 @@ namespace TISFAT
             ActiveProject.Layers.Add(layer);
             MainTimeline.GLContext.Invalidate();
         }
-        
+
         public void SetDirty(bool dirty)
         {
             ProjectDirty = dirty;
@@ -202,7 +178,7 @@ namespace TISFAT
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            if(MainTimeline != null)
+            if (MainTimeline != null)
                 MainTimeline.Resize();
         }
 
@@ -213,7 +189,7 @@ namespace TISFAT
 
             if (e.KeyChar == (char)Keys.Space)
                 btn_PlayPause_Click(null, null);
-        } 
+        }
         #endregion
 
         #region GLContext <-> Timeline hooks
@@ -222,7 +198,7 @@ namespace TISFAT
             if (MainTimeline != null)
                 MainTimeline.Resize();
         }
-        
+
         private void GLContext_Paint(object sender, PaintEventArgs e)
         {
             if (MainTimeline == null)
@@ -249,13 +225,13 @@ namespace TISFAT
         private void GLContext_MouseDown(object sender, MouseEventArgs e)
         {
             if (MainTimeline != null)
-                MainTimeline.MouseDown(e.Location);
+                MainTimeline.MouseDown(e.Location, e.Button);
         }
 
         private void GLContext_MouseUp(object sender, MouseEventArgs e)
         {
             if (MainTimeline != null)
-                MainTimeline.MouseUp();
+                MainTimeline.MouseUp(e.Location, e.Button);
         }
         #endregion
 
@@ -334,7 +310,7 @@ namespace TISFAT
             {
                 ProjectSave(dialog.FileName);
             }
-        } 
+        }
         #endregion
 
         #region Timeline Control Hooks
@@ -432,6 +408,65 @@ namespace TISFAT
         {
             if (MainTimeline != null)
                 MainTimeline.GLContext.Invalidate();
+        }
+
+        public void ShowCxtMenu(Point Location, int FrameType, int FrameIndex)
+        {
+            // FrameTypes
+            // 0 - Null Frame
+            // 1 - Blank Frame
+            // 2 - Key Frame
+
+            insertKeyframeToolStripMenuItem.Visible = FrameType == 1 || FrameType == 2;
+            insertKeyframeToolStripMenuItem.Enabled = FrameType == 1;
+
+            removeKeyframeToolStripMenuItem.Visible = FrameType == 1 || FrameType == 2;
+            removeKeyframeToolStripMenuItem.Enabled = !insertKeyframeToolStripMenuItem.Enabled;
+            if (MainTimeline.SelectedFrameset != null && FrameType == 2)
+                removeKeyframeToolStripMenuItem.Enabled = FrameIndex != MainTimeline.SelectedFrameset.StartTime && FrameIndex != MainTimeline.SelectedFrameset.EndTime;
+
+            insertFramesetToolStripMenuItem.Visible = FrameType == 0;
+            // TODO: Disable insert frameset if there's not enough space to create a new frameset
+
+            removeFramesetToolStripMenuItem.Visible = FrameType == 1 || FrameType == 2;
+            removeFramesetToolStripMenuItem.Enabled = MainTimeline.SelectedLayer.Framesets.Count > 1;
+
+            toolStripSeparator4.Visible = FrameType != 0;
+
+            moveLayerUpToolStripMenuItem.Enabled = Program.Form.ActiveProject.Layers.IndexOf(MainTimeline.SelectedLayer) > 0;
+            moveLayerDownToolStripMenuItem.Enabled = Program.Form.ActiveProject.Layers.IndexOf(MainTimeline.SelectedLayer) < ActiveProject.Layers.Count;
+
+            cxtm_Timeline.Show(GLContext, Location);
+        }
+
+        private void insertKeyframeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MainTimeline != null)
+                MainTimeline.InsertKeyframe();
+        }
+
+        private void removeKeyframeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MainTimeline != null)
+                MainTimeline.RemoveKeyframe();
+        }
+
+        private void moveLayerUpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MainTimeline != null)
+                MainTimeline.MoveLayerUp();
+        }
+
+        private void moveLayerDownToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MainTimeline != null)
+                MainTimeline.MoveLayerDown();
+        }
+
+        private void removeLayerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MainTimeline != null)
+                MainTimeline.RemoveLayer();
         }
     }
 }
