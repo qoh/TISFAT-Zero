@@ -116,12 +116,7 @@ namespace TISFAT.Entities
 
                 public State JointAtLocation(PointF location)
                 {
-                    if (
-                        Location.X + 4 > location.X &&
-                        Location.X - 4 < location.X &&
-                        Location.Y + 4 > location.Y &&
-                        Location.Y - 4 < location.Y
-                    )
+                    if (MathUtil.IsPointInPoint(location, Location, 4))
                         return this;
 
                     foreach (State state in Children)

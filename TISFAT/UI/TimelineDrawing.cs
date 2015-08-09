@@ -114,6 +114,7 @@ namespace TISFAT
             Drawing.Rectangle(new PointF(0, 0), new SizeF(80, 16), Color.FromArgb(70, 120, 255));
             Drawing.RectangleLine(new PointF(0, 0), new SizeF(80, 16), Color.Black);
             Drawing.TextRect("Timeline", new PointF(0, 1), new Size(80, 16), new Font("Segoe UI", 9, FontStyle.Bold), Color.Black, StringAlignment.Center);
+            
         }
 
         public void DrawTimelineNumbers(int frameCount, int layerHeight)
@@ -163,7 +164,10 @@ namespace TISFAT
 
                 Drawing.Rectangle(new PointF(0, 16 * (i + 1)), new SizeF(80, 16), layer.TimelineColor);
                 Drawing.RectangleLine(new PointF(0, 16 * (i + 1)), new SizeF(80, 16), Color.Black);
-                Drawing.TextRect(layer.Name, new PointF(1, 16 * (i + 1) - 1), new Size(79, 16), new Font("Segoe UI", 9), Color.White, StringAlignment.Near);
+                Drawing.TextRect(layer.Name, new PointF(1, 16 * (i + 1) + 1), new Size(65, 16), new Font("Segoe UI", 9), Color.White, StringAlignment.Near);
+
+                if(HoveredLayerIndex == i || !layer.Visible)
+                    Drawing.Bitmap(new PointF(65, 16 * (i + 1) + 2), new Size(14, 14), layer.Visible ? VisibilityBitmapOn : VisibilityBitmapOff);
             }
         }
     }

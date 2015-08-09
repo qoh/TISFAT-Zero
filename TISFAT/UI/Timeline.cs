@@ -21,15 +21,21 @@ namespace TISFAT
 		private float FrameNum;
 		private DateTime? PlayStart;
 
-        public Point MouseDragStart;
+		public Point MouseDragStart;
 		public bool IsDraggingKeyframe = false;
 		public bool IsDraggingFrameset = false;
-		
+
+        public int HoveredLayerIndex = -1;
+        public bool HoveredLayerOverVis = false;
+
 		public Layer SelectedLayer;
 		public Frameset SelectedFrameset;
 		public Keyframe SelectedKeyframe;
 		private int SelectedBlankFrame = -1;
 		private int SelectedNullFrame = -1;
+
+		public int VisibilityBitmapOn;
+		public int VisibilityBitmapOff;
 
 		#region CTOR | OpenGL core functions
 		public Timeline(GLControl context)
@@ -50,6 +56,13 @@ namespace TISFAT
 			GL.Viewport(0, 0, GLContext.Width, GLContext.Height);
 			GL.Ortho(0, GLContext.Width, GLContext.Height, 0, -1, 1);
 			GL.Disable(EnableCap.DepthTest);
+
+			if(VisibilityBitmapOn == 0)
+			{
+				// Create visibility button bitmaps
+				VisibilityBitmapOn = Drawing.GenerateTexID(Properties.Resources.eye);
+				VisibilityBitmapOff = Drawing.GenerateTexID(Properties.Resources.eye_off);
+			}
 		}
 
 		public void Resize()
@@ -153,19 +166,19 @@ namespace TISFAT
 			return FrameNum + frame;
 		}
 
-        public int GetFrameType()
-        {
-            if (SelectedKeyframe != null)
-                return 2;
+		public int GetFrameType()
+		{
+			if (SelectedKeyframe != null)
+				return 2;
 
-            if (SelectedBlankFrame != -1)
-                return 1;
+			if (SelectedBlankFrame != -1)
+				return 1;
 
-            if (SelectedNullFrame != -1)
-                return 0;
+			if (SelectedNullFrame != -1)
+				return 0;
 
-            return -1;
-        }
+			return -1;
+		}
 
 		public bool IsPlaying()
 		{
@@ -182,7 +195,7 @@ namespace TISFAT
 			SelectedNullFrame = -1;
 		}
 
-        public void SelectFrame(Point location)
+		public void SelectFrame(Point location)
 		{
 			// Select keyframes
 			Project project = Program.Form.ActiveProject;
@@ -289,165 +302,213 @@ namespace TISFAT
 		#region Mouse Events
 		public void MouseDown(Point location, MouseButtons button)
 		{
-            location = new Point(location.X + Program.Form.HScrollVal, location.Y + Program.Form.VScrollVal);
+            Point locationActual = location;
+			location = new Point(location.X + Program.Form.HScrollVal, location.Y + Program.Form.VScrollVal);
 
 			IsMouseDown = true;
-            MouseDragStart = location;
+			MouseDragStart = location;
 
 			if (IsPlaying())
 				return;
 
-			ClearSelection();
+			if (location.X - Program.Form.HScrollVal > 80)
+			{
+				ClearSelection();
 
-			if (PlayStart != null)
-				PlayStart = DateTime.Now;
+				if (PlayStart != null)
+					PlayStart = DateTime.Now;
+				
+				SelectFrame(location);
 
-			FrameNum = (float)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
-			GLContext.Invalidate();
+				if (button == MouseButtons.Right)
+					return;
 
-			SelectFrame(location);
+				if (SelectedKeyframe != null)
+					IsDraggingKeyframe = true;
+				else if (SelectedBlankFrame != -1)
+					IsDraggingFrameset = true;
+			}
+			else if (button == MouseButtons.Left)
+			{
+                if(HoveredLayerIndex > -1)
+                    if(HoveredLayerOverVis)
+                    {
+                        Program.Form.ActiveProject.Layers[HoveredLayerIndex].Visible =
+                            !Program.Form.ActiveProject.Layers[HoveredLayerIndex].Visible;
 
-            if (button == MouseButtons.Right)
-                return;
-
-			if (SelectedKeyframe != null)
-				IsDraggingKeyframe = true;
-			else if (SelectedBlankFrame != -1)
-				IsDraggingFrameset = true;
+                        GLContext.Invalidate();
+                    }
+			}
 		}
 
 		public void MouseMoved(Point location)
 		{
+            Point locationActual = location;
             location = new Point(location.X + Program.Form.HScrollVal, location.Y + Program.Form.VScrollVal);
 
-            if (IsMouseDown)
-			    IsDragging = true;
+            if (HoveredLayerIndex > -1)
+            {
+                HoveredLayerIndex = -1;
+                Program.Form.Cursor = Cursors.Default;
+                GLContext.Invalidate();
+            }
 
-			if (IsDraggingKeyframe)
-			{
-				uint TargetTime = (uint)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
+            if (location.X - Program.Form.HScrollVal > 80)
+            {
+                if (IsMouseDown)
+                    IsDragging = true;
 
-                if (TargetTime > SelectedFrameset.StartTime)
+                if (IsDraggingKeyframe)
                 {
-                    foreach (Keyframe frame in SelectedFrameset.Keyframes)
+                    uint TargetTime = (uint)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
+
+                    if (TargetTime > SelectedFrameset.StartTime)
                     {
-                        if (frame != SelectedKeyframe)
-                            if (frame.Time == TargetTime)
-                                return;
+                        foreach (Keyframe frame in SelectedFrameset.Keyframes)
+                        {
+                            if (frame != SelectedKeyframe)
+                                if (frame.Time == TargetTime)
+                                    return;
+                        }
                     }
+                    else if (SelectedKeyframe.Time != SelectedFrameset.StartTime && SelectedKeyframe.Time != SelectedFrameset.EndTime)
+                        return;
+
+                    SelectedKeyframe.Time = TargetTime;
+                    SelectedFrameset.Keyframes = SelectedFrameset.Keyframes.OrderBy(o => o.Time).ToList();
+
+                    // Recalc Scrollbars
+                    Resize();
+                    GLContext.Invalidate();
                 }
-                else if (SelectedKeyframe.Time != SelectedFrameset.StartTime && SelectedKeyframe.Time != SelectedFrameset.EndTime)
-                    return;
+                else if (IsDraggingFrameset)
+                {
+                    int StartTime = (int)Math.Max(0, Math.Floor((MouseDragStart.X - 79.0f) / 9.0f));
+                    int TargetTime = (int)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
+                    int NewTime = TargetTime - StartTime;
 
-				SelectedKeyframe.Time = TargetTime;
-                SelectedFrameset.Keyframes = SelectedFrameset.Keyframes.OrderBy(o => o.Time).ToList();
+                    if (SelectedFrameset.Keyframes[0].Time + NewTime < 0)
+                        return;
+                    else
+                        foreach (Keyframe frame in SelectedFrameset.Keyframes)
+                            frame.Time = (uint)(frame.Time + NewTime);
 
-                // Recalc Scrollbars
-                Resize();
-                GLContext.Invalidate();
+                    SelectedBlankFrame = (int)TargetTime;
+
+                    MouseDragStart = location;
+
+                    // Recalc Scrollbars
+                    Resize();
+                    GLContext.Invalidate();
+                }
+                else if (IsDragging)
+                {
+                    if (PlayStart != null)
+                        PlayStart = DateTime.Now;
+
+                    FrameNum = (float)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
+                    GLContext.Invalidate();
+                }
             }
-			else if (IsDraggingFrameset)
-			{
-                int StartTime = (int)Math.Max(0, Math.Floor((MouseDragStart.X - 79.0f) / 9.0f));
-                int TargetTime = (int)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
-                int NewTime = TargetTime - StartTime;
+            else
+            {
+                int y = locationActual.Y + Program.Form.VScrollVal;
 
-                if (SelectedFrameset.Keyframes[0].Time + NewTime < 0)
+                HoveredLayerIndex = (int)Math.Floor((y - 16) / 16.0);
+                GLContext.Invalidate();
+
+                if (HoveredLayerIndex > Program.Form.ActiveProject.Layers.Count - 1 || HoveredLayerIndex == -1)
                     return;
+
+                Rectangle VisButton = new Rectangle(new Point(65, 16 * (HoveredLayerIndex + 1) + 2), new Size(14, 14));
+                if (MathUtil.PointInRect(new PointF(locationActual.X, y), VisButton))
+                {
+                    HoveredLayerOverVis = true;
+                    Program.Form.Cursor = Cursors.Hand;
+                }
                 else
-                    foreach (Keyframe frame in SelectedFrameset.Keyframes)
-                        frame.Time = (uint)(frame.Time + NewTime);
-
-                SelectedBlankFrame = (int)TargetTime;
-
-                MouseDragStart = location;
-
-                // Recalc Scrollbars
-                Resize();
-                GLContext.Invalidate();
+                {
+                    HoveredLayerOverVis = false;
+                    Program.Form.Cursor = Cursors.Default;
+                }
             }
-			else if (IsDragging)
-			{
-				if (PlayStart != null)
-					PlayStart = DateTime.Now;
-
-				FrameNum = (float)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
-				GLContext.Invalidate();
-			}
 		}
 
 		public void MouseUp(Point Location, MouseButtons button)
 		{
-            if (button == MouseButtons.Right && !IsDragging && !IsPlaying())
-                Program.Form.ShowCxtMenu(Location, GetFrameType(), (int)FrameNum);
+			if (Location.X > 80 && Location.Y < (Program.Form.ActiveProject.Layers.Count * 16) + 16 && 
+                Location.Y > 16 &&
+                button == MouseButtons.Right && 
+                !IsDragging && !IsPlaying())
+				Program.Form.ShowCxtMenu(Location, GetFrameType(), (int)FrameNum);
 
 			IsMouseDown = false;
 			IsDragging = false;
-            IsDraggingKeyframe = false;
-            IsDraggingFrameset = false;
+			IsDraggingKeyframe = false;
+			IsDraggingFrameset = false;
 
-            GLContext.Invalidate();
+			GLContext.Invalidate();
 		}
 
-        public void InsertKeyframe()
-        {
-            Keyframe prev = null;
-            uint TargetTime = (uint)FrameNum;
+		public void InsertKeyframe()
+		{
+			Keyframe prev = null;
+			uint TargetTime = (uint)FrameNum;
 
-            for (int i = 0; i < SelectedFrameset.Keyframes.Count; i++)
-            {
-                if (SelectedFrameset.Keyframes[i].Time < TargetTime)
-                    if (SelectedFrameset.Keyframes[i + 1] != null)
-                        if (SelectedFrameset.Keyframes[i + 1].Time > TargetTime)
-                        {
-                            prev = SelectedFrameset.Keyframes[i];
-                            break;
-                        }
-            }
+			for (int i = 0; i < SelectedFrameset.Keyframes.Count; i++)
+			{
+				if (SelectedFrameset.Keyframes[i].Time < TargetTime)
+					if (SelectedFrameset.Keyframes[i + 1] != null)
+						if (SelectedFrameset.Keyframes[i + 1].Time > TargetTime)
+						{
+							prev = SelectedFrameset.Keyframes[i];
+							break;
+						}
+			}
 
-            if (prev == null)
-                return;
+			if (prev == null)
+				return;
 
-            Keyframe frame = new Keyframe(TargetTime, prev.State.CreateRefState());
+			Keyframe frame = new Keyframe(TargetTime, prev.State.CreateRefState());
 
-            SelectedFrameset.Keyframes.Add(frame);
-            SelectedFrameset.Keyframes = SelectedFrameset.Keyframes.OrderBy(o => o.Time).ToList();
+			SelectedFrameset.Keyframes.Add(frame);
+			SelectedFrameset.Keyframes = SelectedFrameset.Keyframes.OrderBy(o => o.Time).ToList();
 
-            SelectedNullFrame = -1;
-            SelectedBlankFrame = -1;
-            SelectedKeyframe = frame;
+			SelectedNullFrame = -1;
+			SelectedBlankFrame = -1;
+			SelectedKeyframe = frame;
 
-            GLContext.Invalidate();
-        }
+			GLContext.Invalidate();
+		}
 
-        public void RemoveKeyframe()
-        {
-            int time = (int)SelectedKeyframe.Time;
+		public void RemoveKeyframe()
+		{
+			int time = (int)SelectedKeyframe.Time;
 
-            SelectedFrameset.Keyframes.Remove(SelectedKeyframe);
-            SelectedFrameset.Keyframes = SelectedFrameset.Keyframes.OrderBy(o => o.Time).ToList();
+			SelectedFrameset.Keyframes.Remove(SelectedKeyframe);
+			SelectedFrameset.Keyframes = SelectedFrameset.Keyframes.OrderBy(o => o.Time).ToList();
 
-            SelectedNullFrame = -1;
-            SelectedBlankFrame = time;
-            SelectedKeyframe = null;
+			SelectedNullFrame = -1;
+			SelectedBlankFrame = time;
+			SelectedKeyframe = null;
 
-            GLContext.Invalidate();
-        }
+			GLContext.Invalidate();
+		}
 
-        public void MoveLayerUp()
-        {
+		public void MoveLayerUp()
+		{
 
-        }
+		}
 
-        public void MoveLayerDown()
-        {
+		public void MoveLayerDown()
+		{
 
-        }
+		}
 
-        public void RemoveLayer()
-        {
+		public void RemoveLayer()
+		{
 
-        }
+		}
 
 		public void MouseLeft()
 		{
