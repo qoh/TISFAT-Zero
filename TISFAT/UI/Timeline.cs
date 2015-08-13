@@ -35,10 +35,12 @@ namespace TISFAT
 		private int SelectedNullFrame = -1;
 
 		public int VisibilityBitmapOn;
-		public int VisibilityBitmapOff;
+        public int VisibilityBitmapOn_hover;
+        public int VisibilityBitmapOff;
+        public int VisibilityBitmapOff_hover;
 
-		#region CTOR | OpenGL core functions
-		public Timeline(GLControl context)
+        #region CTOR | OpenGL core functions
+        public Timeline(GLControl context)
 		{
 			GLContext = context;
 			//HorizScrollBar = new ScrollController();
@@ -61,8 +63,10 @@ namespace TISFAT
 			{
 				// Create visibility button bitmaps
 				VisibilityBitmapOn = Drawing.GenerateTexID(Properties.Resources.eye);
+                VisibilityBitmapOn_hover = Drawing.GenerateTexID(Properties.Resources.eye_hover);
 				VisibilityBitmapOff = Drawing.GenerateTexID(Properties.Resources.eye_off);
-			}
+                VisibilityBitmapOff_hover = Drawing.GenerateTexID(Properties.Resources.eye_off_hover);
+            }
 		}
 
 		public void Resize()
@@ -424,12 +428,12 @@ namespace TISFAT
                 if (MathUtil.PointInRect(new PointF(locationActual.X, y), VisButton))
                 {
                     HoveredLayerOverVis = true;
-                    Program.Form.Cursor = Cursors.Hand;
+                    GLContext.Invalidate();
                 }
                 else
                 {
                     HoveredLayerOverVis = false;
-                    Program.Form.Cursor = Cursors.Default;
+                    GLContext.Invalidate();
                 }
             }
 		}

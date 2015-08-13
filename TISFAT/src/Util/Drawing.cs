@@ -11,8 +11,9 @@ namespace TISFAT.Util
 {
     public static class Drawing
     {
-        #region MONSTER INSIDE PLEASE NO STAY IN THE CAGE
-        private static Dictionary<Font, Dictionary<Color, Dictionary<Size, Dictionary<StringAlignment, Dictionary<string, int>>>>> TextRectCache = new Dictionary<Font, Dictionary<Color, Dictionary<Size, Dictionary<StringAlignment, Dictionary<string, int>>>>>(); 
+        #region CACHE MONSTERS INSIDE PLEASE NO STAY IN THE CAGE
+        private static Dictionary<Font, Dictionary<Color, Dictionary<Size, Dictionary<StringAlignment, Dictionary<string, int>>>>> TextRectCache = new Dictionary<Font, Dictionary<Color, Dictionary<Size, Dictionary<StringAlignment, Dictionary<string, int>>>>>();
+        private static Dictionary<string, int> BitmapCache = new Dictionary<string, int>();
         #endregion
 
         private static Vector2 PointToVector(PointF point)
@@ -87,10 +88,22 @@ namespace TISFAT.Util
                     g.DrawString(text, font, new SolidBrush(color), new Rectangle(new Point(0, 0), area), format);
                 }
 
-                TextRectCache[font][color][area][alignment][text] = Drawing.GenerateTexID(bmp);
+                TextRectCache[font][color][area][alignment][text] = GenerateTexID(bmp);
             }
 
             return TextRectCache[font][color][area][alignment][text];
+        }
+
+        public static int GetCachedBitmap(string path)
+        {
+            if (!BitmapCache.ContainsKey(path))
+            {
+                Bitmap img = new Bitmap(path);
+
+                BitmapCache[path] = GenerateTexID(img);
+            }
+
+            return BitmapCache[path];
         }
 
         public static void Line(PointF start, PointF end, Color color)
@@ -201,6 +214,11 @@ namespace TISFAT.Util
 
             GL.Disable(EnableCap.Blend);
             GL.Disable(EnableCap.Texture2D);
+        }
+
+        public static void Bitmap(PointF position, SizeF size, string path)
+        {
+            Bitmap(position, size, GetCachedBitmap(path));
         }
 
         public static void Text(string Text, PointF position, Font font, Color color)

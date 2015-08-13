@@ -167,7 +167,11 @@ namespace TISFAT
                 Drawing.TextRect(layer.Name, new PointF(1, 16 * (i + 1) + 1), new Size(65, 16), new Font("Segoe UI", 9), Color.White, StringAlignment.Near);
 
                 if(HoveredLayerIndex == i || !layer.Visible)
-                    Drawing.Bitmap(new PointF(65, 16 * (i + 1) + 2), new Size(14, 14), layer.Visible ? VisibilityBitmapOn : VisibilityBitmapOff);
+                    Drawing.Bitmap(new PointF(65, 16 * (i + 1) + 2), 
+                        new Size(14, 14), 
+                        layer.Visible ? 
+                        (HoveredLayerOverVis ? VisibilityBitmapOn_hover : VisibilityBitmapOn) :
+                        (HoveredLayerOverVis ? VisibilityBitmapOff_hover : VisibilityBitmapOff));
             }
         }
     }
