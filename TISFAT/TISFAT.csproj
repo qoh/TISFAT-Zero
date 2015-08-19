@@ -77,6 +77,12 @@
     <Compile Include="UI\CanvasForm.Designer.cs">
       <DependentUpon>CanvasForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\BitmapButtonControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BitmapButtonControl.Designer.cs">
+      <DependentUpon>BitmapButtonControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,14 +101,23 @@
     <Compile Include="UI\TimelineDrawing.cs">
       <DependentUpon>Timeline.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\ToolboxForm.cs">
+    <Compile Include="UI\TimelineForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\ToolboxForm.Designer.cs">
-      <DependentUpon>ToolboxForm.cs</DependentUpon>
+    <Compile Include="UI\TimelineForm.Designer.cs">
+      <DependentUpon>TimelineForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PropertiesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PropertiesForm.Designer.cs">
+      <DependentUpon>PropertiesForm.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="UI\CanvasForm.resx">
       <DependentUpon>CanvasForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\BitmapButtonControl.resx">
+      <DependentUpon>BitmapButtonControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -117,8 +132,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UI\ToolboxForm.resx">
-      <DependentUpon>ToolboxForm.cs</DependentUpon>
+    <EmbeddedResource Include="UI\TimelineForm.resx">
+      <DependentUpon>TimelineForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PropertiesForm.resx">
+      <DependentUpon>PropertiesForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

@@ -5,15 +5,14 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using TISFAT.Entities;
 using TISFAT.Util;
 
 namespace TISFAT
 {
 	public partial class Timeline
 	{
+		#region Properties
 		public GLControl GLContext;
-		//public ScrollController HorizScrollBar;
 		public bool LastHovered = false;
 		public bool IsMouseDown = false;
 		public bool IsDragging = false;
@@ -25,8 +24,8 @@ namespace TISFAT
 		public bool IsDraggingKeyframe = false;
 		public bool IsDraggingFrameset = false;
 
-        public int HoveredLayerIndex = -1;
-        public bool HoveredLayerOverVis = false;
+		public int HoveredLayerIndex = -1;
+		public bool HoveredLayerOverVis = false;
 
 		public Layer SelectedLayer;
 		public Frameset SelectedFrameset;
@@ -35,15 +34,15 @@ namespace TISFAT
 		private int SelectedNullFrame = -1;
 
 		public int VisibilityBitmapOn;
-        public int VisibilityBitmapOn_hover;
-        public int VisibilityBitmapOff;
-        public int VisibilityBitmapOff_hover;
+		public int VisibilityBitmapOn_hover;
+		public int VisibilityBitmapOff;
+		public int VisibilityBitmapOff_hover; 
+		#endregion
 
-        #region CTOR | OpenGL core functions
-        public Timeline(GLControl context)
+		#region CTOR | OpenGL core functions
+		public Timeline(GLControl context)
 		{
 			GLContext = context;
-			//HorizScrollBar = new ScrollController();
 
 			FrameNum = 0.0f;
 			PlayStart = null;
@@ -63,10 +62,10 @@ namespace TISFAT
 			{
 				// Create visibility button bitmaps
 				VisibilityBitmapOn = Drawing.GenerateTexID(Properties.Resources.eye);
-                VisibilityBitmapOn_hover = Drawing.GenerateTexID(Properties.Resources.eye_hover);
+				VisibilityBitmapOn_hover = Drawing.GenerateTexID(Properties.Resources.eye_hover);
 				VisibilityBitmapOff = Drawing.GenerateTexID(Properties.Resources.eye_off);
-                VisibilityBitmapOff_hover = Drawing.GenerateTexID(Properties.Resources.eye_off_hover);
-            }
+				VisibilityBitmapOff_hover = Drawing.GenerateTexID(Properties.Resources.eye_off_hover);
+			}
 		}
 
 		public void Resize()
@@ -83,13 +82,13 @@ namespace TISFAT
 			int TotWidth = GLContext.Width - 80;
 			int TotHeight = GLContext.Height;
 
-			if (Program.Form.VScrollVisible)
+			if (Program.Form.Form_Timeline.VScrollVisible)
 				TotWidth -= 17;
 
-			if (Program.Form.HScrollVisible)
+			if (Program.Form.Form_Timeline.HScrollVisible)
 				TotHeight -= 18;
 
-			Program.Form.CalcScrollBars(HContentLength, VContentLength, TotWidth, TotHeight);
+			Program.Form.Form_Timeline.CalcScrollBars(HContentLength, VContentLength, TotWidth, TotHeight);
 		}
 		#endregion
 
@@ -207,7 +206,18 @@ namespace TISFAT
 			int frameIndex = (int)Math.Floor((location.X - 80) / 9.0);
 			int layerIndex = (int)Math.Floor((location.Y - 16) / 16.0);
 
-			if (layerIndex < 0 || layerIndex >= project.Layers.Count)
+			if (layerIndex < 0)
+			{
+				if (PlayStart != null)
+					PlayStart = DateTime.Now;
+
+				FrameNum = (float)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
+				GLContext.Invalidate();
+
+				return;
+			}
+
+			if (layerIndex >= project.Layers.Count)
 				return;
 
 			Layer layer = project.Layers[layerIndex];
@@ -257,8 +267,8 @@ namespace TISFAT
 			int frameCount = (int)Math.Ceiling(lastFrame + 101);
 			int frameWidth = frameCount * 9;
 			int layerHeight = Layers.Count * 16;
-			
-			int dist = ((SplitContainer)GLContext.Parent.Parent).SplitterDistance - 17;
+
+			int dist = GLContext.Height - 17;
 			int TotalLayerHeight = Math.Min(Layers.Count * 16 + 16, dist);
 
 			GLContext.MakeCurrent();
@@ -267,8 +277,8 @@ namespace TISFAT
 
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 
-			int scrollX = Program.Form.HScrollVal;
-			int scrollY = Program.Form.VScrollVal > 0 ? Program.Form.VScrollVal - 1 : 0;
+			int scrollX = Program.Form.Form_Timeline.HScrollVal;
+			int scrollY = Program.Form.Form_Timeline.VScrollVal > 0 ? Program.Form.Form_Timeline.VScrollVal - 1 : 0;
 
 			GL.Translate(-scrollX, -scrollY, 0);
 
@@ -300,14 +310,21 @@ namespace TISFAT
 			Drawing.Rectangle(new PointF(0, Layers.Count * 16 + 17), new SizeF(81, GLContext.Height - (Layers.Count * 16 + 16)), Color.FromArgb(220, 220, 220));
 
 			GLContext.SwapBuffers();
-			Program.Form.Canvas.GLContext_Paint(sender, e);
+
+			Program.Form.Form_Canvas.GLContext_Paint(sender, e);
+
+			if (IsPlaying())
+			{
+				Application.DoEvents();
+				GLContext.Invalidate();
+			}
 		}
 
 		#region Mouse Events
 		public void MouseDown(Point location, MouseButtons button)
 		{
-            Point locationActual = location;
-			location = new Point(location.X + Program.Form.HScrollVal, location.Y + Program.Form.VScrollVal);
+			Point locationActual = location;
+			location = new Point(location.X + Program.Form.Form_Timeline.HScrollVal, location.Y + Program.Form.Form_Timeline.VScrollVal);
 
 			IsMouseDown = true;
 			MouseDragStart = location;
@@ -315,7 +332,7 @@ namespace TISFAT
 			if (IsPlaying())
 				return;
 
-			if (location.X - Program.Form.HScrollVal > 80)
+			if (location.X - Program.Form.Form_Timeline.HScrollVal > 80)
 			{
 				ClearSelection();
 
@@ -334,117 +351,157 @@ namespace TISFAT
 			}
 			else if (button == MouseButtons.Left)
 			{
-                if(HoveredLayerIndex > -1)
-                    if(HoveredLayerOverVis)
-                    {
-                        Program.Form.ActiveProject.Layers[HoveredLayerIndex].Visible =
-                            !Program.Form.ActiveProject.Layers[HoveredLayerIndex].Visible;
+				if(HoveredLayerIndex > -1)
+					if(HoveredLayerOverVis)
+					{
+						Program.Form.ActiveProject.Layers[HoveredLayerIndex].Visible =
+							!Program.Form.ActiveProject.Layers[HoveredLayerIndex].Visible;
 
-                        GLContext.Invalidate();
-                    }
+						GLContext.Invalidate();
+					}
 			}
 		}
 
 		public void MouseMoved(Point location)
 		{
-            Point locationActual = location;
-            location = new Point(location.X + Program.Form.HScrollVal, location.Y + Program.Form.VScrollVal);
+			Point locationActual = location;
+			location = new Point(location.X + Program.Form.Form_Timeline.HScrollVal, location.Y + Program.Form.Form_Timeline.VScrollVal);
 
-            if (HoveredLayerIndex > -1)
-            {
-                HoveredLayerIndex = -1;
-                Program.Form.Cursor = Cursors.Default;
-                GLContext.Invalidate();
-            }
+			if (HoveredLayerIndex > -1)
+			{
+				HoveredLayerIndex = -1;
+				Program.Form.Cursor = Cursors.Default;
+				GLContext.Invalidate();
+			}
 
-            if (location.X - Program.Form.HScrollVal > 80)
-            {
-                if (IsMouseDown)
-                    IsDragging = true;
+			if (location.X - Program.Form.Form_Timeline.HScrollVal > 80)
+			{
+				if (IsMouseDown)
+					IsDragging = true;
 
-                if (IsDraggingKeyframe)
-                {
-                    uint TargetTime = (uint)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
+				if (IsDraggingKeyframe)
+				{
+					uint TargetTime = (uint)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
 
-                    if (TargetTime > SelectedFrameset.StartTime)
-                    {
-                        foreach (Keyframe frame in SelectedFrameset.Keyframes)
-                        {
-                            if (frame != SelectedKeyframe)
-                                if (frame.Time == TargetTime)
-                                    return;
-                        }
-                    }
-                    else if (SelectedKeyframe.Time != SelectedFrameset.StartTime && SelectedKeyframe.Time != SelectedFrameset.EndTime)
-                        return;
+					for (int i = SelectedLayer.Framesets.IndexOf(SelectedFrameset) - 1; i < SelectedLayer.Framesets.IndexOf(SelectedFrameset) + 2; i++)
+					{
+						if (i == -1 || i > SelectedLayer.Framesets.Count - 1)
+							continue;
+						if (SelectedLayer.Framesets[i] == SelectedFrameset)
+							continue;
 
-                    SelectedKeyframe.Time = TargetTime;
-                    SelectedFrameset.Keyframes = SelectedFrameset.Keyframes.OrderBy(o => o.Time).ToList();
+						if (i < SelectedLayer.Framesets.IndexOf(SelectedFrameset))
+						{
+							if (TargetTime <= SelectedLayer.Framesets[i].EndTime)
+								return;
+						}
+						else
+							if (TargetTime >= SelectedLayer.Framesets[i].StartTime)
+								return;
+					}
 
-                    // Recalc Scrollbars
-                    Resize();
-                    GLContext.Invalidate();
-                }
-                else if (IsDraggingFrameset)
-                {
-                    int StartTime = (int)Math.Max(0, Math.Floor((MouseDragStart.X - 79.0f) / 9.0f));
-                    int TargetTime = (int)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
-                    int NewTime = TargetTime - StartTime;
+					if (TargetTime > SelectedFrameset.StartTime)
+					{
+						foreach (Keyframe frame in SelectedFrameset.Keyframes)
+						{
+							if (frame != SelectedKeyframe)
+								if (frame.Time == TargetTime)
+									return;
+						}
+					}
+					else if (SelectedKeyframe.Time != SelectedFrameset.StartTime && SelectedKeyframe.Time != SelectedFrameset.EndTime)
+						return;
 
-                    if (SelectedFrameset.Keyframes[0].Time + NewTime < 0)
-                        return;
-                    else
-                        foreach (Keyframe frame in SelectedFrameset.Keyframes)
-                            frame.Time = (uint)(frame.Time + NewTime);
+					SelectedKeyframe.Time = TargetTime;
+					SelectedFrameset.Keyframes = SelectedFrameset.Keyframes.OrderBy(o => o.Time).ToList();
 
-                    SelectedBlankFrame = (int)TargetTime;
+					// Recalc Scrollbars
+					Resize();
+					GLContext.Invalidate();
+				}
+				else if (IsDraggingFrameset)
+				{
+					int StartTime = (int)Math.Max(0, Math.Floor((MouseDragStart.X - 79.0f) / 9.0f));
+					int TargetTime = (int)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
+					int NewTime = TargetTime - StartTime;
 
-                    MouseDragStart = location;
+					float NewStartTime = SelectedFrameset.StartTime + NewTime;
+					float NewEndTime = SelectedFrameset.EndTime + NewTime;
 
-                    // Recalc Scrollbars
-                    Resize();
-                    GLContext.Invalidate();
-                }
-                else if (IsDragging)
-                {
-                    if (PlayStart != null)
-                        PlayStart = DateTime.Now;
+					//uhhh here you check if anything is overlapping but i dont quite remember gimme a minute
+					// btw the amount of frames a frameset takes up can be figured out with frameset.duration
+					// which is just frameset.starttime - frameset.endtime
 
-                    FrameNum = (float)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
-                    GLContext.Invalidate();
-                }
-            }
-            else
-            {
-                int y = locationActual.Y + Program.Form.VScrollVal;
+					if (NewStartTime < 0)
+						return;
+					
 
-                HoveredLayerIndex = (int)Math.Floor((y - 16) / 16.0);
-                GLContext.Invalidate();
+					foreach (Frameset x in SelectedLayer.Framesets)
+					{
+						if (x == SelectedFrameset)
+							continue;
 
-                if (HoveredLayerIndex > Program.Form.ActiveProject.Layers.Count - 1 || HoveredLayerIndex == -1)
-                    return;
+						if (NewStartTime > x.EndTime)
+							continue;
+						else if (NewEndTime < x.StartTime)
+							continue;
 
-                Rectangle VisButton = new Rectangle(new Point(65, 16 * (HoveredLayerIndex + 1) + 2), new Size(14, 14));
-                if (MathUtil.PointInRect(new PointF(locationActual.X, y), VisButton))
-                {
-                    HoveredLayerOverVis = true;
-                    GLContext.Invalidate();
-                }
-                else
-                {
-                    HoveredLayerOverVis = false;
-                    GLContext.Invalidate();
-                }
-            }
+						return;
+					}
+
+					foreach (Keyframe frame in SelectedFrameset.Keyframes)
+						frame.Time = (uint)(frame.Time + NewTime);
+
+					SelectedLayer.Framesets = SelectedLayer.Framesets.OrderBy(o => o.EndTime).ToList();
+
+					SelectedBlankFrame = (int)TargetTime;
+
+					MouseDragStart = location;
+
+					// Recalc Scrollbars
+					Resize();
+					GLContext.Invalidate();
+				}
+				else if (IsDragging && location.Y < 16)
+				{
+					if (PlayStart != null)
+						PlayStart = DateTime.Now;
+
+					FrameNum = (float)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
+					GLContext.Invalidate();
+				}
+			}
+			else
+			{
+				int y = locationActual.Y + Program.Form.Form_Timeline.VScrollVal;
+
+				HoveredLayerIndex = (int)Math.Floor((y - 16) / 16.0);
+				GLContext.Invalidate();
+
+				if (HoveredLayerIndex > Program.Form.ActiveProject.Layers.Count - 1 || HoveredLayerIndex == -1)
+					return;
+
+				Rectangle VisButton = new Rectangle(new Point(65, 16 * (HoveredLayerIndex + 1) + 2), new Size(14, 14));
+				if (MathUtil.PointInRect(new PointF(locationActual.X, y), VisButton))
+				{
+					HoveredLayerOverVis = true;
+					GLContext.Invalidate();
+				}
+				else
+				{
+					HoveredLayerOverVis = false;
+					GLContext.Invalidate();
+				}
+			}
 		}
 
 		public void MouseUp(Point Location, MouseButtons button)
 		{
 			if (Location.X > 80 && Location.Y < (Program.Form.ActiveProject.Layers.Count * 16) + 16 && 
-                Location.Y > 16 &&
-                button == MouseButtons.Right && 
-                !IsDragging && !IsPlaying())
-				Program.Form.ShowCxtMenu(Location, GetFrameType(), (int)FrameNum);
+				Location.Y > 16 &&
+				button == MouseButtons.Right && 
+				!IsDragging && !IsPlaying())
+				Program.Form.Form_Timeline.ShowCxtMenu(Location, GetFrameType(), (int)FrameNum);
 
 			IsMouseDown = false;
 			IsDragging = false;
@@ -453,6 +510,13 @@ namespace TISFAT
 
 			GLContext.Invalidate();
 		}
+
+		public void MouseLeft()
+		{
+			IsDragging = false;
+			GLContext.Invalidate();
+		}
+		#endregion
 
 		public void InsertKeyframe()
 		{
@@ -499,6 +563,61 @@ namespace TISFAT
 			GLContext.Invalidate();
 		}
 
+		public bool CanInsertFrameset()
+		{
+			if (SelectedNullFrame > SelectedLayer.Framesets[SelectedLayer.Framesets.Count - 1].EndTime)
+				return true;
+			else
+			{
+				float nextTime = -1;
+
+				foreach(Frameset fs in SelectedLayer.Framesets)
+				{
+					if (fs.EndTime < SelectedNullFrame)
+						continue;
+
+					nextTime = fs.StartTime;
+					break;
+				}
+
+				if (nextTime > -1 && nextTime >= SelectedNullFrame + 2)
+					return true;
+			}
+
+			return false;
+		}
+
+		public void InsertFrameset()
+		{
+			uint time = (uint)SelectedNullFrame;
+
+			if (CanInsertFrameset())
+			{
+				Frameset fs = new Frameset();
+				fs.Keyframes.Add(new Keyframe(time, SelectedLayer.Data.CreateRefState()));
+				fs.Keyframes.Add(new Keyframe(time + 1, SelectedLayer.Data.CreateRefState()));
+
+				SelectedLayer.Framesets.Add(fs);
+				SelectedLayer.Framesets = SelectedLayer.Framesets.OrderBy(o => o.EndTime).ToList();
+			}
+
+			GLContext.Invalidate();
+		}
+
+		public void RemoveFrameset()
+		{
+			int time = SelectedBlankFrame;
+
+			SelectedLayer.Framesets.Remove(SelectedFrameset);
+			SelectedLayer.Framesets = SelectedLayer.Framesets.OrderBy(o => o.EndTime).ToList();
+
+			SelectedNullFrame = -1;
+			SelectedBlankFrame = time;
+			SelectedKeyframe = null;
+
+			GLContext.Invalidate();
+		}
+
 		public void MoveLayerUp()
 		{
 
@@ -513,12 +632,5 @@ namespace TISFAT
 		{
 
 		}
-
-		public void MouseLeft()
-		{
-			IsDragging = false;
-			GLContext.Invalidate();
-		} 
-		#endregion
 	}
 }

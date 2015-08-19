@@ -1,18 +1,16 @@
-﻿using System.Drawing;
-
-namespace TISFAT
+﻿namespace TISFAT
 {
     public class ManipulateResult
-    {
-        public IManipulatable Target;
-        public IManipulatableParams Params;
-    }
+	{
+		public IManipulatable Target;
+		public IManipulatableParams Params;
+	}
 
-    public interface IManipulatable
-    {
-    }
+	public interface IManipulatable
+	{
+	}
 
-    public interface IManipulatableParams
-    {
-    }
+	public interface IManipulatableParams
+	{
+	}
 }

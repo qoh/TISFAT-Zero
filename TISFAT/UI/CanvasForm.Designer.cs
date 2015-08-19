@@ -43,6 +43,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Canvas";
             this.Load += new System.EventHandler(this.Canvas_Load);
+            this.Enter += new System.EventHandler(this.CanvasForm_Enter);
             this.Resize += new System.EventHandler(this.CanvasForm_Resize);
             this.ResumeLayout(false);
 
