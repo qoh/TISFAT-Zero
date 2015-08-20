@@ -7,7 +7,7 @@ namespace TISFAT.Util
 {
 	static class FileFormat
 	{
-		public static UInt16 Version = 0;
+		public static UInt16 Version = 1;
 		
 		static Dictionary<UInt16, Type> EntityTypes = new Dictionary<UInt16, Type>()
 		{

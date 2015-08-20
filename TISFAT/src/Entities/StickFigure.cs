@@ -90,7 +90,7 @@ namespace TISFAT.Entities
 		public IEntityState CreateRefState()
 		{
 			State state = new State();
-			state.Root = Root.CreateRefState();
+			state.Root = Root.Copy();
 			return state;
 		}
 

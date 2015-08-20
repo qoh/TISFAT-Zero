@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gif.Components;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -35,7 +36,6 @@ namespace TISFAT
 			#region General Init
 			ProjectNew();
 			AddTestLayer();
-			AddTestLayer();
 			#endregion
 		}
 
@@ -46,14 +46,19 @@ namespace TISFAT
 			Form_Toolbox = new ToolboxForm(sc_MainContainer.Panel2);
 			Form_Canvas = new CanvasForm(sc_MainContainer.Panel2);
 
-			// Position Forms
-			Form_Timeline.Location = new Point(0, 0);
-			Form_Toolbox.Location = new Point(0, Form_Timeline.Location.Y + Form_Timeline.Height + 4);
-			Form_Canvas.Location = new Point(Form_Toolbox.Location.X + Form_Toolbox.Width + 20, Form_Timeline.Location.Y + Form_Timeline.Height + 4);
-
 			Form_Timeline.Show();
 			Form_Toolbox.Show();
 			Form_Canvas.Show();
+
+			Form_Timeline.Anchor = AnchorStyles.None;
+			Form_Toolbox.Anchor = AnchorStyles.None;
+			Form_Canvas.Anchor = AnchorStyles.None;
+
+			Form_Timeline.Location = new Point(5, 0);
+			Form_Toolbox.Location = new Point(50, Form_Timeline.Location.Y + Form_Timeline.Height + 4);
+			Form_Canvas.Location = new Point(Form_Toolbox.Location.X + Form_Toolbox.Width + 20, Form_Timeline.Location.Y + Form_Timeline.Height + 4);
+			
+			AddTestBitmapLayer();
 		}
 
 		private void AddTestLayer()
@@ -83,6 +88,25 @@ namespace TISFAT
 
 			head.HandleColor = Color.Yellow;
 			head.IsCircle = true;
+
+			Layer layer = new Layer(figure);
+			layer.Framesets.Add(new Frameset());
+			layer.Framesets[0].Keyframes.Add(new Keyframe(0, figure.CreateRefState()));
+			layer.Framesets[0].Keyframes.Add(new Keyframe(20, figure.CreateRefState()));
+
+			ActiveProject.Layers.Add(layer);
+
+			if (MainTimeline != null)
+				MainTimeline.GLContext.Invalidate();
+		}
+
+		private void AddTestBitmapLayer()
+		{
+			BitmapObject figure = new BitmapObject();
+
+			//figure.Texture = Properties.Resources.eye;
+			figure.Texture = (Bitmap)Bitmap.FromFile("C:\\Users\\Evar\\Desktop\\boy.png", true);
+			figure.TextureID = Drawing.GenerateTexID(figure.Texture);
 
 			Layer layer = new Layer(figure);
 			layer.Framesets.Add(new Frameset());
@@ -188,5 +212,40 @@ namespace TISFAT
 			}
 		}
 		#endregion
+
+		private void animatedGifgifToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SaveFileDialog dlg = new SaveFileDialog();
+			dlg.Filter = "Animated Gif|*.gif";
+
+			if (dlg.ShowDialog() != DialogResult.OK)
+				return;
+			FileStream fs = new FileStream(dlg.FileName, FileMode.Create);
+			AnimatedGifEncoder g = new AnimatedGifEncoder();
+
+			float fps = 10.0f;
+			float delta = 1.0f / fps;
+
+			float endTime = 0.0f;
+
+			foreach (Layer layer in ActiveProject.Layers)
+			{
+				endTime = Math.Max(endTime, layer.Framesets[layer.Framesets.Count - 1].EndTime);
+			}
+
+			g.Start(fs);
+
+			g.SetDelay((int)Math.Round(delta * 1000.0f));
+			g.SetQuality(2);
+			g.SetRepeat(0);
+			
+			for (float time = 0; time <= endTime / ActiveProject.FPS; time += delta)
+			{
+				Form_Canvas.DrawFrame(time * ActiveProject.FPS, true);
+				g.AddFrame(Image.FromHbitmap(Form_Canvas.TakeScreenshot()));
+			}
+
+			g.Finish();
+		}
 	}
 }

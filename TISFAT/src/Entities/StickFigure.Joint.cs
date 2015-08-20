@@ -97,7 +97,7 @@ namespace TISFAT.Entities
             }
             #endregion
 
-            public State CreateRefState(State parent = null)
+            public State Copy(State parent = null)
             {
                 State state = new State(parent);
                 state.Location = Location;
@@ -105,7 +105,7 @@ namespace TISFAT.Entities
                 state.JointColor = JointColor;
 
                 foreach (Joint child in Children)
-                    state.Children.Add(child.CreateRefState(state));
+                    state.Children.Add(child.Copy(state));
 
                 return state;
             }

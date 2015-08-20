@@ -23,6 +23,6 @@ namespace TISFAT
 
 	public interface IEntityState : ISaveable
 	{
-		IEntityState CreateRefState();
+		IEntityState Copy();
 	}
 }

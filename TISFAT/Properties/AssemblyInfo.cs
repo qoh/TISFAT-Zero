@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TisfatTest2")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("TISFAT Zero")]
+[assembly: AssemblyDescription("A 2D Stick Figure Animation Software!")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TisfatTest2")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCompany("Atomic Software")]
+[assembly: AssemblyProduct("TISFAT Zero")]
+[assembly: AssemblyCopyright("Copyright © 2015 Evar Smith")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

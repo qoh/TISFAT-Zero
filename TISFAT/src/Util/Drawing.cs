@@ -199,6 +199,8 @@ namespace TISFAT.Util
 			GL.PushMatrix();
 			GL.Translate(position.X, position.Y, 0);
 
+			GL.Color3(Color.White);
+
 			GL.Begin(PrimitiveType.Quads);
 			GL.TexCoord2(0, 0); GL.Vertex2(0, 0);
 			GL.TexCoord2(0, 1); GL.Vertex2(0, size.Height);

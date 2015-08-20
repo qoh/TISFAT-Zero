@@ -4,6 +4,8 @@ using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using System.Windows.Media.Imaging;
+using System.Windows;
 
 namespace TISFAT
 {
@@ -67,13 +69,18 @@ namespace TISFAT
 
 		public void GLContext_Paint(object sender, PaintEventArgs e)
 		{
+			DrawFrame(Program.Form.MainTimeline.GetCurrentFrame(), false);
+		}
+
+		public void DrawFrame(float time, bool render)
+		{
 			GLContext.MakeCurrent();
 
 			GL.ClearColor(Color.White);
 
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 			
-			Program.Form.ActiveProject.Draw(Program.Form.MainTimeline.GetCurrentFrame());
+			Program.Form.ActiveProject.Draw(time);
 
 			GLContext.SwapBuffers();
 		}
@@ -121,6 +128,21 @@ namespace TISFAT
 		private void CanvasForm_Enter(object sender, EventArgs e)
 		{
 			BringToFront();
+		}
+
+		public IntPtr TakeScreenshot()
+		{
+			if (GraphicsContext.CurrentContext == null)
+				throw new GraphicsContextMissingException();
+
+			Bitmap bmp = new Bitmap(GLContext.ClientSize.Width, GLContext.ClientSize.Height);
+			System.Drawing.Imaging.BitmapData data = bmp.LockBits(GLContext.ClientRectangle, System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+			GL.ReadPixels(0, 0, GLContext.ClientSize.Width, GLContext.ClientSize.Height, PixelFormat.Bgr, PixelType.UnsignedByte, data.Scan0);
+			bmp.UnlockBits(data);
+
+			bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
+
+			return bmp.GetHbitmap();
 		}
 	}
 }

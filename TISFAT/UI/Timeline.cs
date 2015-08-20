@@ -162,7 +162,7 @@ namespace TISFAT
 			float frame;
 
 			if (PlayStart != null)
-				frame = ((float)(DateTime.Now - (DateTime)PlayStart).TotalSeconds) * 10.0f;
+				frame = ((float)(DateTime.Now - (DateTime)PlayStart).TotalSeconds) * Program.Form.ActiveProject.FPS;
 			else
 				frame = 0.0f;
 
@@ -537,7 +537,7 @@ namespace TISFAT
 			if (prev == null)
 				return;
 
-			Keyframe frame = new Keyframe(TargetTime, prev.State.CreateRefState());
+			Keyframe frame = new Keyframe(TargetTime, prev.State.Copy());
 
 			SelectedFrameset.Keyframes.Add(frame);
 			SelectedFrameset.Keyframes = SelectedFrameset.Keyframes.OrderBy(o => o.Time).ToList();

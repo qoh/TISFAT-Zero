@@ -164,7 +164,7 @@ namespace TISFAT
 
 				Drawing.Rectangle(new PointF(0, 16 * (i + 1)), new SizeF(80, 16), layer.TimelineColor);
 				Drawing.RectangleLine(new PointF(0, 16 * (i + 1)), new SizeF(80, 16), Color.Black);
-				Drawing.TextRect(layer.Name, new PointF(1, 16 * (i + 1) + 1), new Size(65, 16), new Font("Segoe UI", 9), Color.White, StringAlignment.Near);
+				Drawing.TextRect(layer.Name, new PointF(1, 16 * (i + 1) + 1), new Size(65, 16), new Font("Segoe UI", 9), Color.Black, StringAlignment.Near);
 
 				if(HoveredLayerIndex == i || !layer.Visible)
 					Drawing.Bitmap(new PointF(65, 16 * (i + 1) + 2), 

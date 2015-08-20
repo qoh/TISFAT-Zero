@@ -11,7 +11,7 @@ namespace TISFAT.Entities
 
             public State() { }
 
-            public IEntityState CreateRefState()
+            public IEntityState Copy()
             {
                 return new State { Root = this.Root.Clone() };
             }

@@ -20,5 +20,14 @@ namespace TISFAT.Util
 		{
 			return new PointF(Linear(t, a.X, b.X), Linear(t, a.Y, b.Y));
 		}
+
+		public static RectangleF Linear(float t, RectangleF a, RectangleF b)
+		{
+			return new RectangleF(
+				Linear(t, a.X, b.X),
+				Linear(t, a.Y, b.Y),
+				Linear(t, a.Width, b.Width),
+				Linear(t, a.Height, b.Height));
+		}
 	}
 }

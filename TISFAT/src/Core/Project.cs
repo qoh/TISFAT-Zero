@@ -8,6 +8,7 @@ namespace TISFAT
     public class Project : ISaveable
 	{
 		public List<Layer> Layers;
+		public float FPS;
 
 		public Project()
 		{
@@ -34,11 +35,16 @@ namespace TISFAT
 		public void Write(BinaryWriter writer)
 		{
 			FileFormat.WriteList(writer, Layers);
+			writer.Write(FPS);
 		}
 
 		public void Read(BinaryReader reader, UInt16 version)
 		{
 			Layers = FileFormat.ReadList<Layer>(reader, version);
+			if (version == 1)
+			{
+				FPS = (float)reader.ReadDouble();
+			}
 		} 
 		#endregion
 	}
