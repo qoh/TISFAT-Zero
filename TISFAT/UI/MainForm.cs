@@ -1,5 +1,6 @@
 ﻿using Gif.Components;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -213,39 +214,51 @@ namespace TISFAT
 		}
 		#endregion
 
-		private void animatedGifgifToolStripMenuItem_Click(object sender, EventArgs e)
+		private void exportToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.Filter = "Animated Gif|*.gif";
+			dlg.Filter = "Animated GIF|*.gif|Animated PNG|*.png|MPEG-4|*.mp4|AVI|*.avi|WebM|*.webm";
 
 			if (dlg.ShowDialog() != DialogResult.OK)
 				return;
-			FileStream fs = new FileStream(dlg.FileName, FileMode.Create);
-			AnimatedGifEncoder g = new AnimatedGifEncoder();
-
-			float fps = 10.0f;
+			
+			int fps = 60;
 			float delta = 1.0f / fps;
 
 			float endTime = 0.0f;
+
+			string temp = Path.GetTempPath() + Path.GetRandomFileName();
+			Directory.CreateDirectory(temp);
 
 			foreach (Layer layer in ActiveProject.Layers)
 			{
 				endTime = Math.Max(endTime, layer.Framesets[layer.Framesets.Count - 1].EndTime);
 			}
 
-			g.Start(fs);
+			uint n = 0;
 
-			g.SetDelay((int)Math.Round(delta * 1000.0f));
-			g.SetQuality(2);
-			g.SetRepeat(0);
-			
 			for (float time = 0; time <= endTime / ActiveProject.FPS; time += delta)
 			{
 				Form_Canvas.DrawFrame(time * ActiveProject.FPS, true);
-				g.AddFrame(Image.FromHbitmap(Form_Canvas.TakeScreenshot()));
+				Image.FromHbitmap(Form_Canvas.TakeScreenshot()).Save(temp + "\\" + n + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+				n++;
 			}
 
-			g.Finish();
+			ProcessStartInfo startInfo = new ProcessStartInfo();
+			startInfo.FileName = "ffmpeg.exe";
+			startInfo.Arguments = "-y -r " + fps + " -i \"" + temp + "\\%d.bmp\" \"" + dlg.FileName + "\"";
+			startInfo.RedirectStandardOutput = true;
+			startInfo.RedirectStandardError = true;
+			startInfo.UseShellExecute = false;
+			startInfo.CreateNoWindow = true;
+
+			Process processTemp = new Process();
+			processTemp.StartInfo = startInfo;
+			processTemp.EnableRaisingEvents = true;
+			processTemp.Start();
+			processTemp.StandardError.ReadToEnd();
+
+			Directory.Delete(temp, true);
 		}
 	}
 }

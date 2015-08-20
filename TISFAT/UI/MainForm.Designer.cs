@@ -41,7 +41,6 @@
 			this.projectPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.animatedGifgifToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,9 +51,6 @@
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.webMwebmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.mpeg4mp4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.animatedPngapngToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			((System.ComponentModel.ISupportInitialize)(this.sc_MainContainer)).BeginInit();
 			this.sc_MainContainer.Panel1.SuspendLayout();
 			this.sc_MainContainer.SuspendLayout();
@@ -171,21 +167,10 @@
 			// 
 			// exportToolStripMenuItem
 			// 
-			this.exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.animatedGifgifToolStripMenuItem,
-            this.animatedPngapngToolStripMenuItem,
-            this.webMwebmToolStripMenuItem,
-            this.mpeg4mp4ToolStripMenuItem});
 			this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
 			this.exportToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
-			this.exportToolStripMenuItem.Text = "Export";
-			// 
-			// animatedGifgifToolStripMenuItem
-			// 
-			this.animatedGifgifToolStripMenuItem.Name = "animatedGifgifToolStripMenuItem";
-			this.animatedGifgifToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
-			this.animatedGifgifToolStripMenuItem.Text = "Animated Gif (*.gif)";
-			this.animatedGifgifToolStripMenuItem.Click += new System.EventHandler(this.animatedGifgifToolStripMenuItem_Click);
+			this.exportToolStripMenuItem.Text = "Export..";
+			this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
 			// 
 			// editToolStripMenuItem
 			// 
@@ -255,24 +240,6 @@
 			this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
 			this.checkForUpdatesToolStripMenuItem.Text = "Check for Updates";
 			// 
-			// webMwebmToolStripMenuItem
-			// 
-			this.webMwebmToolStripMenuItem.Name = "webMwebmToolStripMenuItem";
-			this.webMwebmToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
-			this.webMwebmToolStripMenuItem.Text = "WebM (*.webm)";
-			// 
-			// mpeg4mp4ToolStripMenuItem
-			// 
-			this.mpeg4mp4ToolStripMenuItem.Name = "mpeg4mp4ToolStripMenuItem";
-			this.mpeg4mp4ToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
-			this.mpeg4mp4ToolStripMenuItem.Text = "Mpeg-4 (*.mp4)";
-			// 
-			// animatedPngapngToolStripMenuItem
-			// 
-			this.animatedPngapngToolStripMenuItem.Name = "animatedPngapngToolStripMenuItem";
-			this.animatedPngapngToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
-			this.animatedPngapngToolStripMenuItem.Text = "Animated Png (*.png)";
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -307,7 +274,6 @@
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem animatedGifgifToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem redoToolStripMenuItem;
@@ -321,9 +287,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem projectPropertiesToolStripMenuItem;
         private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.ToolStripMenuItem webMwebmToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem mpeg4mp4ToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem animatedPngapngToolStripMenuItem;
 	}
 }
 

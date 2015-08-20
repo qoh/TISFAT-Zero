@@ -8,7 +8,7 @@ namespace TISFAT
     public class Project : ISaveable
 	{
 		public List<Layer> Layers;
-		public float FPS;
+		public float FPS = 10.0f;
 
 		public Project()
 		{
