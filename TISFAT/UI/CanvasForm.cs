@@ -18,6 +18,12 @@ namespace TISFAT
 		private IManipulatable ActiveDragObject;
 		private IManipulatableParams ActiveDragParams;
 
+		public bool VSync
+		{
+			get { return GLContext.VSync; }
+			set { GLContext.VSync = value; }
+		}
+
 		public CanvasForm(Control parent)
 		{
 			InitializeComponent();

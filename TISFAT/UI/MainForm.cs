@@ -235,30 +235,65 @@ namespace TISFAT
 				endTime = Math.Max(endTime, layer.Framesets[layer.Framesets.Count - 1].EndTime);
 			}
 
-			uint n = 0;
+			int n = 0;
+			int nt = (int)Math.Ceiling(endTime / ActiveProject.FPS / delta);
+			
+			ProgressDialog progress = new ProgressDialog();
 
-			for (float time = 0; time <= endTime / ActiveProject.FPS; time += delta)
+			bool frameCanceled = false;
+			EventHandler frameCancelHandler = (_1, _2) => { frameCanceled = true; };
+
+			progress.Title = "Rendering Frames..";
+			progress.ProgressStyle = ProgressBarStyle.Continuous;
+			progress.Canceled += frameCancelHandler;
+			progress.Work = () =>
 			{
-				Form_Canvas.DrawFrame(time * ActiveProject.FPS, true);
-				Image.FromHbitmap(Form_Canvas.TakeScreenshot()).Save(temp + "\\" + n + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
-				n++;
-			}
+				for (float time = 0; time <= endTime / ActiveProject.FPS && !frameCanceled; time += delta)
+				{
+					progress.DetailText = "Frame " + (n + 1) + " of " + (nt + 1);
+					progress.ProgressValue = n * 100 / nt;
 
-			ProcessStartInfo startInfo = new ProcessStartInfo();
-			startInfo.FileName = "ffmpeg.exe";
-			startInfo.Arguments = "-y -r " + fps + " -i \"" + temp + "\\%d.bmp\" \"" + dlg.FileName + "\"";
-			startInfo.RedirectStandardOutput = true;
-			startInfo.RedirectStandardError = true;
-			startInfo.UseShellExecute = false;
-			startInfo.CreateNoWindow = true;
+					Form_Canvas.DrawFrame(time * ActiveProject.FPS, true);
+					Image.FromHbitmap(Form_Canvas.TakeScreenshot()).Save(temp + "\\" + n + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+					n++;
 
-			Process processTemp = new Process();
-			processTemp.StartInfo = startInfo;
-			processTemp.EnableRaisingEvents = true;
-			processTemp.Start();
-			processTemp.StandardError.ReadToEnd();
+					Application.DoEvents();
+				}
 
-			Directory.Delete(temp, true);
+				if (frameCanceled)
+				{
+					Directory.Delete(temp, true);
+					progress.Close();
+					return;
+				}
+
+				progress.Canceled -= frameCancelHandler;
+				progress.Canceled += progress.Finish;
+				
+				progress.Title = "Encoding Video..";
+				progress.ProgressStyle = ProgressBarStyle.Marquee;
+				progress.DetailText = "Waiting for ffmpeg..";
+
+				ProcessStartInfo startInfo = new ProcessStartInfo();
+				startInfo.FileName = "ffmpeg.exe";
+				startInfo.Arguments = "-y -r " + fps + " -i \"" + temp + "\\%d.bmp\" \"" + dlg.FileName + "\"";
+				startInfo.UseShellExecute = false;
+				startInfo.CreateNoWindow = true;
+
+				Process processTemp = new Process();
+				processTemp.StartInfo = startInfo;
+				processTemp.EnableRaisingEvents = true;
+
+				processTemp.Exited += (sender2, e2) =>
+				{
+					progress.Finish(sender2, e2);
+					Directory.Delete(temp, true);
+				};
+
+				processTemp.Start();
+			};
+
+			progress.ShowDialog();
 		}
 	}
 }
