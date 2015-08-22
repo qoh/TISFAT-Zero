@@ -1,5 +1,4 @@
-﻿using Gif.Components;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -9,6 +8,11 @@ using TISFAT.Util;
 
 namespace TISFAT
 {
+	public enum EditMode
+	{
+		Default, Onion, Phase, Diff
+	}
+
 	public partial class MainForm : Form
 	{
 		#region Properties
@@ -19,6 +23,22 @@ namespace TISFAT
 		public TimelineForm Form_Timeline;
 		public CanvasForm Form_Canvas;
 		public ToolboxForm Form_Toolbox;
+
+		private EditMode _ActiveEditMode;
+		public EditMode ActiveEditMode
+		{
+			get { return _ActiveEditMode; }
+			set
+			{
+				btn_EditModeDefault.Checked = value == EditMode.Default;
+				btn_EditModeOnion.Checked = value == EditMode.Onion;
+				btn_EditModePhase.Checked = value == EditMode.Phase;
+				btn_EditModeDiff.Checked = value == EditMode.Diff;
+
+				_ActiveEditMode = value;
+				Form_Timeline.MainTimeline.GLContext.Invalidate();
+			}
+		}
 
 		public Timeline MainTimeline
 		{
@@ -33,15 +53,12 @@ namespace TISFAT
 			DoubleBuffered = true;
 
 			InitializeComponent();
-
-			#region General Init
-			ProjectNew();
-			AddTestLayer();
-			#endregion
 		}
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
+			ProjectNew();
+
 			// Create and show forms
 			Form_Timeline = new TimelineForm(sc_MainContainer.Panel2);
 			Form_Toolbox = new ToolboxForm(sc_MainContainer.Panel2);
@@ -58,66 +75,6 @@ namespace TISFAT
 			Form_Timeline.Location = new Point(5, 0);
 			Form_Toolbox.Location = new Point(50, Form_Timeline.Location.Y + Form_Timeline.Height + 4);
 			Form_Canvas.Location = new Point(Form_Toolbox.Location.X + Form_Toolbox.Width + 20, Form_Timeline.Location.Y + Form_Timeline.Height + 4);
-			
-			AddTestBitmapLayer();
-		}
-
-		private void AddTestLayer()
-		{
-			StickFigure figure = new StickFigure();
-
-			var hip = new StickFigure.Joint();
-			hip.Location = new PointF(200, 200);
-			figure.Root = hip;
-			var shoulder = StickFigure.Joint.RelativeTo(hip, new PointF(0, -53));
-			var lElbow = StickFigure.Joint.RelativeTo(shoulder, new PointF(-21, 22));
-			var lHand = StickFigure.Joint.RelativeTo(lElbow, new PointF(-5, 35));
-			var rElbow = StickFigure.Joint.RelativeTo(shoulder, new PointF(21, 22));
-			var rHand = StickFigure.Joint.RelativeTo(rElbow, new PointF(5, 35));
-			var lKnee = StickFigure.Joint.RelativeTo(hip, new PointF(-16, 33));
-			var lFoot = StickFigure.Joint.RelativeTo(lKnee, new PointF(-5, 41));
-			var rKnee = StickFigure.Joint.RelativeTo(hip, new PointF(16, 33));
-			var rFoot = StickFigure.Joint.RelativeTo(rKnee, new PointF(5, 41));
-			var head = StickFigure.Joint.RelativeTo(shoulder, new PointF(0, -36));
-
-			shoulder.HandleColor = Color.Yellow;
-			hip.HandleColor = Color.Yellow;
-			rElbow.HandleColor = Color.Red;
-			rHand.HandleColor = Color.Red;
-			rKnee.HandleColor = Color.Red;
-			rFoot.HandleColor = Color.Red;
-
-			head.HandleColor = Color.Yellow;
-			head.IsCircle = true;
-
-			Layer layer = new Layer(figure);
-			layer.Framesets.Add(new Frameset());
-			layer.Framesets[0].Keyframes.Add(new Keyframe(0, figure.CreateRefState()));
-			layer.Framesets[0].Keyframes.Add(new Keyframe(20, figure.CreateRefState()));
-
-			ActiveProject.Layers.Add(layer);
-
-			if (MainTimeline != null)
-				MainTimeline.GLContext.Invalidate();
-		}
-
-		private void AddTestBitmapLayer()
-		{
-			BitmapObject figure = new BitmapObject();
-
-			//figure.Texture = Properties.Resources.eye;
-			figure.Texture = (Bitmap)Bitmap.FromFile("C:\\Users\\Evar\\Desktop\\boy.png", true);
-			figure.TextureID = Drawing.GenerateTexID(figure.Texture);
-
-			Layer layer = new Layer(figure);
-			layer.Framesets.Add(new Frameset());
-			layer.Framesets[0].Keyframes.Add(new Keyframe(0, figure.CreateRefState()));
-			layer.Framesets[0].Keyframes.Add(new Keyframe(20, figure.CreateRefState()));
-
-			ActiveProject.Layers.Add(layer);
-
-			if (MainTimeline != null)
-				MainTimeline.GLContext.Invalidate();
 		}
 
 		public void SetDirty(bool dirty)
@@ -137,6 +94,9 @@ namespace TISFAT
 		{
 			ActiveProject = new Project();
 			SetFileName(null);
+
+			StickFigure defaultFig = new StickFigure();
+			ActiveProject.Layers.Add(defaultFig.CreateDefaultLayer(0, 20, new LayerCreationArgs(0, "")));
 
 			if(MainTimeline != null)
 				MainTimeline.GLContext.Invalidate();
@@ -217,7 +177,7 @@ namespace TISFAT
 		private void exportToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.Filter = "Animated GIF|*.gif|Animated PNG|*.png|MPEG-4|*.mp4|AVI|*.avi|WebM|*.webm";
+			dlg.Filter = "Animated GIF|*.gif|Animated PNG|*.png|MPEG-4|*.mp4|AVI|*.avi|WebM|*.webm|Flash Video|*.flv|Windows Media Video|*.wmv";
 
 			if (dlg.ShowDialog() != DialogResult.OK)
 				return;
@@ -294,6 +254,38 @@ namespace TISFAT
 			};
 
 			progress.ShowDialog();
+		}
+
+		private void btn_EditModeDefault_Click(object sender, EventArgs e)
+		{
+			ActiveEditMode = EditMode.Default;
+		}
+
+		private void btn_EditModeOnion_Click(object sender, EventArgs e)
+		{
+			ActiveEditMode = EditMode.Onion;
+		}
+
+		private void btn_EditModePhase_Click(object sender, EventArgs e)
+		{
+			ActiveEditMode = EditMode.Phase;
+		}
+
+		private void btn_EditModeDiff_Click(object sender, EventArgs e)
+		{
+			ActiveEditMode = EditMode.Diff;
+		}
+
+		private void btn_RemoveLayer_Click(object sender, EventArgs e)
+		{
+			Form_Timeline.MainTimeline.RemoveLayer();
+		}
+
+		private void btn_AddLayer_Click(object sender, EventArgs e)
+		{
+			AddLayerDialog diag = new AddLayerDialog();
+
+			diag.ShowDialog();
 		}
 	}
 }

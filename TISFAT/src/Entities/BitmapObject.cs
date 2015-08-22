@@ -1,38 +1,15 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Windows.Forms;
 using TISFAT.Util;
 
 namespace TISFAT.Entities
 {
-	public class BitmapObject : IEntity
+	public partial class BitmapObject : IEntity
 	{
 		public Bitmap Texture;
 		public int TextureID;
-
-		public class State : IEntityState
-		{
-			public RectangleF Bounds;
-
-			public State() { }
-
-			public IEntityState Copy()
-			{
-				State state = new State();
-				state.Bounds = new RectangleF(Bounds.Location, Bounds.Size);
-				return state;
-			}
-
-			public void Write(BinaryWriter writer)
-			{
-
-			}
-
-			public void Read(BinaryReader reader, UInt16 version)
-			{
-
-			}
-		}
 
 		public BitmapObject() { }
 
@@ -72,39 +49,97 @@ namespace TISFAT.Entities
 			DrawHandle(state, Color.Cyan);
 		}
 
-		public ManipulateResult TryManipulate(IEntityState state, Point location, System.Windows.Forms.MouseButtons button, System.Windows.Forms.Keys modifiers)
+		public class ManipulateParams : IManipulatableParams
 		{
-			return null;
+			public bool AbsoluteDrag;
+			public PointF AbsoluteOffset;
+
+			public int CornerGrabbed;
+
+			public bool KeepAspectRatio;
 		}
 
-		public void ManipulateStart(IManipulatable target, IManipulatableParams mparams, Point location)
+		public ManipulateResult TryManipulate(IEntityState _state, Point location, System.Windows.Forms.MouseButtons button, System.Windows.Forms.Keys modifiers)
+		{
+			State state = _state as State;
+
+			ManipulateResult result = new ManipulateResult();
+			ManipulateParams mparams = new ManipulateParams();
+			result.Params = mparams;
+
+			if (modifiers == Keys.Shift)
+				mparams.KeepAspectRatio = true;
+
+			if (button == System.Windows.Forms.MouseButtons.Right)
+			{
+				result.Target = state;
+				mparams.AbsoluteDrag = true;
+				mparams.AbsoluteOffset = new PointF(location.X - state.Bounds.X, location.Y - state.Bounds.Y);
+			}
+			else
+			{
+				mparams.CornerGrabbed = state.HandleAtLocation(location);
+
+				if (mparams.CornerGrabbed == -1)
+					return null;
+
+				result.Target = state;
+				mparams.AbsoluteDrag = false;
+			}
+
+			return result;
+		}
+
+		public void ManipulateStart(IManipulatable _target, IManipulatableParams mparams, Point location)
 		{
 
 		}
 
-		public void ManipulateUpdate(IManipulatable target, IManipulatableParams mparams, Point location)
+		public void ManipulateUpdate(IManipulatable _target, IManipulatableParams mparams, Point location)
 		{
-
+			State target = _target as State;
+			target.Move(location, (ManipulateParams)mparams);
 		}
 
 		public void ManipulateEnd(IManipulatable target, IManipulatableParams mparams, Point location)
 		{
+			
+		}
 
+		public Layer CreateDefaultLayer(uint StartTime, uint EndTime, LayerCreationArgs e)
+		{
+			Texture = (Bitmap)Bitmap.FromFile(e.Arguments, true);
+			TextureID = Drawing.GenerateTexID(Texture);
+
+			if (!Program.Form.ActiveProject.LayerCount.ContainsKey(typeof(StickFigure)))
+				Program.Form.ActiveProject.LayerCount.Add(typeof(StickFigure), 0);
+
+			int CreatedLayerCount = ++Program.Form.ActiveProject.LayerCount[typeof(StickFigure)];
+
+			Layer layer = new Layer(this);
+			layer.Name = "Bitmap " + CreatedLayerCount;
+
+			layer.Framesets.Add(new Frameset());
+			layer.Framesets[0].Keyframes.Add(new Keyframe(StartTime, CreateRefState()));
+			layer.Framesets[0].Keyframes.Add(new Keyframe(EndTime, CreateRefState()));
+
+			return layer;
 		}
 
 		public IEntityState CreateRefState()
 		{
-			return new State() { Bounds = new RectangleF(10, 10, Texture.Width, Texture.Height) };
+			return new State() { Bounds = new RectangleF(10, 10, Texture.Width, Texture.Height), TexWidth = Texture.Width, TexHeight = Texture.Height };
 		}
 
 		public void Write(BinaryWriter writer)
 		{
-
+			FileFormat.WriteBitmap(Texture, writer);
 		}
 
 		public void Read(BinaryReader reader, UInt16 version)
 		{
-
+			Texture = FileFormat.ReadBitmap(reader);
+			TextureID = Drawing.GenerateTexID(Texture);
 		}
 	}
 }

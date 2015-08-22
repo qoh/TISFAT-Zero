@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using TISFAT.Entities;
 
@@ -11,12 +12,14 @@ namespace TISFAT.Util
 		
 		static Dictionary<UInt16, Type> EntityTypes = new Dictionary<UInt16, Type>()
 		{
-			{0, typeof(StickFigure)}
+			{0, typeof(StickFigure)},
+			{1, typeof(BitmapObject)}
 		};
 
 		static Dictionary<UInt16, Type> EntityStateTypes = new Dictionary<UInt16, Type>()
 		{
-			{0, typeof(StickFigure.State)}
+			{0, typeof(StickFigure.State)},
+			{1, typeof(BitmapObject.State)}
 		};
 
 		public static UInt16 GetEntityID(Type type)
@@ -79,6 +82,29 @@ namespace TISFAT.Util
 			}
 
 			return list;
+		}
+
+		public static void WriteBitmap(Bitmap img, BinaryWriter writer)
+		{
+			Stream bitmapStream = new MemoryStream();
+
+			img.Save(bitmapStream, System.Drawing.Imaging.ImageFormat.Bmp);
+
+			if (bitmapStream.Length > int.MaxValue)
+				throw new ArgumentOutOfRangeException("Bitmap length exceeds int MaxValue (What the fuck are you saving?! O_o)");
+
+			writer.Write((int)bitmapStream.Length);
+			bitmapStream.Seek(0, SeekOrigin.Begin);
+			bitmapStream.CopyTo(writer.BaseStream);
+		}
+
+		public static Bitmap ReadBitmap(BinaryReader reader)
+		{
+			int bytes = reader.ReadInt32();
+			byte[] buffer = reader.ReadBytes(bytes);
+
+			MemoryStream bitmapStream = new MemoryStream(buffer);
+			return new Bitmap(bitmapStream);
 		}
 	}
 }

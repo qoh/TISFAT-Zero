@@ -88,12 +88,32 @@ namespace TISFAT.Controls
 
 		public void RefreshState()
 		{
+			btn_MainButton.FlatAppearance.MouseOverBackColor = Color.Transparent;
+			btn_MainButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
+			btn_MainButton.FlatAppearance.BorderSize = 0;
+			btn_MainButton.BackColor = Color.FromKnownColor(KnownColor.Control);
+				
 			if (Down)
 				btn_MainButton.BackgroundImage = Checked ? _ImageOnDown : _ImageDown;
 			else if (Hovered)
 				btn_MainButton.BackgroundImage = Checked ? _ImageOnHover : _ImageHover;
 			else
 				btn_MainButton.BackgroundImage = Checked ? _ImageOn : _ImageDefault;
+			
+			if (_ImageDown == null && _ImageHover == null)
+			{
+				btn_MainButton.FlatAppearance.BorderColor = Color.FromArgb(55, 155, 255);
+
+				if (Hovered || Down || Checked)
+					btn_MainButton.FlatAppearance.BorderSize = 1;
+
+				btn_MainButton.BackgroundImage = _ImageDefault;
+				btn_MainButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(219, 233, 249);
+				btn_MainButton.FlatAppearance.MouseDownBackColor = Color.FromArgb(127, 191, 255);
+
+				if (Checked)
+					btn_MainButton.BackColor = Color.FromArgb(127, 191, 255);
+			}
 		}
 
 		private void btn_MainButton_MouseEnter(object sender, EventArgs e)
@@ -130,11 +150,6 @@ namespace TISFAT.Controls
 
 			if (Click != null)
 				Click(sender, e);
-		}
-
-		private void BitmapButtonControl_Paint(object sender, PaintEventArgs e)
-		{
-			RefreshState();
 		}
 	}
 }

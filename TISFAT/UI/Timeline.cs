@@ -205,13 +205,13 @@ namespace TISFAT
 
 			int frameIndex = (int)Math.Floor((location.X - 80) / 9.0);
 			int layerIndex = (int)Math.Floor((location.Y - 16) / 16.0);
+			FrameNum = (float)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
 
 			if (layerIndex < 0)
 			{
 				if (PlayStart != null)
 					PlayStart = DateTime.Now;
 
-				FrameNum = (float)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
 				GLContext.Invalidate();
 
 				return;
@@ -351,7 +351,7 @@ namespace TISFAT
 			}
 			else if (button == MouseButtons.Left)
 			{
-				if(HoveredLayerIndex > -1)
+				if(HoveredLayerIndex >= 0 && HoveredLayerIndex < Program.Form.ActiveProject.Layers.Count)
 					if(HoveredLayerOverVis)
 					{
 						Program.Form.ActiveProject.Layers[HoveredLayerIndex].Visible =
@@ -563,6 +563,26 @@ namespace TISFAT
 			GLContext.Invalidate();
 		}
 
+		public void SetPoseToPrevious()
+		{
+			if (SelectedFrameset.Keyframes.IndexOf(SelectedKeyframe) < 1)
+				return;
+
+			SelectedKeyframe.State = SelectedFrameset.Keyframes[SelectedFrameset.Keyframes.IndexOf(SelectedKeyframe) - 1].State.Copy();
+
+			GLContext.Invalidate();
+		}
+
+		public void SetPoseToNext()
+		{
+			if (SelectedFrameset.Keyframes.IndexOf(SelectedKeyframe) == SelectedFrameset.Keyframes.Count - 1)
+				return;
+
+			SelectedKeyframe.State = SelectedFrameset.Keyframes[SelectedFrameset.Keyframes.IndexOf(SelectedKeyframe) + 1].State.Copy();
+
+			GLContext.Invalidate();
+		}
+
 		public bool CanInsertFrameset()
 		{
 			if (SelectedNullFrame > SelectedLayer.Framesets[SelectedLayer.Framesets.Count - 1].EndTime)
@@ -620,17 +640,33 @@ namespace TISFAT
 
 		public void MoveLayerUp()
 		{
+			int ind = Program.Form.ActiveProject.Layers.IndexOf(SelectedLayer);
+			Layer layer = Program.Form.ActiveProject.Layers[ind];
 
+			Program.Form.ActiveProject.Layers.Remove(layer);
+			Program.Form.ActiveProject.Layers.Insert(ind - 1, layer);
+
+			GLContext.Invalidate();
 		}
 
 		public void MoveLayerDown()
 		{
+			int ind = Program.Form.ActiveProject.Layers.IndexOf(SelectedLayer);
+			Layer layer = Program.Form.ActiveProject.Layers[ind];
 
+			Program.Form.ActiveProject.Layers.Remove(layer);
+			Program.Form.ActiveProject.Layers.Insert(ind + 1, layer);
+
+			GLContext.Invalidate();
 		}
 
 		public void RemoveLayer()
 		{
+			Program.Form.ActiveProject.Layers.Remove(SelectedLayer);
+			Program.Form.ActiveProject.LayerCount[SelectedLayer.Data.GetType()]--;
 
+			SelectedLayer = null;
+			GLContext.Invalidate();
 		}
 	}
 }

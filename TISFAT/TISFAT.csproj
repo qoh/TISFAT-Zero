@@ -36,9 +36,6 @@
     <ApplicationIcon>Resources\T0.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gif.Components">
-      <HintPath>..\Libraries\Gif.Components.dll</HintPath>
-    </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.1.1.1589.5942\lib\NET40\OpenTK.dll</HintPath>
       <Private>True</Private>
@@ -63,6 +60,9 @@
   <ItemGroup>
     <Compile Include="src\Core\Frameset.cs" />
     <Compile Include="src\Entities\BitmapObject.cs" />
+    <Compile Include="src\Entities\BitmapObject.State.cs">
+      <DependentUpon>BitmapObject.cs</DependentUpon>
+    </Compile>
     <Compile Include="src\Entities\StickFigure.cs" />
     <Compile Include="src\Entities\StickFigure.Joint.cs">
       <DependentUpon>StickFigure.cs</DependentUpon>
@@ -88,6 +88,21 @@
     </Compile>
     <Compile Include="UI\Controls\BitmapButtonControl.Designer.cs">
       <DependentUpon>BitmapButtonControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\ImageListDropDownControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\SeparatorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\SeparatorControl.Designer.cs">
+      <DependentUpon>SeparatorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\AddLayerDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\AddLayerDialog.Designer.cs">
+      <DependentUpon>AddLayerDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Dialogs\ProgressDialog.cs">
       <SubType>Form</SubType>
@@ -130,6 +145,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\BitmapButtonControl.resx">
       <DependentUpon>BitmapButtonControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\ImageListDropDownControl.resx">
+      <DependentUpon>ImageListDropDownControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\SeparatorControl.resx">
+      <DependentUpon>SeparatorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\AddLayerDialog.resx">
+      <DependentUpon>AddLayerDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Dialogs\ProgressDialog.resx">
       <DependentUpon>ProgressDialog.cs</DependentUpon>
@@ -207,9 +231,71 @@
     <None Include="Resources\eye-off-hover.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Binaries\ffmpeg.exe">
+    <Content Include="ffmpeg.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\document_export.png" />
+    <None Include="Resources\diskette.png" />
+    <None Include="Resources\undo_gray.png" />
+    <None Include="Resources\redo_gray.png" />
+    <None Include="Resources\page_white.png" />
+    <None Include="Resources\folder.png" />
+    <None Include="Resources\undo.png" />
+    <None Include="Resources\stickman.png" />
+    <None Include="Resources\save_as.png" />
+    <None Include="Resources\ruler.png" />
+    <None Include="Resources\redo.png" />
+    <None Include="Resources\preferences.png" />
+    <None Include="Resources\picture_edit.png" />
+    <None Include="Resources\picture_delete.png" />
+    <None Include="Resources\picture_add.png" />
+    <None Include="Resources\picture.png" />
+    <None Include="Resources\magnifier_zoom_out.png" />
+    <None Include="Resources\magnifier_zoom_in.png" />
+    <None Include="Resources\magnifier.png" />
+    <None Include="Resources\lock_open.png" />
+    <None Include="Resources\lock.png" />
+    <None Include="Resources\layers.png" />
+    <None Include="Resources\layer_transparent.png" />
+    <None Include="Resources\layer_to_image_size.png" />
+    <None Include="Resources\layer_stack_arrange_back.png" />
+    <None Include="Resources\layer_stack_arrange.png" />
+    <None Include="Resources\layer_resize_actual.png" />
+    <None Include="Resources\layer_resize.png" />
+    <None Include="Resources\layer_remove.png" />
+    <None Include="Resources\layer_redraw.png" />
+    <None Include="Resources\layer_raster_3d.png" />
+    <None Include="Resources\layer_raster.png" />
+    <None Include="Resources\layer_mask.png" />
+    <None Include="Resources\layer_label.png" />
+    <None Include="Resources\layer_import.png" />
+    <None Include="Resources\layer_group.png" />
+    <None Include="Resources\layer_grid.png" />
+    <None Include="Resources\layer_export.png" />
+    <None Include="Resources\layer_edit.png" />
+    <None Include="Resources\layer_delete.png" />
+    <None Include="Resources\layer_arrange_back.png" />
+    <None Include="Resources\layer_arrange.png" />
+    <None Include="Resources\layer_add.png" />
+    <None Include="Resources\layer.png" />
+    <None Include="Resources\label.png" />
+    <None Include="Resources\grid.png" />
+    <None Include="Resources\eye_half.png" />
+    <None Include="Resources\eye_close.png" />
+    <None Include="Resources\control_stop_blue.png" />
+    <None Include="Resources\control_stop.png" />
+    <None Include="Resources\control_start_blue.png" />
+    <None Include="Resources\control_start.png" />
+    <None Include="Resources\control_rewind_blue.png" />
+    <None Include="Resources\control_rewind.png" />
+    <None Include="Resources\control_play_blue.png" />
+    <None Include="Resources\control_play.png" />
+    <None Include="Resources\control_pause_blue.png" />
+    <None Include="Resources\control_pause.png" />
+    <None Include="Resources\control_fastforward_blue.png" />
+    <None Include="Resources\control_fastforward.png" />
+    <None Include="Resources\control_end_blue.png" />
+    <None Include="Resources\control_end.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

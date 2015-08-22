@@ -19,6 +19,7 @@ namespace TISFAT
 
 		IEntityState CreateRefState();
 
+		Layer CreateDefaultLayer(uint StartTime, uint EndTime, LayerCreationArgs e);
 	}
 
 	public interface IEntityState : ISaveable

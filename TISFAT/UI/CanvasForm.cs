@@ -18,6 +18,9 @@ namespace TISFAT
 		private IManipulatable ActiveDragObject;
 		private IManipulatableParams ActiveDragParams;
 
+		public int GLWidth { get { return GLContext.Width; } }
+		public int GLHeight { get { return GLContext.Height; } }
+
 		public bool VSync
 		{
 			get { return GLContext.VSync; }
@@ -85,8 +88,26 @@ namespace TISFAT
 			GL.ClearColor(Color.White);
 
 			GL.Clear(ClearBufferMask.ColorBufferBit);
+
+			//for (int i = 8; i > 0; i--)
+
+			//{
+			//	Program.Form.ActiveProject.Draw(time - i, true);
+				//Program.Form.ActiveProject.Draw(time - 3, true);
+				
+				//GL.Enable(EnableCap.Blend);
+				//GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+				//GL.Color4(Color.FromArgb(150, Color.White)); // 35
+				//GL.Begin(PrimitiveType.Quads);
+				//GL.Vertex2(0, 0);
+				//GL.Vertex2(0, GLContext.Height);
+				//GL.Vertex2(GLContext.Width, GLContext.Height);
+				//GL.Vertex2(GLContext.Width, 0);
+				//GL.End();
+				//GL.Disable(EnableCap.Blend);
+			//}
 			
-			Program.Form.ActiveProject.Draw(time);
+			Program.Form.ActiveProject.Draw(time, render);
 
 			GLContext.SwapBuffers();
 		}

@@ -6,10 +6,20 @@ using TISFAT.Util;
 
 namespace TISFAT
 {
+	public class LayerCreationArgs
+	{
+		public int Variant;
+		public string Arguments;
+
+		public LayerCreationArgs(int v, string args)
+		{
+			Variant = v;
+			Arguments = args;
+		}
+	}
+
 	public class Layer : ISaveable
 	{
-		private static int ShouldntBeStatic = 0;
-
 		public string Name;
 		public bool Visible;
 		public Color TimelineColor;
@@ -19,7 +29,7 @@ namespace TISFAT
 		#region Constructors
 		public Layer()
 		{
-			Name = "Layer " + (++ShouldntBeStatic);
+			Name = "Layer";
 			Visible = true;
 			TimelineColor = Color.AliceBlue;
 			Framesets = new List<Frameset>();
@@ -27,7 +37,7 @@ namespace TISFAT
 
 		public Layer(IEntity data)
 		{
-			Name = "Layer " + (++ShouldntBeStatic);
+			Name = "Layer";
 			Visible = true;
 			TimelineColor = Color.DodgerBlue;
 			Data = data;
@@ -46,6 +56,26 @@ namespace TISFAT
 			}
 
 			return null;
+		}
+
+		public Keyframe FindPrevKeyframe(float time)
+		{
+			Frameset frameset = FindFrameset(time);
+
+			if (frameset == null)
+				return null;
+
+			int nextIndex;
+
+			for (nextIndex = 1; nextIndex < frameset.Keyframes.Count; nextIndex++)
+			{
+				if (frameset.Keyframes[nextIndex].Time >= time)
+				{
+					break;
+				}
+			}
+
+			return frameset.Keyframes[nextIndex - 1];
 		}
 
 		public IEntityState FindCurrentState(float time)

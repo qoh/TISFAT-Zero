@@ -54,6 +54,15 @@ namespace TISFAT
 			if (MainTimeline.SelectedFrameset != null && FrameType == 2)
 				removeKeyframeToolStripMenuItem.Enabled = FrameIndex != MainTimeline.SelectedFrameset.StartTime && FrameIndex != MainTimeline.SelectedFrameset.EndTime;
 
+			setPoseToNextToolStripMenuItem.Visible = FrameType == 2;
+			setPoseToPreviousToolStripMenuItem.Visible = FrameType == 2;
+			if (MainTimeline.SelectedFrameset != null && FrameType == 2)
+			{
+				setPoseToNextToolStripMenuItem.Enabled = FrameIndex != MainTimeline.SelectedFrameset.EndTime;
+				setPoseToPreviousToolStripMenuItem.Enabled = FrameIndex != MainTimeline.SelectedFrameset.StartTime;
+			}
+
+
 			insertFramesetToolStripMenuItem.Visible = FrameType == 0;
 			// TODO: Disable insert frameset if there's not enough space to create a new frameset
 
@@ -176,9 +185,22 @@ namespace TISFAT
 		{
 			MainTimeline.TogglePause();
 		}
+
+		private void btn_SeekStart_Click(object sender, EventArgs e)
+		{
+			if (MainTimeline != null)
+				MainTimeline.SeekFirstFrame();
+		}
+
+		private void btn_SeekEnd_Click(object sender, EventArgs e)
+		{
+			if (MainTimeline != null)
+				MainTimeline.SeekLastFrame();
+		}
+
 		#endregion
 
-		#region Form Events
+			#region Form Events
 		private void TimelineForm_Load(object sender, EventArgs e)
 		{
 			if (MainTimeline != null)
@@ -243,5 +265,17 @@ namespace TISFAT
 				MainTimeline.RemoveLayer();
 		}
 		#endregion
+
+		private void setPoseToPreviousToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (MainTimeline != null)
+				MainTimeline.SetPoseToPrevious();
+		}
+
+		private void setPoseToNextToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (MainTimeline != null)
+				MainTimeline.SetPoseToNext();
+		}
 	}
 }
