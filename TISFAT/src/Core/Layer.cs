@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using TISFAT.Interfaces;
 using TISFAT.Util;
 
 namespace TISFAT
@@ -17,6 +18,133 @@ namespace TISFAT
 			Arguments = args;
 		}
 	}
+
+	public class LayerAddAction : IAction
+	{
+		Layer layer;
+
+		Type figureType;
+		uint Start;
+		uint End;
+		LayerCreationArgs args;
+
+		public LayerAddAction(Type figType, uint start, uint end, LayerCreationArgs e)
+		{
+			figureType = figType;
+			Start = start;
+			End = end;
+			args = e;
+		}
+
+		public void Do()
+		{
+			IEntity figure = (IEntity)figureType.GetConstructor(new Type[0]).Invoke(new object[0]);
+			layer = figure.CreateDefaultLayer(Start, End, args);
+
+			Program.Form.ActiveProject.Layers.Add(layer);
+
+			Program.Form.Form_Timeline.MainTimeline.SelectedLayer = layer;
+
+			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
+		}
+
+		public void Undo()
+		{
+			Program.Form.ActiveProject.Layers.Remove(layer);
+			Program.Form.ActiveProject.LayerCount[layer.Data.GetType()]--;
+			Program.Form.Form_Timeline.MainTimeline.SelectedLayer = null;
+
+			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
+		}
+	}
+
+	public class LayerRemoveAction : IAction
+	{
+		Layer RemovedLayer;
+		int RemovedLayerIndex;
+
+		public LayerRemoveAction(Layer layer)
+		{
+			RemovedLayer = layer;
+			RemovedLayerIndex = Program.Form.ActiveProject.Layers.IndexOf(layer);
+		}
+
+		public void Do()
+		{
+			Program.Form.ActiveProject.Layers.RemoveAt(RemovedLayerIndex);
+			Program.Form.ActiveProject.LayerCount[RemovedLayer.Data.GetType()]--;
+			Program.Form.Form_Timeline.MainTimeline.SelectedLayer = RemovedLayer;
+
+			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
+		}
+
+		public void Undo()
+		{
+			Program.Form.ActiveProject.Layers.Insert(RemovedLayerIndex, RemovedLayer);
+			Program.Form.ActiveProject.LayerCount[RemovedLayer.Data.GetType()]++;
+			Program.Form.Form_Timeline.MainTimeline.SelectedLayer = null;
+
+			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
+        }
+	}
+
+	public class LayerMoveUpAction : IAction
+	{
+		Layer TargetLayer;
+		int PrevIndex;
+		
+		public LayerMoveUpAction(Layer layer)
+		{
+			TargetLayer = layer;
+			PrevIndex = Program.Form.ActiveProject.Layers.IndexOf(layer);
+		}
+
+		public void Do()
+		{
+			Program.Form.ActiveProject.Layers.RemoveAt(PrevIndex);
+			Program.Form.ActiveProject.Layers.Insert(PrevIndex - 1, TargetLayer);
+
+			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
+		}
+
+		public void Undo()
+		{
+			Program.Form.ActiveProject.Layers.RemoveAt(PrevIndex - 1);
+			Program.Form.ActiveProject.Layers.Insert(PrevIndex, TargetLayer);
+
+			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
+		}
+	}
+
+	public class LayerMoveDownAction : IAction
+	{
+		Layer TargetLayer;
+		int PrevIndex;
+
+		public LayerMoveDownAction(Layer layer)
+		{
+			TargetLayer = layer;
+			PrevIndex = Program.Form.ActiveProject.Layers.IndexOf(layer);
+		}
+
+		public void Do()
+		{
+			Program.Form.ActiveProject.Layers.RemoveAt(PrevIndex);
+			Program.Form.ActiveProject.Layers.Insert(PrevIndex + 1, TargetLayer);
+
+			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
+		}
+
+		public void Undo()
+		{
+			Program.Form.ActiveProject.Layers.RemoveAt(PrevIndex + 1);
+			Program.Form.ActiveProject.Layers.Insert(PrevIndex, TargetLayer);
+
+			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
+		}
+	}
+
+
 
 	public class Layer : ISaveable
 	{
@@ -42,7 +170,7 @@ namespace TISFAT
 			TimelineColor = Color.DodgerBlue;
 			Data = data;
 			Framesets = new List<Frameset>();
-		} 
+		}
 		#endregion
 
 		public Frameset FindFrameset(float time)
@@ -127,7 +255,7 @@ namespace TISFAT
 
 			Data.DrawEditable(state);
 		}
-		
+
 		#region File Saving / Loading
 		public void Write(BinaryWriter writer)
 		{
@@ -160,7 +288,7 @@ namespace TISFAT
 			Data = (IEntity)type.GetConstructor(args).Invoke(values);
 			Data.Read(reader, version);
 			Framesets = FileFormat.ReadList<Frameset>(reader, version);
-		} 
+		}
 		#endregion
 	}
 }

@@ -33,19 +33,26 @@
 			System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Bitmap", 0);
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddLayerDialog));
 			this.grp_Properties = new System.Windows.Forms.GroupBox();
-			this.lbl_PropertiesDescription = new System.Windows.Forms.Label();
-			this.lsv_LayerTypes = new System.Windows.Forms.ListView();
-			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-			this.btn_Add = new System.Windows.Forms.Button();
-			this.btn_Cancel = new System.Windows.Forms.Button();
 			this.pnl_PropertiesDescription = new System.Windows.Forms.Panel();
+			this.lbl_PropertiesDescription = new System.Windows.Forms.Label();
+			this.pnl_DefaultFigureProperties = new System.Windows.Forms.Panel();
+			this.lbl_DefaultFigureVariantDetail = new System.Windows.Forms.Label();
+			this.cmb_DefaultFigureVariant = new System.Windows.Forms.ComboBox();
+			this.lbl_DefaultFigureVariant = new System.Windows.Forms.Label();
 			this.pnl_BitmapProperties = new System.Windows.Forms.Panel();
 			this.btn_bitmapBrowse = new System.Windows.Forms.Button();
 			this.txt_bitmapPath = new System.Windows.Forms.TextBox();
 			this.lbl_bitmapLocation = new System.Windows.Forms.Label();
+			this.lsv_LayerTypes = new System.Windows.Forms.ListView();
+			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+			this.btn_Add = new System.Windows.Forms.Button();
+			this.btn_Cancel = new System.Windows.Forms.Button();
+			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.grp_Properties.SuspendLayout();
 			this.pnl_PropertiesDescription.SuspendLayout();
+			this.pnl_DefaultFigureProperties.SuspendLayout();
 			this.pnl_BitmapProperties.SuspendLayout();
+			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// grp_Properties
@@ -53,27 +60,123 @@
 			this.grp_Properties.BackColor = System.Drawing.SystemColors.Control;
 			this.grp_Properties.Controls.Add(this.pnl_PropertiesDescription);
 			this.grp_Properties.Controls.Add(this.pnl_BitmapProperties);
-			this.grp_Properties.Location = new System.Drawing.Point(138, 0);
+			this.grp_Properties.Controls.Add(this.pnl_DefaultFigureProperties);
+			this.grp_Properties.Location = new System.Drawing.Point(144, 0);
 			this.grp_Properties.Name = "grp_Properties";
 			this.grp_Properties.Size = new System.Drawing.Size(252, 221);
 			this.grp_Properties.TabIndex = 1;
 			this.grp_Properties.TabStop = false;
 			this.grp_Properties.Text = "Layer Properties";
 			// 
+			// pnl_PropertiesDescription
+			// 
+			this.pnl_PropertiesDescription.Controls.Add(this.lbl_PropertiesDescription);
+			this.pnl_PropertiesDescription.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnl_PropertiesDescription.Location = new System.Drawing.Point(3, 16);
+			this.pnl_PropertiesDescription.Name = "pnl_PropertiesDescription";
+			this.pnl_PropertiesDescription.Padding = new System.Windows.Forms.Padding(1);
+			this.pnl_PropertiesDescription.Size = new System.Drawing.Size(246, 202);
+			this.pnl_PropertiesDescription.TabIndex = 0;
+			// 
 			// lbl_PropertiesDescription
 			// 
 			this.lbl_PropertiesDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lbl_PropertiesDescription.Location = new System.Drawing.Point(0, 0);
+			this.lbl_PropertiesDescription.Location = new System.Drawing.Point(1, 1);
 			this.lbl_PropertiesDescription.Name = "lbl_PropertiesDescription";
-			this.lbl_PropertiesDescription.Size = new System.Drawing.Size(246, 202);
+			this.lbl_PropertiesDescription.Size = new System.Drawing.Size(244, 200);
 			this.lbl_PropertiesDescription.TabIndex = 0;
 			this.lbl_PropertiesDescription.Text = "This area contains various editable properties for the layer you\'re about to add." +
     "\r\n\r\nSelect a layer to the left to choose the kind of layer you would like to cre" +
     "ate.";
 			this.lbl_PropertiesDescription.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
+			// pnl_DefaultFigureProperties
+			// 
+			this.pnl_DefaultFigureProperties.Controls.Add(this.lbl_DefaultFigureVariantDetail);
+			this.pnl_DefaultFigureProperties.Controls.Add(this.cmb_DefaultFigureVariant);
+			this.pnl_DefaultFigureProperties.Controls.Add(this.lbl_DefaultFigureVariant);
+			this.pnl_DefaultFigureProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnl_DefaultFigureProperties.Location = new System.Drawing.Point(3, 16);
+			this.pnl_DefaultFigureProperties.Name = "pnl_DefaultFigureProperties";
+			this.pnl_DefaultFigureProperties.Size = new System.Drawing.Size(246, 202);
+			this.pnl_DefaultFigureProperties.TabIndex = 3;
+			this.pnl_DefaultFigureProperties.Visible = false;
+			// 
+			// lbl_DefaultFigureVariantDetail
+			// 
+			this.lbl_DefaultFigureVariantDetail.Location = new System.Drawing.Point(32, 89);
+			this.lbl_DefaultFigureVariantDetail.Name = "lbl_DefaultFigureVariantDetail";
+			this.lbl_DefaultFigureVariantDetail.Size = new System.Drawing.Size(183, 65);
+			this.lbl_DefaultFigureVariantDetail.TabIndex = 2;
+			this.lbl_DefaultFigureVariantDetail.Text = "This variant is the same as the inital figure you see when you start TISFAT Zero";
+			this.lbl_DefaultFigureVariantDetail.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+			// 
+			// cmb_DefaultFigureVariant
+			// 
+			this.cmb_DefaultFigureVariant.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmb_DefaultFigureVariant.FormattingEnabled = true;
+			this.cmb_DefaultFigureVariant.Items.AddRange(new object[] {
+            "Default (Modern T0)",
+            "Default (Previous T0)"});
+			this.cmb_DefaultFigureVariant.Location = new System.Drawing.Point(33, 65);
+			this.cmb_DefaultFigureVariant.Name = "cmb_DefaultFigureVariant";
+			this.cmb_DefaultFigureVariant.Size = new System.Drawing.Size(180, 21);
+			this.cmb_DefaultFigureVariant.TabIndex = 1;
+			this.cmb_DefaultFigureVariant.SelectedIndexChanged += new System.EventHandler(this.cmb_DefaultFigureVariant_SelectedIndexChanged);
+			// 
+			// lbl_DefaultFigureVariant
+			// 
+			this.lbl_DefaultFigureVariant.AutoSize = true;
+			this.lbl_DefaultFigureVariant.Location = new System.Drawing.Point(30, 49);
+			this.lbl_DefaultFigureVariant.Name = "lbl_DefaultFigureVariant";
+			this.lbl_DefaultFigureVariant.Size = new System.Drawing.Size(72, 13);
+			this.lbl_DefaultFigureVariant.TabIndex = 0;
+			this.lbl_DefaultFigureVariant.Text = "Figure Variant";
+			// 
+			// pnl_BitmapProperties
+			// 
+			this.pnl_BitmapProperties.Controls.Add(this.btn_bitmapBrowse);
+			this.pnl_BitmapProperties.Controls.Add(this.txt_bitmapPath);
+			this.pnl_BitmapProperties.Controls.Add(this.lbl_bitmapLocation);
+			this.pnl_BitmapProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnl_BitmapProperties.Location = new System.Drawing.Point(3, 16);
+			this.pnl_BitmapProperties.Name = "pnl_BitmapProperties";
+			this.pnl_BitmapProperties.Size = new System.Drawing.Size(246, 202);
+			this.pnl_BitmapProperties.TabIndex = 2;
+			this.pnl_BitmapProperties.Visible = false;
+			// 
+			// btn_bitmapBrowse
+			// 
+			this.btn_bitmapBrowse.Location = new System.Drawing.Point(200, 98);
+			this.btn_bitmapBrowse.Name = "btn_bitmapBrowse";
+			this.btn_bitmapBrowse.Size = new System.Drawing.Size(22, 22);
+			this.btn_bitmapBrowse.TabIndex = 2;
+			this.btn_bitmapBrowse.Text = "..";
+			this.btn_bitmapBrowse.UseVisualStyleBackColor = true;
+			this.btn_bitmapBrowse.Click += new System.EventHandler(this.btn_bitmapBrowse_Click);
+			// 
+			// txt_bitmapPath
+			// 
+			this.txt_bitmapPath.Enabled = false;
+			this.txt_bitmapPath.Location = new System.Drawing.Point(28, 99);
+			this.txt_bitmapPath.Name = "txt_bitmapPath";
+			this.txt_bitmapPath.Size = new System.Drawing.Size(172, 20);
+			this.txt_bitmapPath.TabIndex = 1;
+			// 
+			// lbl_bitmapLocation
+			// 
+			this.lbl_bitmapLocation.AutoSize = true;
+			this.lbl_bitmapLocation.Location = new System.Drawing.Point(25, 83);
+			this.lbl_bitmapLocation.Name = "lbl_bitmapLocation";
+			this.lbl_bitmapLocation.Size = new System.Drawing.Size(36, 13);
+			this.lbl_bitmapLocation.TabIndex = 0;
+			this.lbl_bitmapLocation.Text = "Image";
+			// 
 			// lsv_LayerTypes
 			// 
+			this.lsv_LayerTypes.BackColor = System.Drawing.SystemColors.Control;
+			this.lsv_LayerTypes.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.lsv_LayerTypes.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.lsv_LayerTypes.Font = new System.Drawing.Font("Segoe UI", 8.5F);
 			this.lsv_LayerTypes.HideSelection = false;
 			listViewItem1.Tag = "StickFigure";
@@ -81,13 +184,13 @@
 			this.lsv_LayerTypes.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1,
             listViewItem2});
-			this.lsv_LayerTypes.Location = new System.Drawing.Point(0, 0);
+			this.lsv_LayerTypes.Location = new System.Drawing.Point(3, 16);
 			this.lsv_LayerTypes.Name = "lsv_LayerTypes";
-			this.lsv_LayerTypes.Size = new System.Drawing.Size(132, 221);
+			this.lsv_LayerTypes.Size = new System.Drawing.Size(126, 202);
 			this.lsv_LayerTypes.SmallImageList = this.imageList1;
 			this.lsv_LayerTypes.TabIndex = 2;
 			this.lsv_LayerTypes.UseCompatibleStateImageBehavior = false;
-			this.lsv_LayerTypes.View = System.Windows.Forms.View.SmallIcon;
+			this.lsv_LayerTypes.View = System.Windows.Forms.View.List;
 			this.lsv_LayerTypes.SelectedIndexChanged += new System.EventHandler(this.lsv_LayerTypes_SelectedIndexChanged);
 			// 
 			// imageList1
@@ -117,52 +220,15 @@
 			this.btn_Cancel.UseVisualStyleBackColor = true;
 			this.btn_Cancel.Click += new System.EventHandler(this.btn_Cancel_Click);
 			// 
-			// pnl_PropertiesDescription
+			// groupBox1
 			// 
-			this.pnl_PropertiesDescription.Controls.Add(this.lbl_PropertiesDescription);
-			this.pnl_PropertiesDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnl_PropertiesDescription.Location = new System.Drawing.Point(3, 16);
-			this.pnl_PropertiesDescription.Name = "pnl_PropertiesDescription";
-			this.pnl_PropertiesDescription.Size = new System.Drawing.Size(246, 202);
-			this.pnl_PropertiesDescription.TabIndex = 0;
-			// 
-			// pnl_BitmapProperties
-			// 
-			this.pnl_BitmapProperties.Controls.Add(this.btn_bitmapBrowse);
-			this.pnl_BitmapProperties.Controls.Add(this.txt_bitmapPath);
-			this.pnl_BitmapProperties.Controls.Add(this.lbl_bitmapLocation);
-			this.pnl_BitmapProperties.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnl_BitmapProperties.Location = new System.Drawing.Point(3, 16);
-			this.pnl_BitmapProperties.Name = "pnl_BitmapProperties";
-			this.pnl_BitmapProperties.Size = new System.Drawing.Size(246, 202);
-			this.pnl_BitmapProperties.TabIndex = 2;
-			this.pnl_BitmapProperties.Visible = false;
-			// 
-			// btn_bitmapBrowse
-			// 
-			this.btn_bitmapBrowse.Location = new System.Drawing.Point(200, 98);
-			this.btn_bitmapBrowse.Name = "btn_bitmapBrowse";
-			this.btn_bitmapBrowse.Size = new System.Drawing.Size(22, 22);
-			this.btn_bitmapBrowse.TabIndex = 2;
-			this.btn_bitmapBrowse.Text = "..";
-			this.btn_bitmapBrowse.UseVisualStyleBackColor = true;
-			// 
-			// txt_bitmapPath
-			// 
-			this.txt_bitmapPath.Enabled = false;
-			this.txt_bitmapPath.Location = new System.Drawing.Point(28, 99);
-			this.txt_bitmapPath.Name = "txt_bitmapPath";
-			this.txt_bitmapPath.Size = new System.Drawing.Size(172, 20);
-			this.txt_bitmapPath.TabIndex = 1;
-			// 
-			// lbl_bitmapLocation
-			// 
-			this.lbl_bitmapLocation.AutoSize = true;
-			this.lbl_bitmapLocation.Location = new System.Drawing.Point(25, 83);
-			this.lbl_bitmapLocation.Name = "lbl_bitmapLocation";
-			this.lbl_bitmapLocation.Size = new System.Drawing.Size(36, 13);
-			this.lbl_bitmapLocation.TabIndex = 0;
-			this.lbl_bitmapLocation.Text = "Image";
+			this.groupBox1.Controls.Add(this.lsv_LayerTypes);
+			this.groupBox1.Location = new System.Drawing.Point(6, 0);
+			this.groupBox1.Name = "groupBox1";
+			this.groupBox1.Size = new System.Drawing.Size(132, 221);
+			this.groupBox1.TabIndex = 5;
+			this.groupBox1.TabStop = false;
+			this.groupBox1.Text = "Layer Type";
 			// 
 			// AddLayerDialog
 			// 
@@ -170,19 +236,23 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(402, 251);
 			this.ControlBox = false;
+			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.btn_Cancel);
 			this.Controls.Add(this.btn_Add);
-			this.Controls.Add(this.lsv_LayerTypes);
 			this.Controls.Add(this.grp_Properties);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "AddLayerDialog";
 			this.Text = "Add Layer";
+			this.Load += new System.EventHandler(this.AddLayerDialog_Load);
 			this.grp_Properties.ResumeLayout(false);
 			this.pnl_PropertiesDescription.ResumeLayout(false);
+			this.pnl_DefaultFigureProperties.ResumeLayout(false);
+			this.pnl_DefaultFigureProperties.PerformLayout();
 			this.pnl_BitmapProperties.ResumeLayout(false);
 			this.pnl_BitmapProperties.PerformLayout();
+			this.groupBox1.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -199,5 +269,10 @@
 		private System.Windows.Forms.Button btn_bitmapBrowse;
 		private System.Windows.Forms.TextBox txt_bitmapPath;
 		private System.Windows.Forms.Label lbl_bitmapLocation;
+		private System.Windows.Forms.Panel pnl_DefaultFigureProperties;
+		private System.Windows.Forms.ComboBox cmb_DefaultFigureVariant;
+		private System.Windows.Forms.Label lbl_DefaultFigureVariant;
+		private System.Windows.Forms.Label lbl_DefaultFigureVariantDetail;
+		private System.Windows.Forms.GroupBox groupBox1;
 	}
 }

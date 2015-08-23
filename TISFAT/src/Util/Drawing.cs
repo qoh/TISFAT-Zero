@@ -168,6 +168,9 @@ namespace TISFAT.Util
 
 		public static void Rectangle(PointF position, SizeF size, Color color)
 		{
+			GL.Enable(EnableCap.Blend);
+			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+
 			GL.Begin(PrimitiveType.Quads);
 			GL.Color3(color);
 			GL.Vertex2(PointToVector(position));
@@ -175,10 +178,15 @@ namespace TISFAT.Util
 			GL.Vertex2(position.X + size.Width, position.Y + size.Height);
 			GL.Vertex2(position.X, position.Y + size.Height);
 			GL.End();
+
+			GL.Disable(EnableCap.Blend);
 		}
 
 		public static void RectangleLine(PointF position, SizeF size, Color color)
 		{
+			GL.Enable(EnableCap.Blend);
+			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+
 			GL.Begin(PrimitiveType.LineLoop);
 			GL.Color3(color);
 			GL.Vertex2(Math.Floor(position.X) + 0.5, Math.Floor(position.Y) + 0.5);
@@ -186,6 +194,8 @@ namespace TISFAT.Util
 			GL.Vertex2(Math.Floor(position.X + size.Width) + 0.5, Math.Floor(position.Y + size.Height) + 0.5);
 			GL.Vertex2(Math.Floor(position.X) + 0.5, Math.Floor(position.Y + size.Height) + 0.5);
 			GL.End();
+
+			GL.Disable(EnableCap.Blend);
 		}
 
 		public static void Bitmap(PointF position, SizeF size, int texID)
@@ -194,7 +204,7 @@ namespace TISFAT.Util
 
 			GL.Enable(EnableCap.Texture2D);
 			GL.Enable(EnableCap.Blend);
-			GL.BlendFunc(BlendingFactorSrc.One, BlendingFactorDest.OneMinusSrcAlpha);
+			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
 			GL.PushMatrix();
 			GL.Translate(position.X, position.Y, 0);

@@ -6,6 +6,13 @@ using TISFAT.Util;
 
 namespace TISFAT.Entities
 {
+	public enum DrawJointType
+	{
+		Normal,
+		CircleLine,
+		CircleRadius
+	}
+
     partial class StickFigure
     {
         public partial class Joint : ISaveable
@@ -18,7 +25,10 @@ namespace TISFAT.Entities
             public Color HandleColor;
             public float Thickness;
 
-            public bool IsCircle;
+			public DrawJointType DrawType;
+			public bool HandleVisible;
+			public bool Manipulatable;
+			public bool Visible;
 
             #region Constructors
             public Joint()
@@ -28,7 +38,11 @@ namespace TISFAT.Entities
                 Thickness = 6;
                 JointColor = Color.Black;
                 HandleColor = Color.Blue;
-            }
+
+				HandleVisible = true;
+				Visible = true;
+				Manipulatable = true;
+			}
 
             public Joint(Joint parent)
             {
@@ -37,7 +51,11 @@ namespace TISFAT.Entities
                 Thickness = 6;
                 JointColor = Color.Black;
                 HandleColor = Color.Blue;
-            }
+
+				HandleVisible = true;
+				Visible = true;
+				Manipulatable = true;
+			}
 
             public static Joint RelativeTo(Joint parent, PointF location)
             {
@@ -67,7 +85,10 @@ namespace TISFAT.Entities
 
             public void DrawTo(State state, Joint otherJoint, Joint.State otherState)
             {
-                if (IsCircle)
+				if (!Visible)
+					return;
+				
+                if (DrawType == DrawJointType.CircleLine)
                 {
                     float dx = state.Location.X - otherState.Location.X;
                     float dy = state.Location.Y - otherState.Location.Y;
@@ -78,6 +99,14 @@ namespace TISFAT.Entities
 
                     Drawing.Circle(new PointF(x, y), r, state.JointColor);
                 }
+				else if (DrawType == DrawJointType.CircleRadius)
+				{
+					float r = state.Thickness;
+					float x = state.Location.X;
+					float y = state.Location.Y;
+
+					Drawing.Circle(new PointF(x, y), r, state.JointColor, 5 * (int)Math.Sqrt(r));
+				}
                 else
                     Drawing.CappedLine(state.Location, otherState.Location, state.Thickness, state.JointColor);
             }
@@ -87,8 +116,11 @@ namespace TISFAT.Entities
                 PointF Loc = new PointF(state.Location.X - 3, state.Location.Y - 3);
                 SizeF Siz = new SizeF(6, 6);
 
-                Drawing.Rectangle(Loc, Siz, HandleColor);
-                Drawing.RectangleLine(Loc, Siz, Color.FromArgb(255 - JointColor.R, 255 - JointColor.G, 255 - JointColor.B));
+				if (HandleVisible)
+				{
+					Drawing.Rectangle(Loc, Siz, HandleColor);
+					Drawing.RectangleLine(Loc, Siz, Color.FromArgb(127, 255 - JointColor.R, 255 - JointColor.G, 255 - JointColor.B));
+				}
 
                 for (var i = 0; i < Children.Count; i++)
                 {
@@ -103,8 +135,9 @@ namespace TISFAT.Entities
                 state.Location = Location;
                 state.Thickness = Thickness;
                 state.JointColor = JointColor;
+				state.Manipulatable = Manipulatable;
 
-                foreach (Joint child in Children)
+				foreach (Joint child in Children)
                     state.Children.Add(child.Copy(state));
 
                 return state;
@@ -124,7 +157,10 @@ namespace TISFAT.Entities
                 writer.Write(HandleColor.G);
                 writer.Write(HandleColor.B);
                 writer.Write((double)Thickness);
-                writer.Write(IsCircle);
+                writer.Write(DrawType.ToString());
+				writer.Write(HandleVisible);
+				writer.Write(Manipulatable);
+				writer.Write(Visible);
                 FileFormat.WriteList(writer, Children);
             }
 
@@ -144,7 +180,10 @@ namespace TISFAT.Entities
                 byte handle_b = reader.ReadByte();
                 HandleColor = Color.FromArgb(handle_a, handle_r, handle_g, handle_b);
                 Thickness = (float)reader.ReadDouble();
-                IsCircle = reader.ReadBoolean();
+				DrawType = (DrawJointType)Enum.Parse(typeof(DrawJointType), reader.ReadString());
+				HandleVisible = reader.ReadBoolean();
+				Manipulatable = reader.ReadBoolean();
+				Visible = reader.ReadBoolean();
 
                 Children = FileFormat.ReadList<Joint>(reader, version);
 

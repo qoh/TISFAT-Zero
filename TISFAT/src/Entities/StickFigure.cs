@@ -10,7 +10,7 @@ namespace TISFAT.Entities
 		public Joint Root;
 
 		public StickFigure() { }
-		
+
 		public IEntityState Interpolate(float t, IEntityState _current, IEntityState _target)
 		{
 			State current = _current as State;
@@ -38,10 +38,13 @@ namespace TISFAT.Entities
 			public bool AbsoluteDrag;
 			public PointF AbsoluteOffset;
 		}
-		
+
 		public ManipulateResult TryManipulate(IEntityState _state, Point location, MouseButtons button, Keys modifiers)
 		{
 			State state = _state as State;
+
+			if (state == null)
+				return null;
 
 			ManipulateResult result = new ManipulateResult();
 			ManipulateParams mparams = new ManipulateParams();
@@ -72,53 +75,81 @@ namespace TISFAT.Entities
 
 		public void ManipulateStart(IManipulatable _target, IManipulatableParams mparams, Point location)
 		{
-			
+
 		}
-		
+
 		public void ManipulateUpdate(IManipulatable _target, IManipulatableParams mparams, Point location)
 		{
 			Joint.State target = _target as Joint.State;
-			//target.Location = location;
 			target.Move(location, (ManipulateParams)mparams, null);
 		}
 
 		public void ManipulateEnd(IManipulatable _target, IManipulatableParams mparams, Point location)
 		{
-			
+
 		}
 
 		public Layer CreateDefaultLayer(uint StartTime, uint EndTime, LayerCreationArgs e)
 		{
-			switch (e.Variant)
+			if (e.Variant == 0)
 			{
-				case 0:
-					var hip = new StickFigure.Joint();
-					hip.Location = new PointF(200, 200);
-					this.Root = hip;
-					var shoulder = StickFigure.Joint.RelativeTo(hip, new PointF(0, -53));
-					var lElbow = StickFigure.Joint.RelativeTo(shoulder, new PointF(-21, 22));
-					var lHand = StickFigure.Joint.RelativeTo(lElbow, new PointF(-5, 35));
-					var rElbow = StickFigure.Joint.RelativeTo(shoulder, new PointF(21, 22));
-					var rHand = StickFigure.Joint.RelativeTo(rElbow, new PointF(5, 35));
-					var lKnee = StickFigure.Joint.RelativeTo(hip, new PointF(-16, 33));
-					var lFoot = StickFigure.Joint.RelativeTo(lKnee, new PointF(-5, 41));
-					var rKnee = StickFigure.Joint.RelativeTo(hip, new PointF(16, 33));
-					var rFoot = StickFigure.Joint.RelativeTo(rKnee, new PointF(5, 41));
-					var head = StickFigure.Joint.RelativeTo(shoulder, new PointF(0, -36));
+				var hip = new Joint();
+				hip.Location = new PointF(200, 200);
+				Root = hip;
+				var shoulder = Joint.RelativeTo(hip, new PointF(0, -53));
+				var lElbow = Joint.RelativeTo(shoulder, new PointF(-21, 22));
+				var lHand = Joint.RelativeTo(lElbow, new PointF(-5, 35));
+				var rElbow = Joint.RelativeTo(shoulder, new PointF(21, 22));
+				var rHand = Joint.RelativeTo(rElbow, new PointF(5, 35));
+				var lKnee = Joint.RelativeTo(hip, new PointF(-16, 33));
+				var lFoot = Joint.RelativeTo(lKnee, new PointF(-5, 41));
+				var rKnee = Joint.RelativeTo(hip, new PointF(16, 33));
+				var rFoot = Joint.RelativeTo(rKnee, new PointF(5, 41));
+				var head = Joint.RelativeTo(shoulder, new PointF(0, -36));
 
-					shoulder.HandleColor = Color.Yellow;
-					hip.HandleColor = Color.Yellow;
-					rElbow.HandleColor = Color.Red;
-					rHand.HandleColor = Color.Red;
-					rKnee.HandleColor = Color.Red;
-					rFoot.HandleColor = Color.Red;
+				shoulder.HandleColor = Color.Yellow;
+				hip.HandleColor = Color.Yellow;
+				rElbow.HandleColor = Color.Red;
+				rHand.HandleColor = Color.Red;
+				rKnee.HandleColor = Color.Red;
+				rFoot.HandleColor = Color.Red;
 
-					head.HandleColor = Color.Yellow;
-					head.IsCircle = true;
-					break;
-				default:
-					throw new ArgumentException("Invalid variant provided for stick figure");
+				head.HandleColor = Color.Yellow;
+				head.DrawType = DrawJointType.CircleLine;
 			}
+			else if (e.Variant == 1)
+			{
+				var shoulder = new StickFigure.Joint();
+				shoulder.Location = new PointF(200, 200);
+				Root = shoulder;
+				var neck = Joint.RelativeTo(shoulder, new PointF(0, -3));
+				var lElbow = Joint.RelativeTo(shoulder, new PointF(-16, 11));
+				var lHand = Joint.RelativeTo(lElbow, new PointF(-8, 18));
+				var rElbow = Joint.RelativeTo(shoulder, new PointF(16, 11));
+				var rHand = Joint.RelativeTo(rElbow, new PointF(8, 18));
+				var hip = Joint.RelativeTo(shoulder, new PointF(0, 40));
+				var lKnee = Joint.RelativeTo(hip, new PointF(-11, 23));
+				var lFoot = Joint.RelativeTo(lKnee, new PointF(-9, 23));
+				var rKnee = Joint.RelativeTo(hip, new PointF(11, 23));
+				var rFoot = Joint.RelativeTo(rKnee, new PointF(9, 23));
+				var head = Joint.RelativeTo(neck, new PointF(0, -8));
+
+				shoulder.HandleColor = Color.Yellow;
+				hip.HandleColor = Color.Yellow;
+				rElbow.HandleColor = Color.Red;
+				rHand.HandleColor = Color.Red;
+				rKnee.HandleColor = Color.Red;
+				rFoot.HandleColor = Color.Red;
+
+				head.HandleColor = Color.Yellow;
+				head.Thickness = 13;
+				head.DrawType = DrawJointType.CircleRadius;
+
+				neck.HandleVisible = false;
+				neck.Manipulatable = false;
+			}
+			else
+				throw new ArgumentException("Invalid variant provided for stick figure");
 
 			if (!Program.Form.ActiveProject.LayerCount.ContainsKey(typeof(StickFigure)))
 				Program.Form.ActiveProject.LayerCount.Add(typeof(StickFigure), 0);
@@ -134,6 +165,7 @@ namespace TISFAT.Entities
 
 			return layer;
 		}
+
 
 		public IEntityState CreateRefState()
 		{
@@ -151,7 +183,7 @@ namespace TISFAT.Entities
 		{
 			Root = new Joint();
 			Root.Read(reader, version);
-		} 
+		}
 		#endregion
 	}
 }

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using TISFAT.Entities;
+using TISFAT.Interfaces;
 using TISFAT.Util;
 
 namespace TISFAT
@@ -19,6 +21,9 @@ namespace TISFAT
 		public Project ActiveProject;
 		private string ProjectFileName;
 		private bool ProjectDirty;
+
+		private Stack<IAction> UndoList;
+		private Stack<IAction> RedoList;
 
 		public TimelineForm Form_Timeline;
 		public CanvasForm Form_Canvas;
@@ -89,10 +94,62 @@ namespace TISFAT
 			SetDirty(filename == null);
 		}
 
+		public void Do(IAction action)
+		{
+			UndoList.Push(action);
+			RedoList.Clear();
+			action.Do();
+
+			UpdateUndoRedoButtons();
+		}
+
+		private void UpdateUndoRedoButtons()
+		{
+			if (UndoList.Count > 0)
+				btn_Undo.ImageDefault = Properties.Resources.undo;
+			else
+				btn_Undo.ImageDefault = Properties.Resources.undo_gray;
+
+			if (RedoList.Count > 0)
+				btn_Redo.ImageDefault = Properties.Resources.redo;
+			else
+				btn_Redo.ImageDefault = Properties.Resources.redo_gray;
+		}
+
+		private void Undo()
+		{
+			if (UndoList.Count < 1)
+				return;
+
+			IAction item = UndoList.Pop();
+			RedoList.Push(item);
+			item.Undo();
+
+			UpdateUndoRedoButtons();
+		}
+
+		private void Redo()
+		{
+			if (RedoList.Count < 1)
+				return;
+
+			IAction item = RedoList.Pop();
+			UndoList.Push(item);
+			item.Do();
+
+			UpdateUndoRedoButtons();
+		}
+
 		#region File Saving / Loading
 		public void ProjectNew()
 		{
 			ActiveProject = new Project();
+
+			UndoList = new Stack<IAction>();
+			RedoList = new Stack<IAction>();
+
+			UpdateUndoRedoButtons();
+
 			SetFileName(null);
 
 			StickFigure defaultFig = new StickFigure();
@@ -108,6 +165,11 @@ namespace TISFAT
 				return;
 
 			ActiveProject = new Project();
+
+			UndoList = new Stack<IAction>();
+			RedoList = new Stack<IAction>();
+
+			UpdateUndoRedoButtons();
 
 			using (var reader = new BinaryReader(new FileStream(filename, FileMode.Open)))
 			{
@@ -286,6 +348,16 @@ namespace TISFAT
 			AddLayerDialog diag = new AddLayerDialog();
 
 			diag.ShowDialog();
+		}
+
+		private void btn_Undo_Click(object sender, EventArgs e)
+		{
+			Undo();
+		}
+
+		private void btn_Redo_Click(object sender, EventArgs e)
+		{
+			Redo();
 		}
 	}
 }

@@ -73,6 +73,7 @@
     <Compile Include="src\Entities\StickFigure.State.cs">
       <DependentUpon>StickFigure.cs</DependentUpon>
     </Compile>
+    <Compile Include="src\Interfaces\IAction.cs" />
     <Compile Include="src\Interfaces\IManipulatable.cs" />
     <Compile Include="src\Util\Drawing.cs" />
     <Compile Include="src\Util\FileFormat.cs" />

@@ -142,6 +142,7 @@
 			this.btn_Redo.Size = new System.Drawing.Size(24, 24);
 			this.btn_Redo.TabIndex = 12;
 			this.btn_Redo.ToggleButton = false;
+			this.btn_Redo.Click += new System.EventHandler(this.btn_Redo_Click);
 			// 
 			// btn_Undo
 			// 
@@ -157,6 +158,7 @@
 			this.btn_Undo.Size = new System.Drawing.Size(24, 24);
 			this.btn_Undo.TabIndex = 11;
 			this.btn_Undo.ToggleButton = false;
+			this.btn_Undo.Click += new System.EventHandler(this.btn_Undo_Click);
 			// 
 			// separatorControl2
 			// 

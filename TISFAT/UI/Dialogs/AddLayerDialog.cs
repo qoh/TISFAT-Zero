@@ -18,29 +18,29 @@ namespace TISFAT
 			InitializeComponent();
 		}
 
+		private void AddLayerDialog_Load(object sender, EventArgs e)
+		{
+			cmb_DefaultFigureVariant.SelectedIndex = 0;
+		}
+
 		private void btn_Add_Click(object sender, EventArgs e)
 		{
-			Layer layer;
-			
 			switch((string)lsv_LayerTypes.FocusedItem.Tag)
 			{
 				case "StickFigure":
-					StickFigure fig = new StickFigure();
-					layer = fig.CreateDefaultLayer(0, 20, new LayerCreationArgs(0, ""));
+					Program.Form.Do(new LayerAddAction(typeof(StickFigure), 0, 20, new LayerCreationArgs(cmb_DefaultFigureVariant.SelectedIndex, "")));
 					break;
 				case "BitmapObject":
 					if (txt_bitmapPath.Text == "")
 						return;
 
-					BitmapObject bit = new BitmapObject();
-					layer = bit.CreateDefaultLayer(0, 20, new LayerCreationArgs(0, txt_bitmapPath.Text));
+					Program.Form.Do(new LayerAddAction(typeof(BitmapObject), 0, 20, new LayerCreationArgs(0, txt_bitmapPath.Text)));
 					break;
 
 				default:
 					throw new ArgumentException("LayerType Tag is not a known EntityType");
 			}
 
-			Program.Form.ActiveProject.Layers.Add(layer);
 			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
 
 			Close();
@@ -61,6 +61,7 @@ namespace TISFAT
 
 		private void HidePropertyPanels()
 		{
+			pnl_DefaultFigureProperties.Visible = false;
 			pnl_PropertiesDescription.Visible = false;
 			pnl_BitmapProperties.Visible = false;
 		}
@@ -72,7 +73,7 @@ namespace TISFAT
 			switch ((string)lsv_LayerTypes.FocusedItem.Tag)
 			{
 				case "StickFigure":
-					pnl_PropertiesDescription.Visible = true;
+					pnl_DefaultFigureProperties.Visible = true;
 					break;
 				case "BitmapObject":
 					pnl_BitmapProperties.Visible = true;
@@ -80,6 +81,18 @@ namespace TISFAT
 
 				default:
 					throw new ArgumentException("LayerType Tag is not a known EntityType");
+			}
+		}
+
+		private void cmb_DefaultFigureVariant_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if(cmb_DefaultFigureVariant.SelectedIndex == 0)
+			{
+				lbl_DefaultFigureVariantDetail.Text = "This variant is the same as the inital figure you see when you start TISFAT Zero.";
+			}
+			else if (cmb_DefaultFigureVariant.SelectedIndex == 1)
+			{
+				lbl_DefaultFigureVariantDetail.Text = "This is the pre-rework TISFAT Zero default figure, which is a bit smaller and has different proportions than the current default.";
 			}
 		}
 	}

@@ -18,8 +18,10 @@ namespace TISFAT.Entities
                 public PointF Location;
                 public Color JointColor;
                 public float Thickness;
+				
+				public bool Manipulatable;
 
-                public State()
+				public State()
                 {
                     Parent = null;
                     Children = new List<State>();
@@ -116,7 +118,7 @@ namespace TISFAT.Entities
 
                 public State JointAtLocation(PointF location)
                 {
-                    if (MathUtil.IsPointInPoint(location, Location, 4))
+                    if (MathUtil.IsPointInPoint(location, Location, 4) && Manipulatable)
                         return this;
 
                     foreach (State state in Children)
@@ -153,6 +155,7 @@ namespace TISFAT.Entities
                     writer.Write(JointColor.G);
                     writer.Write(JointColor.B);
                     writer.Write((double)Thickness);
+					writer.Write(Manipulatable);
                     FileFormat.WriteList(writer, Children);
                 }
 
@@ -167,6 +170,7 @@ namespace TISFAT.Entities
                     byte b = reader.ReadByte();
                     JointColor = Color.FromArgb(a, r, g, b);
                     Thickness = (float)reader.ReadDouble();
+					Manipulatable = reader.ReadBoolean();
 
                     Children = FileFormat.ReadList<Joint.State>(reader, version);
 

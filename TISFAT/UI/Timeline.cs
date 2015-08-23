@@ -17,6 +17,8 @@ namespace TISFAT
 		public bool IsMouseDown = false;
 		public bool IsDragging = false;
 
+		public uint KeyframeDragStartTime;
+
 		private float FrameNum;
 		private DateTime? PlayStart;
 
@@ -30,8 +32,8 @@ namespace TISFAT
 		public Layer SelectedLayer;
 		public Frameset SelectedFrameset;
 		public Keyframe SelectedKeyframe;
-		private int SelectedBlankFrame = -1;
-		private int SelectedNullFrame = -1;
+		public int SelectedBlankFrame = -1;
+		public int SelectedNullFrame = -1;
 
 		public int VisibilityBitmapOn;
 		public int VisibilityBitmapOn_hover;
@@ -345,9 +347,14 @@ namespace TISFAT
 					return;
 
 				if (SelectedKeyframe != null)
+				{
+					KeyframeDragStartTime = SelectedKeyframe.Time;
 					IsDraggingKeyframe = true;
+				}
 				else if (SelectedBlankFrame != -1)
+				{
 					IsDraggingFrameset = true;
+				}
 			}
 			else if (button == MouseButtons.Left)
 			{
@@ -497,6 +504,14 @@ namespace TISFAT
 
 		public void MouseUp(Point Location, MouseButtons button)
 		{
+			if (SelectedKeyframe != null)
+			{
+				if (KeyframeDragStartTime != SelectedKeyframe.Time)
+				{
+					Program.Form.Do(new KeyframeMoveAction(SelectedFrameset, SelectedKeyframe, KeyframeDragStartTime));
+				}
+			}
+
 			if (Location.X > 80 && Location.Y < (Program.Form.ActiveProject.Layers.Count * 16) + 16 && 
 				Location.Y > 16 &&
 				button == MouseButtons.Right && 
@@ -537,28 +552,12 @@ namespace TISFAT
 			if (prev == null)
 				return;
 
-			Keyframe frame = new Keyframe(TargetTime, prev.State.Copy());
-
-			SelectedFrameset.Keyframes.Add(frame);
-			SelectedFrameset.Keyframes = SelectedFrameset.Keyframes.OrderBy(o => o.Time).ToList();
-
-			SelectedNullFrame = -1;
-			SelectedBlankFrame = -1;
-			SelectedKeyframe = frame;
-
-			GLContext.Invalidate();
+			Program.Form.Do(new KeyframeAddAction(SelectedLayer, SelectedFrameset, TargetTime, prev.State.Copy()));
 		}
 
 		public void RemoveKeyframe()
 		{
-			int time = (int)SelectedKeyframe.Time;
-
-			SelectedFrameset.Keyframes.Remove(SelectedKeyframe);
-			SelectedFrameset.Keyframes = SelectedFrameset.Keyframes.OrderBy(o => o.Time).ToList();
-
-			SelectedNullFrame = -1;
-			SelectedBlankFrame = time;
-			SelectedKeyframe = null;
+			Program.Form.Do(new KeyframeRemoveAction(SelectedFrameset, SelectedKeyframe));
 
 			GLContext.Invalidate();
 		}
@@ -640,33 +639,19 @@ namespace TISFAT
 
 		public void MoveLayerUp()
 		{
-			int ind = Program.Form.ActiveProject.Layers.IndexOf(SelectedLayer);
-			Layer layer = Program.Form.ActiveProject.Layers[ind];
-
-			Program.Form.ActiveProject.Layers.Remove(layer);
-			Program.Form.ActiveProject.Layers.Insert(ind - 1, layer);
-
-			GLContext.Invalidate();
+			Program.Form.Do(new LayerMoveUpAction(SelectedLayer));
 		}
 
 		public void MoveLayerDown()
 		{
-			int ind = Program.Form.ActiveProject.Layers.IndexOf(SelectedLayer);
-			Layer layer = Program.Form.ActiveProject.Layers[ind];
-
-			Program.Form.ActiveProject.Layers.Remove(layer);
-			Program.Form.ActiveProject.Layers.Insert(ind + 1, layer);
-
-			GLContext.Invalidate();
+			Program.Form.Do(new LayerMoveDownAction(SelectedLayer));
 		}
 
 		public void RemoveLayer()
 		{
-			Program.Form.ActiveProject.Layers.Remove(SelectedLayer);
-			Program.Form.ActiveProject.LayerCount[SelectedLayer.Data.GetType()]--;
-
-			SelectedLayer = null;
-			GLContext.Invalidate();
+			if(SelectedLayer != null)
+				if(Program.Form.ActiveProject.Layers.IndexOf(SelectedLayer) != -1)
+					Program.Form.Do(new LayerRemoveAction(SelectedLayer));
 		}
 	}
 }
