@@ -41,20 +41,20 @@ namespace TISFAT
 			IEntity figure = (IEntity)figureType.GetConstructor(new Type[0]).Invoke(new object[0]);
 			Layer layer = figure.CreateDefaultLayer(Start, End, args);
 
-			Program.Form.ActiveProject.Layers.Add(layer);
-			LayerIndex = Program.Form.ActiveProject.Layers.IndexOf(layer);
+			Program.ActiveProject.Layers.Add(layer);
+			LayerIndex = Program.ActiveProject.Layers.IndexOf(layer);
 
-			Program.Form.Form_Timeline.MainTimeline.SelectedLayer = layer;
-			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
+			Program.MainTimeline.SelectedLayer = layer;
+			Program.MainTimeline.GLContext.Invalidate();
 		}
 
 		public void Undo()
 		{
-			Program.Form.ActiveProject.Layers.RemoveAt(LayerIndex);
-			Program.Form.ActiveProject.LayerCount[figureType]--;
-			Program.Form.Form_Timeline.MainTimeline.SelectedLayer = null;
+			Program.ActiveProject.Layers.RemoveAt(LayerIndex);
+			Program.ActiveProject.LayerCount[figureType]--;
+			Program.MainTimeline.SelectedLayer = null;
 
-			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
+			Program.MainTimeline.GLContext.Invalidate();
 		}
 	}
 
@@ -66,25 +66,25 @@ namespace TISFAT
 		public LayerRemoveAction(Layer layer)
 		{
 			RemovedLayer = layer;
-			RemovedLayerIndex = Program.Form.ActiveProject.Layers.IndexOf(layer);
+			RemovedLayerIndex = Program.ActiveProject.Layers.IndexOf(layer);
 		}
 
 		public void Do()
 		{
-			Program.Form.ActiveProject.Layers.RemoveAt(RemovedLayerIndex);
-			Program.Form.ActiveProject.LayerCount[RemovedLayer.Data.GetType()]--;
-			Program.Form.Form_Timeline.MainTimeline.SelectedLayer = RemovedLayer;
+			Program.ActiveProject.Layers.RemoveAt(RemovedLayerIndex);
+			Program.ActiveProject.LayerCount[RemovedLayer.Data.GetType()]--;
+			Program.MainTimeline.SelectedLayer = RemovedLayer;
 
-			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
+			Program.MainTimeline.GLContext.Invalidate();
 		}
 
 		public void Undo()
 		{
-			Program.Form.ActiveProject.Layers.Insert(RemovedLayerIndex, RemovedLayer);
-			Program.Form.ActiveProject.LayerCount[RemovedLayer.Data.GetType()]++;
-			Program.Form.Form_Timeline.MainTimeline.SelectedLayer = null;
+			Program.ActiveProject.Layers.Insert(RemovedLayerIndex, RemovedLayer);
+			Program.ActiveProject.LayerCount[RemovedLayer.Data.GetType()]++;
+			Program.MainTimeline.SelectedLayer = null;
 
-			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
+			Program.MainTimeline.GLContext.Invalidate();
 		}
 	}
 
@@ -96,23 +96,23 @@ namespace TISFAT
 		public LayerMoveUpAction(Layer layer)
 		{
 			TargetLayer = layer;
-			PrevIndex = Program.Form.ActiveProject.Layers.IndexOf(layer);
+			PrevIndex = Program.ActiveProject.Layers.IndexOf(layer);
 		}
 
 		public void Do()
 		{
-			Program.Form.ActiveProject.Layers.RemoveAt(PrevIndex);
-			Program.Form.ActiveProject.Layers.Insert(PrevIndex - 1, TargetLayer);
+			Program.ActiveProject.Layers.RemoveAt(PrevIndex);
+			Program.ActiveProject.Layers.Insert(PrevIndex - 1, TargetLayer);
 
-			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
+			Program.MainTimeline.GLContext.Invalidate();
 		}
 
 		public void Undo()
 		{
-			Program.Form.ActiveProject.Layers.RemoveAt(PrevIndex - 1);
-			Program.Form.ActiveProject.Layers.Insert(PrevIndex, TargetLayer);
+			Program.ActiveProject.Layers.RemoveAt(PrevIndex - 1);
+			Program.ActiveProject.Layers.Insert(PrevIndex, TargetLayer);
 
-			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
+			Program.MainTimeline.GLContext.Invalidate();
 		}
 	}
 
@@ -124,23 +124,23 @@ namespace TISFAT
 		public LayerMoveDownAction(Layer layer)
 		{
 			TargetLayer = layer;
-			PrevIndex = Program.Form.ActiveProject.Layers.IndexOf(layer);
+			PrevIndex = Program.ActiveProject.Layers.IndexOf(layer);
 		}
 
 		public void Do()
 		{
-			Program.Form.ActiveProject.Layers.RemoveAt(PrevIndex);
-			Program.Form.ActiveProject.Layers.Insert(PrevIndex + 1, TargetLayer);
+			Program.ActiveProject.Layers.RemoveAt(PrevIndex);
+			Program.ActiveProject.Layers.Insert(PrevIndex + 1, TargetLayer);
 
-			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
+			Program.MainTimeline.GLContext.Invalidate();
 		}
 
 		public void Undo()
 		{
-			Program.Form.ActiveProject.Layers.RemoveAt(PrevIndex + 1);
-			Program.Form.ActiveProject.Layers.Insert(PrevIndex, TargetLayer);
+			Program.ActiveProject.Layers.RemoveAt(PrevIndex + 1);
+			Program.ActiveProject.Layers.Insert(PrevIndex, TargetLayer);
 
-			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
+			Program.MainTimeline.GLContext.Invalidate();
 		}
 	}
 
@@ -251,7 +251,7 @@ namespace TISFAT
 		{
 			IEntityState state = FindCurrentState(time);
 
-			if (state == null || Program.Form.MainTimeline.SelectedKeyframe == null)
+			if (state == null || Program.Form_Main.MainTimeline.SelectedKeyframe == null)
 				return;
 
 			Data.DrawEditable(state);

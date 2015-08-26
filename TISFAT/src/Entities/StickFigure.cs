@@ -151,10 +151,10 @@ namespace TISFAT.Entities
 			else
 				throw new ArgumentException("Invalid variant provided for stick figure");
 
-			if (!Program.Form.ActiveProject.LayerCount.ContainsKey(typeof(StickFigure)))
-				Program.Form.ActiveProject.LayerCount.Add(typeof(StickFigure), 0);
+			if (!Program.ActiveProject.LayerCount.ContainsKey(typeof(StickFigure)))
+				Program.ActiveProject.LayerCount.Add(typeof(StickFigure), 0);
 
-			int CreatedLayerCount = ++Program.Form.ActiveProject.LayerCount[typeof(StickFigure)];
+			int CreatedLayerCount = ++Program.ActiveProject.LayerCount[typeof(StickFigure)];
 
 			Layer layer = new Layer(this);
 			layer.Name = "Figure " + CreatedLayerCount;

@@ -23,8 +23,8 @@ namespace TISFAT
 
 		public void Draw(float time, bool render)
 		{
-			EditMode editMode = Program.Form.ActiveEditMode;
-			Layer selectedLayer = Program.Form.MainTimeline.SelectedLayer;
+			EditMode editMode = Program.Form_Main.ActiveEditMode;
+			Layer selectedLayer = Program.Form_Main.MainTimeline.SelectedLayer;
 
             foreach (Layer layer in Layers)
 			{
@@ -42,13 +42,13 @@ namespace TISFAT
 						{
 							double t = (double)DateTime.Now.Ticks / TimeSpan.TicksPerSecond;
 							//float w = (float)(t % 1.0f) * (time - prev.Time);
-							//float w = (float)(t * Program.Form.ActiveProject.FPS % (time - prev.Time));
+							//float w = (float)(t * Program.ActiveProject.FPS % (time - prev.Time));
 							//layer.Draw(prev.Time + w);
 							float wrapped = (float)(t % 2.0);
-							float frames = (wrapped - 1) * Program.Form.ActiveProject.FPS;
+							float frames = (wrapped - 1) * Program.ActiveProject.FPS;
 							layer.Draw(time + frames);
 
-							Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
+							Program.MainTimeline.GLContext.Invalidate();
 						}
 					}
 
@@ -57,9 +57,9 @@ namespace TISFAT
 					GL.Color4(Color.FromArgb(150, Color.White)); // 35
 					GL.Begin(PrimitiveType.Quads);
 					GL.Vertex2(0, 0);
-					GL.Vertex2(0, Program.Form.Form_Canvas.GLHeight);
-					GL.Vertex2(Program.Form.Form_Canvas.GLWidth, Program.Form.Form_Canvas.GLHeight);
-					GL.Vertex2(Program.Form.Form_Canvas.GLWidth, 0);
+					GL.Vertex2(0, Program.Form_Canvas.GLHeight);
+					GL.Vertex2(Program.Form_Canvas.GLWidth, Program.Form_Canvas.GLHeight);
+					GL.Vertex2(Program.Form_Canvas.GLWidth, 0);
 					GL.End();
 					GL.Disable(EnableCap.Blend);
 				}

@@ -20,7 +20,7 @@ namespace TISFAT
 			// Selected layer highlighting
 			if (SelectedLayer != null)
 			{
-				int selectedIndex = Program.Form.ActiveProject.Layers.IndexOf(SelectedLayer);
+				int selectedIndex = Program.ActiveProject.Layers.IndexOf(SelectedLayer);
 
 				if (selectedIndex != -1)
 					Drawing.Rectangle(new PointF(80, (selectedIndex + 1) * 16), new SizeF(frameCount * 9, 16), Color.FromArgb(220, 220, 220));

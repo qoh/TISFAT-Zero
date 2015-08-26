@@ -1,14 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TISFAT
 {
     static class Program
     {
-        public static MainForm Form;
+		private static MainForm _MainForm;
+
+        public static MainForm Form_Main { get { return _MainForm; } }
+		public static TimelineForm Form_Timeline { get { return Form_Main.Form_Timeline; } }
+		public static CanvasForm Form_Canvas { get { return Form_Main.Form_Canvas; } }
+
+		public static Project ActiveProject { get { return Form_Main.ActiveProject; } }
+		public static Timeline MainTimeline { get { return Form_Main.MainTimeline; } }
 
         /// <summary>
         /// The main entry point for the application.
@@ -19,8 +23,8 @@ namespace TISFAT
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Form = new MainForm();
-            Application.Run(Form);
+            _MainForm = new MainForm();
+            Application.Run(Form_Main);
         }
     }
 }

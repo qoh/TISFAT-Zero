@@ -31,13 +31,13 @@ namespace TISFAT
 			switch((string)lsv_LayerTypes.FocusedItem.Tag)
 			{
 				case "StickFigure":
-					Program.Form.Do(new LayerAddAction(typeof(StickFigure), 0, 20, new LayerCreationArgs(cmb_DefaultFigureVariant.SelectedIndex, "")));
+					Program.Form_Main.Do(new LayerAddAction(typeof(StickFigure), 0, 20, new LayerCreationArgs(cmb_DefaultFigureVariant.SelectedIndex, "")));
 					break;
 				case "BitmapObject":
 					if (txt_bitmapPath.Text == "")
 						return;
 
-					Program.Form.Do(new LayerAddAction(typeof(BitmapObject), 0, 20, new LayerCreationArgs(0, txt_bitmapPath.Text)));
+					Program.Form_Main.Do(new LayerAddAction(typeof(BitmapObject), 0, 20, new LayerCreationArgs(0, txt_bitmapPath.Text)));
 					break;
 				case "CustomFigure":
 					return;
@@ -46,7 +46,7 @@ namespace TISFAT
 					throw new ArgumentException("LayerType Tag is not a known EntityType");
 			}
 
-			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
+			Program.MainTimeline.GLContext.Invalidate();
 
 			Close();
 		}

@@ -81,7 +81,7 @@ namespace TISFAT
 
 		public void GLContext_Paint(object sender, PaintEventArgs e)
 		{
-			DrawFrame(Program.Form.MainTimeline.GetCurrentFrame(), false);
+			DrawFrame(Program.Form_Main.MainTimeline.GetCurrentFrame(), false);
 		}
 
 		public void DrawFrame(float time, bool render)
@@ -91,26 +91,8 @@ namespace TISFAT
 			GL.ClearColor(Color.White);
 
 			GL.Clear(ClearBufferMask.ColorBufferBit);
-
-			//for (int i = 8; i > 0; i--)
-
-			//{
-			//	Program.Form.ActiveProject.Draw(time - i, true);
-				//Program.Form.ActiveProject.Draw(time - 3, true);
-				
-				//GL.Enable(EnableCap.Blend);
-				//GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-				//GL.Color4(Color.FromArgb(150, Color.White)); // 35
-				//GL.Begin(PrimitiveType.Quads);
-				//GL.Vertex2(0, 0);
-				//GL.Vertex2(0, GLContext.Height);
-				//GL.Vertex2(GLContext.Width, GLContext.Height);
-				//GL.Vertex2(GLContext.Width, 0);
-				//GL.End();
-				//GL.Disable(EnableCap.Blend);
-			//}
 			
-			Program.Form.ActiveProject.Draw(time, render);
+			Program.ActiveProject.Draw(time, render);
 
 			GLContext.SwapBuffers();
 		}
@@ -118,7 +100,7 @@ namespace TISFAT
 		public void GLContext_MouseDown(object sender, MouseEventArgs e)
 		{
 			ActiveDragObject = null;
-			Timeline timeline = Program.Form.MainTimeline;
+			Timeline timeline = Program.Form_Main.MainTimeline;
 
 			if (timeline.SelectedKeyframe == null)
 				return;
@@ -136,7 +118,7 @@ namespace TISFAT
 
 		public void GLContext_MouseMove(object sender, MouseEventArgs e)
 		{
-			Timeline timeline = Program.Form.MainTimeline;
+			Timeline timeline = Program.Form_Main.MainTimeline;
 
 			if (timeline.SelectedKeyframe == null || timeline.SelectedLayer == null)
 				return;
@@ -153,11 +135,11 @@ namespace TISFAT
 
 		public void GLContext_MouseUp(object sender, MouseEventArgs e)
 		{
-			Timeline timeline = Program.Form.MainTimeline;
+			Timeline timeline = Program.Form_Main.MainTimeline;
 
 			if (ActiveDragObject != null)
 			{
-				Program.Form.Do(new ManipulatableUpdateAction(timeline.SelectedLayer, timeline.SelectedFrameset, timeline.SelectedKeyframe, 
+				Program.Form_Main.Do(new ManipulatableUpdateAction(timeline.SelectedLayer, timeline.SelectedFrameset, timeline.SelectedKeyframe, 
 				ActiveDragPrevState, timeline.SelectedKeyframe.State));
 			}
 

@@ -114,10 +114,10 @@ namespace TISFAT.Entities
 			Texture = (Bitmap)Bitmap.FromFile(e.Arguments, true);
 			TextureID = Drawing.GenerateTexID(Texture);
 
-			if (!Program.Form.ActiveProject.LayerCount.ContainsKey(typeof(BitmapObject)))
-				Program.Form.ActiveProject.LayerCount.Add(typeof(BitmapObject), 0);
+			if (!Program.ActiveProject.LayerCount.ContainsKey(typeof(BitmapObject)))
+				Program.ActiveProject.LayerCount.Add(typeof(BitmapObject), 0);
 
-			int CreatedLayerCount = ++Program.Form.ActiveProject.LayerCount[typeof(BitmapObject)];
+			int CreatedLayerCount = ++Program.ActiveProject.LayerCount[typeof(BitmapObject)];
 
 			Layer layer = new Layer(this);
 			layer.Name = "Bitmap " + CreatedLayerCount;
