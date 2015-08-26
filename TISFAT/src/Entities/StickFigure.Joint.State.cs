@@ -139,6 +139,7 @@ namespace TISFAT.Entities
                     ret.JointColor = JointColor;
                     ret.Location = Location;
                     ret.Thickness = Thickness;
+					ret.Manipulatable = Manipulatable;
 
                     foreach (State child in Children)
                         ret.Children.Add(child.Clone(ret));
@@ -170,7 +171,11 @@ namespace TISFAT.Entities
                     byte b = reader.ReadByte();
                     JointColor = Color.FromArgb(a, r, g, b);
                     Thickness = (float)reader.ReadDouble();
-					Manipulatable = reader.ReadBoolean();
+
+					if (version >= 2)
+						Manipulatable = reader.ReadBoolean();
+					else
+						Manipulatable = true;
 
                     Children = FileFormat.ReadList<Joint.State>(reader, version);
 

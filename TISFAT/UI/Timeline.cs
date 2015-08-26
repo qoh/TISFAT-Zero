@@ -508,7 +508,7 @@ namespace TISFAT
 			{
 				if (KeyframeDragStartTime != SelectedKeyframe.Time)
 				{
-					Program.Form.Do(new KeyframeMoveAction(SelectedFrameset, SelectedKeyframe, KeyframeDragStartTime));
+					Program.Form.Do(new KeyframeMoveAction(SelectedLayer, SelectedFrameset, SelectedKeyframe, KeyframeDragStartTime));
 				}
 			}
 
@@ -557,7 +557,7 @@ namespace TISFAT
 
 		public void RemoveKeyframe()
 		{
-			Program.Form.Do(new KeyframeRemoveAction(SelectedFrameset, SelectedKeyframe));
+			Program.Form.Do(new KeyframeRemoveAction(SelectedLayer, SelectedFrameset, SelectedKeyframe));
 
 			GLContext.Invalidate();
 		}

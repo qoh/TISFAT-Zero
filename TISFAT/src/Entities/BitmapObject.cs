@@ -63,6 +63,9 @@ namespace TISFAT.Entities
 		{
 			State state = _state as State;
 
+			if (state == null)
+				return null;
+
 			ManipulateResult result = new ManipulateResult();
 			ManipulateParams mparams = new ManipulateParams();
 			result.Params = mparams;

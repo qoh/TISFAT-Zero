@@ -68,7 +68,7 @@
       <DependentUpon>StickFigure.cs</DependentUpon>
     </Compile>
     <Compile Include="src\Entities\StickFigure.Joint.State.cs">
-      <DependentUpon>StickFigure.Joint.cs</DependentUpon>
+      <DependentUpon>StickFigure.cs</DependentUpon>
     </Compile>
     <Compile Include="src\Entities\StickFigure.State.cs">
       <DependentUpon>StickFigure.cs</DependentUpon>
@@ -125,6 +125,12 @@
     <Compile Include="src\Interfaces\ISaveable.cs" />
     <Compile Include="src\Core\Layer.cs" />
     <Compile Include="src\Util\Interpolation.cs" />
+    <Compile Include="UI\StickEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\StickEditorForm.Designer.cs">
+      <DependentUpon>StickEditorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Timeline.cs" />
     <Compile Include="UI\TimelineDrawing.cs">
       <DependentUpon>Timeline.cs</DependentUpon>
@@ -172,6 +178,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UI\StickEditorForm.resx">
+      <DependentUpon>StickEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\TimelineForm.resx">
       <DependentUpon>TimelineForm.cs</DependentUpon>
     </EmbeddedResource>

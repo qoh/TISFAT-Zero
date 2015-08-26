@@ -1,4 +1,4 @@
-﻿namespace TISFAT.Interfaces
+﻿namespace TISFAT
 {
 	public interface IAction
 	{

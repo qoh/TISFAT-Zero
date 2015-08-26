@@ -25,6 +25,9 @@ namespace TISFAT
 
 		private void btn_Add_Click(object sender, EventArgs e)
 		{
+			if (lsv_LayerTypes.FocusedItem == null)
+				return;
+
 			switch((string)lsv_LayerTypes.FocusedItem.Tag)
 			{
 				case "StickFigure":
@@ -36,6 +39,8 @@ namespace TISFAT
 
 					Program.Form.Do(new LayerAddAction(typeof(BitmapObject), 0, 20, new LayerCreationArgs(0, txt_bitmapPath.Text)));
 					break;
+				case "CustomFigure":
+					return;
 
 				default:
 					throw new ArgumentException("LayerType Tag is not a known EntityType");
@@ -64,6 +69,7 @@ namespace TISFAT
 			pnl_DefaultFigureProperties.Visible = false;
 			pnl_PropertiesDescription.Visible = false;
 			pnl_BitmapProperties.Visible = false;
+			pnl_CustomFigureProperties.Visible = false;
 		}
 
 		private void lsv_LayerTypes_SelectedIndexChanged(object sender, EventArgs e)
@@ -77,6 +83,9 @@ namespace TISFAT
 					break;
 				case "BitmapObject":
 					pnl_BitmapProperties.Visible = true;
+					break;
+				case "CustomFigure":
+					pnl_CustomFigureProperties.Visible = true;
 					break;
 
 				default:
@@ -94,6 +103,21 @@ namespace TISFAT
 			{
 				lbl_DefaultFigureVariantDetail.Text = "This is the pre-rework TISFAT Zero default figure, which is a bit smaller and has different proportions than the current default.";
 			}
+		}
+
+		private void btn_customFigBrowse_Click(object sender, EventArgs e)
+		{
+			OpenFileDialog dlg = new OpenFileDialog();
+
+			if (dlg.ShowDialog() == DialogResult.OK)
+				txt_customFigPath.Text = dlg.FileName;
+		}
+
+		private void btn_openStickEditor_Click(object sender, EventArgs e)
+		{
+			StickEditorForm f = new StickEditorForm();
+
+			f.ShowDialog();
 		}
 	}
 }

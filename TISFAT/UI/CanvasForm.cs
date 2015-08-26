@@ -11,12 +11,14 @@ namespace TISFAT
 {
     public partial class CanvasForm : Form
 	{
+		#region Properties
 		GLControl GLContext;
 		bool Loaded;
 		static int MSAASamples = 8;
 
 		private IManipulatable ActiveDragObject;
 		private IManipulatableParams ActiveDragParams;
+		private IEntityState ActiveDragPrevState;
 
 		public int GLWidth { get { return GLContext.Width; } }
 		public int GLHeight { get { return GLContext.Height; } }
@@ -25,7 +27,8 @@ namespace TISFAT
 		{
 			get { return GLContext.VSync; }
 			set { GLContext.VSync = value; }
-		}
+		} 
+		#endregion
 
 		public CanvasForm(Control parent)
 		{
@@ -127,6 +130,7 @@ namespace TISFAT
 			{
 				ActiveDragObject = result.Target;
 				ActiveDragParams = result.Params;
+				ActiveDragPrevState = timeline.SelectedKeyframe.State.Copy();
 			}
 		}
 
@@ -134,7 +138,7 @@ namespace TISFAT
 		{
 			Timeline timeline = Program.Form.MainTimeline;
 
-			if (timeline.SelectedKeyframe == null)
+			if (timeline.SelectedKeyframe == null || timeline.SelectedLayer == null)
 				return;
 
 			if (ActiveDragObject == null)
@@ -149,6 +153,14 @@ namespace TISFAT
 
 		public void GLContext_MouseUp(object sender, MouseEventArgs e)
 		{
+			Timeline timeline = Program.Form.MainTimeline;
+
+			if (ActiveDragObject != null)
+			{
+				Program.Form.Do(new ManipulatableUpdateAction(timeline.SelectedLayer, timeline.SelectedFrameset, timeline.SelectedKeyframe, 
+				ActiveDragPrevState, timeline.SelectedKeyframe.State));
+			}
+
 			ActiveDragObject = null;
 		}
 

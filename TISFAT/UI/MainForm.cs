@@ -5,7 +5,6 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using TISFAT.Entities;
-using TISFAT.Interfaces;
 using TISFAT.Util;
 
 namespace TISFAT

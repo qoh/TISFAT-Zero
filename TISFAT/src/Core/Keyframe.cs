@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using TISFAT.Interfaces;
 using TISFAT.Util;
 
 namespace TISFAT
 {
+	#region Undo/Redo Actions
 	public class KeyframeAddAction : IAction
 	{
 		uint Time;
@@ -14,6 +14,7 @@ namespace TISFAT
 
 		int LayerIndex;
 		int FramesetIndex;
+		int AddedFrameIndex;
 
 		Keyframe AddedFrame;
 		int PrevSelectedNullFrame;
@@ -33,7 +34,7 @@ namespace TISFAT
 			Layer TargetLayer = Program.Form.ActiveProject.Layers[LayerIndex];
 			Frameset TargetFrameset = TargetLayer.Framesets[FramesetIndex];
 
-			AddedFrame = new Keyframe(Time, State);
+			AddedFrame = new Keyframe(Time, State.Copy());
 
 			PrevSelectedBlankFrame = Program.Form.Form_Timeline.MainTimeline.SelectedBlankFrame;
 			PrevSelectedNullFrame = Program.Form.Form_Timeline.MainTimeline.SelectedNullFrame;
@@ -44,6 +45,7 @@ namespace TISFAT
 
 			TargetFrameset.Keyframes.Add(AddedFrame);
 			TargetFrameset.Keyframes = TargetFrameset.Keyframes.OrderBy(o => o.Time).ToList();
+			AddedFrameIndex = TargetFrameset.Keyframes.IndexOf(AddedFrame);
 
 			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
 		}
@@ -53,7 +55,7 @@ namespace TISFAT
 			Layer TargetLayer = Program.Form.ActiveProject.Layers[LayerIndex];
 			Frameset TargetFrameset = TargetLayer.Framesets[FramesetIndex];
 
-			TargetFrameset.Keyframes.Remove(AddedFrame);
+			TargetFrameset.Keyframes.RemoveAt(AddedFrameIndex);
 
 			Program.Form.Form_Timeline.MainTimeline.SelectedNullFrame = PrevSelectedNullFrame;
 			Program.Form.Form_Timeline.MainTimeline.SelectedBlankFrame = PrevSelectedBlankFrame;
@@ -69,24 +71,32 @@ namespace TISFAT
 
 	public class KeyframeMoveAction : IAction
 	{
-		public List<Keyframe> OriginalKeyframes;
+		public int LayerIndex;
+		public int FramesetIndex;
+		public int KeyframeIndex;
+
+		public Keyframe TargetKeyframe;
 		public uint OriginalTime;
 		public uint NewTime;
 
-		public Frameset TargetFrameset;
-		public Keyframe TargetKeyframe;
-
-		public KeyframeMoveAction(Frameset frameset, Keyframe frame, uint time)
+		public KeyframeMoveAction(Layer layer, Frameset frameset, Keyframe frame, uint time)
 		{
-			TargetFrameset = frameset;
+			LayerIndex = Program.Form.ActiveProject.Layers.IndexOf(layer);
+			FramesetIndex = layer.Framesets.IndexOf(frameset);
+			KeyframeIndex = frameset.Keyframes.IndexOf(frame);
+
 			TargetKeyframe = frame;
 			OriginalTime = time;
 			NewTime = frame.Time;
-			OriginalKeyframes = new List<Keyframe>(frameset.Keyframes);
 		}
 
 		public void Do()
 		{
+			Frameset TargetFrameset = Program.Form.ActiveProject.Layers[LayerIndex].Framesets[FramesetIndex];
+
+			if (TargetFrameset.Keyframes.IndexOf(TargetKeyframe) == -1)
+				TargetFrameset.Keyframes.Insert(KeyframeIndex, TargetKeyframe);
+
 			TargetKeyframe.Time = NewTime;
 			TargetFrameset.Keyframes = TargetFrameset.Keyframes.OrderBy(o => o.Time).ToList();
 
@@ -96,30 +106,38 @@ namespace TISFAT
 
 		public void Undo()
 		{
-			TargetFrameset.Keyframes = OriginalKeyframes;
+			Frameset TargetFrameset = Program.Form.ActiveProject.Layers[LayerIndex].Framesets[FramesetIndex];
 
+			TargetKeyframe.Time = OriginalTime;
+			TargetFrameset.Keyframes = TargetFrameset.Keyframes.OrderBy(o => o.Time).ToList();
+
+			Program.Form.Form_Timeline.MainTimeline.SelectedKeyframe = TargetKeyframe;
 			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
 		}
 	}
 
 	public class KeyframeRemoveAction : IAction
 	{
-		Frameset TargetFrameset;
+		int LayerIndex;
+		int FramesetIndex;
+		int RemovedKeyframeIndex;
 
-		List<Keyframe> OriginalKeyframes;
 		Keyframe RemovedKeyframe;
 
-		public KeyframeRemoveAction(Frameset frameset, Keyframe frame)
+		public KeyframeRemoveAction(Layer layer, Frameset frameset, Keyframe frame)
 		{
-			TargetFrameset = frameset;
-			RemovedKeyframe = frame;
+			LayerIndex = Program.Form.ActiveProject.Layers.IndexOf(layer);
+			FramesetIndex = layer.Framesets.IndexOf(frameset);
 
-			OriginalKeyframes = new List<Keyframe>(frameset.Keyframes);
+			RemovedKeyframe = frame;
+			RemovedKeyframeIndex = frameset.Keyframes.IndexOf(RemovedKeyframe);
 		}
 
 		public void Do()
 		{
-			TargetFrameset.Keyframes.Remove(RemovedKeyframe);
+			Frameset TargetFrameset = Program.Form.ActiveProject.Layers[LayerIndex].Framesets[FramesetIndex];
+
+			TargetFrameset.Keyframes.RemoveAt(RemovedKeyframeIndex);
 			TargetFrameset.Keyframes = TargetFrameset.Keyframes.OrderBy(o => o.Time).ToList();
 
 			Program.Form.Form_Timeline.MainTimeline.SelectedNullFrame = -1;
@@ -131,7 +149,10 @@ namespace TISFAT
 
 		public void Undo()
 		{
-			TargetFrameset.Keyframes = OriginalKeyframes;
+			Frameset TargetFrameset = Program.Form.ActiveProject.Layers[LayerIndex].Framesets[FramesetIndex];
+
+			TargetFrameset.Keyframes.Insert(RemovedKeyframeIndex, RemovedKeyframe);
+			TargetFrameset.Keyframes = TargetFrameset.Keyframes.OrderBy(o => o.Time).ToList();
 
 			Program.Form.Form_Timeline.MainTimeline.SelectedNullFrame = -1;
 			Program.Form.Form_Timeline.MainTimeline.SelectedBlankFrame = -1;
@@ -139,7 +160,8 @@ namespace TISFAT
 
 			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
 		}
-	}
+	} 
+	#endregion
 
 	public class Keyframe : ISaveable
 	{

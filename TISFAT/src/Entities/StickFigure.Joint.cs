@@ -180,10 +180,23 @@ namespace TISFAT.Entities
                 byte handle_b = reader.ReadByte();
                 HandleColor = Color.FromArgb(handle_a, handle_r, handle_g, handle_b);
                 Thickness = (float)reader.ReadDouble();
-				DrawType = (DrawJointType)Enum.Parse(typeof(DrawJointType), reader.ReadString());
-				HandleVisible = reader.ReadBoolean();
-				Manipulatable = reader.ReadBoolean();
-				Visible = reader.ReadBoolean();
+
+				if (version >= 2)
+				{
+					DrawType = (DrawJointType)Enum.Parse(typeof(DrawJointType), reader.ReadString());
+
+					HandleVisible = reader.ReadBoolean();
+					Manipulatable = reader.ReadBoolean();
+					Visible = reader.ReadBoolean();
+				}
+				else
+				{
+					DrawType = reader.ReadBoolean() ? DrawJointType.CircleLine : DrawJointType.Normal;
+
+					HandleVisible = true;
+					Manipulatable = true;
+					Visible = true;
+				}
 
                 Children = FileFormat.ReadList<Joint>(reader, version);
 

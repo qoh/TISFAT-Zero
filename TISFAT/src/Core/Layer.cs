@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using TISFAT.Interfaces;
 using TISFAT.Util;
 
 namespace TISFAT
@@ -19,14 +18,15 @@ namespace TISFAT
 		}
 	}
 
+	#region Undo/Redo Actions
 	public class LayerAddAction : IAction
 	{
-		Layer layer;
-
 		Type figureType;
 		uint Start;
 		uint End;
 		LayerCreationArgs args;
+
+		int LayerIndex;
 
 		public LayerAddAction(Type figType, uint start, uint end, LayerCreationArgs e)
 		{
@@ -39,19 +39,19 @@ namespace TISFAT
 		public void Do()
 		{
 			IEntity figure = (IEntity)figureType.GetConstructor(new Type[0]).Invoke(new object[0]);
-			layer = figure.CreateDefaultLayer(Start, End, args);
+			Layer layer = figure.CreateDefaultLayer(Start, End, args);
 
 			Program.Form.ActiveProject.Layers.Add(layer);
+			LayerIndex = Program.Form.ActiveProject.Layers.IndexOf(layer);
 
 			Program.Form.Form_Timeline.MainTimeline.SelectedLayer = layer;
-
 			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
 		}
 
 		public void Undo()
 		{
-			Program.Form.ActiveProject.Layers.Remove(layer);
-			Program.Form.ActiveProject.LayerCount[layer.Data.GetType()]--;
+			Program.Form.ActiveProject.Layers.RemoveAt(LayerIndex);
+			Program.Form.ActiveProject.LayerCount[figureType]--;
 			Program.Form.Form_Timeline.MainTimeline.SelectedLayer = null;
 
 			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
@@ -85,14 +85,14 @@ namespace TISFAT
 			Program.Form.Form_Timeline.MainTimeline.SelectedLayer = null;
 
 			Program.Form.Form_Timeline.MainTimeline.GLContext.Invalidate();
-        }
+		}
 	}
 
 	public class LayerMoveUpAction : IAction
 	{
 		Layer TargetLayer;
 		int PrevIndex;
-		
+
 		public LayerMoveUpAction(Layer layer)
 		{
 			TargetLayer = layer;
@@ -144,6 +144,7 @@ namespace TISFAT
 		}
 	}
 
+	#endregion
 
 
 	public class Layer : ISaveable

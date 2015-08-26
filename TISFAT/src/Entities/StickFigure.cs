@@ -53,7 +53,7 @@ namespace TISFAT.Entities
 			if (modifiers == Keys.Shift)
 				mparams.DisableIK = true;
 
-			if (button == System.Windows.Forms.MouseButtons.Right)
+			if (button == MouseButtons.Right)
 			{
 				result.Target = state.Root;
 				mparams.AbsoluteDrag = true;
@@ -165,7 +165,6 @@ namespace TISFAT.Entities
 
 			return layer;
 		}
-
 
 		public IEntityState CreateRefState()
 		{
