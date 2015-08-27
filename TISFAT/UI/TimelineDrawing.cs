@@ -68,6 +68,39 @@ namespace TISFAT
 						Drawing.Rectangle(new PointF(FrameToPixels(keyframe.Time), y), new SizeF(9, 2), color2);
 						Drawing.Rectangle(new PointF(FrameToPixels(keyframe.Time) + 3, y + 9), new SizeF(4, 4), Color.Black);
 						Drawing.Rectangle(new PointF(FrameToPixels(keyframe.Time) + 4, y + 10), new SizeF(2, 2), Color.White);
+
+						if (frameset.Keyframes.IndexOf(keyframe) < frameset.Keyframes.Count - 1)
+						{
+							Color lineColor;
+
+							switch(keyframe.InterpMode)
+							{
+								case EntityInterpolationMode.None:
+									lineColor = Color.DarkRed;
+									break;
+								case EntityInterpolationMode.Linear:
+									lineColor = Color.FromArgb(127, 127, 127);
+									break;
+								case EntityInterpolationMode.QuadInOut:
+									lineColor = Color.Cyan;
+									break;
+								case EntityInterpolationMode.ExpoInOut:
+									lineColor = Color.Gold;
+									break;
+								case EntityInterpolationMode.BounceOut:
+									lineColor = Color.LightPink;
+									break;
+								case EntityInterpolationMode.BackOut:
+									lineColor = Color.Khaki;
+									break;
+
+								default:
+									throw new ArgumentException("Keyframe has an unknown InterpolationMode");
+                            }
+							
+							Drawing.Line(new PointF(FrameToPixels(keyframe.Time) + 12, y + 8),
+							new PointF(FrameToPixels(frameset.Keyframes[frameset.Keyframes.IndexOf(keyframe) + 1].Time) - 3, y + 8), lineColor);
+						}
 					}
 
 					// Selected blank frame
@@ -75,11 +108,11 @@ namespace TISFAT
 						Drawing.Rectangle(new PointF(FrameToPixels(SelectedBlankFrame), y), new SizeF(9, 16), Color.Red);
 
 					// Frameset line
-					Drawing.Line(
-						new PointF(FrameToPixels(frameset.StartTime) + 12, y + 8),
-						new PointF(FrameToPixels(frameset.EndTime) - 3, y + 8),
-						Color.FromArgb(127, 127, 127)
-					);
+					//Drawing.Line(
+					//	new PointF(FrameToPixels(frameset.StartTime) + 12, y + 8),
+					//	new PointF(FrameToPixels(frameset.EndTime) - 3, y + 8),
+					//	Color.FromArgb(127, 127, 127)
+					//);
 				}
 
 				if (SelectedLayer == Layers[i] && SelectedNullFrame != -1)

@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using TISFAT.Util;
 
 namespace TISFAT.Entities
 {
@@ -11,12 +12,12 @@ namespace TISFAT.Entities
 
 		public StickFigure() { }
 
-		public IEntityState Interpolate(float t, IEntityState _current, IEntityState _target)
+		public IEntityState Interpolate(float t, IEntityState _current, IEntityState _target, EntityInterpolationMode mode)
 		{
 			State current = _current as State;
 			State target = _target as State;
 			State state = new State();
-			state.Root = Joint.State.Interpolate(t, current.Root, target.Root);
+			state.Root = Joint.State.Interpolate(t, current.Root, target.Root, mode);
 			return state;
 		}
 
@@ -160,8 +161,8 @@ namespace TISFAT.Entities
 			layer.Name = "Figure " + CreatedLayerCount;
 
 			layer.Framesets.Add(new Frameset());
-			layer.Framesets[0].Keyframes.Add(new Keyframe(StartTime, CreateRefState()));
-			layer.Framesets[0].Keyframes.Add(new Keyframe(EndTime, CreateRefState()));
+			layer.Framesets[0].Keyframes.Add(new Keyframe(StartTime, CreateRefState(), Util.EntityInterpolationMode.Linear));
+			layer.Framesets[0].Keyframes.Add(new Keyframe(EndTime, CreateRefState(), Util.EntityInterpolationMode.Linear));
 
 			return layer;
 		}

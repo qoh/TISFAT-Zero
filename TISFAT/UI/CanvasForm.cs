@@ -12,8 +12,8 @@ namespace TISFAT
     public partial class CanvasForm : Form
 	{
 		#region Properties
+		Panel ContextContainer;
 		GLControl GLContext;
-		bool Loaded;
 		static int MSAASamples = 8;
 
 		private IManipulatable ActiveDragObject;
@@ -33,7 +33,14 @@ namespace TISFAT
 		public CanvasForm(Control parent)
 		{
 			InitializeComponent();
-			Loaded = false;
+			
+			ContextContainer = new Panel();
+			ContextContainer.Location = new System.Drawing.Point(0, 0);
+			ContextContainer.Size = new System.Drawing.Size(Program.ActiveProject.Width + 1, Program.ActiveProject.Height + 1);
+			ContextContainer.Padding = new Padding(1);
+			ContextContainer.BackColor = Color.Black;
+
+			Console.WriteLine(ContextContainer.Anchor);
 
 			GraphicsMode mode = new GraphicsMode(
 				new ColorFormat(8, 8, 8, 8),
@@ -47,7 +54,9 @@ namespace TISFAT
 			GLContext.MouseDown += new MouseEventHandler(this.GLContext_MouseDown);
 			GLContext.MouseMove += new MouseEventHandler(this.GLContext_MouseMove);
 			GLContext.MouseUp += new MouseEventHandler(this.GLContext_MouseUp);
-			Controls.Add(GLContext);
+
+			ContextContainer.Controls.Add(GLContext);
+			Controls.Add(ContextContainer);
 
 			// Setup stuff
 			TopLevel = false;
@@ -57,7 +66,6 @@ namespace TISFAT
 		private void Canvas_Load(object sender, EventArgs e)
 		{
 			GLContext_Init();
-			Loaded = true;
 		}
 
 		#region GL Core Init
@@ -74,14 +82,27 @@ namespace TISFAT
 
 		private void CanvasForm_Resize(object sender, EventArgs e)
 		{
-			if (Loaded)
-				GLContext_Init();
+			if (Width < ContextContainer.Width)
+			{
+				ContextContainer.Anchor |= AnchorStyles.Left;
+				ContextContainer.Location = new System.Drawing.Point(0, ContextContainer.Location.Y);
+			}
+			else
+				ContextContainer.Anchor &= ~AnchorStyles.Left;
+
+			if (Height < ContextContainer.Height)
+			{
+				ContextContainer.Anchor |= AnchorStyles.Top;
+				ContextContainer.Location = new System.Drawing.Point(ContextContainer.Location.X, 0);
+			}
+			else
+				ContextContainer.Anchor &= ~AnchorStyles.Top;
 		} 
 		#endregion
 
 		public void GLContext_Paint(object sender, PaintEventArgs e)
 		{
-			DrawFrame(Program.Form_Main.MainTimeline.GetCurrentFrame(), false);
+			DrawFrame(Program.MainTimeline.GetCurrentFrame(), false);
 		}
 
 		public void DrawFrame(float time, bool render)
@@ -100,7 +121,7 @@ namespace TISFAT
 		public void GLContext_MouseDown(object sender, MouseEventArgs e)
 		{
 			ActiveDragObject = null;
-			Timeline timeline = Program.Form_Main.MainTimeline;
+			Timeline timeline = Program.MainTimeline;
 
 			if (timeline.SelectedKeyframe == null)
 				return;
@@ -118,7 +139,7 @@ namespace TISFAT
 
 		public void GLContext_MouseMove(object sender, MouseEventArgs e)
 		{
-			Timeline timeline = Program.Form_Main.MainTimeline;
+			Timeline timeline = Program.MainTimeline;
 
 			if (timeline.SelectedKeyframe == null || timeline.SelectedLayer == null)
 				return;
@@ -135,7 +156,7 @@ namespace TISFAT
 
 		public void GLContext_MouseUp(object sender, MouseEventArgs e)
 		{
-			Timeline timeline = Program.Form_Main.MainTimeline;
+			Timeline timeline = Program.MainTimeline;
 
 			if (ActiveDragObject != null)
 			{
@@ -164,6 +185,11 @@ namespace TISFAT
 			bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
 
 			return bmp.GetHbitmap();
+		}
+
+		private void CanvasForm_Scroll(object sender, ScrollEventArgs e)
+		{
+			GLContext.Invalidate();
 		}
 	}
 }

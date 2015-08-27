@@ -84,13 +84,13 @@ namespace TISFAT
 			int TotWidth = GLContext.Width - 80;
 			int TotHeight = GLContext.Height;
 
-			if (Program.Form_Timeline.VScrollVisible)
+			if (Program.Form_Main.Form_Timeline.VScrollVisible)
 				TotWidth -= 17;
 
-			if (Program.Form_Timeline.HScrollVisible)
+			if (Program.Form_Main.Form_Timeline.HScrollVisible)
 				TotHeight -= 18;
 
-			Program.Form_Timeline.CalcScrollBars(HContentLength, VContentLength, TotWidth, TotHeight);
+			Program.Form_Main.Form_Timeline.CalcScrollBars(HContentLength, VContentLength, TotWidth, TotHeight);
 		}
 		#endregion
 
@@ -279,8 +279,8 @@ namespace TISFAT
 
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 
-			int scrollX = Program.Form_Timeline.HScrollVal;
-			int scrollY = Program.Form_Timeline.VScrollVal > 0 ? Program.Form_Timeline.VScrollVal - 1 : 0;
+			int scrollX = Program.Form_Main.Form_Timeline.HScrollVal;
+			int scrollY = Program.Form_Main.Form_Timeline.VScrollVal > 0 ? Program.Form_Main.Form_Timeline.VScrollVal - 1 : 0;
 
 			GL.Translate(-scrollX, -scrollY, 0);
 
@@ -313,7 +313,7 @@ namespace TISFAT
 
 			GLContext.SwapBuffers();
 
-			Program.Form_Canvas.GLContext_Paint(sender, e);
+			Program.Form_Main.Form_Canvas.GLContext_Paint(sender, e);
 
 			if (IsPlaying())
 			{
@@ -326,7 +326,7 @@ namespace TISFAT
 		public void MouseDown(Point location, MouseButtons button)
 		{
 			Point locationActual = location;
-			location = new Point(location.X + Program.Form_Timeline.HScrollVal, location.Y + Program.Form_Timeline.VScrollVal);
+			location = new Point(location.X + Program.Form_Main.Form_Timeline.HScrollVal, location.Y + Program.Form_Main.Form_Timeline.VScrollVal);
 
 			IsMouseDown = true;
 			MouseDragStart = location;
@@ -334,7 +334,7 @@ namespace TISFAT
 			if (IsPlaying())
 				return;
 
-			if (location.X - Program.Form_Timeline.HScrollVal > 80)
+			if (location.X - Program.Form_Main.Form_Timeline.HScrollVal > 80)
 			{
 				ClearSelection();
 
@@ -372,7 +372,7 @@ namespace TISFAT
 		public void MouseMoved(Point location)
 		{
 			Point locationActual = location;
-			location = new Point(location.X + Program.Form_Timeline.HScrollVal, location.Y + Program.Form_Timeline.VScrollVal);
+			location = new Point(location.X + Program.Form_Main.Form_Timeline.HScrollVal, location.Y + Program.Form_Main.Form_Timeline.VScrollVal);
 
 			if (HoveredLayerIndex > -1)
 			{
@@ -381,7 +381,7 @@ namespace TISFAT
 				GLContext.Invalidate();
 			}
 
-			if (location.X - Program.Form_Timeline.HScrollVal > 80)
+			if (location.X - Program.Form_Main.Form_Timeline.HScrollVal > 80)
 			{
 				if (IsMouseDown)
 					IsDragging = true;
@@ -480,7 +480,7 @@ namespace TISFAT
 			}
 			else
 			{
-				int y = locationActual.Y + Program.Form_Timeline.VScrollVal;
+				int y = locationActual.Y + Program.Form_Main.Form_Timeline.VScrollVal;
 
 				HoveredLayerIndex = (int)Math.Floor((y - 16) / 16.0);
 				GLContext.Invalidate();
@@ -516,7 +516,7 @@ namespace TISFAT
 				Location.Y > 16 &&
 				button == MouseButtons.Right && 
 				!IsDragging && !IsPlaying())
-				Program.Form_Timeline.ShowCxtMenu(Location, GetFrameType(), (int)FrameNum);
+				Program.Form_Main.Form_Timeline.ShowCxtMenu(Location, GetFrameType(), (int)FrameNum);
 
 			IsMouseDown = false;
 			IsDragging = false;
@@ -608,33 +608,12 @@ namespace TISFAT
 
 		public void InsertFrameset()
 		{
-			uint time = (uint)SelectedNullFrame;
-
-			if (CanInsertFrameset())
-			{
-				Frameset fs = new Frameset();
-				fs.Keyframes.Add(new Keyframe(time, SelectedLayer.Data.CreateRefState()));
-				fs.Keyframes.Add(new Keyframe(time + 1, SelectedLayer.Data.CreateRefState()));
-
-				SelectedLayer.Framesets.Add(fs);
-				SelectedLayer.Framesets = SelectedLayer.Framesets.OrderBy(o => o.EndTime).ToList();
-			}
-
-			GLContext.Invalidate();
+			Program.Form_Main.Do(new FramesetAddAction(SelectedLayer));
 		}
 
 		public void RemoveFrameset()
 		{
-			int time = SelectedBlankFrame;
-
-			SelectedLayer.Framesets.Remove(SelectedFrameset);
-			SelectedLayer.Framesets = SelectedLayer.Framesets.OrderBy(o => o.EndTime).ToList();
-
-			SelectedNullFrame = -1;
-			SelectedBlankFrame = time;
-			SelectedKeyframe = null;
-
-			GLContext.Invalidate();
+			Program.Form_Main.Do(new FramesetRemoveAction(SelectedLayer, SelectedFrameset));
 		}
 
 		public void MoveLayerUp()
@@ -652,6 +631,12 @@ namespace TISFAT
 			if(SelectedLayer != null)
 				if(Program.ActiveProject.Layers.IndexOf(SelectedLayer) != -1)
 					Program.Form_Main.Do(new LayerRemoveAction(SelectedLayer));
+		}
+
+		public void ChangeInterpolationMode(EntityInterpolationMode mode)
+		{
+			if (SelectedKeyframe != null)
+				Program.Form_Main.Do(new KeyframeChangeInterpModeAction(SelectedLayer, SelectedFrameset, SelectedKeyframe, mode));
 		}
 	}
 }

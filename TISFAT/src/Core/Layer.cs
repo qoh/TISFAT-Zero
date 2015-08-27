@@ -36,7 +36,7 @@ namespace TISFAT
 			args = e;
 		}
 
-		public void Do()
+		public bool Do()
 		{
 			IEntity figure = (IEntity)figureType.GetConstructor(new Type[0]).Invoke(new object[0]);
 			Layer layer = figure.CreateDefaultLayer(Start, End, args);
@@ -46,15 +46,19 @@ namespace TISFAT
 
 			Program.MainTimeline.SelectedLayer = layer;
 			Program.MainTimeline.GLContext.Invalidate();
+
+			return true;
 		}
 
-		public void Undo()
+		public bool Undo()
 		{
 			Program.ActiveProject.Layers.RemoveAt(LayerIndex);
 			Program.ActiveProject.LayerCount[figureType]--;
 			Program.MainTimeline.SelectedLayer = null;
 
 			Program.MainTimeline.GLContext.Invalidate();
+
+			return true;
 		}
 	}
 
@@ -69,78 +73,90 @@ namespace TISFAT
 			RemovedLayerIndex = Program.ActiveProject.Layers.IndexOf(layer);
 		}
 
-		public void Do()
+		public bool Do()
 		{
 			Program.ActiveProject.Layers.RemoveAt(RemovedLayerIndex);
 			Program.ActiveProject.LayerCount[RemovedLayer.Data.GetType()]--;
 			Program.MainTimeline.SelectedLayer = RemovedLayer;
 
 			Program.MainTimeline.GLContext.Invalidate();
+
+			return true;
 		}
 
-		public void Undo()
+		public bool Undo()
 		{
 			Program.ActiveProject.Layers.Insert(RemovedLayerIndex, RemovedLayer);
 			Program.ActiveProject.LayerCount[RemovedLayer.Data.GetType()]++;
 			Program.MainTimeline.SelectedLayer = null;
 
 			Program.MainTimeline.GLContext.Invalidate();
+
+			return true;
 		}
 	}
 
 	public class LayerMoveUpAction : IAction
 	{
-		Layer TargetLayer;
+		int TargetLayerIndex;
 		int PrevIndex;
 
 		public LayerMoveUpAction(Layer layer)
 		{
-			TargetLayer = layer;
+			TargetLayerIndex = Program.ActiveProject.Layers.IndexOf(layer);
 			PrevIndex = Program.ActiveProject.Layers.IndexOf(layer);
 		}
 
-		public void Do()
+		public bool Do()
 		{
 			Program.ActiveProject.Layers.RemoveAt(PrevIndex);
-			Program.ActiveProject.Layers.Insert(PrevIndex - 1, TargetLayer);
+			Program.ActiveProject.Layers.Insert(PrevIndex - 1, Program.ActiveProject.Layers[TargetLayerIndex]);
 
 			Program.MainTimeline.GLContext.Invalidate();
+
+			return true;
 		}
 
-		public void Undo()
+		public bool Undo()
 		{
 			Program.ActiveProject.Layers.RemoveAt(PrevIndex - 1);
-			Program.ActiveProject.Layers.Insert(PrevIndex, TargetLayer);
+			Program.ActiveProject.Layers.Insert(PrevIndex, Program.ActiveProject.Layers[TargetLayerIndex]);
 
 			Program.MainTimeline.GLContext.Invalidate();
+
+			return true;
 		}
 	}
 
 	public class LayerMoveDownAction : IAction
 	{
-		Layer TargetLayer;
+		int TargetLayerIndex;
 		int PrevIndex;
 
 		public LayerMoveDownAction(Layer layer)
 		{
-			TargetLayer = layer;
+			TargetLayerIndex = Program.ActiveProject.Layers.IndexOf(layer);
 			PrevIndex = Program.ActiveProject.Layers.IndexOf(layer);
 		}
 
-		public void Do()
+		public bool Do()
 		{
 			Program.ActiveProject.Layers.RemoveAt(PrevIndex);
-			Program.ActiveProject.Layers.Insert(PrevIndex + 1, TargetLayer);
+			Program.ActiveProject.Layers.Insert(PrevIndex + 1, Program.ActiveProject.Layers[TargetLayerIndex]);
 
 			Program.MainTimeline.GLContext.Invalidate();
+
+			return true;
 		}
 
-		public void Undo()
+		public bool Undo()
 		{
 			Program.ActiveProject.Layers.RemoveAt(PrevIndex + 1);
-			Program.ActiveProject.Layers.Insert(PrevIndex, TargetLayer);
+			Program.ActiveProject.Layers.Insert(PrevIndex, Program.ActiveProject.Layers[TargetLayerIndex]);
 
 			Program.MainTimeline.GLContext.Invalidate();
+
+			return true;
 		}
 	}
 
@@ -234,7 +250,7 @@ namespace TISFAT
 			Keyframe target = frameset.Keyframes[nextIndex];
 			float t = (time - current.Time) / (target.Time - current.Time);
 
-			return Data.Interpolate(t, current.State, target.State);
+			return Data.Interpolate(t, current.State, target.State, current.InterpMode);
 		}
 
 		public void Draw(float time)
@@ -251,7 +267,7 @@ namespace TISFAT
 		{
 			IEntityState state = FindCurrentState(time);
 
-			if (state == null || Program.Form_Main.MainTimeline.SelectedKeyframe == null)
+			if (state == null || Program.MainTimeline.SelectedKeyframe == null)
 				return;
 
 			Data.DrawEditable(state);

@@ -29,12 +29,12 @@ namespace TISFAT
 			State = state;
 		}
 
-		public void Do()
+		public bool Do()
 		{
 			Layer TargetLayer = Program.ActiveProject.Layers[LayerIndex];
 			Frameset TargetFrameset = TargetLayer.Framesets[FramesetIndex];
 
-			AddedFrame = new Keyframe(Time, State.Copy());
+			AddedFrame = new Keyframe(Time, State.Copy(), EntityInterpolationMode.Linear);
 
 			PrevSelectedBlankFrame = Program.MainTimeline.SelectedBlankFrame;
 			PrevSelectedNullFrame = Program.MainTimeline.SelectedNullFrame;
@@ -48,9 +48,11 @@ namespace TISFAT
 			AddedFrameIndex = TargetFrameset.Keyframes.IndexOf(AddedFrame);
 
 			Program.MainTimeline.GLContext.Invalidate();
+
+			return true;
 		}
 
-		public void Undo()
+		public bool Undo()
 		{
 			Layer TargetLayer = Program.ActiveProject.Layers[LayerIndex];
 			Frameset TargetFrameset = TargetLayer.Framesets[FramesetIndex];
@@ -66,6 +68,8 @@ namespace TISFAT
 			PrevSelectedBlankFrame = -1;
 
 			Program.MainTimeline.GLContext.Invalidate();
+
+			return true;
 		}
 	}
 
@@ -90,7 +94,7 @@ namespace TISFAT
 			NewTime = frame.Time;
 		}
 
-		public void Do()
+		public bool Do()
 		{
 			Frameset TargetFrameset = Program.ActiveProject.Layers[LayerIndex].Framesets[FramesetIndex];
 
@@ -102,9 +106,11 @@ namespace TISFAT
 
 			Program.MainTimeline.SelectedKeyframe = TargetKeyframe;
 			Program.MainTimeline.GLContext.Invalidate();
+
+			return true;
 		}
 
-		public void Undo()
+		public bool Undo()
 		{
 			Frameset TargetFrameset = Program.ActiveProject.Layers[LayerIndex].Framesets[FramesetIndex];
 
@@ -113,6 +119,8 @@ namespace TISFAT
 
 			Program.MainTimeline.SelectedKeyframe = TargetKeyframe;
 			Program.MainTimeline.GLContext.Invalidate();
+
+			return true;
 		}
 	}
 
@@ -133,7 +141,7 @@ namespace TISFAT
 			RemovedKeyframeIndex = frameset.Keyframes.IndexOf(RemovedKeyframe);
 		}
 
-		public void Do()
+		public bool Do()
 		{
 			Frameset TargetFrameset = Program.ActiveProject.Layers[LayerIndex].Framesets[FramesetIndex];
 
@@ -145,9 +153,11 @@ namespace TISFAT
 			Program.MainTimeline.SelectedKeyframe = null;
 
 			Program.MainTimeline.GLContext.Invalidate();
+
+			return true;
 		}
 
-		public void Undo()
+		public bool Undo()
 		{
 			Frameset TargetFrameset = Program.ActiveProject.Layers[LayerIndex].Framesets[FramesetIndex];
 
@@ -159,25 +169,66 @@ namespace TISFAT
 			Program.MainTimeline.SelectedKeyframe = RemovedKeyframe;
 
 			Program.MainTimeline.GLContext.Invalidate();
+
+			return true;
 		}
 	} 
+
+	public class KeyframeChangeInterpModeAction : IAction
+	{
+		int LayerIndex;
+		int FramesetIndex;
+		int KeyframeIndex;
+
+		EntityInterpolationMode PrevMode;
+		EntityInterpolationMode TargetMode;
+
+		public KeyframeChangeInterpModeAction(Layer l, Frameset f, Keyframe frame, EntityInterpolationMode target)
+		{
+			LayerIndex = Program.ActiveProject.Layers.IndexOf(l);
+			FramesetIndex = l.Framesets.IndexOf(f);
+			KeyframeIndex = f.Keyframes.IndexOf(frame);
+			TargetMode = target;
+		}
+
+		public bool Do()
+		{
+			PrevMode = Program.ActiveProject.Layers[LayerIndex].Framesets[FramesetIndex].Keyframes[KeyframeIndex].InterpMode;
+
+			Program.ActiveProject.Layers[LayerIndex].Framesets[FramesetIndex].Keyframes[KeyframeIndex].InterpMode = TargetMode;
+
+			Program.MainTimeline.GLContext.Invalidate();
+			return true;
+		}
+
+		public bool Undo()
+		{
+			Program.ActiveProject.Layers[LayerIndex].Framesets[FramesetIndex].Keyframes[KeyframeIndex].InterpMode = PrevMode;
+
+			Program.MainTimeline.GLContext.Invalidate();
+			return true;
+		}
+	}
 	#endregion
 
 	public class Keyframe : ISaveable
 	{
 		public UInt32 Time;
 		public IEntityState State;
+		public EntityInterpolationMode InterpMode;
 
 		public Keyframe()
 		{
 			Time = 0;
 			State = null;
+			InterpMode = EntityInterpolationMode.Linear;
 		}
 
-		public Keyframe(UInt32 time, IEntityState state)
+		public Keyframe(UInt32 time, IEntityState state, EntityInterpolationMode interpMode)
 		{
 			Time = time;
 			State = state;
+			InterpMode = interpMode;
 		}
 
 		#region File Saving / Loading
@@ -185,6 +236,7 @@ namespace TISFAT
 		{
 			writer.Write(Time);
 			writer.Write(FileFormat.GetEntityStateID(State.GetType()));
+			writer.Write(InterpMode.ToString());
 			State.Write(writer);
 		}
 
@@ -192,6 +244,7 @@ namespace TISFAT
 		{
 			Time = reader.ReadUInt32();
 			Type type = FileFormat.ResolveEntityStateID(reader.ReadUInt16());
+			InterpMode = version >= 2 ? (EntityInterpolationMode)Enum.Parse(typeof(EntityInterpolationMode), reader.ReadString()) : EntityInterpolationMode.Linear;
 			Type[] args = { };
 			object[] values = { };
 			State = (IEntityState)type.GetConstructor(args).Invoke(values);

@@ -12,19 +12,24 @@ namespace TISFAT
     public class Project : ISaveable
 	{
 		public List<Layer> Layers;
-		public float FPS = 10.0f;
 		public Dictionary<Type, int> LayerCount;
+
+		public float FPS = 10.0f;
+		public int Width;
+		public int Height;
 
 		public Project()
 		{
 			Layers = new List<Layer>();
 			LayerCount = new Dictionary<Type, int>();
+			Width = 460;
+			Height = 360;
 		}
 
 		public void Draw(float time, bool render)
 		{
 			EditMode editMode = Program.Form_Main.ActiveEditMode;
-			Layer selectedLayer = Program.Form_Main.MainTimeline.SelectedLayer;
+			Layer selectedLayer = Program.MainTimeline.SelectedLayer;
 
             foreach (Layer layer in Layers)
 			{
@@ -76,6 +81,8 @@ namespace TISFAT
 		{
 			FileFormat.WriteList(writer, Layers);
 			writer.Write((double)FPS);
+			writer.Write(Width);
+			writer.Write(Height);
 		}
 
 		public void Read(BinaryReader reader, UInt16 version)
@@ -84,6 +91,12 @@ namespace TISFAT
 			if (version >= 1)
 			{
 				FPS = (float)reader.ReadDouble();
+
+				if (version >= 2)
+				{
+					Width = reader.ReadInt32();
+					Height = reader.ReadInt32();
+				}
 			}
 		} 
 		#endregion

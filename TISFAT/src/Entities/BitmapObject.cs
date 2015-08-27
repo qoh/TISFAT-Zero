@@ -13,13 +13,13 @@ namespace TISFAT.Entities
 
 		public BitmapObject() { }
 
-		public IEntityState Interpolate(float t, IEntityState _current, IEntityState _target)
+		public IEntityState Interpolate(float t, IEntityState _current, IEntityState _target, EntityInterpolationMode mode)
 		{
 			State current = _current as State;
 			State target = _target as State;
 			State state = new State();
 
-			state.Bounds = Interpolation.Linear(t, current.Bounds, target.Bounds);
+			state.Bounds = Interpolation.Interpolate(t, current.Bounds, target.Bounds, mode);
 
 			return state;
 		}
@@ -123,8 +123,8 @@ namespace TISFAT.Entities
 			layer.Name = "Bitmap " + CreatedLayerCount;
 
 			layer.Framesets.Add(new Frameset());
-			layer.Framesets[0].Keyframes.Add(new Keyframe(StartTime, CreateRefState()));
-			layer.Framesets[0].Keyframes.Add(new Keyframe(EndTime, CreateRefState()));
+			layer.Framesets[0].Keyframes.Add(new Keyframe(StartTime, CreateRefState(), EntityInterpolationMode.Linear));
+			layer.Framesets[0].Keyframes.Add(new Keyframe(EndTime, CreateRefState(), EntityInterpolationMode.Linear));
 
 			return layer;
 		}

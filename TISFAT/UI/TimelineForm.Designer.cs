@@ -42,6 +42,16 @@
 			this.cxtm_Timeline = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.insertKeyframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.removeKeyframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.setPoseToPreviousToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.setPoseToNextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.changeInterpolationModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.linearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.quadInOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.expoInOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.bounceOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.backOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.insertFramesetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.removeFramesetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,8 +61,6 @@
 			this.removeLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.gotoFrameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.setPoseToPreviousToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.setPoseToNextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.pnl_ToolboxPanel.SuspendLayout();
 			this.cxtm_Timeline.SuspendLayout();
 			this.SuspendLayout();
@@ -126,6 +134,7 @@
 			// 
 			// btn_SeekStart
 			// 
+			this.btn_SeekStart.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.btn_SeekStart.Checked = false;
 			this.btn_SeekStart.ImageDefault = global::TISFAT.Properties.Resources.control_start;
 			this.btn_SeekStart.ImageDown = global::TISFAT.Properties.Resources.control_start;
@@ -142,6 +151,7 @@
 			// 
 			// btn_Rewind
 			// 
+			this.btn_Rewind.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.btn_Rewind.Checked = false;
 			this.btn_Rewind.ImageDefault = global::TISFAT.Properties.Resources.control_rewind;
 			this.btn_Rewind.ImageDown = global::TISFAT.Properties.Resources.control_rewind;
@@ -157,6 +167,7 @@
 			// 
 			// btn_SeekEnd
 			// 
+			this.btn_SeekEnd.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.btn_SeekEnd.Checked = false;
 			this.btn_SeekEnd.ImageDefault = global::TISFAT.Properties.Resources.control_end;
 			this.btn_SeekEnd.ImageDown = global::TISFAT.Properties.Resources.control_end;
@@ -173,6 +184,7 @@
 			// 
 			// btn_FastForward
 			// 
+			this.btn_FastForward.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.btn_FastForward.Checked = false;
 			this.btn_FastForward.ImageDefault = global::TISFAT.Properties.Resources.control_fastforward;
 			this.btn_FastForward.ImageDown = global::TISFAT.Properties.Resources.control_fastforward;
@@ -210,6 +222,8 @@
             this.removeKeyframeToolStripMenuItem,
             this.setPoseToPreviousToolStripMenuItem,
             this.setPoseToNextToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.changeInterpolationModeToolStripMenuItem,
             this.toolStripSeparator4,
             this.insertFramesetToolStripMenuItem,
             this.removeFramesetToolStripMenuItem,
@@ -220,7 +234,7 @@
             this.toolStripSeparator5,
             this.gotoFrameToolStripMenuItem});
 			this.cxtm_Timeline.Name = "cxtm_Timeline";
-			this.cxtm_Timeline.Size = new System.Drawing.Size(234, 264);
+			this.cxtm_Timeline.Size = new System.Drawing.Size(234, 270);
 			// 
 			// insertKeyframeToolStripMenuItem
 			// 
@@ -235,6 +249,80 @@
 			this.removeKeyframeToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
 			this.removeKeyframeToolStripMenuItem.Text = "Remove Keyframe";
 			this.removeKeyframeToolStripMenuItem.Click += new System.EventHandler(this.removeKeyframeToolStripMenuItem_Click);
+			// 
+			// setPoseToPreviousToolStripMenuItem
+			// 
+			this.setPoseToPreviousToolStripMenuItem.Name = "setPoseToPreviousToolStripMenuItem";
+			this.setPoseToPreviousToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+			this.setPoseToPreviousToolStripMenuItem.Text = "Set Pose to Previous Keyframe";
+			this.setPoseToPreviousToolStripMenuItem.Click += new System.EventHandler(this.setPoseToPreviousToolStripMenuItem_Click);
+			// 
+			// setPoseToNextToolStripMenuItem
+			// 
+			this.setPoseToNextToolStripMenuItem.Name = "setPoseToNextToolStripMenuItem";
+			this.setPoseToNextToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+			this.setPoseToNextToolStripMenuItem.Text = "Set Pose to Next Keyframe";
+			this.setPoseToNextToolStripMenuItem.Click += new System.EventHandler(this.setPoseToNextToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(230, 6);
+			// 
+			// changeInterpolationModeToolStripMenuItem
+			// 
+			this.changeInterpolationModeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.noneToolStripMenuItem,
+            this.linearToolStripMenuItem,
+            this.quadInOutToolStripMenuItem,
+            this.expoInOutToolStripMenuItem,
+            this.bounceOutToolStripMenuItem,
+            this.backOutToolStripMenuItem});
+			this.changeInterpolationModeToolStripMenuItem.Name = "changeInterpolationModeToolStripMenuItem";
+			this.changeInterpolationModeToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+			this.changeInterpolationModeToolStripMenuItem.Text = "Change Interpolation Mode";
+			// 
+			// noneToolStripMenuItem
+			// 
+			this.noneToolStripMenuItem.Name = "noneToolStripMenuItem";
+			this.noneToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+			this.noneToolStripMenuItem.Text = "None";
+			this.noneToolStripMenuItem.Click += new System.EventHandler(this.noneToolStripMenuItem_Click);
+			// 
+			// linearToolStripMenuItem
+			// 
+			this.linearToolStripMenuItem.Name = "linearToolStripMenuItem";
+			this.linearToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+			this.linearToolStripMenuItem.Text = "Linear";
+			this.linearToolStripMenuItem.Click += new System.EventHandler(this.linearToolStripMenuItem_Click);
+			// 
+			// quadInOutToolStripMenuItem
+			// 
+			this.quadInOutToolStripMenuItem.Name = "quadInOutToolStripMenuItem";
+			this.quadInOutToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+			this.quadInOutToolStripMenuItem.Text = "QuadInOut";
+			this.quadInOutToolStripMenuItem.Click += new System.EventHandler(this.quadInOutToolStripMenuItem_Click);
+			// 
+			// expoInOutToolStripMenuItem
+			// 
+			this.expoInOutToolStripMenuItem.Name = "expoInOutToolStripMenuItem";
+			this.expoInOutToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+			this.expoInOutToolStripMenuItem.Text = "ExpoInOut";
+			this.expoInOutToolStripMenuItem.Click += new System.EventHandler(this.expoInOutToolStripMenuItem_Click);
+			// 
+			// bounceOutToolStripMenuItem
+			// 
+			this.bounceOutToolStripMenuItem.Name = "bounceOutToolStripMenuItem";
+			this.bounceOutToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+			this.bounceOutToolStripMenuItem.Text = "BounceOut";
+			this.bounceOutToolStripMenuItem.Click += new System.EventHandler(this.bounceOutToolStripMenuItem_Click);
+			// 
+			// backOutToolStripMenuItem
+			// 
+			this.backOutToolStripMenuItem.Name = "backOutToolStripMenuItem";
+			this.backOutToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+			this.backOutToolStripMenuItem.Text = "BackOut";
+			this.backOutToolStripMenuItem.Click += new System.EventHandler(this.backOutToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator4
 			// 
@@ -293,20 +381,6 @@
 			this.gotoFrameToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
 			this.gotoFrameToolStripMenuItem.Text = "Goto Frame";
 			// 
-			// setPoseToPreviousToolStripMenuItem
-			// 
-			this.setPoseToPreviousToolStripMenuItem.Name = "setPoseToPreviousToolStripMenuItem";
-			this.setPoseToPreviousToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
-			this.setPoseToPreviousToolStripMenuItem.Text = "Set Pose to Previous Keyframe";
-			this.setPoseToPreviousToolStripMenuItem.Click += new System.EventHandler(this.setPoseToPreviousToolStripMenuItem_Click);
-			// 
-			// setPoseToNextToolStripMenuItem
-			// 
-			this.setPoseToNextToolStripMenuItem.Name = "setPoseToNextToolStripMenuItem";
-			this.setPoseToNextToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
-			this.setPoseToNextToolStripMenuItem.Text = "Set Pose to Next Keyframe";
-			this.setPoseToNextToolStripMenuItem.Click += new System.EventHandler(this.setPoseToNextToolStripMenuItem_Click);
-			// 
 			// TimelineForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -357,5 +431,13 @@
 		private Controls.BitmapButtonControl btn_FastForward;
 		private System.Windows.Forms.ToolStripMenuItem setPoseToPreviousToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem setPoseToNextToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+		private System.Windows.Forms.ToolStripMenuItem changeInterpolationModeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem noneToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem linearToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem quadInOutToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem bounceOutToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem backOutToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem expoInOutToolStripMenuItem;
 	}
 }

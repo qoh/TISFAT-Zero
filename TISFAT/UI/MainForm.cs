@@ -72,10 +72,6 @@ namespace TISFAT
 			Form_Toolbox.Show();
 			Form_Canvas.Show();
 
-			Form_Timeline.Anchor = AnchorStyles.None;
-			Form_Toolbox.Anchor = AnchorStyles.None;
-			Form_Canvas.Anchor = AnchorStyles.None;
-
 			Form_Timeline.Location = new Point(5, 0);
 			Form_Toolbox.Location = new Point(50, Form_Timeline.Location.Y + Form_Timeline.Height + 4);
 			Form_Canvas.Location = new Point(Form_Toolbox.Location.X + Form_Toolbox.Width + 20, Form_Timeline.Location.Y + Form_Timeline.Height + 4);
@@ -95,9 +91,11 @@ namespace TISFAT
 
 		public void Do(IAction action)
 		{
+			if (!action.Do())
+				return;
+
 			UndoList.Push(action);
 			RedoList.Clear();
-			action.Do();
 
 			UpdateUndoRedoButtons();
 		}
@@ -276,9 +274,8 @@ namespace TISFAT
 
 					Form_Canvas.DrawFrame(time * ActiveProject.FPS, true);
 					Image.FromHbitmap(Form_Canvas.TakeScreenshot()).Save(temp + "\\" + n + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
-					n++;
-
 					Application.DoEvents();
+					n++;
 				}
 
 				if (frameCanceled)

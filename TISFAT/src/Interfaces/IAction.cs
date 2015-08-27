@@ -2,8 +2,8 @@
 {
 	public interface IAction
 	{
-		void Do();
+		bool Do();
 
-		void Undo();
+		bool Undo();
 	}
 }

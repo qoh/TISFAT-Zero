@@ -51,6 +51,20 @@ namespace TISFAT
 
 			removeKeyframeToolStripMenuItem.Visible = FrameType == 1 || FrameType == 2;
 			removeKeyframeToolStripMenuItem.Enabled = !insertKeyframeToolStripMenuItem.Enabled;
+
+			toolStripSeparator1.Visible = FrameType == 2;
+			changeInterpolationModeToolStripMenuItem.Visible = FrameType == 2;
+
+			if (FrameType == 2)
+			{
+				noneToolStripMenuItem.Checked = MainTimeline.SelectedKeyframe.InterpMode == Util.EntityInterpolationMode.None;
+				linearToolStripMenuItem.Checked = MainTimeline.SelectedKeyframe.InterpMode == Util.EntityInterpolationMode.Linear;
+				quadInOutToolStripMenuItem.Checked = MainTimeline.SelectedKeyframe.InterpMode == Util.EntityInterpolationMode.QuadInOut;
+				expoInOutToolStripMenuItem.Checked = MainTimeline.SelectedKeyframe.InterpMode == Util.EntityInterpolationMode.ExpoInOut;
+				bounceOutToolStripMenuItem.Checked = MainTimeline.SelectedKeyframe.InterpMode == Util.EntityInterpolationMode.BounceOut;
+				backOutToolStripMenuItem.Checked = MainTimeline.SelectedKeyframe.InterpMode == Util.EntityInterpolationMode.BackOut;
+			}
+
 			if (MainTimeline.SelectedFrameset != null && FrameType == 2)
 				removeKeyframeToolStripMenuItem.Enabled = FrameIndex != MainTimeline.SelectedFrameset.StartTime && FrameIndex != MainTimeline.SelectedFrameset.EndTime;
 
@@ -62,9 +76,8 @@ namespace TISFAT
 				setPoseToPreviousToolStripMenuItem.Enabled = FrameIndex != MainTimeline.SelectedFrameset.StartTime;
 			}
 
-
 			insertFramesetToolStripMenuItem.Visible = FrameType == 0;
-			// TODO: Disable insert frameset if there's not enough space to create a new frameset
+			insertFramesetToolStripMenuItem.Enabled = Program.MainTimeline.CanInsertFrameset();
 
 			removeFramesetToolStripMenuItem.Visible = FrameType == 1 || FrameType == 2;
 			removeFramesetToolStripMenuItem.Enabled = MainTimeline.SelectedLayer.Framesets.Count > 1;
@@ -276,6 +289,42 @@ namespace TISFAT
 		{
 			if (MainTimeline != null)
 				MainTimeline.SetPoseToNext();
+		}
+
+		private void noneToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (MainTimeline != null)
+				MainTimeline.ChangeInterpolationMode(Util.EntityInterpolationMode.None);
+		}
+
+		private void linearToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (MainTimeline != null)
+				MainTimeline.ChangeInterpolationMode(Util.EntityInterpolationMode.Linear);
+		}
+
+		private void quadInOutToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (MainTimeline != null)
+				MainTimeline.ChangeInterpolationMode(Util.EntityInterpolationMode.QuadInOut);
+		}
+
+		private void bounceOutToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (MainTimeline != null)
+				MainTimeline.ChangeInterpolationMode(Util.EntityInterpolationMode.BounceOut);
+		}
+
+		private void backOutToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (MainTimeline != null)
+				MainTimeline.ChangeInterpolationMode(Util.EntityInterpolationMode.BackOut);
+		}
+
+		private void expoInOutToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (MainTimeline != null)
+				MainTimeline.ChangeInterpolationMode(Util.EntityInterpolationMode.ExpoInOut);
 		}
 	}
 }

@@ -28,27 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
-            // 
-            // CanvasForm
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(444, 321);
-            this.ControlBox = false;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "CanvasForm";
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "Canvas";
-            this.Load += new System.EventHandler(this.Canvas_Load);
-            this.Enter += new System.EventHandler(this.CanvasForm_Enter);
-            this.Resize += new System.EventHandler(this.CanvasForm_Resize);
-            this.ResumeLayout(false);
+			this.SuspendLayout();
+			// 
+			// CanvasForm
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoScroll = true;
+			this.CausesValidation = false;
+			this.ClientSize = new System.Drawing.Size(444, 321);
+			this.ControlBox = false;
+			this.DoubleBuffered = true;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
+			this.Name = "CanvasForm";
+			this.Text = "Canvas";
+			this.Load += new System.EventHandler(this.Canvas_Load);
+			this.Scroll += new System.Windows.Forms.ScrollEventHandler(this.CanvasForm_Scroll);
+			this.Enter += new System.EventHandler(this.CanvasForm_Enter);
+			this.Resize += new System.EventHandler(this.CanvasForm_Resize);
+			this.ResumeLayout(false);
 
         }
 
-        #endregion
-    }
+		#endregion
+	}
 }

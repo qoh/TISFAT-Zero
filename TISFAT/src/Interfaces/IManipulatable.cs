@@ -19,7 +19,7 @@
 			NewState = newState;
 		}
 
-		public void Do()
+		public bool Do()
 		{
 			Keyframe keyframe = Program.ActiveProject.Layers[LayerIndex].Framesets[FramesetIndex].Keyframes[KeyframeIndex];
 
@@ -30,9 +30,11 @@
 			Program.MainTimeline.SelectedBlankFrame = -1;
 
 			Program.MainTimeline.GLContext.Invalidate();
+
+			return true;
 		}
 
-		public void Undo()
+		public bool Undo()
 		{
 			Keyframe keyframe = Program.ActiveProject.Layers[LayerIndex].Framesets[FramesetIndex].Keyframes[KeyframeIndex];
 
@@ -43,6 +45,8 @@
 			Program.MainTimeline.SelectedBlankFrame = -1;
 
 			Program.MainTimeline.GLContext.Invalidate();
+
+			return true;
 		}
 	}
 
