@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Windows.Forms;
 
 namespace TISFAT.Util
@@ -15,6 +16,8 @@ namespace TISFAT.Util
 		private static Dictionary<Font, Dictionary<Color, Dictionary<Size, Dictionary<StringAlignment, Dictionary<string, int>>>>> TextRectCache = new Dictionary<Font, Dictionary<Color, Dictionary<Size, Dictionary<StringAlignment, Dictionary<string, int>>>>>();
 		private static Dictionary<string, int> BitmapCache = new Dictionary<string, int>();
 		#endregion
+
+		private static int LightProgram = 0;
 
 		private static Vector2 PointToVector(PointF point)
 		{
@@ -53,6 +56,57 @@ namespace TISFAT.Util
 
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+		}
+
+		public static int MakeShader(string filename, ShaderType type)
+		{
+			string src = File.ReadAllText(filename);
+
+			int shader = GL.CreateShader(type);
+			GL.ShaderSource(shader, src);
+			GL.CompileShader(shader);
+
+			int compiled;
+			GL.GetShader(shader, ShaderParameter.CompileStatus, out compiled);
+
+			if (compiled == 0)
+			{
+				string infoLog = GL.GetShaderInfoLog(shader);
+				MessageBox.Show(infoLog, "Shader compilation failed (" + filename + ")");
+				GL.DeleteShader(shader);
+				return 0;
+			}
+
+			return shader;
+		}
+
+		public static int MakeProgram(string vertFileName, string fragFileName)
+		{
+			int vertShader = MakeShader(vertFileName, ShaderType.VertexShader);
+			int fragShader = MakeShader(fragFileName, ShaderType.FragmentShader);
+
+			int program = GL.CreateProgram();
+
+			GL.AttachShader(program, vertShader);
+			GL.AttachShader(program, fragShader);
+
+			GL.LinkProgram(program);
+
+			GL.DetachShader(program, vertShader);
+			GL.DetachShader(program, fragShader);
+
+			int status;
+			GL.GetProgram(program, GetProgramParameterName.LinkStatus, out status);
+
+			if (status == 0)
+			{
+				string infoLog = GL.GetProgramInfoLog(program);
+				MessageBox.Show(infoLog, "Failed to link shader program");
+				GL.DeleteProgram(program);
+				return 0;
+			}
+			
+			return program;
 		}
 
 		public static int GetCachedTextRect(string text, Size area, Font font, Color color, StringAlignment alignment)
@@ -110,8 +164,6 @@ namespace TISFAT.Util
 		{
 			GL.Begin(PrimitiveType.Lines);
 			GL.Color3(color);
-			//GL.Vertex2(PointToVector(start));
-			//GL.Vertex2(PointToVector(end));
 			GL.Vertex2(Math.Floor(start.X) + 0.5, Math.Floor(start.Y) + 0.5);
 			GL.Vertex2(Math.Floor(end.X) + 0.5, Math.Floor(end.Y) + 0.5);
 			GL.End();
@@ -258,6 +310,23 @@ namespace TISFAT.Util
 			int id = GetCachedTextRect(Text, area, font, color, alignment);
 
 			Bitmap(position, new SizeF(area.Width, area.Height), id);
+		}
+
+		public static void PointLight(PointF position, Color color, Vector3 attenuation, float radius)
+		{
+			if (LightProgram == 0)
+				LightProgram = MakeProgram("Shaders\\PointLight.vert", "Shaders\\PointLight.frag");
+
+			GL.UseProgram(LightProgram);
+
+			GL.Uniform2(GL.GetUniformLocation(LightProgram, "lightPos"), PointToVector(position));
+			GL.Uniform3(GL.GetUniformLocation(LightProgram, "lightColor"), new Vector3(color.R / 255.0f, color.G / 255.0f, color.B / 255.0f));
+			GL.Uniform3(GL.GetUniformLocation(LightProgram, "lightAttenuation"), attenuation);
+			GL.Uniform1(GL.GetUniformLocation(LightProgram, "lightRadius"), radius);
+
+			Rectangle(new PointF(0, 0), new SizeF(Program.ActiveProject.Width, Program.ActiveProject.Height), color);
+
+			GL.UseProgram(0);
 		}
 	}
 }

@@ -32,6 +32,7 @@
 			System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Default Figure", 1);
 			System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Custom Figure", 2);
 			System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Bitmap", 0);
+			System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("Point Light", 3);
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddLayerDialog));
 			this.grp_Properties = new System.Windows.Forms.GroupBox();
 			this.pnl_PropertiesDescription = new System.Windows.Forms.Panel();
@@ -263,10 +264,12 @@
 			listViewItem1.Tag = "StickFigure";
 			listViewItem2.Tag = "CustomFigure";
 			listViewItem3.Tag = "BitmapObject";
+			listViewItem4.Tag = "PointLight";
 			this.lsv_LayerTypes.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1,
             listViewItem2,
-            listViewItem3});
+            listViewItem3,
+            listViewItem4});
 			this.lsv_LayerTypes.Location = new System.Drawing.Point(3, 16);
 			this.lsv_LayerTypes.Name = "lsv_LayerTypes";
 			this.lsv_LayerTypes.Size = new System.Drawing.Size(126, 202);
@@ -283,6 +286,7 @@
 			this.imageList1.Images.SetKeyName(0, "picture.png");
 			this.imageList1.Images.SetKeyName(1, "stickman.png");
 			this.imageList1.Images.SetKeyName(2, "customfig.png");
+			this.imageList1.Images.SetKeyName(3, "light.png");
 			// 
 			// btn_Add
 			// 

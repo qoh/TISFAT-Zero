@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenTK;
+using System;
 using System.Drawing;
 
 namespace TISFAT.Util
@@ -22,40 +23,12 @@ namespace TISFAT.Util
 				return a;
 			return b;
 		}
-
-		private static PointF None(float t, PointF a, PointF b)
-		{
-			return new PointF(None(t, a.X, b.X), None(t, a.Y, b.Y));
-		}
-
-		private static RectangleF None(float t, RectangleF a, RectangleF b)
-		{
-			return new RectangleF(
-				None(t, a.X, b.X),
-				None(t, a.Y, b.Y),
-				None(t, a.Width, b.Width),
-				None(t, a.Height, b.Height));
-		}
 		#endregion
 
 		#region Linear
 		private static float Linear(float t, float a, float b)
 		{
 			return a + (b - a) * t;
-		}
-
-		private static PointF Linear(float t, PointF a, PointF b)
-		{
-			return new PointF(Linear(t, a.X, b.X), Linear(t, a.Y, b.Y));
-		}
-
-		private static RectangleF Linear(float t, RectangleF a, RectangleF b)
-		{
-			return new RectangleF(
-				Linear(t, a.X, b.X),
-				Linear(t, a.Y, b.Y),
-				Linear(t, a.Width, b.Width),
-				Linear(t, a.Height, b.Height));
 		}
 		#endregion
 
@@ -69,21 +42,6 @@ namespace TISFAT.Util
 			t--;
 			return -b / 2.0f * (t * (t - 2.0f) - 1.0f) + a;
 		}
-
-		private static PointF QuadInOut(float t, PointF a, PointF b)
-		{
-			return new PointF(QuadInOut(t, a.X, b.X), QuadInOut(t, a.Y, b.Y));
-		}
-
-
-		private static RectangleF QuadInOut(float t, RectangleF a, RectangleF b)
-		{
-			return new RectangleF(
-				QuadInOut(t, a.X, b.X),
-				QuadInOut(t, a.Y, b.Y),
-				QuadInOut(t, a.Width, b.Width),
-				QuadInOut(t, a.Height, b.Height));
-		}
 		#endregion
 
 		#region ExpoInOut
@@ -96,21 +54,6 @@ namespace TISFAT.Util
 			t--;
 			return b / 2.0f * (-(float)Math.Pow(2.0f, -10.0f * t) + 2.0f) + a;
 		}
-
-		private static PointF ExpoInOut(float t, PointF a, PointF b)
-		{
-			return new PointF(ExpoInOut(t, a.X, b.X), ExpoInOut(t, a.Y, b.Y));
-		}
-
-
-		private static RectangleF ExpoInOut(float t, RectangleF a, RectangleF b)
-		{
-			return new RectangleF(
-				ExpoInOut(t, a.X, b.X),
-				ExpoInOut(t, a.Y, b.Y),
-				ExpoInOut(t, a.Width, b.Width),
-				ExpoInOut(t, a.Height, b.Height));
-		} 
 		#endregion
 
 		#region BounceOut
@@ -138,20 +81,6 @@ namespace TISFAT.Util
 				return b * (7.5625f * t * t + 0.984375f) + a;
 			}
 		}
-
-		private static PointF BounceOut(float t, PointF a, PointF b)
-		{
-			return new PointF(BounceOut(t, a.X, b.X), QuadInOut(t, a.Y, b.Y));
-		}
-
-		private static RectangleF BounceOut(float t, RectangleF a, RectangleF b)
-		{
-			return new RectangleF(
-				BounceOut(t, a.X, b.X),
-				BounceOut(t, a.Y, b.Y),
-				BounceOut(t, a.Width, b.Width),
-				BounceOut(t, a.Height, b.Height));
-		}
 		#endregion
 
 		#region BackOut
@@ -161,20 +90,6 @@ namespace TISFAT.Util
 
 			return b * ((t = t - 1.0f) * t * ((1.70158f + 1.0f) * t + 1.70158f) + 1.0f) + a;
 		}
-
-		private static PointF BackOut(float t, PointF a, PointF b)
-		{
-			return new PointF(BackOut(t, a.X, b.X), QuadInOut(t, a.Y, b.Y));
-		}
-
-		private static RectangleF BackOut(float t, RectangleF a, RectangleF b)
-		{
-			return new RectangleF(
-				BackOut(t, a.X, b.X),
-				BackOut(t, a.Y, b.Y),
-				BackOut(t, a.Width, b.Width),
-				BackOut(t, a.Height, b.Height));
-		} 
 		#endregion
 
 		public static float Interpolate(float t, float a, float b, EntityInterpolationMode mode)
@@ -211,6 +126,20 @@ namespace TISFAT.Util
 				Interpolate(t, a.Y, b.Y, mode),
 				Interpolate(t, a.Width, b.Width, mode),
 				Interpolate(t, a.Height, b.Height, mode));
+		}
+
+		public static Vector3 Interpolate(float t, Vector3 a, Vector3 b, EntityInterpolationMode mode)
+		{
+			return new Vector3(Interpolate(t, a.X, b.X, mode), Interpolate(t, a.Y, b.Y, mode), Interpolate(t, a.Z, b.Z, mode));
+		}
+
+		public static Color Interpolate(float t, Color a, Color b, EntityInterpolationMode mode)
+		{
+			return Color.FromArgb(
+			(int)Interpolate(t, a.A, b.A, mode), 
+			(int)Interpolate(t, a.R, b.R, mode), 
+			(int)Interpolate(t, a.G, b.G, mode), 
+			(int)Interpolate(t, a.B, b.B, mode));
 		}
 	}
 }

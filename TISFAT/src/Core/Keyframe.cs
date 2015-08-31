@@ -39,8 +39,7 @@ namespace TISFAT
 			PrevSelectedBlankFrame = Program.MainTimeline.SelectedBlankFrame;
 			PrevSelectedNullFrame = Program.MainTimeline.SelectedNullFrame;
 
-			Program.MainTimeline.SelectedNullFrame = -1;
-			Program.MainTimeline.SelectedBlankFrame = -1;
+			Program.MainTimeline.ClearSelection();
 			Program.MainTimeline.SelectedKeyframe = AddedFrame;
 
 			TargetFrameset.Keyframes.Add(AddedFrame);

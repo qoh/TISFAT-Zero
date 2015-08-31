@@ -21,7 +21,7 @@ namespace TISFAT.Util
 				Loc.Y < Area.Y + Area.Height;
 		}
 
-		public static bool IsPointAroundPoint(Point A, Point B, int Tolerance)
+		public static bool IsPointNearPoint(Point A, Point B, int Tolerance)
 		{
 			return Math.Pow(B.X - A.X, 2) + Math.Pow(B.Y - A.Y, 2) <= Tolerance * Tolerance;
 		}

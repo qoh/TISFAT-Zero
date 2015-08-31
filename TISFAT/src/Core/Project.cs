@@ -18,12 +18,16 @@ namespace TISFAT
 		public int Width;
 		public int Height;
 
+		public Color BackColor;
+
 		public Project()
 		{
 			Layers = new List<Layer>();
 			LayerCount = new Dictionary<Type, int>();
 			Width = 460;
 			Height = 360;
+
+			BackColor = Color.White;
 		}
 
 		public void Draw(float time, bool render)
@@ -83,6 +87,11 @@ namespace TISFAT
 			writer.Write((double)FPS);
 			writer.Write(Width);
 			writer.Write(Height);
+
+			writer.Write(BackColor.A);
+			writer.Write(BackColor.R);
+			writer.Write(BackColor.G);
+			writer.Write(BackColor.B);
 		}
 
 		public void Read(BinaryReader reader, UInt16 version)
@@ -96,6 +105,13 @@ namespace TISFAT
 				{
 					Width = reader.ReadInt32();
 					Height = reader.ReadInt32();
+
+					byte a = reader.ReadByte();
+					byte r = reader.ReadByte();
+					byte g = reader.ReadByte();
+					byte b = reader.ReadByte();
+
+					BackColor = Color.FromArgb(a, r, g, b);
 				}
 			}
 		} 

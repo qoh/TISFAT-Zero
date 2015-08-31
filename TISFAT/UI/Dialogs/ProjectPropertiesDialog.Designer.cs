@@ -1,4 +1,4 @@
-﻿namespace TISFAT.UI.Dialogs
+﻿namespace TISFAT
 {
 	partial class ProjectPropertiesDialog
 	{
@@ -55,6 +55,7 @@
 			this.btn_OK.TabIndex = 0;
 			this.btn_OK.Text = "OK";
 			this.btn_OK.UseVisualStyleBackColor = true;
+			this.btn_OK.Click += new System.EventHandler(this.btn_OK_Click);
 			// 
 			// btn_Cancel
 			// 
@@ -126,12 +127,11 @@
 			// 
 			// lbl_CanvasColorNumbers
 			// 
-			this.lbl_CanvasColorNumbers.AutoSize = true;
 			this.lbl_CanvasColorNumbers.Location = new System.Drawing.Point(133, 84);
 			this.lbl_CanvasColorNumbers.Name = "lbl_CanvasColorNumbers";
-			this.lbl_CanvasColorNumbers.Size = new System.Drawing.Size(73, 13);
+			this.lbl_CanvasColorNumbers.Size = new System.Drawing.Size(132, 13);
 			this.lbl_CanvasColorNumbers.TabIndex = 11;
-			this.lbl_CanvasColorNumbers.Text = "255, 255, 255";
+			this.lbl_CanvasColorNumbers.Text = "255, 255, 255, 255";
 			// 
 			// lbl_CanvasColor
 			// 
@@ -201,6 +201,7 @@
 			this.Name = "ProjectPropertiesDialog";
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
 			this.Text = "Project Properties";
+			this.Load += new System.EventHandler(this.ProjectPropertiesDialog_Load);
 			((System.ComponentModel.ISupportInitialize)(this.num_CanvasWidth)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_CanvasHeight)).EndInit();
 			this.grp_Canvas.ResumeLayout(false);

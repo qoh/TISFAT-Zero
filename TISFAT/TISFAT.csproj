@@ -63,6 +63,10 @@
     <Compile Include="src\Entities\BitmapObject.State.cs">
       <DependentUpon>BitmapObject.cs</DependentUpon>
     </Compile>
+    <Compile Include="src\Entities\PointLight.cs" />
+    <Compile Include="src\Entities\PointLight.State.cs">
+      <DependentUpon>PointLight.cs</DependentUpon>
+    </Compile>
     <Compile Include="src\Entities\StickFigure.cs" />
     <Compile Include="src\Entities\StickFigure.Joint.cs">
       <DependentUpon>StickFigure.cs</DependentUpon>
@@ -104,6 +108,12 @@
     </Compile>
     <Compile Include="UI\Dialogs\AddLayerDialog.Designer.cs">
       <DependentUpon>AddLayerDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\ColorPickerDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\ColorPickerDialog.Designer.cs">
+      <DependentUpon>ColorPickerDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Dialogs\ProgressDialog.cs">
       <SubType>Form</SubType>
@@ -168,6 +178,9 @@
     <EmbeddedResource Include="UI\Dialogs\AddLayerDialog.resx">
       <DependentUpon>AddLayerDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\ColorPickerDialog.resx">
+      <DependentUpon>ColorPickerDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Dialogs\ProgressDialog.resx">
       <DependentUpon>ProgressDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -206,6 +219,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Shaders\ColorPicker.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Shaders\ColorPicker.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Shaders\PointLight.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Shaders\PointLight.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -253,6 +278,7 @@
     <Content Include="ffmpeg.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\hueBar.png" />
     <None Include="Resources\document_export.png" />
     <None Include="Resources\diskette.png" />
     <None Include="Resources\undo_gray.png" />

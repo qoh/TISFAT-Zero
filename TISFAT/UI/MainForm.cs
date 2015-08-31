@@ -98,6 +98,9 @@ namespace TISFAT
 			RedoList.Clear();
 
 			UpdateUndoRedoButtons();
+
+			if (UndoList.Count % 10 == 0)
+				AutoSave();
 		}
 
 		private void UpdateUndoRedoButtons()
@@ -193,6 +196,11 @@ namespace TISFAT
 
 			SetFileName(filename);
 			ProjectFileName = filename;
+		}
+
+		public void AutoSave()
+		{
+			ProjectSave("autosave.tzp");
 		}
 
 		private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -341,9 +349,9 @@ namespace TISFAT
 
 		private void btn_AddLayer_Click(object sender, EventArgs e)
 		{
-			AddLayerDialog diag = new AddLayerDialog();
+			AddLayerDialog dlg = new AddLayerDialog();
 
-			diag.ShowDialog();
+			dlg.ShowDialog();
 		}
 
 		private void btn_Undo_Click(object sender, EventArgs e)
@@ -354,6 +362,20 @@ namespace TISFAT
 		private void btn_Redo_Click(object sender, EventArgs e)
 		{
 			Redo();
+		}
+
+		private void projectPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ProjectPropertiesDialog dlg = new ProjectPropertiesDialog();
+
+			dlg.ShowDialog();
+		}
+
+		private void openColorPickerToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ColorPickerDialog dlg = new ColorPickerDialog();
+
+			dlg.ShowDialog();
 		}
 	}
 }

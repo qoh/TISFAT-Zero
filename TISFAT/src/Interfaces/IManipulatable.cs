@@ -15,15 +15,15 @@
 			FramesetIndex = l.Framesets.IndexOf(f);
 			KeyframeIndex = f.Keyframes.IndexOf(k);
 
-			OldState = prevState;
-			NewState = newState;
+			OldState = prevState.Copy();
+			NewState = newState.Copy();
 		}
 
 		public bool Do()
 		{
 			Keyframe keyframe = Program.ActiveProject.Layers[LayerIndex].Framesets[FramesetIndex].Keyframes[KeyframeIndex];
 
-			keyframe.State = NewState;
+			keyframe.State = NewState.Copy();
 
 			Program.MainTimeline.SelectedKeyframe = keyframe;
 			Program.MainTimeline.SelectedNullFrame = -1;

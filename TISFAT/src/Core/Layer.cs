@@ -44,7 +44,11 @@ namespace TISFAT
 			Program.ActiveProject.Layers.Add(layer);
 			LayerIndex = Program.ActiveProject.Layers.IndexOf(layer);
 
+			Program.MainTimeline.ClearSelection();
+			Program.MainTimeline.SelectedFrameset = layer.Framesets[0];
+			Program.MainTimeline.SelectedKeyframe = layer.Framesets[0].Keyframes[0];
 			Program.MainTimeline.SelectedLayer = layer;
+
 			Program.MainTimeline.GLContext.Invalidate();
 
 			return true;
@@ -109,8 +113,10 @@ namespace TISFAT
 
 		public bool Do()
 		{
+			Layer L = Program.ActiveProject.Layers[TargetLayerIndex];
+
 			Program.ActiveProject.Layers.RemoveAt(PrevIndex);
-			Program.ActiveProject.Layers.Insert(PrevIndex - 1, Program.ActiveProject.Layers[TargetLayerIndex]);
+			Program.ActiveProject.Layers.Insert(TargetLayerIndex - 1, L);
 
 			Program.MainTimeline.GLContext.Invalidate();
 
