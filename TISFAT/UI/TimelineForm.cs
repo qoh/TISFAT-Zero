@@ -85,7 +85,7 @@ namespace TISFAT
 			toolStripSeparator4.Visible = FrameType != 0;
 
 			moveLayerUpToolStripMenuItem.Enabled = Program.ActiveProject.Layers.IndexOf(MainTimeline.SelectedLayer) > 0;
-			moveLayerDownToolStripMenuItem.Enabled = Program.ActiveProject.Layers.IndexOf(MainTimeline.SelectedLayer) < Program.ActiveProject.Layers.Count;
+			moveLayerDownToolStripMenuItem.Enabled = Program.ActiveProject.Layers.IndexOf(MainTimeline.SelectedLayer) < Program.ActiveProject.Layers.Count - 1;
 
 			cxtm_Timeline.Show(GLContext, Location);
 		}

@@ -25,9 +25,10 @@
 
 			keyframe.State = NewState.Copy();
 
+			Program.MainTimeline.ClearSelection();
+			Program.MainTimeline.SelectedLayer = Program.ActiveProject.Layers[LayerIndex];
+			Program.MainTimeline.SelectedFrameset = Program.ActiveProject.Layers[LayerIndex].Framesets[FramesetIndex];
 			Program.MainTimeline.SelectedKeyframe = keyframe;
-			Program.MainTimeline.SelectedNullFrame = -1;
-			Program.MainTimeline.SelectedBlankFrame = -1;
 
 			Program.MainTimeline.GLContext.Invalidate();
 
@@ -38,11 +39,12 @@
 		{
 			Keyframe keyframe = Program.ActiveProject.Layers[LayerIndex].Framesets[FramesetIndex].Keyframes[KeyframeIndex];
 
-			keyframe.State = OldState;
+			keyframe.State = OldState.Copy();
 
+			Program.MainTimeline.ClearSelection();
+			Program.MainTimeline.SelectedLayer = Program.ActiveProject.Layers[LayerIndex];
+			Program.MainTimeline.SelectedFrameset = Program.ActiveProject.Layers[LayerIndex].Framesets[FramesetIndex];
 			Program.MainTimeline.SelectedKeyframe = keyframe;
-			Program.MainTimeline.SelectedNullFrame = -1;
-			Program.MainTimeline.SelectedBlankFrame = -1;
 
 			Program.MainTimeline.GLContext.Invalidate();
 

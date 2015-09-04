@@ -155,8 +155,11 @@ namespace TISFAT
 			StickFigure defaultFig = new StickFigure();
 			ActiveProject.Layers.Add(defaultFig.CreateDefaultLayer(0, 20, new LayerCreationArgs(0, "")));
 
-			if(MainTimeline != null)
+			if (MainTimeline != null)
+			{
+				MainTimeline.ClearSelection();
 				MainTimeline.GLContext.Invalidate();
+			}
 		}
 
 		public void ProjectOpen(string filename)

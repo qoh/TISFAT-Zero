@@ -23,6 +23,8 @@ namespace TISFAT.Entities
 			{
 				State state = new State();
 				state.Bounds = new RectangleF(Bounds.Location, Bounds.Size);
+				state.TexHeight = this.TexHeight;
+				state.TexWidth = this.TexWidth;
 				return state;
 			}
 

@@ -113,6 +113,9 @@ namespace TISFAT
 
 		public bool Do()
 		{
+			if (TargetLayerIndex - 1 < 0)
+				return false;
+
 			Layer L = Program.ActiveProject.Layers[TargetLayerIndex];
 
 			Program.ActiveProject.Layers.RemoveAt(PrevIndex);
@@ -147,6 +150,9 @@ namespace TISFAT
 
 		public bool Do()
 		{
+			if (PrevIndex + 1 > Program.ActiveProject.Layers.Count - 1)
+				return false;
+
 			Program.ActiveProject.Layers.RemoveAt(PrevIndex);
 			Program.ActiveProject.Layers.Insert(PrevIndex + 1, Program.ActiveProject.Layers[TargetLayerIndex]);
 

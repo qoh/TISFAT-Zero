@@ -18,6 +18,7 @@ namespace TISFAT
 		public bool IsDragging = false;
 
 		public uint KeyframeDragStartTime;
+		public uint FramesetDragStartTime;
 
 		private float FrameNum;
 		private DateTime? PlayStart;
@@ -353,6 +354,7 @@ namespace TISFAT
 				}
 				else if (SelectedBlankFrame != -1)
 				{
+					FramesetDragStartTime = SelectedFrameset.Keyframes[0].Time;
 					IsDraggingFrameset = true;
 				}
 			}
@@ -386,7 +388,7 @@ namespace TISFAT
 				if (IsMouseDown)
 					IsDragging = true;
 
-				if (IsDraggingKeyframe)
+				if (IsDraggingKeyframe) // Keyframe stuff
 				{
 					uint TargetTime = (uint)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
 
@@ -426,7 +428,7 @@ namespace TISFAT
 					Resize();
 					GLContext.Invalidate();
 				}
-				else if (IsDraggingFrameset)
+				else if (IsDraggingFrameset) // Frameset stuff
 				{
 					int StartTime = (int)Math.Max(0, Math.Floor((MouseDragStart.X - 79.0f) / 9.0f));
 					int TargetTime = (int)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
@@ -469,7 +471,7 @@ namespace TISFAT
 					Resize();
 					GLContext.Invalidate();
 				}
-				else if (IsDragging && location.Y < 16)
+				else if (IsDragging)
 				{
 					if (PlayStart != null)
 						PlayStart = DateTime.Now;
@@ -478,7 +480,7 @@ namespace TISFAT
 					GLContext.Invalidate();
 				}
 			}
-			else
+			else // Do stuff for whether you're hovering over a visibility button
 			{
 				int y = locationActual.Y + Program.Form_Main.Form_Timeline.VScrollVal;
 
@@ -504,12 +506,12 @@ namespace TISFAT
 
 		public void MouseUp(Point Location, MouseButtons button)
 		{
-			if (SelectedKeyframe != null)
+			if (button == MouseButtons.Left)
 			{
-				if (KeyframeDragStartTime != SelectedKeyframe.Time)
-				{
+				if (IsDraggingKeyframe && KeyframeDragStartTime != SelectedKeyframe.Time)
 					Program.Form_Main.Do(new KeyframeMoveAction(SelectedLayer, SelectedFrameset, SelectedKeyframe, KeyframeDragStartTime));
-				}
+				else if (IsDraggingFrameset && FramesetDragStartTime != SelectedFrameset.Keyframes[0].Time)
+					Program.Form_Main.Do(new FramesetMoveAction(SelectedLayer, SelectedFrameset, (int)FramesetDragStartTime, (int)SelectedFrameset.Keyframes[0].Time));
 			}
 
 			if (Location.X > 80 && Location.Y < (Program.ActiveProject.Layers.Count * 16) + 16 && 
@@ -567,9 +569,7 @@ namespace TISFAT
 			if (SelectedFrameset.Keyframes.IndexOf(SelectedKeyframe) < 1)
 				return;
 
-			SelectedKeyframe.State = SelectedFrameset.Keyframes[SelectedFrameset.Keyframes.IndexOf(SelectedKeyframe) - 1].State.Copy();
-
-			GLContext.Invalidate();
+			Program.Form_Main.Do(new ManipulatableUpdateAction(SelectedLayer, SelectedFrameset, SelectedKeyframe, SelectedKeyframe.State, SelectedFrameset.Keyframes[SelectedFrameset.Keyframes.IndexOf(SelectedKeyframe) - 1].State));
 		}
 
 		public void SetPoseToNext()
@@ -577,9 +577,7 @@ namespace TISFAT
 			if (SelectedFrameset.Keyframes.IndexOf(SelectedKeyframe) == SelectedFrameset.Keyframes.Count - 1)
 				return;
 
-			SelectedKeyframe.State = SelectedFrameset.Keyframes[SelectedFrameset.Keyframes.IndexOf(SelectedKeyframe) + 1].State.Copy();
-
-			GLContext.Invalidate();
+			Program.Form_Main.Do(new ManipulatableUpdateAction(SelectedLayer, SelectedFrameset, SelectedKeyframe, SelectedKeyframe.State, SelectedFrameset.Keyframes[SelectedFrameset.Keyframes.IndexOf(SelectedKeyframe) + 1].State));
 		}
 
 		public bool CanInsertFrameset()
@@ -608,6 +606,9 @@ namespace TISFAT
 
 		public void InsertFrameset()
 		{
+			if (!Program.MainTimeline.CanInsertFrameset())
+				return;
+
 			Program.Form_Main.Do(new FramesetAddAction(SelectedLayer));
 		}
 
