@@ -164,6 +164,9 @@
     <Compile Include="UI\PropertiesForm.Designer.cs">
       <DependentUpon>PropertiesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\TimelineSelection.cs">
+      <DependentUpon>Timeline.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="UI\CanvasForm.resx">
       <DependentUpon>CanvasForm.cs</DependentUpon>
     </EmbeddedResource>
