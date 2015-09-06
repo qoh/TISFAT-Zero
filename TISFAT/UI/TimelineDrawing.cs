@@ -104,8 +104,8 @@ namespace TISFAT
 					}
 
 					// Selected blank frame
-					if(SelectedFrameset == frameset && SelectedBlankFrame != -1)
-						Drawing.Rectangle(new PointF(FrameToPixels(SelectedBlankFrame), y), new SizeF(9, 16), Color.Red);
+					if(SelectedFrameset == frameset && selectedItems.Contains(SelectionType.BlankFrame) && selectedTime != -1)
+						Drawing.Rectangle(new PointF(FrameToPixels(selectedTime), y), new SizeF(9, 16), Color.Red);
 
 					// Frameset line
 					//Drawing.Line(
@@ -115,8 +115,8 @@ namespace TISFAT
 					//);
 				}
 
-				if (SelectedLayer == Layers[i] && SelectedNullFrame != -1)
-					Drawing.Rectangle(new PointF(FrameToPixels(SelectedNullFrame), y), new SizeF(9, 16), Color.Red);
+				if (SelectedLayer == Layers[i] && selectedItems.Contains(SelectionType.NullFrame) && selectedTime != -1)
+					Drawing.Rectangle(new PointF(FrameToPixels(selectedTime), y), new SizeF(9, 16), Color.Red);
 			}
 		}
 
@@ -133,7 +133,7 @@ namespace TISFAT
 
 		public void DrawPlayhead()
 		{
-			if (SelectedKeyframe != null || SelectedBlankFrame != -1 || SelectedNullFrame != -1)
+			if (selectedTime != -1)
 				return;
 
 			int tx = 79 + (int)Math.Floor(GetCurrentFrame() * 9);

@@ -45,9 +45,7 @@ namespace TISFAT
 			LayerIndex = Program.ActiveProject.Layers.IndexOf(layer);
 
 			Program.MainTimeline.ClearSelection();
-			Program.MainTimeline.SelectedFrameset = layer.Framesets[0];
-			Program.MainTimeline.SelectedKeyframe = layer.Framesets[0].Keyframes[0];
-			Program.MainTimeline.SelectedLayer = layer;
+			Program.MainTimeline.selectedItems.Select(layer, layer.Framesets[0], layer.Framesets[0].Keyframes[0]);
 
 			Program.MainTimeline.GLContext.Invalidate();
 
@@ -58,10 +56,9 @@ namespace TISFAT
 		{
 			Program.ActiveProject.Layers.RemoveAt(LayerIndex);
 			Program.ActiveProject.LayerCount[figureType]--;
-			Program.MainTimeline.SelectedLayer = null;
+			Program.MainTimeline.ClearSelection();
 
 			Program.MainTimeline.GLContext.Invalidate();
-
 			return true;
 		}
 	}
@@ -81,10 +78,11 @@ namespace TISFAT
 		{
 			Program.ActiveProject.Layers.RemoveAt(RemovedLayerIndex);
 			Program.ActiveProject.LayerCount[RemovedLayer.Data.GetType()]--;
-			Program.MainTimeline.SelectedLayer = RemovedLayer;
+
+			Program.MainTimeline.ClearSelection();
+			Program.MainTimeline.selectedItems.Select(RemovedLayer);
 
 			Program.MainTimeline.GLContext.Invalidate();
-
 			return true;
 		}
 
@@ -92,10 +90,9 @@ namespace TISFAT
 		{
 			Program.ActiveProject.Layers.Insert(RemovedLayerIndex, RemovedLayer);
 			Program.ActiveProject.LayerCount[RemovedLayer.Data.GetType()]++;
-			Program.MainTimeline.SelectedLayer = null;
+			Program.MainTimeline.ClearSelection();
 
 			Program.MainTimeline.GLContext.Invalidate();
-
 			return true;
 		}
 	}

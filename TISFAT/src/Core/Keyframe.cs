@@ -17,8 +17,7 @@ namespace TISFAT
 		int AddedFrameIndex;
 
 		Keyframe AddedFrame;
-		int PrevSelectedNullFrame;
-		int PrevSelectedBlankFrame;
+		int PrevSelectedFrame;
 
 		public KeyframeAddAction(Layer l, Frameset f, uint targ, IEntityState state)
 		{
@@ -36,13 +35,10 @@ namespace TISFAT
 
 			AddedFrame = new Keyframe(Time, State.Copy(), EntityInterpolationMode.Linear);
 
-			PrevSelectedBlankFrame = Program.MainTimeline.SelectedBlankFrame;
-			PrevSelectedNullFrame = Program.MainTimeline.SelectedNullFrame;
+			PrevSelectedFrame = Program.MainTimeline.selectedTime;
 
 			Program.MainTimeline.ClearSelection();
-			Program.MainTimeline.SelectedLayer = TargetLayer;
-			Program.MainTimeline.SelectedFrameset = TargetFrameset;
-			Program.MainTimeline.SelectedKeyframe = AddedFrame;
+			Program.MainTimeline.selectedItems.Select(TargetLayer, TargetFrameset, AddedFrame);
 
 			TargetFrameset.Keyframes.Add(AddedFrame);
 			TargetFrameset.Keyframes = TargetFrameset.Keyframes.OrderBy(o => o.Time).ToList();
@@ -61,12 +57,10 @@ namespace TISFAT
 			TargetFrameset.Keyframes.RemoveAt(AddedFrameIndex);
 
 			Program.MainTimeline.ClearSelection();
-			Program.MainTimeline.SelectedNullFrame = PrevSelectedNullFrame;
-			Program.MainTimeline.SelectedBlankFrame = PrevSelectedBlankFrame;
+			Program.MainTimeline.selectedItems.Select(SelectionType.BlankFrame, PrevSelectedFrame);
 
 			AddedFrame = null;
-			PrevSelectedNullFrame = -1;
-			PrevSelectedBlankFrame = -1;
+			PrevSelectedFrame = -1;
 
 			Program.MainTimeline.GLContext.Invalidate();
 
@@ -105,9 +99,10 @@ namespace TISFAT
 			TargetKeyframe.Time = NewTime;
 			TargetFrameset.Keyframes = TargetFrameset.Keyframes.OrderBy(o => o.Time).ToList();
 
-			Program.MainTimeline.SelectedKeyframe = TargetKeyframe;
-			Program.MainTimeline.GLContext.Invalidate();
+			Program.MainTimeline.ClearSelection();
+			Program.MainTimeline.selectedItems.Select(Program.ActiveProject.Layers[LayerIndex], TargetFrameset, TargetKeyframe);
 
+			Program.MainTimeline.GLContext.Invalidate();
 			return true;
 		}
 
@@ -118,9 +113,10 @@ namespace TISFAT
 			TargetKeyframe.Time = OriginalTime;
 			TargetFrameset.Keyframes = TargetFrameset.Keyframes.OrderBy(o => o.Time).ToList();
 
-			Program.MainTimeline.SelectedKeyframe = TargetKeyframe;
-			Program.MainTimeline.GLContext.Invalidate();
+			Program.MainTimeline.ClearSelection();
+			Program.MainTimeline.selectedItems.Select(Program.ActiveProject.Layers[LayerIndex], TargetFrameset, TargetKeyframe);
 
+			Program.MainTimeline.GLContext.Invalidate();
 			return true;
 		}
 	}
@@ -149,9 +145,8 @@ namespace TISFAT
 			TargetFrameset.Keyframes.RemoveAt(RemovedKeyframeIndex);
 			TargetFrameset.Keyframes = TargetFrameset.Keyframes.OrderBy(o => o.Time).ToList();
 
-			Program.MainTimeline.SelectedNullFrame = -1;
-			Program.MainTimeline.SelectedBlankFrame = (int)RemovedKeyframe.Time;
-			Program.MainTimeline.SelectedKeyframe = null;
+			Program.MainTimeline.ClearSelection();
+			Program.MainTimeline.selectedItems.Select(SelectionType.BlankFrame, (int)RemovedKeyframe.Time);
 
 			Program.MainTimeline.GLContext.Invalidate();
 
@@ -165,9 +160,8 @@ namespace TISFAT
 			TargetFrameset.Keyframes.Insert(RemovedKeyframeIndex, RemovedKeyframe);
 			TargetFrameset.Keyframes = TargetFrameset.Keyframes.OrderBy(o => o.Time).ToList();
 
-			Program.MainTimeline.SelectedNullFrame = -1;
-			Program.MainTimeline.SelectedBlankFrame = -1;
-			Program.MainTimeline.SelectedKeyframe = RemovedKeyframe;
+			Program.MainTimeline.ClearSelection();
+			Program.MainTimeline.selectedItems.Select(Program.ActiveProject.Layers[LayerIndex], TargetFrameset, RemovedKeyframe);
 
 			Program.MainTimeline.GLContext.Invalidate();
 

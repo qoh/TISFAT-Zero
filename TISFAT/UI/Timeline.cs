@@ -30,11 +30,25 @@ namespace TISFAT
 		public int HoveredLayerIndex = -1;
 		public bool HoveredLayerOverVis = false;
 
-		public Layer SelectedLayer;
-		public Frameset SelectedFrameset;
-		public Keyframe SelectedKeyframe;
-		public int SelectedBlankFrame = -1;
-		public int SelectedNullFrame = -1;
+		public Layer SelectedLayer
+		{
+			get { return selectedItems.GetSelected(SelectionType.Layer) as Layer; }
+		}
+		public Frameset SelectedFrameset
+		{
+			get { return selectedItems.GetSelected(SelectionType.Frameset) as Frameset; }
+		}
+		public Keyframe SelectedKeyframe
+		{
+			get { return selectedItems.GetSelected(SelectionType.Keyframe) as Keyframe; }
+		}
+
+		public int selectedTime
+		{
+			get { return selectedItems.Time; }
+		}
+
+		public TimelineSelection selectedItems = new TimelineSelection();
 
 		public int VisibilityBitmapOn;
 		public int VisibilityBitmapOn_hover;
@@ -109,7 +123,7 @@ namespace TISFAT
 		public void SeekStart()
 		{
 			FrameNum = 0.0f;
-			SelectedKeyframe = null;
+			ClearSelection();
 			GLContext.Invalidate();
 		}
 
@@ -120,7 +134,7 @@ namespace TISFAT
 			foreach (Layer layer in project.Layers)
 				FrameNum = Math.Min(FrameNum, layer.Framesets[0].StartTime);
 
-			SelectedKeyframe = null;
+			ClearSelection();
 			GLContext.Invalidate();
 		}
 
@@ -153,14 +167,8 @@ namespace TISFAT
 
 		public float GetCurrentFrame()
 		{
-			if (SelectedKeyframe != null)
-				return SelectedKeyframe.Time;
-
-			if (SelectedBlankFrame != -1)
-				return SelectedBlankFrame;
-
-			if (SelectedNullFrame != -1)
-				return SelectedNullFrame;
+			if (selectedTime != -1)
+				return selectedTime;
 
 			float frame;
 
@@ -174,13 +182,13 @@ namespace TISFAT
 
 		public int GetFrameType()
 		{
-			if (SelectedKeyframe != null)
+			if (selectedItems.Contains(SelectionType.Keyframe))
 				return 2;
 
-			if (SelectedBlankFrame != -1)
+			if (selectedItems.Contains(SelectionType.BlankFrame))
 				return 1;
 
-			if (SelectedNullFrame != -1)
+			if (selectedItems.Contains(SelectionType.NullFrame))
 				return 0;
 
 			return -1;
@@ -194,11 +202,7 @@ namespace TISFAT
 
 		public void ClearSelection()
 		{
-			SelectedLayer = null;
-			SelectedFrameset = null;
-			SelectedKeyframe = null;
-			SelectedBlankFrame = -1;
-			SelectedNullFrame = -1;
+			selectedItems.Clear();
 		}
 
 		public void SelectFrame(Point location)
@@ -233,28 +237,26 @@ namespace TISFAT
 				{
 					if (keyframe.Time == frameIndex)
 					{
-						SelectedLayer = layer;
-						SelectedFrameset = frameset;
-						SelectedKeyframe = keyframe;
-						GLContext.Invalidate();
+						selectedItems.Select(layer, frameset, keyframe);
 
+						GLContext.Invalidate();
 						return;
 					}
 				}
 
 				if (frameIndex > frameset.StartTime && frameIndex < frameset.EndTime)
 				{
-					SelectedLayer = layer;
-					SelectedFrameset = frameset;
-					SelectedBlankFrame = frameIndex;
-					GLContext.Invalidate();
+					selectedItems.Select(SelectionType.BlankFrame, frameIndex);
+					selectedItems.Select(layer, frameset);
 
+					GLContext.Invalidate();
 					return;
 				}
 			}
 
-			SelectedLayer = layer;
-			SelectedNullFrame = frameIndex;
+			selectedItems.Select(SelectionType.NullFrame, frameIndex);
+			selectedItems.Select(layer);
+
 			GLContext.Invalidate();
 		}
 
@@ -352,7 +354,7 @@ namespace TISFAT
 					KeyframeDragStartTime = SelectedKeyframe.Time;
 					IsDraggingKeyframe = true;
 				}
-				else if (SelectedBlankFrame != -1)
+				else if (selectedItems.Contains(SelectionType.BlankFrame) && selectedTime != -1)
 				{
 					FramesetDragStartTime = SelectedFrameset.Keyframes[0].Time;
 					IsDraggingFrameset = true;
@@ -463,7 +465,7 @@ namespace TISFAT
 
 					SelectedLayer.Framesets = SelectedLayer.Framesets.OrderBy(o => o.EndTime).ToList();
 
-					SelectedBlankFrame = (int)TargetTime;
+					selectedItems.Select(SelectionType.BlankFrame, (int)TargetTime);
 
 					MouseDragStart = location;
 
@@ -582,7 +584,10 @@ namespace TISFAT
 
 		public bool CanInsertFrameset()
 		{
-			if (SelectedNullFrame > SelectedLayer.Framesets[SelectedLayer.Framesets.Count - 1].EndTime)
+			if (!selectedItems.Contains(SelectionType.NullFrame))
+				return false;
+
+			if (selectedTime > SelectedLayer.Framesets[SelectedLayer.Framesets.Count - 1].EndTime)
 				return true;
 			else
 			{
@@ -590,14 +595,14 @@ namespace TISFAT
 
 				foreach(Frameset fs in SelectedLayer.Framesets)
 				{
-					if (fs.EndTime < SelectedNullFrame)
+					if (fs.EndTime < selectedTime)
 						continue;
 
 					nextTime = fs.StartTime;
 					break;
 				}
 
-				if (nextTime > -1 && nextTime >= SelectedNullFrame + 2)
+				if (nextTime > -1 && nextTime >= selectedTime + 2)
 					return true;
 			}
 

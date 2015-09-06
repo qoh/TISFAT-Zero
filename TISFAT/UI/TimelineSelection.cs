@@ -35,42 +35,37 @@ namespace TISFAT
 
 		public TimelineSelection() { }
 
-		public void Select(ISaveable obj)
-		{
-			SelectionType type = SelectionType.None;
-
-			if (obj.GetType() == typeof(Layer))
-			{
-				SelectedLayer = obj as Layer;
-				type = SelectionType.Layer;
-			}
-			else if (obj.GetType() == typeof(Frameset))
-			{
-				SelectedFrameset = obj as Frameset;
-				type = SelectionType.Frameset;
-			}
-			else if (obj.GetType() == typeof(Keyframe))
-			{
-				SelectedKeyframe = obj as Keyframe;
-				type = SelectionType.Keyframe;
-
-				if ((SelectionType.BlankFrame & Current) != 0)
-					Current &= ~SelectionType.BlankFrame;
-				if ((SelectionType.NullFrame & Current) != 0)
-					Current &= ~SelectionType.NullFrame;
-			}
-			else
-				throw new ArgumentException("Attempting to select an unknown type!");
-
-			if ((type & Current) == 0)
-				Current |= type;
-		}
-
 		public void Select(params ISaveable[] objs)
 		{
 			foreach(ISaveable obj in objs)
 			{
-				Select(obj);
+				SelectionType type = SelectionType.None;
+
+				if (obj.GetType() == typeof(Layer))
+				{
+					SelectedLayer = obj as Layer;
+					type = SelectionType.Layer;
+				}
+				else if (obj.GetType() == typeof(Frameset))
+				{
+					SelectedFrameset = obj as Frameset;
+					type = SelectionType.Frameset;
+				}
+				else if (obj.GetType() == typeof(Keyframe))
+				{
+					SelectedKeyframe = obj as Keyframe;
+					type = SelectionType.Keyframe;
+
+					if ((SelectionType.BlankFrame & Current) != 0)
+						Current &= ~SelectionType.BlankFrame;
+					if ((SelectionType.NullFrame & Current) != 0)
+						Current &= ~SelectionType.NullFrame;
+				}
+				else
+					throw new ArgumentException("Attempting to select an unknown type!");
+
+				if ((type & Current) == 0)
+					Current |= type;
 			}
 		}
 
