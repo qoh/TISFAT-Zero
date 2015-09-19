@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TISFAT</RootNamespace>
     <AssemblyName>TISFAT</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,9 +37,9 @@
     <ApplicationIcon>Resources\T0.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="mscorlib">
-      <HintPath>/usr/lib/mono/4.0/mscorlib.dll</HintPath>
-    </Reference>
+  	<Reference Include="mscorlib">
++      <HintPath>/usr/lib/mono/4.0/mscorlib.dll</HintPath>
++    </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.1.1.1589.5942\lib\NET40\OpenTK.dll</HintPath>
       <Private>True</Private>
@@ -46,6 +47,7 @@
     <Reference Include="OpenTK.GLControl, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.GLControl.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -57,27 +59,77 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\Core\Frameset.cs" />
+    <Compile Include="src\Entities\BitmapObject.cs" />
+    <Compile Include="src\Entities\BitmapObject.State.cs">
+      <DependentUpon>BitmapObject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\Entities\PointLight.cs" />
+    <Compile Include="src\Entities\PointLight.State.cs">
+      <DependentUpon>PointLight.cs</DependentUpon>
+    </Compile>
     <Compile Include="src\Entities\StickFigure.cs" />
     <Compile Include="src\Entities\StickFigure.Joint.cs">
       <DependentUpon>StickFigure.cs</DependentUpon>
     </Compile>
     <Compile Include="src\Entities\StickFigure.Joint.State.cs">
-      <DependentUpon>StickFigure.Joint.cs</DependentUpon>
+      <DependentUpon>StickFigure.cs</DependentUpon>
     </Compile>
     <Compile Include="src\Entities\StickFigure.State.cs">
       <DependentUpon>StickFigure.cs</DependentUpon>
     </Compile>
+    <Compile Include="src\Interfaces\IAction.cs" />
     <Compile Include="src\Interfaces\IManipulatable.cs" />
     <Compile Include="src\Util\Drawing.cs" />
     <Compile Include="src\Util\FileFormat.cs" />
+    <Compile Include="src\Util\MathUtil.cs" />
     <Compile Include="UI\CanvasForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\CanvasForm.Designer.cs">
       <DependentUpon>CanvasForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\BitmapButtonControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BitmapButtonControl.Designer.cs">
+      <DependentUpon>BitmapButtonControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\ImageListDropDownControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\SeparatorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\SeparatorControl.Designer.cs">
+      <DependentUpon>SeparatorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\AddLayerDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\AddLayerDialog.Designer.cs">
+      <DependentUpon>AddLayerDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\ColorPickerDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\ColorPickerDialog.Designer.cs">
+      <DependentUpon>ColorPickerDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\ProgressDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\ProgressDialog.Designer.cs">
+      <DependentUpon>ProgressDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\ProjectPropertiesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\ProjectPropertiesDialog.Designer.cs">
+      <DependentUpon>ProjectPropertiesDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\MainForm.cs">
       <SubType>Form</SubType>
@@ -93,18 +145,54 @@
     <Compile Include="src\Interfaces\ISaveable.cs" />
     <Compile Include="src\Core\Layer.cs" />
     <Compile Include="src\Util\Interpolation.cs" />
+    <Compile Include="UI\StickEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\StickEditorForm.Designer.cs">
+      <DependentUpon>StickEditorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Timeline.cs" />
     <Compile Include="UI\TimelineDrawing.cs">
       <DependentUpon>Timeline.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\ToolboxForm.cs">
+    <Compile Include="UI\TimelineForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\ToolboxForm.Designer.cs">
-      <DependentUpon>ToolboxForm.cs</DependentUpon>
+    <Compile Include="UI\TimelineForm.Designer.cs">
+      <DependentUpon>TimelineForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PropertiesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PropertiesForm.Designer.cs">
+      <DependentUpon>PropertiesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\TimelineSelection.cs">
+      <DependentUpon>Timeline.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="UI\CanvasForm.resx">
       <DependentUpon>CanvasForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\BitmapButtonControl.resx">
+      <DependentUpon>BitmapButtonControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\ImageListDropDownControl.resx">
+      <DependentUpon>ImageListDropDownControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\SeparatorControl.resx">
+      <DependentUpon>SeparatorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\AddLayerDialog.resx">
+      <DependentUpon>AddLayerDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\ColorPickerDialog.resx">
+      <DependentUpon>ColorPickerDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\ProgressDialog.resx">
+      <DependentUpon>ProgressDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\ProjectPropertiesDialog.resx">
+      <DependentUpon>ProjectPropertiesDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -119,8 +207,14 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UI\ToolboxForm.resx">
-      <DependentUpon>ToolboxForm.cs</DependentUpon>
+    <EmbeddedResource Include="UI\StickEditorForm.resx">
+      <DependentUpon>StickEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\TimelineForm.resx">
+      <DependentUpon>TimelineForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PropertiesForm.resx">
+      <DependentUpon>PropertiesForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -132,6 +226,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Shaders\ColorPicker.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Shaders\ColorPicker.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Shaders\PointLight.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Shaders\PointLight.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -162,6 +268,86 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\T0.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eye.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eye-off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eye-hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eye-off-hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ffmpeg.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\hueBar.png" />
+    <None Include="Resources\document_export.png" />
+    <None Include="Resources\diskette.png" />
+    <None Include="Resources\undo_gray.png" />
+    <None Include="Resources\redo_gray.png" />
+    <None Include="Resources\page_white.png" />
+    <None Include="Resources\folder.png" />
+    <None Include="Resources\undo.png" />
+    <None Include="Resources\stickman.png" />
+    <None Include="Resources\save_as.png" />
+    <None Include="Resources\ruler.png" />
+    <None Include="Resources\redo.png" />
+    <None Include="Resources\preferences.png" />
+    <None Include="Resources\picture_edit.png" />
+    <None Include="Resources\picture_delete.png" />
+    <None Include="Resources\picture_add.png" />
+    <None Include="Resources\picture.png" />
+    <None Include="Resources\magnifier_zoom_out.png" />
+    <None Include="Resources\magnifier_zoom_in.png" />
+    <None Include="Resources\magnifier.png" />
+    <None Include="Resources\lock_open.png" />
+    <None Include="Resources\lock.png" />
+    <None Include="Resources\layers.png" />
+    <None Include="Resources\layer_transparent.png" />
+    <None Include="Resources\layer_to_image_size.png" />
+    <None Include="Resources\layer_stack_arrange_back.png" />
+    <None Include="Resources\layer_stack_arrange.png" />
+    <None Include="Resources\layer_resize_actual.png" />
+    <None Include="Resources\layer_resize.png" />
+    <None Include="Resources\layer_remove.png" />
+    <None Include="Resources\layer_redraw.png" />
+    <None Include="Resources\layer_raster_3d.png" />
+    <None Include="Resources\layer_raster.png" />
+    <None Include="Resources\layer_mask.png" />
+    <None Include="Resources\layer_label.png" />
+    <None Include="Resources\layer_import.png" />
+    <None Include="Resources\layer_group.png" />
+    <None Include="Resources\layer_grid.png" />
+    <None Include="Resources\layer_export.png" />
+    <None Include="Resources\layer_edit.png" />
+    <None Include="Resources\layer_delete.png" />
+    <None Include="Resources\layer_arrange_back.png" />
+    <None Include="Resources\layer_arrange.png" />
+    <None Include="Resources\layer_add.png" />
+    <None Include="Resources\layer.png" />
+    <None Include="Resources\label.png" />
+    <None Include="Resources\grid.png" />
+    <None Include="Resources\eye_half.png" />
+    <None Include="Resources\eye_close.png" />
+    <None Include="Resources\control_stop_blue.png" />
+    <None Include="Resources\control_stop.png" />
+    <None Include="Resources\control_start_blue.png" />
+    <None Include="Resources\control_start.png" />
+    <None Include="Resources\control_rewind_blue.png" />
+    <None Include="Resources\control_rewind.png" />
+    <None Include="Resources\control_play_blue.png" />
+    <None Include="Resources\control_play.png" />
+    <None Include="Resources\control_pause_blue.png" />
+    <None Include="Resources\control_pause.png" />
+    <None Include="Resources\control_fastforward_blue.png" />
+    <None Include="Resources\control_fastforward.png" />
+    <None Include="Resources\control_end_blue.png" />
+    <None Include="Resources\control_end.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
