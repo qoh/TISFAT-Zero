@@ -64,9 +64,17 @@
     <Compile Include="src\Entities\BitmapObject.State.cs">
       <DependentUpon>BitmapObject.cs</DependentUpon>
     </Compile>
+    <Compile Include="src\Entities\LineObject.cs" />
+    <Compile Include="src\Entities\LineObject.State.cs">
+      <DependentUpon>LineObject.cs</DependentUpon>
+    </Compile>
     <Compile Include="src\Entities\PointLight.cs" />
     <Compile Include="src\Entities\PointLight.State.cs">
       <DependentUpon>PointLight.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\Entities\RectObject.cs" />
+    <Compile Include="src\Entities\RectObject.State.cs">
+      <DependentUpon>RectObject.cs</DependentUpon>
     </Compile>
     <Compile Include="src\Entities\StickFigure.cs" />
     <Compile Include="src\Entities\StickFigure.Joint.cs">
@@ -78,6 +86,8 @@
     <Compile Include="src\Entities\StickFigure.State.cs">
       <DependentUpon>StickFigure.cs</DependentUpon>
     </Compile>
+    <Compile Include="src\Entities\TextObject.cs" />
+    <Compile Include="src\Entities\TextObject.State.cs" />
     <Compile Include="src\Interfaces\IAction.cs" />
     <Compile Include="src\Interfaces\IManipulatable.cs" />
     <Compile Include="src\Util\Drawing.cs" />

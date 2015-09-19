@@ -7,16 +7,21 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
+using TISFAT.Entities;
 
 namespace TISFAT.Util
 {
 	public static class Drawing
 	{
 		#region CACHE MONSTERS INSIDE PLEASE NO STAY IN THE CAGE
-		private static Dictionary<Font, Dictionary<Color, Dictionary<Size, Dictionary<StringAlignment, Dictionary<string, int>>>>> TextRectCache = new Dictionary<Font, Dictionary<Color, Dictionary<Size, Dictionary<StringAlignment, Dictionary<string, int>>>>>();
+		private static Dictionary<Font, Dictionary<Color, Dictionary<SizeF, Dictionary<StringAlignment, Dictionary<string, int>>>>> TextRectCache = new Dictionary<Font, Dictionary<Color, Dictionary<SizeF, Dictionary<StringAlignment, Dictionary<string, int>>>>>();
 		private static Dictionary<string, int> BitmapCache = new Dictionary<string, int>();
 		#endregion
 
+		private static bool ShadowsInit = false;
+
+		private static int ShadowsFBO = 0;
+		private static int ShadowsTexture = 0;
 		private static int LightProgram = 0;
 
 		private static Vector2 PointToVector(PointF point)
@@ -56,6 +61,8 @@ namespace TISFAT.Util
 
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+
+			GL.BindTexture(TextureTarget.Texture2D, 0);
 		}
 
 		public static int MakeShader(string filename, ShaderType type)
@@ -105,17 +112,58 @@ namespace TISFAT.Util
 				GL.DeleteProgram(program);
 				return 0;
 			}
-			
+
 			return program;
 		}
 
-		public static int GetCachedTextRect(string text, Size area, Font font, Color color, StringAlignment alignment)
+		private static int NextPowerOf2(int v)
+		{
+			v--;
+			v |= v >> 1;
+			v |= v >> 2;
+			v |= v >> 4;
+			v |= v >> 8;
+			v |= v >> 16;
+			v++;
+			return v;
+		}
+
+		private static void InitShadows()
+		{
+			GL.GenFramebuffers(1, out ShadowsFBO);
+
+			GL.GenTextures(1, out ShadowsTexture);
+			GL.BindTexture(TextureTarget.Texture2D, ShadowsTexture);
+
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+
+			int size = Math.Max(NextPowerOf2(Program.ActiveProject.Width), NextPowerOf2(Program.ActiveProject.Height));
+
+			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, size, size, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
+
+			GL.BindTexture(TextureTarget.Texture2D, 0);
+
+			GL.GenFramebuffers(1, out ShadowsFBO);
+
+			GL.BindFramebuffer(FramebufferTarget.Framebuffer, ShadowsFBO);
+			GL.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, ShadowsTexture, 0);
+
+			DrawBuffersEnum[] bufferEnum = new DrawBuffersEnum[1] { (DrawBuffersEnum)FramebufferAttachment.ColorAttachment0 };
+			GL.DrawBuffers(bufferEnum.Length, bufferEnum);
+
+			GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+
+			ShadowsInit = true;
+		}
+
+		public static int GetCachedTextRect(string text, SizeF area, Font font, Color color, StringAlignment alignment)
 		{
 			if (!TextRectCache.ContainsKey(font))
-				TextRectCache[font] = new Dictionary<Color, Dictionary<Size, Dictionary<StringAlignment, Dictionary<string, int>>>>();
+				TextRectCache[font] = new Dictionary<Color, Dictionary<SizeF, Dictionary<StringAlignment, Dictionary<string, int>>>>();
 
 			if (!TextRectCache[font].ContainsKey(color))
-				TextRectCache[font][color] = new Dictionary<Size, Dictionary<StringAlignment, Dictionary<string, int>>>();
+				TextRectCache[font][color] = new Dictionary<SizeF, Dictionary<StringAlignment, Dictionary<string, int>>>();
 
 			if (!TextRectCache[font][color].ContainsKey(area))
 				TextRectCache[font][color][area] = new Dictionary<StringAlignment, Dictionary<string, int>>();
@@ -125,7 +173,7 @@ namespace TISFAT.Util
 
 			if (!TextRectCache[font][color][area][alignment].ContainsKey(text))
 			{
-				Bitmap bmp = new Bitmap(area.Width, area.Height);
+				Bitmap bmp = new Bitmap(Math.Max(1, Math.Abs((int)area.Width)), Math.Max(1, Math.Abs((int)area.Height)));
 
 				using (Graphics g = Graphics.FromImage(bmp))
 				{
@@ -139,7 +187,7 @@ namespace TISFAT.Util
 					format.Alignment = alignment;
 					format.LineAlignment = alignment;
 
-					g.DrawString(text, font, new SolidBrush(color), new Rectangle(new Point(0, 0), area), format);
+					g.DrawString(text, font, new SolidBrush(color), new RectangleF(new Point(0, 0), area), format);
 				}
 
 				TextRectCache[font][color][area][alignment][text] = GenerateTexID(bmp);
@@ -174,7 +222,7 @@ namespace TISFAT.Util
 			float dx = end.X - start.X;
 			float dy = end.Y - start.Y;
 			float dm = (float)Math.Sqrt(dx * dx + dy * dy);
-			
+
 			float px = (dy / dm) * thickness;
 			float py = -(dx / dm) * thickness;
 
@@ -305,7 +353,7 @@ namespace TISFAT.Util
 			GL.DeleteTexture(id);
 		}
 
-		public static void TextRect(string Text, PointF position, Size area, Font font, Color color, StringAlignment alignment)
+		public static void TextRect(string Text, PointF position, SizeF area, Font font, Color color, StringAlignment alignment)
 		{
 			int id = GetCachedTextRect(Text, area, font, color, alignment);
 
@@ -316,8 +364,32 @@ namespace TISFAT.Util
 		{
 			if (LightProgram == 0)
 				LightProgram = MakeProgram("Shaders\\PointLight.vert", "Shaders\\PointLight.frag");
+			if (!ShadowsInit)
+				InitShadows();
+
+			int size = NextPowerOf2(Math.Max(Program.ActiveProject.Width, Program.ActiveProject.Height));
+
+			GL.BindFramebuffer(FramebufferTarget.Framebuffer, ShadowsFBO);
+
+			GL.ClearColor(Color.FromArgb(0, Program.ActiveProject.BackColor));
+			GL.Clear(ClearBufferMask.ColorBufferBit);
+
+			foreach (Layer l in Program.ActiveProject.Layers)
+				if (l.Data.GetType() != typeof(PointLight))
+					l.Draw(Program.MainTimeline.GetCurrentFrame());
+
+			GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+
+			GL.ClearColor(Program.ActiveProject.BackColor);
+
+			GL.Clear(ClearBufferMask.ColorBufferBit);
 
 			GL.UseProgram(LightProgram);
+
+			GL.Uniform1(GL.GetUniformLocation(LightProgram, "s_Texture"), 0);
+			GL.BindTexture(TextureTarget.Texture2D, ShadowsTexture);
+
+			GL.Uniform2(GL.GetUniformLocation(LightProgram, "s_Res"), new Vector2(size, size));
 
 			GL.Uniform2(GL.GetUniformLocation(LightProgram, "lightPos"), PointToVector(position));
 			GL.Uniform3(GL.GetUniformLocation(LightProgram, "lightColor"), new Vector3(color.R / 255.0f, color.G / 255.0f, color.B / 255.0f));

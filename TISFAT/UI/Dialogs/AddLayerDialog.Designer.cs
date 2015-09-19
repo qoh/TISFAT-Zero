@@ -29,10 +29,18 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Figures", System.Windows.Forms.HorizontalAlignment.Center);
+			System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Shapes", System.Windows.Forms.HorizontalAlignment.Center);
+			System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Special", System.Windows.Forms.HorizontalAlignment.Center);
 			System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Default Figure", 1);
 			System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Custom Figure", 2);
-			System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Bitmap", 0);
-			System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("Point Light", 3);
+			System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Line", 4);
+			System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("Rectangle", 6);
+			System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("Circle", 7);
+			System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("Polygon", 5);
+			System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("Bitmap", 0);
+			System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("Text", 8);
+			System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem("Point Light", 3);
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddLayerDialog));
 			this.grp_Properties = new System.Windows.Forms.GroupBox();
 			this.pnl_PropertiesDescription = new System.Windows.Forms.Panel();
@@ -260,19 +268,52 @@
 			this.lsv_LayerTypes.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.lsv_LayerTypes.Font = new System.Drawing.Font("Segoe UI", 8.5F);
 			this.lsv_LayerTypes.FullRowSelect = true;
+			listViewGroup1.Header = "Figures";
+			listViewGroup1.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+			listViewGroup1.Name = "listViewGroupFigures";
+			listViewGroup2.Header = "Shapes";
+			listViewGroup2.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+			listViewGroup2.Name = "listViewGroupShapes";
+			listViewGroup3.Header = "Special";
+			listViewGroup3.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+			listViewGroup3.Name = "listViewGroupSpecial";
+			this.lsv_LayerTypes.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
+            listViewGroup1,
+            listViewGroup2,
+            listViewGroup3});
+			this.lsv_LayerTypes.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
 			this.lsv_LayerTypes.HideSelection = false;
+			listViewItem1.Group = listViewGroup1;
 			listViewItem1.Tag = "StickFigure";
+			listViewItem2.Group = listViewGroup1;
 			listViewItem2.Tag = "CustomFigure";
-			listViewItem3.Tag = "BitmapObject";
-			listViewItem4.Tag = "PointLight";
+			listViewItem3.Group = listViewGroup2;
+			listViewItem3.Tag = "LineObject";
+			listViewItem4.Group = listViewGroup2;
+			listViewItem4.Tag = "RectObject";
+			listViewItem5.Group = listViewGroup2;
+			listViewItem5.Tag = "CircleObject";
+			listViewItem6.Group = listViewGroup2;
+			listViewItem6.Tag = "PolyObject";
+			listViewItem7.Group = listViewGroup3;
+			listViewItem7.Tag = "BitmapObject";
+			listViewItem8.Group = listViewGroup3;
+			listViewItem8.Tag = "TextObject";
+			listViewItem9.Group = listViewGroup3;
+			listViewItem9.Tag = "PointLight";
 			this.lsv_LayerTypes.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1,
             listViewItem2,
             listViewItem3,
-            listViewItem4});
+            listViewItem4,
+            listViewItem5,
+            listViewItem6,
+            listViewItem7,
+            listViewItem8,
+            listViewItem9});
 			this.lsv_LayerTypes.Location = new System.Drawing.Point(3, 16);
 			this.lsv_LayerTypes.Name = "lsv_LayerTypes";
-			this.lsv_LayerTypes.Size = new System.Drawing.Size(126, 202);
+			this.lsv_LayerTypes.Size = new System.Drawing.Size(129, 202);
 			this.lsv_LayerTypes.SmallImageList = this.imageList1;
 			this.lsv_LayerTypes.TabIndex = 2;
 			this.lsv_LayerTypes.UseCompatibleStateImageBehavior = false;
@@ -287,6 +328,11 @@
 			this.imageList1.Images.SetKeyName(1, "stickman.png");
 			this.imageList1.Images.SetKeyName(2, "customfig.png");
 			this.imageList1.Images.SetKeyName(3, "light.png");
+			this.imageList1.Images.SetKeyName(4, "line.png");
+			this.imageList1.Images.SetKeyName(5, "poly.png");
+			this.imageList1.Images.SetKeyName(6, "rectangle.png");
+			this.imageList1.Images.SetKeyName(7, "circle.png");
+			this.imageList1.Images.SetKeyName(8, "text.png");
 			// 
 			// btn_Add
 			// 
@@ -311,9 +357,9 @@
 			// groupBox1
 			// 
 			this.groupBox1.Controls.Add(this.lsv_LayerTypes);
-			this.groupBox1.Location = new System.Drawing.Point(6, 0);
+			this.groupBox1.Location = new System.Drawing.Point(7, 0);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(132, 221);
+			this.groupBox1.Size = new System.Drawing.Size(135, 221);
 			this.groupBox1.TabIndex = 5;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Layer Type";

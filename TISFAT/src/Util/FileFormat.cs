@@ -9,17 +9,29 @@ namespace TISFAT.Util
 	static class FileFormat
 	{
 		public static UInt16 Version = 2;
-		
+
 		static Dictionary<UInt16, Type> EntityTypes = new Dictionary<UInt16, Type>()
 		{
 			{0, typeof(StickFigure)},
-			{1, typeof(BitmapObject)}
+			{1, typeof(BitmapObject)},
+			//{2, typeof(PointLight)},
+			{3, typeof(LineObject)},
+			{4, typeof(RectObject)},
+			// {5, typeof(CircleObject)},
+			// {6, typeof(PolyObject)},
+			{7, typeof(TextObject)}
 		};
 
 		static Dictionary<UInt16, Type> EntityStateTypes = new Dictionary<UInt16, Type>()
 		{
 			{0, typeof(StickFigure.State)},
-			{1, typeof(BitmapObject.State)}
+			{1, typeof(BitmapObject.State)},
+			//{2, typeof(PointLight.State)},
+            {3, typeof(LineObject.State)},
+			{4, typeof(RectObject.State)},
+			// {5, typeof(CircleObject.State)},
+			// {6, typeof(PolyObject.State)},
+			{7, typeof(TextObject.State)}
 		};
 
 		public static UInt16 GetEntityID(Type type)
@@ -84,6 +96,26 @@ namespace TISFAT.Util
 			return list;
 		}
 
+		public static void WriteColor(Color color, BinaryWriter writer)
+		{
+			writer.Write(color.A);
+			writer.Write(color.R);
+			writer.Write(color.G);
+			writer.Write(color.B);
+		}
+
+		public static Color ReadColor(BinaryReader reader)
+		{
+			byte a, r, g, b;
+
+			a = reader.ReadByte();
+			r = reader.ReadByte();
+			g = reader.ReadByte();
+			b = reader.ReadByte();
+
+			return Color.FromArgb(a, r, g, b);
+		}
+
 		public static void WriteBitmap(Bitmap img, BinaryWriter writer)
 		{
 			Stream bitmapStream = new MemoryStream();
@@ -105,6 +137,24 @@ namespace TISFAT.Util
 
 			MemoryStream bitmapStream = new MemoryStream(buffer);
 			return new Bitmap(bitmapStream);
+		}
+
+		public static void WriteVec3(OpenTK.Vector3 vec, BinaryWriter writer)
+		{
+			writer.Write((double)vec.X);
+			writer.Write((double)vec.Y);
+			writer.Write((double)vec.Z);
+		}
+
+		public static OpenTK.Vector3 ReadVec3(BinaryReader reader)
+		{
+			float x, y, z;
+
+			x = (float)reader.ReadDouble();
+			y = (float)reader.ReadDouble();
+			z = (float)reader.ReadDouble();
+
+			return new OpenTK.Vector3(x, y, z);
 		}
 	}
 }

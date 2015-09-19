@@ -1,15 +1,13 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using OpenTK;
+﻿using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
-using System.Windows.Media.Imaging;
-using System.Windows;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace TISFAT
 {
-    public partial class CanvasForm : Form
+	public partial class CanvasForm : Form
 	{
 		#region Properties
 		Panel ContextContainer;
@@ -27,16 +25,14 @@ namespace TISFAT
 		{
 			get { return GLContext.VSync; }
 			set { GLContext.VSync = value; }
-		} 
+		}
 		#endregion
 
 		public CanvasForm(Control parent)
 		{
 			InitializeComponent();
-			
+
 			ContextContainer = new Panel();
-			ContextContainer.Location = new System.Drawing.Point(0, 0);
-			ContextContainer.Size = new System.Drawing.Size(Program.ActiveProject.Width + 1, Program.ActiveProject.Height + 1);
 			ContextContainer.Padding = new Padding(1);
 			ContextContainer.BackColor = Color.Black;
 
@@ -69,9 +65,11 @@ namespace TISFAT
 		}
 
 		#region GL Core Init
-		private void GLContext_Init()
+		public void GLContext_Init()
 		{
 			GLContext.MakeCurrent();
+
+			ContextContainer.Size = new System.Drawing.Size(Program.ActiveProject.Width + 1, Program.ActiveProject.Height + 1);
 
 			GL.MatrixMode(MatrixMode.Projection);
 			GL.LoadIdentity();
@@ -80,7 +78,7 @@ namespace TISFAT
 			GL.Disable(EnableCap.DepthTest);
 		}
 
-		private void CanvasForm_Resize(object sender, EventArgs e)
+		public void CanvasForm_Resize(object sender, EventArgs e)
 		{
 			if (Width < ContextContainer.Width)
 			{
@@ -97,23 +95,24 @@ namespace TISFAT
 			}
 			else
 				ContextContainer.Anchor &= ~AnchorStyles.Top;
-		} 
+		}
 		#endregion
 
 		public void GLContext_Paint(object sender, PaintEventArgs e)
 		{
-			DrawFrame(Program.MainTimeline.GetCurrentFrame(), false);
+			DrawFrame(Program.MainTimeline.GetCurrentFrame(), false, sender != null);
 		}
 
-		public void DrawFrame(float time, bool render)
+		public void DrawFrame(float time, bool render, bool lights)
 		{
-			GLContext.MakeCurrent();
+			if (lights)
+				GLContext.MakeCurrent();
 
-			GL.ClearColor(Color.White);
+			GL.ClearColor(Program.ActiveProject.BackColor);
 
 			GL.Clear(ClearBufferMask.ColorBufferBit);
-			
-			Program.ActiveProject.Draw(time, render);
+
+			Program.ActiveProject.Draw(time, render, lights);
 
 			GLContext.SwapBuffers();
 		}
@@ -125,7 +124,7 @@ namespace TISFAT
 
 			if (timeline.SelectedKeyframe == null)
 				return;
-			
+
 			ManipulateResult result = timeline.SelectedLayer.Data.TryManipulate(
 				timeline.SelectedKeyframe.State, e.Location, e.Button, ModifierKeys);
 
@@ -160,7 +159,7 @@ namespace TISFAT
 
 			if (ActiveDragObject != null)
 			{
-				Program.Form_Main.Do(new ManipulatableUpdateAction(timeline.SelectedLayer, timeline.SelectedFrameset, timeline.SelectedKeyframe, 
+				Program.Form_Main.Do(new ManipulatableUpdateAction(timeline.SelectedLayer, timeline.SelectedFrameset, timeline.SelectedKeyframe,
 				ActiveDragPrevState, timeline.SelectedKeyframe.State));
 			}
 

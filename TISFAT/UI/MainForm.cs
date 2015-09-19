@@ -11,7 +11,7 @@ namespace TISFAT
 {
 	public enum EditMode
 	{
-		Default, Onion, Phase, Diff
+		Default, Onion, Phase
 	}
 
 	public partial class MainForm : Form
@@ -37,7 +37,6 @@ namespace TISFAT
 				btn_EditModeDefault.Checked = value == EditMode.Default;
 				btn_EditModeOnion.Checked = value == EditMode.Onion;
 				btn_EditModePhase.Checked = value == EditMode.Phase;
-				btn_EditModeDiff.Checked = value == EditMode.Diff;
 
 				_ActiveEditMode = value;
 				Form_Timeline.MainTimeline.GLContext.Invalidate();
@@ -338,11 +337,6 @@ namespace TISFAT
 		private void btn_EditModePhase_Click(object sender, EventArgs e)
 		{
 			ActiveEditMode = EditMode.Phase;
-		}
-
-		private void btn_EditModeDiff_Click(object sender, EventArgs e)
-		{
-			ActiveEditMode = EditMode.Diff;
 		}
 
 		private void btn_RemoveLayer_Click(object sender, EventArgs e)

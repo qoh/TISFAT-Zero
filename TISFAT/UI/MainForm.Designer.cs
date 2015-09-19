@@ -43,7 +43,6 @@
 			this.btn_EditModePhase = new TISFAT.Controls.BitmapButtonControl();
 			this.btn_EditModeOnion = new TISFAT.Controls.BitmapButtonControl();
 			this.btn_EditModeDefault = new TISFAT.Controls.BitmapButtonControl();
-			this.btn_EditModeDiff = new TISFAT.Controls.BitmapButtonControl();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -101,7 +100,6 @@
 			this.sc_MainContainer.Panel1.Controls.Add(this.btn_EditModePhase);
 			this.sc_MainContainer.Panel1.Controls.Add(this.btn_EditModeOnion);
 			this.sc_MainContainer.Panel1.Controls.Add(this.btn_EditModeDefault);
-			this.sc_MainContainer.Panel1.Controls.Add(this.btn_EditModeDiff);
 			this.sc_MainContainer.Panel1.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.sc_MainContainer.Panel1MinSize = 29;
 			// 
@@ -229,7 +227,7 @@
 			this.btn_AddLayer.ImageOn = null;
 			this.btn_AddLayer.ImageOnDown = null;
 			this.btn_AddLayer.ImageOnHover = null;
-			this.btn_AddLayer.Location = new System.Drawing.Point(594, 2);
+			this.btn_AddLayer.Location = new System.Drawing.Point(625, 2);
 			this.btn_AddLayer.Name = "btn_AddLayer";
 			this.btn_AddLayer.Size = new System.Drawing.Size(24, 24);
 			this.btn_AddLayer.TabIndex = 6;
@@ -246,7 +244,7 @@
 			this.btn_RemoveLayer.ImageOn = null;
 			this.btn_RemoveLayer.ImageOnDown = null;
 			this.btn_RemoveLayer.ImageOnHover = null;
-			this.btn_RemoveLayer.Location = new System.Drawing.Point(624, 2);
+			this.btn_RemoveLayer.Location = new System.Drawing.Point(655, 2);
 			this.btn_RemoveLayer.Name = "btn_RemoveLayer";
 			this.btn_RemoveLayer.Size = new System.Drawing.Size(24, 24);
 			this.btn_RemoveLayer.TabIndex = 5;
@@ -257,7 +255,7 @@
 			// 
 			this.separatorControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.separatorControl1.ForeColor = System.Drawing.SystemColors.ControlDark;
-			this.separatorControl1.Location = new System.Drawing.Point(651, 2);
+			this.separatorControl1.Location = new System.Drawing.Point(682, 2);
 			this.separatorControl1.Margin = new System.Windows.Forms.Padding(0);
 			this.separatorControl1.Name = "separatorControl1";
 			this.separatorControl1.Size = new System.Drawing.Size(10, 22);
@@ -273,7 +271,7 @@
 			this.btn_EditModePhase.ImageOn = null;
 			this.btn_EditModePhase.ImageOnDown = null;
 			this.btn_EditModePhase.ImageOnHover = null;
-			this.btn_EditModePhase.Location = new System.Drawing.Point(724, 2);
+			this.btn_EditModePhase.Location = new System.Drawing.Point(755, 2);
 			this.btn_EditModePhase.Name = "btn_EditModePhase";
 			this.btn_EditModePhase.Size = new System.Drawing.Size(24, 24);
 			this.btn_EditModePhase.TabIndex = 3;
@@ -290,7 +288,7 @@
 			this.btn_EditModeOnion.ImageOn = null;
 			this.btn_EditModeOnion.ImageOnDown = null;
 			this.btn_EditModeOnion.ImageOnHover = null;
-			this.btn_EditModeOnion.Location = new System.Drawing.Point(694, 2);
+			this.btn_EditModeOnion.Location = new System.Drawing.Point(725, 2);
 			this.btn_EditModeOnion.Name = "btn_EditModeOnion";
 			this.btn_EditModeOnion.Size = new System.Drawing.Size(24, 24);
 			this.btn_EditModeOnion.TabIndex = 2;
@@ -307,29 +305,12 @@
 			this.btn_EditModeDefault.ImageOn = null;
 			this.btn_EditModeDefault.ImageOnDown = null;
 			this.btn_EditModeDefault.ImageOnHover = null;
-			this.btn_EditModeDefault.Location = new System.Drawing.Point(664, 2);
+			this.btn_EditModeDefault.Location = new System.Drawing.Point(695, 2);
 			this.btn_EditModeDefault.Name = "btn_EditModeDefault";
 			this.btn_EditModeDefault.Size = new System.Drawing.Size(24, 24);
 			this.btn_EditModeDefault.TabIndex = 1;
 			this.btn_EditModeDefault.ToggleButton = false;
 			this.btn_EditModeDefault.Click += new System.EventHandler(this.btn_EditModeDefault_Click);
-			// 
-			// btn_EditModeDiff
-			// 
-			this.btn_EditModeDiff.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btn_EditModeDiff.Checked = false;
-			this.btn_EditModeDiff.ImageDefault = global::TISFAT.Properties.Resources.layer_mask;
-			this.btn_EditModeDiff.ImageDown = null;
-			this.btn_EditModeDiff.ImageHover = null;
-			this.btn_EditModeDiff.ImageOn = null;
-			this.btn_EditModeDiff.ImageOnDown = null;
-			this.btn_EditModeDiff.ImageOnHover = null;
-			this.btn_EditModeDiff.Location = new System.Drawing.Point(754, 2);
-			this.btn_EditModeDiff.Name = "btn_EditModeDiff";
-			this.btn_EditModeDiff.Size = new System.Drawing.Size(24, 24);
-			this.btn_EditModeDiff.TabIndex = 0;
-			this.btn_EditModeDiff.ToggleButton = false;
-			this.btn_EditModeDiff.Click += new System.EventHandler(this.btn_EditModeDiff_Click);
 			// 
 			// menuStrip1
 			// 
@@ -542,7 +523,6 @@
 		private Controls.BitmapButtonControl btn_EditModePhase;
 		private Controls.BitmapButtonControl btn_EditModeOnion;
 		private Controls.BitmapButtonControl btn_EditModeDefault;
-		private Controls.BitmapButtonControl btn_EditModeDiff;
 		private UI.Controls.SeparatorControl separatorControl1;
 		private Controls.BitmapButtonControl btn_AddLayer;
 		private Controls.BitmapButtonControl btn_RemoveLayer;

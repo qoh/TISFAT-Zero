@@ -27,15 +27,26 @@ namespace TISFAT
 					Program.Form_Main.Do(new LayerAddAction(typeof(StickFigure), 0, 20, new LayerCreationArgs(cmb_DefaultFigureVariant.SelectedIndex, "")));
 					break;
 				case "BitmapObject":
-					if (txt_bitmapPath.Text == "")
-						return;
-
+					if (txt_bitmapPath.Text == "") return;
 					Program.Form_Main.Do(new LayerAddAction(typeof(BitmapObject), 0, 20, new LayerCreationArgs(0, txt_bitmapPath.Text)));
 					break;
 				case "CustomFigure":
 					return;
 				case "PointLight":
 					Program.Form_Main.Do(new LayerAddAction(typeof(PointLight), 0, 20, new LayerCreationArgs(0, "")));
+					break;
+				case "LineObject":
+					Program.Form_Main.Do(new LayerAddAction(typeof(LineObject), 0, 20, new LayerCreationArgs(0, "")));
+					break;
+				case "RectObject":
+					Program.Form_Main.Do(new LayerAddAction(typeof(RectObject), 0, 20, new LayerCreationArgs(0, "")));
+					break;
+				case "CircleObject":
+					return;
+				case "PolyObject":
+					return;
+				case "TextObject":
+					Program.Form_Main.Do(new LayerAddAction(typeof(TextObject), 0, 20, new LayerCreationArgs(0, "")));
 					break;
 
 				default:
@@ -75,6 +86,9 @@ namespace TISFAT
 		{
 			HidePropertyPanels();
 
+			if (lsv_LayerTypes.FocusedItem == null)
+				return;
+
 			switch ((string)lsv_LayerTypes.FocusedItem.Tag)
 			{
 				case "StickFigure":
@@ -87,7 +101,17 @@ namespace TISFAT
 					pnl_CustomFigureProperties.Visible = true;
 					break;
 				case "PointLight":
-					break;
+					return;
+				case "LineObject":
+					return;
+				case "RectObject":
+					return;
+				case "CircleObject":
+					return;
+				case "PolyObject":
+					return;
+				case "TextObject":
+					return;
 
 				default:
 					throw new ArgumentException("LayerType Tag is not a known EntityType");
