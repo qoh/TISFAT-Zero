@@ -92,14 +92,14 @@ namespace TISFAT.Controls
 			btn_MainButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
 			btn_MainButton.FlatAppearance.BorderSize = 0;
 			btn_MainButton.BackColor = Color.FromKnownColor(KnownColor.Control);
-				
+
 			if (Down)
 				btn_MainButton.BackgroundImage = Checked ? _ImageOnDown : _ImageDown;
 			else if (Hovered)
 				btn_MainButton.BackgroundImage = Checked ? _ImageOnHover : _ImageHover;
 			else
 				btn_MainButton.BackgroundImage = Checked ? _ImageOn : _ImageDefault;
-			
+
 			if (_ImageDown == null && _ImageHover == null)
 			{
 				btn_MainButton.FlatAppearance.BorderColor = Color.FromArgb(55, 155, 255);
@@ -142,7 +142,7 @@ namespace TISFAT.Controls
 
 		private void btn_MainButton_Click(object sender, EventArgs e)
 		{
-			if(ToggleButton)
+			if (ToggleButton)
 			{
 				Checked = !Checked;
 				RefreshState();

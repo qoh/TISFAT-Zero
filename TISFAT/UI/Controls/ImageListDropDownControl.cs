@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using System.Drawing.Drawing2D;
 
 namespace TISFAT.Controls
 {
@@ -76,7 +76,7 @@ namespace TISFAT.Controls
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			e.Graphics.Clear(BackColor);
-			
+
 			if (_ImageDefault == null)
 			{
 				if (DroppedDown)

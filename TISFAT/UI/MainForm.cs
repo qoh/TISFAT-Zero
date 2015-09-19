@@ -251,7 +251,7 @@ namespace TISFAT
 
 			if (dlg.ShowDialog() != DialogResult.OK)
 				return;
-			
+
 			int fps = 60;
 			float delta = 1.0f / fps;
 
@@ -267,7 +267,7 @@ namespace TISFAT
 
 			int n = 0;
 			int nt = (int)Math.Ceiling(endTime / ActiveProject.FPS / delta);
-			
+
 			ProgressDialog progress = new ProgressDialog();
 
 			bool frameCanceled = false;
@@ -283,7 +283,7 @@ namespace TISFAT
 					progress.DetailText = "Frame " + (n + 1) + " of " + (nt + 1);
 					progress.ProgressValue = n * 100 / nt;
 
-					Form_Canvas.DrawFrame(time * ActiveProject.FPS, true);
+					Form_Canvas.DrawFrame(time * ActiveProject.FPS, true, true);
 					Image.FromHbitmap(Form_Canvas.TakeScreenshot()).Save(temp + "\\" + n + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 					Application.DoEvents();
 					n++;
@@ -298,7 +298,7 @@ namespace TISFAT
 
 				progress.Canceled -= frameCancelHandler;
 				progress.Canceled += progress.Finish;
-				
+
 				progress.Title = "Encoding Video..";
 				progress.ProgressStyle = ProgressBarStyle.Marquee;
 				progress.DetailText = "Waiting for ffmpeg..";

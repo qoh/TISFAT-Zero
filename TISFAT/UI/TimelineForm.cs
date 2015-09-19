@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace TISFAT
 {
-    public partial class TimelineForm : Form
+	public partial class TimelineForm : Form
 	{
 		#region Properties
 		public Timeline MainTimeline;
@@ -20,7 +20,7 @@ namespace TISFAT
 		{
 			get { return scrl_VTimeline.Value; }
 		}
-		public bool VScrollVisible { get { return scrl_VTimeline.Visible; } } 
+		public bool VScrollVisible { get { return scrl_VTimeline.Visible; } }
 		#endregion
 
 		public TimelineForm(Control parent)
@@ -213,7 +213,7 @@ namespace TISFAT
 
 		#endregion
 
-			#region Form Events
+		#region Form Events
 		private void TimelineForm_Load(object sender, EventArgs e)
 		{
 			if (MainTimeline != null)

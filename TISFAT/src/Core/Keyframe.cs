@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TISFAT.Util;
@@ -167,7 +166,7 @@ namespace TISFAT
 
 			return true;
 		}
-	} 
+	}
 
 	public class KeyframeChangeInterpModeAction : IAction
 	{
@@ -244,7 +243,7 @@ namespace TISFAT
 			object[] values = { };
 			State = (IEntityState)type.GetConstructor(args).Invoke(values);
 			State.Read(reader, version);
-		} 
+		}
 		#endregion
 	}
 }

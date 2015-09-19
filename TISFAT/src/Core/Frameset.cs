@@ -176,10 +176,10 @@ namespace TISFAT
 
 			return true;
 		}
-	} 
+	}
 	#endregion
 
-    public class Frameset : ISaveable
+	public class Frameset : ISaveable
 	{
 		public List<Keyframe> Keyframes;
 
@@ -212,7 +212,7 @@ namespace TISFAT
 		public void Read(BinaryReader reader, UInt16 version)
 		{
 			Keyframes = FileFormat.ReadList<Keyframe>(reader, version);
-		} 
+		}
 		#endregion
 	}
 }

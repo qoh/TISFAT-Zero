@@ -53,7 +53,7 @@ namespace TISFAT
 		public int VisibilityBitmapOn;
 		public int VisibilityBitmapOn_hover;
 		public int VisibilityBitmapOff;
-		public int VisibilityBitmapOff_hover; 
+		public int VisibilityBitmapOff_hover;
 		#endregion
 
 		#region CTOR | OpenGL core functions
@@ -75,7 +75,7 @@ namespace TISFAT
 			GL.Ortho(0, GLContext.Width, GLContext.Height, 0, -1, 1);
 			GL.Disable(EnableCap.DepthTest);
 
-			if(VisibilityBitmapOn == 0)
+			if (VisibilityBitmapOn == 0)
 			{
 				// Create visibility button bitmaps
 				VisibilityBitmapOn = Drawing.GenerateTexID(Properties.Resources.eye);
@@ -92,7 +92,7 @@ namespace TISFAT
 
 			// Resize scrollbars
 			int LastTime = GetLastTime();
-			
+
 			int HContentLength = (LastTime + 101) * 9;
 			int VContentLength = (Program.ActiveProject.Layers.Count) * 16 + 16;
 
@@ -343,7 +343,7 @@ namespace TISFAT
 
 				if (PlayStart != null)
 					PlayStart = DateTime.Now;
-				
+
 				SelectFrame(location);
 
 				if (button == MouseButtons.Right)
@@ -362,8 +362,8 @@ namespace TISFAT
 			}
 			else if (button == MouseButtons.Left)
 			{
-				if(HoveredLayerIndex >= 0 && HoveredLayerIndex < Program.ActiveProject.Layers.Count)
-					if(HoveredLayerOverVis)
+				if (HoveredLayerIndex >= 0 && HoveredLayerIndex < Program.ActiveProject.Layers.Count)
+					if (HoveredLayerOverVis)
 					{
 						Program.ActiveProject.Layers[HoveredLayerIndex].Visible =
 							!Program.ActiveProject.Layers[HoveredLayerIndex].Visible;
@@ -408,7 +408,7 @@ namespace TISFAT
 						}
 						else
 							if (TargetTime >= SelectedLayer.Framesets[i].StartTime)
-								return;
+							return;
 					}
 
 					if (TargetTime > SelectedFrameset.StartTime)
@@ -445,7 +445,7 @@ namespace TISFAT
 
 					if (NewStartTime < 0)
 						return;
-					
+
 
 					foreach (Frameset x in SelectedLayer.Framesets)
 					{
@@ -516,9 +516,9 @@ namespace TISFAT
 					Program.Form_Main.Do(new FramesetMoveAction(SelectedLayer, SelectedFrameset, (int)FramesetDragStartTime, (int)SelectedFrameset.Keyframes[0].Time));
 			}
 
-			if (Location.X > 80 && Location.Y < (Program.ActiveProject.Layers.Count * 16) + 16 && 
+			if (Location.X > 80 && Location.Y < (Program.ActiveProject.Layers.Count * 16) + 16 &&
 				Location.Y > 16 &&
-				button == MouseButtons.Right && 
+				button == MouseButtons.Right &&
 				!IsDragging && !IsPlaying())
 				Program.Form_Main.Form_Timeline.ShowCxtMenu(Location, GetFrameType(), (int)FrameNum);
 
@@ -593,7 +593,7 @@ namespace TISFAT
 			{
 				float nextTime = -1;
 
-				foreach(Frameset fs in SelectedLayer.Framesets)
+				foreach (Frameset fs in SelectedLayer.Framesets)
 				{
 					if (fs.EndTime < selectedTime)
 						continue;
@@ -634,8 +634,8 @@ namespace TISFAT
 
 		public void RemoveLayer()
 		{
-			if(SelectedLayer != null)
-				if(Program.ActiveProject.Layers.IndexOf(SelectedLayer) != -1)
+			if (SelectedLayer != null)
+				if (Program.ActiveProject.Layers.IndexOf(SelectedLayer) != -1)
 					Program.Form_Main.Do(new LayerRemoveAction(SelectedLayer));
 		}
 

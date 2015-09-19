@@ -4,21 +4,22 @@ namespace TISFAT
 {
 	[Flags]
 	public enum SelectionType
-    {
+	{
 		None = 1,
-        Layer = 2,
-        Frameset = 4,
-        Keyframe = 8,
-        BlankFrame = 16,
-        NullFrame = 32
-    }
-       
+		Layer = 2,
+		Frameset = 4,
+		Keyframe = 8,
+		BlankFrame = 16,
+		NullFrame = 32
+	}
+
 	public class TimelineSelection
 	{
-        public SelectionType Current;
+		public SelectionType Current;
 
 		// Returns either the SelectedKeyframe's time or the selected blank / null frame.
-		public int Time {
+		public int Time
+		{
 			get
 			{
 				if ((SelectionType.Keyframe & Current) != 0)
@@ -37,7 +38,7 @@ namespace TISFAT
 
 		public void Select(params ISaveable[] objs)
 		{
-			foreach(ISaveable obj in objs)
+			foreach (ISaveable obj in objs)
 			{
 				SelectionType type = SelectionType.None;
 
@@ -106,7 +107,7 @@ namespace TISFAT
 
 		public void Clear(SelectionType type)
 		{
-			switch(type)
+			switch (type)
 			{
 				case SelectionType.Layer:
 					SelectedLayer = null;

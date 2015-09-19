@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace TISFAT
 {
-    public partial class ToolboxForm : Form
+	public partial class ToolboxForm : Form
 	{
 		public ToolboxForm(Control parent)
 		{

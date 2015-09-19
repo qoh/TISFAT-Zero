@@ -150,6 +150,7 @@
 			this.pnl_CanvasColor.Name = "pnl_CanvasColor";
 			this.pnl_CanvasColor.Size = new System.Drawing.Size(24, 24);
 			this.pnl_CanvasColor.TabIndex = 9;
+			this.pnl_CanvasColor.Click += new System.EventHandler(this.pnl_CanvasColor_Click);
 			// 
 			// lbl_AnimSpeed
 			// 

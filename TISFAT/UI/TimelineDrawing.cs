@@ -73,7 +73,7 @@ namespace TISFAT
 						{
 							Color lineColor;
 
-							switch(keyframe.InterpMode)
+							switch (keyframe.InterpMode)
 							{
 								case EntityInterpolationMode.None:
 									lineColor = Color.DarkRed;
@@ -96,15 +96,15 @@ namespace TISFAT
 
 								default:
 									throw new ArgumentException("Keyframe has an unknown InterpolationMode");
-                            }
-							
+							}
+
 							Drawing.Line(new PointF(FrameToPixels(keyframe.Time) + 12, y + 8),
 							new PointF(FrameToPixels(frameset.Keyframes[frameset.Keyframes.IndexOf(keyframe) + 1].Time) - 3, y + 8), lineColor);
 						}
 					}
 
 					// Selected blank frame
-					if(SelectedFrameset == frameset && selectedItems.Contains(SelectionType.BlankFrame) && selectedTime != -1)
+					if (SelectedFrameset == frameset && selectedItems.Contains(SelectionType.BlankFrame) && selectedTime != -1)
 						Drawing.Rectangle(new PointF(FrameToPixels(selectedTime), y), new SizeF(9, 16), Color.Red);
 
 					// Frameset line
@@ -120,7 +120,7 @@ namespace TISFAT
 			}
 		}
 
-		public void DrawMisc(List <Layer> Layers, int layerHeight, int frameWidth, int frameCount)
+		public void DrawMisc(List<Layer> Layers, int layerHeight, int frameWidth, int frameCount)
 		{
 			// Layer separators
 			Drawing.Line(new PointF(80, 16), new PointF(80 + frameWidth, 16), Color.Gray);
@@ -147,7 +147,7 @@ namespace TISFAT
 			Drawing.Rectangle(new PointF(0, 0), new SizeF(80, 16), Color.FromArgb(70, 120, 255));
 			Drawing.RectangleLine(new PointF(0, 0), new SizeF(80, 16), Color.Black);
 			Drawing.TextRect("Timeline", new PointF(0, 1), new Size(80, 16), new Font("Segoe UI", 9, FontStyle.Bold), Color.Black, StringAlignment.Center);
-			
+
 		}
 
 		public void DrawTimelineNumbers(int frameCount, int layerHeight)
@@ -199,10 +199,10 @@ namespace TISFAT
 				Drawing.RectangleLine(new PointF(0, 16 * (i + 1)), new SizeF(80, 16), Color.Black);
 				Drawing.TextRect(layer.Name, new PointF(1, 16 * (i + 1) + 1), new Size(65, 16), new Font("Segoe UI", 9), Color.Black, StringAlignment.Near);
 
-				if(HoveredLayerIndex == i || !layer.Visible)
-					Drawing.Bitmap(new PointF(65, 16 * (i + 1) + 2), 
-						new Size(14, 14), 
-						layer.Visible ? 
+				if (HoveredLayerIndex == i || !layer.Visible)
+					Drawing.Bitmap(new PointF(65, 16 * (i + 1) + 2),
+						new Size(14, 14),
+						layer.Visible ?
 						(HoveredLayerOverVis ? VisibilityBitmapOn_hover : VisibilityBitmapOn) :
 						(HoveredLayerOverVis ? VisibilityBitmapOff_hover : VisibilityBitmapOff));
 			}

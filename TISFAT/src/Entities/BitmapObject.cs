@@ -106,7 +106,7 @@ namespace TISFAT.Entities
 
 		public void ManipulateEnd(IManipulatable target, IManipulatableParams mparams, Point location)
 		{
-			
+
 		}
 
 		public Layer CreateDefaultLayer(uint StartTime, uint EndTime, LayerCreationArgs e)

@@ -4,7 +4,7 @@
 	{
 		int LayerIndex;
 		int FramesetIndex;
-		int KeyframeIndex;	
+		int KeyframeIndex;
 
 		IEntityState OldState;
 		IEntityState NewState;
@@ -50,7 +50,7 @@
 		}
 	}
 
-    public class ManipulateResult
+	public class ManipulateResult
 	{
 		public IManipulatable Target;
 		public IManipulatableParams Params;

@@ -3,7 +3,7 @@ using TISFAT.Util;
 
 namespace TISFAT
 {
-    public interface IEntity : ISaveable
+	public interface IEntity : ISaveable
 	{
 		IEntityState Interpolate(float t, IEntityState current, IEntityState target, EntityInterpolationMode mode);
 		void Draw(IEntityState state);

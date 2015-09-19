@@ -14,7 +14,7 @@ namespace TISFAT.Util
 		BackOut
 	}
 
-    public static class Interpolation
+	public static class Interpolation
 	{
 		#region None
 		private static float None(float t, float a, float b)
@@ -94,7 +94,7 @@ namespace TISFAT.Util
 
 		public static float Interpolate(float t, float a, float b, EntityInterpolationMode mode)
 		{
-			switch(mode)
+			switch (mode)
 			{
 				case EntityInterpolationMode.None:
 					return None(t, a, b);
@@ -136,9 +136,9 @@ namespace TISFAT.Util
 		public static Color Interpolate(float t, Color a, Color b, EntityInterpolationMode mode)
 		{
 			return Color.FromArgb(
-			(int)Interpolate(t, a.A, b.A, mode), 
-			(int)Interpolate(t, a.R, b.R, mode), 
-			(int)Interpolate(t, a.G, b.G, mode), 
+			(int)Interpolate(t, a.A, b.A, mode),
+			(int)Interpolate(t, a.R, b.R, mode),
+			(int)Interpolate(t, a.G, b.G, mode),
 			(int)Interpolate(t, a.B, b.B, mode));
 		}
 	}

@@ -3,13 +3,13 @@ using System.Drawing;
 
 namespace TISFAT.Util
 {
-    public static class MathUtil
+	public static class MathUtil
 	{
 		public static bool PointInRect(Point Loc, Rectangle Area)
 		{
 			return Loc.X >= Area.X &&
-				Loc.X < Area.X + Area.Width && 
-				Loc.Y >= Area.Y && 
+				Loc.X < Area.X + Area.Width &&
+				Loc.Y >= Area.Y &&
 				Loc.Y < Area.Y + Area.Height;
 		}
 

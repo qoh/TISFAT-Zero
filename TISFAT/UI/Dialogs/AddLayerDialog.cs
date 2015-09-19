@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TISFAT.Entities;
 
@@ -28,7 +21,7 @@ namespace TISFAT
 			if (lsv_LayerTypes.FocusedItem == null)
 				return;
 
-			switch((string)lsv_LayerTypes.FocusedItem.Tag)
+			switch ((string)lsv_LayerTypes.FocusedItem.Tag)
 			{
 				case "StickFigure":
 					Program.Form_Main.Do(new LayerAddAction(typeof(StickFigure), 0, 20, new LayerCreationArgs(cmb_DefaultFigureVariant.SelectedIndex, "")));
@@ -103,7 +96,7 @@ namespace TISFAT
 
 		private void cmb_DefaultFigureVariant_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if(cmb_DefaultFigureVariant.SelectedIndex == 0)
+			if (cmb_DefaultFigureVariant.SelectedIndex == 0)
 			{
 				lbl_DefaultFigureVariantDetail.Text = "This variant is the same as the inital figure you see when you start TISFAT Zero.";
 			}

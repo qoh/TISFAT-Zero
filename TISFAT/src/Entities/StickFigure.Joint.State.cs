@@ -6,183 +6,183 @@ using TISFAT.Util;
 
 namespace TISFAT.Entities
 {
-    partial class StickFigure
-    {
-        public partial class Joint
-        {
-            public class State : ISaveable, IManipulatable
-            {
-                public State Parent;
-                public List<State> Children;
+	partial class StickFigure
+	{
+		public partial class Joint
+		{
+			public class State : ISaveable, IManipulatable
+			{
+				public State Parent;
+				public List<State> Children;
 
-                public PointF Location;
-                public Color JointColor;
-                public float Thickness;
-				
+				public PointF Location;
+				public Color JointColor;
+				public float Thickness;
+
 				public bool Manipulatable;
 
 				public State()
-                {
-                    Parent = null;
-                    Children = new List<State>();
-                    Location = new PointF();
-                    JointColor = Color.Black;
-                    Thickness = 6;
-                }
+				{
+					Parent = null;
+					Children = new List<State>();
+					Location = new PointF();
+					JointColor = Color.Black;
+					Thickness = 6;
+				}
 
-                public State(State parent)
-                {
-                    Parent = parent;
-                    Children = new List<State>();
-                    Location = new PointF();
-                    JointColor = Color.Black;
-                    Thickness = 6;
-                }
+				public State(State parent)
+				{
+					Parent = parent;
+					Children = new List<State>();
+					Location = new PointF();
+					JointColor = Color.Black;
+					Thickness = 6;
+				}
 
-                public static State Interpolate(float t, State current, State target, EntityInterpolationMode mode)
-                {
-                    State state = new State(current.Parent);
-                    state.Location = Interpolation.Interpolate(t, current.Location, target.Location, mode);
-                    state.JointColor = current.JointColor;
-                    state.Thickness = Interpolation.Interpolate(t, current.Thickness, target.Thickness, mode);
+				public static State Interpolate(float t, State current, State target, EntityInterpolationMode mode)
+				{
+					State state = new State(current.Parent);
+					state.Location = Interpolation.Interpolate(t, current.Location, target.Location, mode);
+					state.JointColor = current.JointColor;
+					state.Thickness = Interpolation.Interpolate(t, current.Thickness, target.Thickness, mode);
 
-                    for (var i = 0; i < current.Children.Count; i++)
-                    {
-                        state.Children.Add(Interpolate(t, current.Children[i], target.Children[i], mode));
-                    }
+					for (var i = 0; i < current.Children.Count; i++)
+					{
+						state.Children.Add(Interpolate(t, current.Children[i], target.Children[i], mode));
+					}
 
-                    return state;
-                }
+					return state;
+				}
 
-                public void Move(PointF target, ManipulateParams mparams, State from)
-                {
-                    List<State> affected = new List<State>();
+				public void Move(PointF target, ManipulateParams mparams, State from)
+				{
+					List<State> affected = new List<State>();
 
-                    if (Parent != null && from != Parent)
-                        affected.Add(Parent);
+					if (Parent != null && from != Parent)
+						affected.Add(Parent);
 
-                    foreach (State child in Children)
-                    {
-                        if (child != from)
-                            affected.Add(child);
-                    }
+					foreach (State child in Children)
+					{
+						if (child != from)
+							affected.Add(child);
+					}
 
-                    if (mparams.AbsoluteDrag && from == null)
-                    {
-                        target = new PointF(
-                            target.X - mparams.AbsoluteOffset.X,
-                            target.Y - mparams.AbsoluteOffset.Y);
-                    }
+					if (mparams.AbsoluteDrag && from == null)
+					{
+						target = new PointF(
+							target.X - mparams.AbsoluteOffset.X,
+							target.Y - mparams.AbsoluteOffset.Y);
+					}
 
-                    float nx = target.X;
-                    float ny = target.Y;
+					float nx = target.X;
+					float ny = target.Y;
 
-                    float ox = Location.X;
-                    float oy = Location.Y;
+					float ox = Location.X;
+					float oy = Location.Y;
 
-                    Location = target;
+					Location = target;
 
-                    if (mparams.DisableIK)
-                        return;
+					if (mparams.DisableIK)
+						return;
 
-                    foreach (State state in affected)
-                    {
-                        PointF loc;
+					foreach (State state in affected)
+					{
+						PointF loc;
 
-                        if (mparams.AbsoluteDrag)
-                        {
-                            loc = new PointF(
-                                state.Location.X + (nx - ox),
-                                state.Location.Y + (ny - oy)
-                            );
-                        }
-                        else
-                        {
-                            float jx = state.Location.X;
-                            float jy = state.Location.Y;
+						if (mparams.AbsoluteDrag)
+						{
+							loc = new PointF(
+								state.Location.X + (nx - ox),
+								state.Location.Y + (ny - oy)
+							);
+						}
+						else
+						{
+							float jx = state.Location.X;
+							float jy = state.Location.Y;
 
-                            float dx = ox - jx;
-                            float dy = oy - jy;
-                            float dm = (float)Math.Sqrt((double)(dx * dx + dy * dy));
+							float dx = ox - jx;
+							float dy = oy - jy;
+							float dm = (float)Math.Sqrt((double)(dx * dx + dy * dy));
 
-                            float lx = jx - nx;
-                            float ly = jy - ny;
-                            float lm = (float)Math.Sqrt((double)(lx * lx + ly * ly));
+							float lx = jx - nx;
+							float ly = jy - ny;
+							float lm = (float)Math.Sqrt((double)(lx * lx + ly * ly));
 
-                            loc = new PointF(nx + (lx / lm) * dm, ny + (ly / lm) * dm);
-                        }
+							loc = new PointF(nx + (lx / lm) * dm, ny + (ly / lm) * dm);
+						}
 
-                        state.Move(loc, mparams, this);
-                    }
-                }
+						state.Move(loc, mparams, this);
+					}
+				}
 
-                public State JointAtLocation(PointF location)
-                {
-                    if (MathUtil.IsPointInPoint(location, Location, 4) && Manipulatable)
-                        return this;
+				public State JointAtLocation(PointF location)
+				{
+					if (MathUtil.IsPointInPoint(location, Location, 4) && Manipulatable)
+						return this;
 
-                    foreach (State state in Children)
-                    {
-                        State found = state.JointAtLocation(location);
+					foreach (State state in Children)
+					{
+						State found = state.JointAtLocation(location);
 
-                        if (found != null)
-                            return found;
-                    }
+						if (found != null)
+							return found;
+					}
 
-                    return null;
-                }
+					return null;
+				}
 
-                public State Clone(State from = null)
-                {
-                    State ret = new State(from);
+				public State Clone(State from = null)
+				{
+					State ret = new State(from);
 
-                    ret.JointColor = JointColor;
-                    ret.Location = Location;
-                    ret.Thickness = Thickness;
+					ret.JointColor = JointColor;
+					ret.Location = Location;
+					ret.Thickness = Thickness;
 					ret.Manipulatable = Manipulatable;
 
-                    foreach (State child in Children)
-                        ret.Children.Add(child.Clone(ret));
+					foreach (State child in Children)
+						ret.Children.Add(child.Clone(ret));
 
-                    return ret;
-                }
+					return ret;
+				}
 
-                public void Write(BinaryWriter writer)
-                {
-                    writer.Write((double)Location.X);
-                    writer.Write((double)Location.Y);
-                    writer.Write(JointColor.A);
-                    writer.Write(JointColor.R);
-                    writer.Write(JointColor.G);
-                    writer.Write(JointColor.B);
-                    writer.Write((double)Thickness);
+				public void Write(BinaryWriter writer)
+				{
+					writer.Write((double)Location.X);
+					writer.Write((double)Location.Y);
+					writer.Write(JointColor.A);
+					writer.Write(JointColor.R);
+					writer.Write(JointColor.G);
+					writer.Write(JointColor.B);
+					writer.Write((double)Thickness);
 					writer.Write(Manipulatable);
-                    FileFormat.WriteList(writer, Children);
-                }
+					FileFormat.WriteList(writer, Children);
+				}
 
-                public void Read(BinaryReader reader, UInt16 version)
-                {
-                    float x = (float)reader.ReadDouble();
-                    float y = (float)reader.ReadDouble();
-                    Location = new PointF(x, y);
-                    byte a = reader.ReadByte();
-                    byte r = reader.ReadByte();
-                    byte g = reader.ReadByte();
-                    byte b = reader.ReadByte();
-                    JointColor = Color.FromArgb(a, r, g, b);
-                    Thickness = (float)reader.ReadDouble();
+				public void Read(BinaryReader reader, UInt16 version)
+				{
+					float x = (float)reader.ReadDouble();
+					float y = (float)reader.ReadDouble();
+					Location = new PointF(x, y);
+					byte a = reader.ReadByte();
+					byte r = reader.ReadByte();
+					byte g = reader.ReadByte();
+					byte b = reader.ReadByte();
+					JointColor = Color.FromArgb(a, r, g, b);
+					Thickness = (float)reader.ReadDouble();
 
 					if (version >= 2)
 						Manipulatable = reader.ReadBoolean();
 					else
 						Manipulatable = true;
 
-                    Children = FileFormat.ReadList<Joint.State>(reader, version);
+					Children = FileFormat.ReadList<Joint.State>(reader, version);
 
-                    foreach (Joint.State child in Children)
-                        child.Parent = this;
-                }
-            }
-        }
-    }
+					foreach (Joint.State child in Children)
+						child.Parent = this;
+				}
+			}
+		}
+	}
 }

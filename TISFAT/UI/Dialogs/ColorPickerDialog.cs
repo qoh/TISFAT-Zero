@@ -1,10 +1,9 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using System;
 using System.Drawing;
+using System.Windows.Forms;
 using TISFAT.Util;
-using OpenTK;
-using OpenTK.Graphics;
 
 namespace TISFAT
 {
@@ -47,13 +46,13 @@ namespace TISFAT
 
 			GL.ClearColor(LatestColor.X, LatestColor.Y, LatestColor.Z, LatestColor.W);
 			GL.Clear(ClearBufferMask.ColorBufferBit);
-			
+
 			GL.UseProgram(shaderProgram);
 			int location = GL.GetUniformLocation(shaderProgram, "Hue");
 			GL.Uniform1(location, Hue);
 
 			GL.Begin(PrimitiveType.Quads);
-			 
+
 			GL.Vertex2(0f, 0f);
 			GL.Vertex2(258f, 0f);
 			GL.Vertex2(258f, 258f);
