@@ -164,6 +164,7 @@
 			this.btn_Rewind.Size = new System.Drawing.Size(24, 24);
 			this.btn_Rewind.TabIndex = 13;
 			this.btn_Rewind.ToggleButton = false;
+			this.btn_Rewind.Click += new System.EventHandler(this.btn_Rewind_Click);
 			// 
 			// btn_SeekEnd
 			// 
@@ -197,6 +198,7 @@
 			this.btn_FastForward.Size = new System.Drawing.Size(24, 24);
 			this.btn_FastForward.TabIndex = 11;
 			this.btn_FastForward.ToggleButton = false;
+			this.btn_FastForward.Click += new System.EventHandler(this.btn_FastForward_Click);
 			// 
 			// btn_PlayPause
 			// 

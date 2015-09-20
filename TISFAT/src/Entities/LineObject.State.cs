@@ -78,6 +78,9 @@ namespace TISFAT.Entities
 				x2 = (float)reader.ReadDouble();
 				y2 = (float)reader.ReadDouble();
 
+				Handle1 = new PointF(x1, y1);
+				Handle2 = new PointF(x2, y2);
+
 				Color = FileFormat.ReadColor(reader);
 				Thickness = (float)reader.ReadDouble();
 			}

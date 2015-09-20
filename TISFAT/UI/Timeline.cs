@@ -138,6 +138,16 @@ namespace TISFAT
 			GLContext.Invalidate();
 		}
 
+		public void SeekPrevFrame()
+		{
+			// Go to the previous frame goddamnit
+		}
+
+		public void SeekNextFrame()
+		{
+			// Go to the next frame goddamnit
+		}
+
 		public void SeekLastFrame()
 		{
 			Project project = Program.ActiveProject;

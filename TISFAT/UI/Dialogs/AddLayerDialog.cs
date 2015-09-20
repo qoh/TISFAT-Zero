@@ -42,9 +42,11 @@ namespace TISFAT
 					Program.Form_Main.Do(new LayerAddAction(typeof(RectObject), 0, 20, new LayerCreationArgs(0, "")));
 					break;
 				case "CircleObject":
-					return;
+					Program.Form_Main.Do(new LayerAddAction(typeof(CircleObject), 0, 20, new LayerCreationArgs(0, "")));
+					break;
 				case "PolyObject":
-					return;
+					Program.Form_Main.Do(new LayerAddAction(typeof(PolyObject), 0, 20, new LayerCreationArgs(8, "")));
+					break;
 				case "TextObject":
 					Program.Form_Main.Do(new LayerAddAction(typeof(TextObject), 0, 20, new LayerCreationArgs(0, "")));
 					break;

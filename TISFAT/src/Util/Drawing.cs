@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using TISFAT.Entities;
 
@@ -296,6 +297,45 @@ namespace TISFAT.Util
 			GL.End();
 
 			GL.Disable(EnableCap.Blend);
+		}
+
+		public static void DrawPoly(PolyObject.Joint[] positions, Color color)
+		{
+			//Draw it once with Always
+			GL.Enable(EnableCap.StencilTest);
+			GL.ColorMask(false, false, false, false);
+			//GL.StencilMask(0xFFFFFF);
+			GL.StencilMask(0xFFFF);
+			GL.StencilFunc(StencilFunction.Always, 1, 1);
+			GL.StencilOp(StencilOp.Keep, StencilOp.Keep, StencilOp.Incr);
+
+			GL.Begin(PrimitiveType.TriangleFan);
+
+			foreach (PointF x in positions)
+			{
+				GL.Color4(color);
+
+				GL.Vertex2(x.X, x.Y);
+			}
+
+			GL.End();
+
+			//Draw it once more with equal
+			GL.ColorMask(true, true, true, true);
+			GL.StencilFunc(StencilFunction.Equal, 1, 1);
+
+			GL.Begin(PrimitiveType.TriangleFan);
+
+			foreach (PointF x in positions.Reverse())
+			{
+				GL.Color4(color);
+
+				GL.Vertex2(x.X, x.Y);
+			}
+
+			GL.End();
+
+			GL.Disable(EnableCap.StencilTest);
 		}
 
 		public static void Bitmap(PointF position, SizeF size, int texID)

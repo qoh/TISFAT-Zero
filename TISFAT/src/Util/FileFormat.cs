@@ -17,8 +17,8 @@ namespace TISFAT.Util
 			//{2, typeof(PointLight)},
 			{3, typeof(LineObject)},
 			{4, typeof(RectObject)},
-			// {5, typeof(CircleObject)},
-			// {6, typeof(PolyObject)},
+			{5, typeof(CircleObject)},
+			{6, typeof(PolyObject)},
 			{7, typeof(TextObject)}
 		};
 
@@ -29,8 +29,8 @@ namespace TISFAT.Util
 			//{2, typeof(PointLight.State)},
             {3, typeof(LineObject.State)},
 			{4, typeof(RectObject.State)},
-			// {5, typeof(CircleObject.State)},
-			// {6, typeof(PolyObject.State)},
+			{5, typeof(CircleObject.State)},
+			{6, typeof(PolyObject.State)},
 			{7, typeof(TextObject.State)}
 		};
 

@@ -116,6 +116,11 @@ namespace TISFAT.Entities
 				writer.Write((double)Bounds.Y);
 				writer.Write((double)Bounds.Width);
 				writer.Write((double)Bounds.Height);
+
+				writer.Write(Text);
+				writer.Write(TextFont.FontFamily.ToString());
+				writer.Write((double)TextFont.Size);
+				writer.Write((int)TextFont.Style);
 			}
 
 			public void Read(BinaryReader reader, UInt16 version)
@@ -126,6 +131,13 @@ namespace TISFAT.Entities
 				Bounds.Y = (float)reader.ReadDouble();
 				Bounds.Width = (float)reader.ReadDouble();
 				Bounds.Height = (float)reader.ReadDouble();
+
+				Text = reader.ReadString();
+				string fontname = reader.ReadString();
+				float fontsize = (float)reader.ReadDouble();
+				FontStyle style = (FontStyle)Enum.Parse(typeof(FontStyle), reader.ReadInt32().ToString());
+
+				TextFont = new Font(fontname, fontsize, style);
 			}
 		}
 	}

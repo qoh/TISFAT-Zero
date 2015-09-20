@@ -199,6 +199,18 @@ namespace TISFAT
 			MainTimeline.TogglePause();
 		}
 
+		private void btn_FastForward_Click(object sender, EventArgs e)
+		{
+			if (MainTimeline != null)
+				MainTimeline.SeekNextFrame();
+		}
+
+		private void btn_Rewind_Click(object sender, EventArgs e)
+		{
+			if (MainTimeline != null)
+				MainTimeline.SeekPrevFrame();
+		}
+
 		private void btn_SeekStart_Click(object sender, EventArgs e)
 		{
 			if (MainTimeline != null)

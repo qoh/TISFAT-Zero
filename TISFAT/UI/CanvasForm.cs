@@ -112,7 +112,7 @@ namespace TISFAT
 
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 
-			Program.ActiveProject.Draw(time, render, lights);
+			Program.ActiveProject.Draw(time, render);
 
 			GLContext.SwapBuffers();
 		}
