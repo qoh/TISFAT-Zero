@@ -333,6 +333,8 @@ namespace TISFAT
 				SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID).HandleColor = dlg.Color;
 				UpdateSelection();
 			}
+
+			GLContext.Invalidate();
 		}
 
 		private void pnl_jointColorImg_Click(object sender, EventArgs e)
