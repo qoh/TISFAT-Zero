@@ -12,6 +12,8 @@ namespace TISFAT
 
 		ManipulateResult TryManipulate(IEntityState state, Point location, System.Windows.Forms.MouseButtons button, System.Windows.Forms.Keys modifiers);
 
+		ManipulateResult TryManipulate(IEntityState state, Point location, System.Windows.Forms.MouseButtons button, System.Windows.Forms.Keys modifiers, bool fromEditor);
+
 		void ManipulateStart(IManipulatable target, IManipulatableParams mparams, Point location);
 
 		void ManipulateUpdate(IManipulatable target, IManipulatableParams mparams, Point location);

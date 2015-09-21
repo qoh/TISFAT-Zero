@@ -211,15 +211,21 @@ namespace TISFAT.Util
 
 		public static void Line(PointF start, PointF end, Color color)
 		{
+			GL.Enable(EnableCap.Blend);
+
 			GL.Begin(PrimitiveType.Lines);
-			GL.Color3(color);
+			GL.Color4(color);
 			GL.Vertex2(Math.Floor(start.X) + 0.5, Math.Floor(start.Y) + 0.5);
 			GL.Vertex2(Math.Floor(end.X) + 0.5, Math.Floor(end.Y) + 0.5);
 			GL.End();
+
+			GL.Disable(EnableCap.Blend);
 		}
 
 		public static void QuadLine(PointF start, PointF end, float thickness, Color color)
 		{
+			GL.Enable(EnableCap.Blend);
+
 			float dx = end.X - start.X;
 			float dy = end.Y - start.Y;
 			float dm = (float)Math.Sqrt(dx * dx + dy * dy);
@@ -228,12 +234,14 @@ namespace TISFAT.Util
 			float py = -(dx / dm) * thickness;
 
 			GL.Begin(PrimitiveType.Quads);
-			GL.Color3(color);
+			GL.Color4(color);
 			GL.Vertex2(new Vector2(start.X - px, start.Y - py));
 			GL.Vertex2(new Vector2(end.X - px, end.Y - py));
 			GL.Vertex2(new Vector2(end.X + px, end.Y + py));
 			GL.Vertex2(new Vector2(start.X + px, start.Y + py));
 			GL.End();
+
+			GL.Disable(EnableCap.Blend);
 		}
 
 		public static void CappedLine(PointF start, PointF end, float thickness, Color color)
@@ -250,8 +258,10 @@ namespace TISFAT.Util
 
 		public static void Circle(PointF center, float radius, Color color, int segments)
 		{
+			GL.Enable(EnableCap.Blend);
+
 			GL.Begin(PrimitiveType.TriangleFan);
-			GL.Color3(color);
+			GL.Color4(color);
 			GL.Vertex2(PointToVector(center));
 
 			for (int i = 0; i < segments; i++)
@@ -265,6 +275,8 @@ namespace TISFAT.Util
 			}
 
 			GL.End();
+
+			GL.Disable(EnableCap.Blend);
 		}
 
 		public static void Rectangle(PointF position, SizeF size, Color color)
@@ -273,7 +285,7 @@ namespace TISFAT.Util
 			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
 			GL.Begin(PrimitiveType.Quads);
-			GL.Color3(color);
+			GL.Color4(color);
 			GL.Vertex2(PointToVector(position));
 			GL.Vertex2(position.X + size.Width, position.Y);
 			GL.Vertex2(position.X + size.Width, position.Y + size.Height);
@@ -289,7 +301,7 @@ namespace TISFAT.Util
 			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
 			GL.Begin(PrimitiveType.LineLoop);
-			GL.Color3(color);
+			GL.Color4(color);
 			GL.Vertex2(Math.Floor(position.X) + 0.5, Math.Floor(position.Y) + 0.5);
 			GL.Vertex2(Math.Floor(position.X + size.Width) + 0.5, Math.Floor(position.Y) + 0.5);
 			GL.Vertex2(Math.Floor(position.X + size.Width) + 0.5, Math.Floor(position.Y + size.Height) + 0.5);
@@ -301,6 +313,8 @@ namespace TISFAT.Util
 
 		public static void DrawPoly(PolyObject.Joint[] positions, Color color)
 		{
+			GL.Enable(EnableCap.Blend);
+
 			//Draw it once with Always
 			GL.Enable(EnableCap.StencilTest);
 			GL.ColorMask(false, false, false, false);
@@ -336,6 +350,7 @@ namespace TISFAT.Util
 			GL.End();
 
 			GL.Disable(EnableCap.StencilTest);
+			GL.Disable(EnableCap.Blend);
 		}
 
 		public static void Bitmap(PointF position, SizeF size, int texID)
@@ -349,7 +364,7 @@ namespace TISFAT.Util
 			GL.PushMatrix();
 			GL.Translate(position.X, position.Y, 0);
 
-			GL.Color3(Color.White);
+			GL.Color4(Color.White);
 
 			GL.Begin(PrimitiveType.Quads);
 			GL.TexCoord2(0, 0); GL.Vertex2(0, 0);

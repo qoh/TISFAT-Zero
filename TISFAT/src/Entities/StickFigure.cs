@@ -6,7 +6,7 @@ using TISFAT.Util;
 
 namespace TISFAT.Entities
 {
-	partial class StickFigure : IEntity
+	public partial class StickFigure : IEntity
 	{
 		public Joint Root;
 
@@ -81,6 +81,40 @@ namespace TISFAT.Entities
 			return result;
 		}
 
+		public ManipulateResult TryManipulate(IEntityState _state, Point location, System.Windows.Forms.MouseButtons button, System.Windows.Forms.Keys modifiers, bool fromEditor)
+		{
+			State state = _state as State;
+
+			if (state == null)
+				return null;
+
+			ManipulateResult result = new ManipulateResult();
+			ManipulateParams mparams = new ManipulateParams();
+			result.Params = mparams;
+
+			if (fromEditor)
+				mparams.DisableIK = true;
+
+			if (button == MouseButtons.Right)
+			{
+				result.Target = state.Root;
+				mparams.AbsoluteDrag = true;
+				mparams.AbsoluteOffset = new PointF(location.X - state.Root.Location.X, location.Y - state.Root.Location.Y);
+			}
+			else
+			{
+				Joint.State target = state.Root.JointAtLocation(location);
+
+				if (target == null)
+					return null;
+
+				result.Target = target;
+				mparams.AbsoluteDrag = false;
+			}
+
+			return result;
+		}
+
 		public void ManipulateStart(IManipulatable _target, IManipulatableParams mparams, Point location)
 		{
 
@@ -97,23 +131,25 @@ namespace TISFAT.Entities
 
 		}
 
-		public Layer CreateDefaultLayer(uint StartTime, uint EndTime, LayerCreationArgs e)
+		public virtual Layer CreateDefaultLayer(uint StartTime, uint EndTime, LayerCreationArgs e)
 		{
 			if (e.Variant == 0)
 			{
 				var hip = new Joint();
 				hip.Location = new PointF(200, 200);
+				int ID = 0;
 				Root = hip;
-				var shoulder = Joint.RelativeTo(hip, new PointF(0, -53));
-				var lElbow = Joint.RelativeTo(shoulder, new PointF(-21, 22));
-				var lHand = Joint.RelativeTo(lElbow, new PointF(-5, 35));
-				var rElbow = Joint.RelativeTo(shoulder, new PointF(21, 22));
-				var rHand = Joint.RelativeTo(rElbow, new PointF(5, 35));
-				var lKnee = Joint.RelativeTo(hip, new PointF(-16, 33));
-				var lFoot = Joint.RelativeTo(lKnee, new PointF(-5, 41));
-				var rKnee = Joint.RelativeTo(hip, new PointF(16, 33));
-				var rFoot = Joint.RelativeTo(rKnee, new PointF(5, 41));
-				var head = Joint.RelativeTo(shoulder, new PointF(0, -36));
+				Root.ID = 0;
+				var shoulder = Joint.RelativeTo(hip, new PointF(0, -53), ref ID);
+				var lElbow = Joint.RelativeTo(shoulder, new PointF(-21, 22), ref ID);
+				var lHand = Joint.RelativeTo(lElbow, new PointF(-5, 35), ref ID);
+				var rElbow = Joint.RelativeTo(shoulder, new PointF(21, 22), ref ID);
+				var rHand = Joint.RelativeTo(rElbow, new PointF(5, 35), ref ID);
+				var lKnee = Joint.RelativeTo(hip, new PointF(-16, 33), ref ID);
+				var lFoot = Joint.RelativeTo(lKnee, new PointF(-5, 41), ref ID);
+				var rKnee = Joint.RelativeTo(hip, new PointF(16, 33), ref ID);
+				var rFoot = Joint.RelativeTo(rKnee, new PointF(5, 41), ref ID);
+				var head = Joint.RelativeTo(shoulder, new PointF(0, -36), ref ID);
 
 				shoulder.HandleColor = Color.Yellow;
 				hip.HandleColor = Color.Yellow;
@@ -127,20 +163,22 @@ namespace TISFAT.Entities
 			}
 			else if (e.Variant == 1)
 			{
-				var shoulder = new StickFigure.Joint();
+				var shoulder = new Joint();
 				shoulder.Location = new PointF(200, 200);
+				int ID = 0;
 				Root = shoulder;
-				var neck = Joint.RelativeTo(shoulder, new PointF(0, -3));
-				var lElbow = Joint.RelativeTo(shoulder, new PointF(-16, 11));
-				var lHand = Joint.RelativeTo(lElbow, new PointF(-8, 18));
-				var rElbow = Joint.RelativeTo(shoulder, new PointF(16, 11));
-				var rHand = Joint.RelativeTo(rElbow, new PointF(8, 18));
-				var hip = Joint.RelativeTo(shoulder, new PointF(0, 40));
-				var lKnee = Joint.RelativeTo(hip, new PointF(-11, 23));
-				var lFoot = Joint.RelativeTo(lKnee, new PointF(-9, 23));
-				var rKnee = Joint.RelativeTo(hip, new PointF(11, 23));
-				var rFoot = Joint.RelativeTo(rKnee, new PointF(9, 23));
-				var head = Joint.RelativeTo(neck, new PointF(0, -8));
+				Root.ID = 0;
+				var neck = Joint.RelativeTo(shoulder, new PointF(0, -3), ref ID);
+				var lElbow = Joint.RelativeTo(shoulder, new PointF(-16, 11), ref ID);
+				var lHand = Joint.RelativeTo(lElbow, new PointF(-8, 18), ref ID);
+				var rElbow = Joint.RelativeTo(shoulder, new PointF(16, 11), ref ID);
+				var rHand = Joint.RelativeTo(rElbow, new PointF(8, 18), ref ID);
+				var hip = Joint.RelativeTo(shoulder, new PointF(0, 40), ref ID);
+				var lKnee = Joint.RelativeTo(hip, new PointF(-11, 23), ref ID);
+				var lFoot = Joint.RelativeTo(lKnee, new PointF(-9, 23), ref ID);
+				var rKnee = Joint.RelativeTo(hip, new PointF(11, 23), ref ID);
+				var rFoot = Joint.RelativeTo(rKnee, new PointF(9, 23), ref ID);
+				var head = Joint.RelativeTo(neck, new PointF(0, -8), ref ID);
 
 				shoulder.HandleColor = Color.Yellow;
 				hip.HandleColor = Color.Yellow;
@@ -172,6 +210,18 @@ namespace TISFAT.Entities
 			layer.Framesets[0].Keyframes.Add(new Keyframe(EndTime, CreateRefState(), Util.EntityInterpolationMode.Linear));
 
 			return layer;
+		}
+
+		public int GetJointCount()
+		{
+			int count = Root.Children.Count + 1;
+
+			foreach(Joint child in Root.Children)
+			{
+				count += child.GetJointCount();
+			}
+
+			return count;
 		}
 
 		public IEntityState CreateRefState()

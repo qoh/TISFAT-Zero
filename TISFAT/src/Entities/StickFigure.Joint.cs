@@ -30,6 +30,8 @@ namespace TISFAT.Entities
 			public bool Manipulatable;
 			public bool Visible;
 
+			public int ID;
+
 			#region Constructors
 			public Joint()
 			{
@@ -44,7 +46,7 @@ namespace TISFAT.Entities
 				Manipulatable = true;
 			}
 
-			public Joint(Joint parent)
+			public Joint(Joint parent, int lastID)
 			{
 				Parent = parent;
 				Children = new List<Joint>();
@@ -55,15 +57,24 @@ namespace TISFAT.Entities
 				HandleVisible = true;
 				Visible = true;
 				Manipulatable = true;
+
+				ID = lastID;
 			}
 
-			public static Joint RelativeTo(Joint parent, PointF location)
+			public static Joint RelativeTo(Joint parent, PointF location, ref int ID)
 			{
 				if (parent == null) throw new NullReferenceException("wat");
-				Joint joint = new Joint(parent);
+				Joint joint = new Joint(parent, ++ID);
 				joint.Location = new PointF(parent.Location.X + location.X, parent.Location.Y + location.Y);
 				parent.Children.Add(joint);
 				return joint;
+			}
+
+			public void Delete()
+			{
+				if (Parent == null) throw new ArgumentNullException("You can't delete the root joint!");
+
+				Parent.Children.Remove(this);
 			}
 			#endregion
 
@@ -119,7 +130,7 @@ namespace TISFAT.Entities
 				if (HandleVisible)
 				{
 					Drawing.Rectangle(Loc, Siz, HandleColor);
-					Drawing.RectangleLine(Loc, Siz, Color.FromArgb(127, 255 - JointColor.R, 255 - JointColor.G, 255 - JointColor.B));
+					Drawing.RectangleLine(Loc, Siz, Color.FromArgb(255, 255 - JointColor.R, 255 - JointColor.G, 255 - JointColor.B));
 				}
 
 				for (var i = 0; i < Children.Count; i++)
@@ -131,16 +142,30 @@ namespace TISFAT.Entities
 
 			public State Copy(State parent = null)
 			{
-				State state = new State(parent);
+				State state = new State(parent, ID);
 				state.Location = Location;
 				state.Thickness = Thickness;
 				state.JointColor = JointColor;
 				state.Manipulatable = Manipulatable;
 
+				state.ID = ID;
+
 				foreach (Joint child in Children)
 					state.Children.Add(child.Copy(state));
 
 				return state;
+			}
+
+			public int GetJointCount()
+			{
+				int count = Children.Count;
+
+				foreach (Joint child in Children)
+				{
+					count += child.GetJointCount();
+				}
+
+				return count;
 			}
 
 			#region File Saving / Loading

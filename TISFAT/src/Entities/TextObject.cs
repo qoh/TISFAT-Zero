@@ -101,6 +101,11 @@ namespace TISFAT.Entities
 			return result;
 		}
 
+		public ManipulateResult TryManipulate(IEntityState _state, Point location, System.Windows.Forms.MouseButtons button, System.Windows.Forms.Keys modifiers, bool fromEditor)
+		{
+			return TryManipulate(_state, location, button, modifiers);
+		}
+
 		public void ManipulateStart(IManipulatable _target, IManipulatableParams mparams, Point location)
 		{
 

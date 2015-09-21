@@ -21,22 +21,45 @@ namespace TISFAT.Entities
 
 				public bool Manipulatable;
 
+				public int ID;
+
 				public State()
 				{
 					Parent = null;
 					Children = new List<State>();
 					Location = new PointF();
+					Manipulatable = true;
 					JointColor = Color.Black;
 					Thickness = 6;
 				}
 
-				public State(State parent)
+				public State(State parent, int lastID)
 				{
 					Parent = parent;
 					Children = new List<State>();
-					Location = new PointF();
-					JointColor = Color.Black;
 					Thickness = 6;
+					JointColor = Color.Black;
+
+					Location = new PointF();
+					Manipulatable = true;
+
+					ID = lastID;
+				}
+
+				public static State RelativeTo(State parent, PointF location, ref int ID)
+				{
+					if (parent == null) throw new NullReferenceException("wat");
+					State state = new State(parent, ++ID);
+					state.Location = new PointF(parent.Location.X + location.X, parent.Location.Y + location.Y);
+					parent.Children.Add(state);
+					return state;
+				}
+
+				public void Delete()
+				{
+					if (Parent == null) throw new ArgumentNullException("You can't delete the root joint!");
+
+					Parent.Children.Remove(this);
 				}
 
 				public void SetColor(Color color, State from)
@@ -57,7 +80,7 @@ namespace TISFAT.Entities
 
 				public static State Interpolate(float t, State current, State target, EntityInterpolationMode mode)
 				{
-					State state = new State(current.Parent);
+					State state = new State(current.Parent, current.ID);
 					state.Location = Interpolation.Interpolate(t, current.Location, target.Location, mode);
 					state.JointColor = Interpolation.Interpolate(t, current.JointColor, target.JointColor, mode);
                     state.Thickness = Interpolation.Interpolate(t, current.Thickness, target.Thickness, mode);
@@ -98,9 +121,6 @@ namespace TISFAT.Entities
 
 					Location = target;
 
-					if (mparams.DisableIK)
-						return;
-
 					foreach (State state in affected)
 					{
 						PointF loc;
@@ -114,6 +134,9 @@ namespace TISFAT.Entities
 						}
 						else
 						{
+							if (mparams.DisableIK)
+								return;
+
 							float jx = state.Location.X;
 							float jy = state.Location.Y;
 
@@ -148,9 +171,28 @@ namespace TISFAT.Entities
 					return null;
 				}
 
+				public Joint GetEquivalentJoint(Joint Root, int testID)
+				{
+					if (Root.ID == testID)
+						return Root;
+
+					for (int i = 0; i < Root.Children.Count; i++)
+					{
+						if (Root.Children[i].ID == testID)
+							return Root.Children[i];
+
+						Joint j = GetEquivalentJoint(Root.Children[i], testID);
+
+						if (j != null)
+							return j;
+					}
+
+					return null;
+				}
+
 				public State Clone(State from = null)
 				{
-					State ret = new State(from);
+					State ret = new State(from, from != null ? from.ID : 0);
 
 					ret.JointColor = JointColor;
 					ret.Location = Location;

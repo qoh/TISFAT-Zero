@@ -11,10 +11,18 @@ namespace TISFAT
 		public int Variant;
 		public string Arguments;
 
+		public object ArgObject;
+
 		public LayerCreationArgs(int v, string args)
 		{
 			Variant = v;
 			Arguments = args;
+		}
+
+		public LayerCreationArgs(int v, object argObj)
+		{
+			Variant = v;
+			ArgObject = argObj;
 		}
 	}
 
@@ -77,7 +85,9 @@ namespace TISFAT
 		public bool Do()
 		{
 			Program.ActiveProject.Layers.RemoveAt(RemovedLayerIndex);
-			Program.ActiveProject.LayerCount[RemovedLayer.Data.GetType()]--;
+
+			if(Program.ActiveProject.LayerCount.ContainsKey(RemovedLayer.Data.GetType()))
+				Program.ActiveProject.LayerCount[RemovedLayer.Data.GetType()]--;
 
 			Program.MainTimeline.ClearSelection();
 			Program.MainTimeline.selectedItems.Select(RemovedLayer);

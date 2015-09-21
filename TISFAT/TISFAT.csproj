@@ -71,6 +71,7 @@
     <Compile Include="src\Entities\CircleObject.State.cs">
       <DependentUpon>CircleObject.cs</DependentUpon>
     </Compile>
+    <Compile Include="src\Entities\CustomFigure.cs" />
     <Compile Include="src\Entities\LineObject.cs" />
     <Compile Include="src\Entities\LineObject.State.cs">
       <DependentUpon>LineObject.cs</DependentUpon>
@@ -317,6 +318,10 @@
     <Content Include="ffmpeg.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\transform_move.png" />
+    <None Include="Resources\cursor.png" />
+    <None Include="Resources\bullet_delete.png" />
+    <None Include="Resources\bullet_add.png" />
     <None Include="Resources\hueBar.png" />
     <None Include="Resources\document_export.png" />
     <None Include="Resources\diskette.png" />

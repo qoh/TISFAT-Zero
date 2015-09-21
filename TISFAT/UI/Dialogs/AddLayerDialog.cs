@@ -6,6 +6,9 @@ namespace TISFAT
 {
 	public partial class AddLayerDialog : Form
 	{
+		StickFigure CustomFigure;
+		StickFigure.State CustomFigureState;
+
 		public AddLayerDialog()
 		{
 			InitializeComponent();
@@ -28,7 +31,9 @@ namespace TISFAT
 					Program.Form_Main.Do(new LayerAddAction(typeof(StickFigure), 0, 20, new LayerCreationArgs(cmb_DefaultFigureVariant.SelectedIndex, "")));
 					break;
 				case "CustomFigure":
-					return;
+					if(CustomFigure != null)
+					Program.Form_Main.Do(new LayerAddAction(typeof(CustomFigure), 0, 20, new LayerCreationArgs(2, new Tuple<StickFigure, StickFigure.State>(CustomFigure, CustomFigureState))));
+					break;
 				case "LineObject":
 					Program.Form_Main.Do(new LayerAddAction(typeof(LineObject), 0, 20, new LayerCreationArgs(0, "")));
 					break;
@@ -160,7 +165,12 @@ namespace TISFAT
 		{
 			StickEditorForm f = new StickEditorForm();
 
-			f.ShowDialog();
+			if(f.ShowDialog() == DialogResult.OK)
+			{
+				txt_customFigPath.Text = "Custom figure created with Editor";
+				CustomFigure = f.CreatedFigure;
+				CustomFigureState = f.CreatedFigureState;
+			}
 		}
 	}
 }
