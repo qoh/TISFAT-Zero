@@ -26,7 +26,7 @@ namespace TISFAT
 
 		public TimelineForm Form_Timeline;
 		public CanvasForm Form_Canvas;
-		public ToolboxForm Form_Toolbox;
+		public PropertiesForm Form_Toolbox;
 
 		private EditMode _ActiveEditMode;
 		public EditMode ActiveEditMode
@@ -64,7 +64,7 @@ namespace TISFAT
 
 			// Create and show forms
 			Form_Timeline = new TimelineForm(sc_MainContainer.Panel2);
-			Form_Toolbox = new ToolboxForm(sc_MainContainer.Panel2);
+			Form_Toolbox = new PropertiesForm(sc_MainContainer.Panel2);
 			Form_Canvas = new CanvasForm(sc_MainContainer.Panel2);
 
 			Form_Timeline.Show();
@@ -268,6 +268,8 @@ namespace TISFAT
 			int nt = (int)Math.Ceiling(endTime / ActiveProject.FPS / delta);
 
 			ProgressDialog progress = new ProgressDialog();
+			
+			progress.StartPosition = FormStartPosition.CenterParent;
 
 			bool frameCanceled = false;
 			EventHandler frameCancelHandler = (_1, _2) => { frameCanceled = true; };
@@ -347,6 +349,8 @@ namespace TISFAT
 		private void btn_AddLayer_Click(object sender, EventArgs e)
 		{
 			AddLayerDialog dlg = new AddLayerDialog();
+			
+			dlg.StartPosition = FormStartPosition.CenterParent;
 
 			dlg.ShowDialog();
 		}
@@ -364,6 +368,8 @@ namespace TISFAT
 		private void projectPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			ProjectPropertiesDialog dlg = new ProjectPropertiesDialog();
+			
+			dlg.StartPosition = FormStartPosition.CenterParent;
 
 			dlg.ShowDialog();
 		}

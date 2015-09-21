@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TISFAT.Util;
 
 namespace TISFAT.Entities
@@ -35,12 +31,12 @@ namespace TISFAT.Entities
 
 		private void DrawHandle(State state, Color c)
 		{
-			
+
 		}
 
 		public void DrawEditable(IEntityState _state)
 		{
-			
+
 		}
 
 		public class ManipulateParams : IManipulatableParams
@@ -80,7 +76,7 @@ namespace TISFAT.Entities
 
 		public void ManipulateStart(IManipulatable _target, IManipulatableParams mparams, Point location)
 		{
-			
+
 		}
 
 		public void ManipulateUpdate(IManipulatable _target, IManipulatableParams mparams, Point location)
@@ -91,7 +87,7 @@ namespace TISFAT.Entities
 
 		public void ManipulateEnd(IManipulatable target, IManipulatableParams mparams, Point location)
 		{
-			
+
 		}
 
 		public Layer CreateDefaultLayer(uint StartTime, uint EndTime, LayerCreationArgs e)
@@ -113,10 +109,13 @@ namespace TISFAT.Entities
 
 		public IEntityState CreateRefState()
 		{
-			return new State() { Location = new PointF(200, 200), 
-			LightRadius = 25.0f, 
-			LightAttenuation = new OpenTK.Vector3(1, 1, 1), 
-			LightColor = Color.Cyan };
+			return new State()
+			{
+				Location = new PointF(200, 200),
+				LightRadius = 50.0f,
+				LightAttenuation = new OpenTK.Vector3(1, 1, 1),
+				LightColor = Color.Aqua
+			};
 		}
 
 		public void Write(BinaryWriter writer)

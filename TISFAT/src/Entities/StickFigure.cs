@@ -40,6 +40,13 @@ namespace TISFAT.Entities
 			public PointF AbsoluteOffset;
 		}
 
+		public void SetColor(IEntityState _state, Color color)
+		{
+			State state = _state as State;
+
+			state.Root.SetColor(color, null);
+		}
+
 		public ManipulateResult TryManipulate(IEntityState _state, Point location, MouseButtons button, Keys modifiers)
 		{
 			State state = _state as State;

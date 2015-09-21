@@ -22,6 +22,7 @@ namespace TISFAT.Entities
 			{
 				State state = new State();
 				state.Bounds = new RectangleF(Bounds.Location, Bounds.Size);
+				state.Color = Color.FromArgb(Color.A, Color);
 				return state;
 			}
 

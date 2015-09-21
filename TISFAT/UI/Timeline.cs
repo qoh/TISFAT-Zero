@@ -529,7 +529,7 @@ namespace TISFAT
 			if (Location.X > 80 && Location.Y < (Program.ActiveProject.Layers.Count * 16) + 16 &&
 				Location.Y > 16 &&
 				button == MouseButtons.Right &&
-				!IsDragging && !IsPlaying())
+				!IsPlaying())
 				Program.Form_Main.Form_Timeline.ShowCxtMenu(Location, GetFrameType(), (int)FrameNum);
 
 			IsMouseDown = false;

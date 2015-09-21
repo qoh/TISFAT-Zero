@@ -3,13 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Windows.Forms;
 using TISFAT.Entities;
 using TISFAT.Util;
 
 namespace TISFAT
 {
-    public class Project : ISaveable
+	public class Project : ISaveable
 	{
 		public List<Layer> Layers;
 		public Dictionary<Type, int> LayerCount;
@@ -30,13 +29,16 @@ namespace TISFAT
 			BackColor = Color.White;
 		}
 
-		public void Draw(float time, bool render)
+		public void Draw(float time, bool render, bool lights)
 		{
 			EditMode editMode = Program.Form_Main.ActiveEditMode;
 			Layer selectedLayer = Program.MainTimeline.SelectedLayer;
 
-            foreach (Layer layer in Layers)
+			foreach (Layer layer in Layers)
 			{
+				if (!lights && layer.Data.GetType() == typeof(PointLight))
+					continue;
+
 				if (!render && layer == selectedLayer && editMode != EditMode.Default)
 				{
 					Keyframe prev = layer.FindPrevKeyframe(time);
@@ -79,7 +81,7 @@ namespace TISFAT
 			if (!render && selectedLayer != null)
 				selectedLayer.DrawEditable(time);
 		}
-		
+
 		#region File Saving / Loading
 		public void Write(BinaryWriter writer)
 		{
@@ -114,7 +116,7 @@ namespace TISFAT
 					BackColor = Color.FromArgb(a, r, g, b);
 				}
 			}
-		} 
+		}
 		#endregion
 	}
 }

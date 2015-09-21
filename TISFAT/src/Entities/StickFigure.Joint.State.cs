@@ -39,12 +39,28 @@ namespace TISFAT.Entities
 					Thickness = 6;
 				}
 
+				public void SetColor(Color color, State from)
+				{
+					List<State> affected = new List<State>();
+
+					JointColor = color;
+
+					foreach (State child in Children)
+					{
+						if (child != from)
+							affected.Add(child);
+					}
+
+					foreach (State state in affected)
+						state.SetColor(color, this);
+				}
+
 				public static State Interpolate(float t, State current, State target, EntityInterpolationMode mode)
 				{
 					State state = new State(current.Parent);
 					state.Location = Interpolation.Interpolate(t, current.Location, target.Location, mode);
-					state.JointColor = current.JointColor;
-					state.Thickness = Interpolation.Interpolate(t, current.Thickness, target.Thickness, mode);
+					state.JointColor = Interpolation.Interpolate(t, current.JointColor, target.JointColor, mode);
+                    state.Thickness = Interpolation.Interpolate(t, current.Thickness, target.Thickness, mode);
 
 					for (var i = 0; i < current.Children.Count; i++)
 					{

@@ -10,6 +10,7 @@ namespace TISFAT
 		public static MainForm Form_Main { get { return _MainForm; } }
 		public static TimelineForm Form_Timeline { get { return Form_Main.Form_Timeline; } }
 		public static CanvasForm Form_Canvas { get { return Form_Main.Form_Canvas; } }
+		public static PropertiesForm Form_Properties { get { return Form_Main.Form_Toolbox; } }
 
 		public static Project ActiveProject { get { return Form_Main.ActiveProject; } }
 		public static Timeline MainTimeline { get { return Form_Main.MainTimeline; } }

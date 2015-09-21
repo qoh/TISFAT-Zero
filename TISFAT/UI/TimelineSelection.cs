@@ -68,6 +68,8 @@ namespace TISFAT
 				if ((type & Current) == 0)
 					Current |= type;
 			}
+
+			Program.Form_Properties.SelectionChanged(Current);
 		}
 
 		public void Select(SelectionType type, int time)

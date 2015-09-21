@@ -1,11 +1,8 @@
 ﻿using OpenTK;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TISFAT.Util;
 
 namespace TISFAT.Entities
 {
@@ -19,7 +16,7 @@ namespace TISFAT.Entities
 			public float LightRadius;
 			public Vector3 LightAttenuation;
 
-			public State () { }
+			public State() { }
 
 			public IEntityState Copy()
 			{
@@ -33,7 +30,7 @@ namespace TISFAT.Entities
 
 			public void Move(PointF target, ManipulateParams mparams)
 			{
-				if(mparams.AbsoluteDrag)
+				if (mparams.AbsoluteDrag)
 				{
 					Location = new PointF(target.X - mparams.AbsoluteOffset.X, target.Y - mparams.AbsoluteOffset.Y);
 				}
@@ -45,12 +42,26 @@ namespace TISFAT.Entities
 
 			public void Write(BinaryWriter writer)
 			{
-				
+				writer.Write((double)Location.X);
+				writer.Write((double)Location.Y);
+
+				FileFormat.WriteColor(LightColor, writer);
+				writer.Write((double)LightRadius);
+
+				FileFormat.WriteVec3(LightAttenuation, writer);
 			}
 
 			public void Read(BinaryReader reader, UInt16 version)
 			{
-				
+				float x, y;
+
+				x = (float)reader.ReadDouble();
+				y = (float)reader.ReadDouble();
+
+				LightColor = FileFormat.ReadColor(reader);
+				LightRadius = (float)reader.ReadDouble();
+
+				LightAttenuation = FileFormat.ReadVec3(reader);
 			}
 		}
 	}

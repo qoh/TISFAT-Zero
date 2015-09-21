@@ -38,7 +38,9 @@ namespace TISFAT
 
 		private void pnl_CanvasColor_Click(object sender, EventArgs e)
 		{
-			ColorDialog dlg = new ColorDialog();
+			ColorPickerDialog dlg = new ColorPickerDialog();
+			
+			dlg.StartPosition = FormStartPosition.CenterParent;
 
 			if (dlg.ShowDialog() == DialogResult.OK)
 			{

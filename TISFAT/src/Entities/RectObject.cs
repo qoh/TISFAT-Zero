@@ -20,6 +20,7 @@ namespace TISFAT.Entities
 			State state = new State();
 
 			state.Bounds = Interpolation.Interpolate(t, current.Bounds, target.Bounds, mode);
+			state.Color = Interpolation.Interpolate(t, current.Color, target.Color, mode);
 
 			return state;
 		}
