@@ -31,6 +31,10 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StickEditorForm));
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.pnl_Toolbox = new System.Windows.Forms.Panel();
 			this.ckb_DrawHandles = new System.Windows.Forms.CheckBox();
 			this.ckb_EnableIK = new System.Windows.Forms.CheckBox();
@@ -78,10 +82,6 @@
 			this.lbl_handleColor = new System.Windows.Forms.Label();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.btn_OK = new System.Windows.Forms.Button();
-			this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.pnl_Toolbox.SuspendLayout();
 			this.pnl_SideBar.SuspendLayout();
@@ -122,6 +122,34 @@
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
 			this.fileToolStripMenuItem.Text = "File";
 			// 
+			// newToolStripMenuItem
+			// 
+			this.newToolStripMenuItem.Name = "newToolStripMenuItem";
+			this.newToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+			this.newToolStripMenuItem.Text = "New";
+			this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
+			// 
+			// openToolStripMenuItem
+			// 
+			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+			this.openToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+			this.openToolStripMenuItem.Text = "Open";
+			this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+			// 
+			// saveToolStripMenuItem
+			// 
+			this.saveToolStripMenuItem.Enabled = false;
+			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+			this.saveToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+			this.saveToolStripMenuItem.Text = "Save";
+			// 
+			// saveAsToolStripMenuItem
+			// 
+			this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+			this.saveAsToolStripMenuItem.Text = "Save As..";
+			this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+			// 
 			// pnl_Toolbox
 			// 
 			this.pnl_Toolbox.Controls.Add(this.ckb_DrawHandles);
@@ -146,11 +174,12 @@
 			// 
 			// ckb_DrawHandles
 			// 
+			this.ckb_DrawHandles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.ckb_DrawHandles.AutoSize = true;
 			this.ckb_DrawHandles.Checked = true;
 			this.ckb_DrawHandles.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.ckb_DrawHandles.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-			this.ckb_DrawHandles.Location = new System.Drawing.Point(563, 7);
+			this.ckb_DrawHandles.Location = new System.Drawing.Point(623, 7);
 			this.ckb_DrawHandles.Name = "ckb_DrawHandles";
 			this.ckb_DrawHandles.Size = new System.Drawing.Size(98, 17);
 			this.ckb_DrawHandles.TabIndex = 27;
@@ -160,9 +189,10 @@
 			// 
 			// ckb_EnableIK
 			// 
+			this.ckb_EnableIK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.ckb_EnableIK.AutoSize = true;
 			this.ckb_EnableIK.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-			this.ckb_EnableIK.Location = new System.Drawing.Point(484, 7);
+			this.ckb_EnableIK.Location = new System.Drawing.Point(544, 7);
 			this.ckb_EnableIK.Name = "ckb_EnableIK";
 			this.ckb_EnableIK.Size = new System.Drawing.Size(73, 17);
 			this.ckb_EnableIK.TabIndex = 26;
@@ -181,6 +211,7 @@
 			// 
 			// btn_editModePointer
 			// 
+			this.btn_editModePointer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btn_editModePointer.Checked = true;
 			this.btn_editModePointer.ImageDefault = global::TISFAT.Properties.Resources.cursor;
 			this.btn_editModePointer.ImageDown = null;
@@ -188,7 +219,7 @@
 			this.btn_editModePointer.ImageOn = null;
 			this.btn_editModePointer.ImageOnDown = null;
 			this.btn_editModePointer.ImageOnHover = null;
-			this.btn_editModePointer.Location = new System.Drawing.Point(667, 3);
+			this.btn_editModePointer.Location = new System.Drawing.Point(727, 3);
 			this.btn_editModePointer.Name = "btn_editModePointer";
 			this.btn_editModePointer.Size = new System.Drawing.Size(24, 24);
 			this.btn_editModePointer.TabIndex = 24;
@@ -197,6 +228,7 @@
 			// 
 			// btn_editModeAdd
 			// 
+			this.btn_editModeAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btn_editModeAdd.Checked = false;
 			this.btn_editModeAdd.ImageDefault = global::TISFAT.Properties.Resources.bullet_add;
 			this.btn_editModeAdd.ImageDown = null;
@@ -204,7 +236,7 @@
 			this.btn_editModeAdd.ImageOn = null;
 			this.btn_editModeAdd.ImageOnDown = null;
 			this.btn_editModeAdd.ImageOnHover = null;
-			this.btn_editModeAdd.Location = new System.Drawing.Point(727, 3);
+			this.btn_editModeAdd.Location = new System.Drawing.Point(787, 3);
 			this.btn_editModeAdd.Name = "btn_editModeAdd";
 			this.btn_editModeAdd.Size = new System.Drawing.Size(24, 24);
 			this.btn_editModeAdd.TabIndex = 23;
@@ -213,6 +245,7 @@
 			// 
 			// btn_editModeMove
 			// 
+			this.btn_editModeMove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btn_editModeMove.Checked = false;
 			this.btn_editModeMove.ImageDefault = global::TISFAT.Properties.Resources.transform_move;
 			this.btn_editModeMove.ImageDown = null;
@@ -220,7 +253,7 @@
 			this.btn_editModeMove.ImageOn = null;
 			this.btn_editModeMove.ImageOnDown = null;
 			this.btn_editModeMove.ImageOnHover = null;
-			this.btn_editModeMove.Location = new System.Drawing.Point(697, 3);
+			this.btn_editModeMove.Location = new System.Drawing.Point(757, 3);
 			this.btn_editModeMove.Name = "btn_editModeMove";
 			this.btn_editModeMove.Size = new System.Drawing.Size(24, 24);
 			this.btn_editModeMove.TabIndex = 22;
@@ -229,6 +262,7 @@
 			// 
 			// btn_editModeDelete
 			// 
+			this.btn_editModeDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btn_editModeDelete.Checked = false;
 			this.btn_editModeDelete.ImageDefault = global::TISFAT.Properties.Resources.bullet_delete;
 			this.btn_editModeDelete.ImageDown = null;
@@ -236,7 +270,7 @@
 			this.btn_editModeDelete.ImageOn = null;
 			this.btn_editModeDelete.ImageOnDown = null;
 			this.btn_editModeDelete.ImageOnHover = null;
-			this.btn_editModeDelete.Location = new System.Drawing.Point(757, 3);
+			this.btn_editModeDelete.Location = new System.Drawing.Point(817, 3);
 			this.btn_editModeDelete.Name = "btn_editModeDelete";
 			this.btn_editModeDelete.Size = new System.Drawing.Size(24, 24);
 			this.btn_editModeDelete.TabIndex = 21;
@@ -676,34 +710,6 @@
 			this.btn_OK.Text = "OK";
 			this.btn_OK.UseVisualStyleBackColor = true;
 			this.btn_OK.Click += new System.EventHandler(this.btn_OK_Click);
-			// 
-			// newToolStripMenuItem
-			// 
-			this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-			this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.newToolStripMenuItem.Text = "New";
-			this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
-			// 
-			// openToolStripMenuItem
-			// 
-			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-			this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.openToolStripMenuItem.Text = "Open";
-			this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
-			// 
-			// saveToolStripMenuItem
-			// 
-			this.saveToolStripMenuItem.Enabled = false;
-			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-			this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.saveToolStripMenuItem.Text = "Save";
-			// 
-			// saveAsToolStripMenuItem
-			// 
-			this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.saveAsToolStripMenuItem.Text = "Save As..";
-			this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
 			// 
 			// StickEditorForm
 			// 
