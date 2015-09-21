@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 using TISFAT.Entities;
 
@@ -158,7 +159,19 @@ namespace TISFAT
 			dlg.Filter = "TISFAT Zero Figures|*.tzf";
 
 			if (dlg.ShowDialog() == DialogResult.OK)
+			{
 				txt_customFigPath.Text = dlg.FileName;
+
+				CustomFigure = new StickFigure();
+
+				using (var reader = new BinaryReader(new FileStream(dlg.FileName, FileMode.Open)))
+				{
+					UInt16 version = reader.ReadUInt16();
+					CustomFigure.Read(reader, version);
+				}
+
+				CustomFigureState = (StickFigure.State)CustomFigure.CreateRefState();
+			}
 		}
 
 		private void btn_openStickEditor_Click(object sender, EventArgs e)
