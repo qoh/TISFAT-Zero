@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
+    <?include $(sys.CURRENTDIR)Fragments\config_Wix.wxi?>
+    <Product Id="*" Name="$(var.ProductName)" Language="1033" Version="$(var.VersionNumber)" Manufacturer="$(var.ProductManufacturer)" UpgradeCode="$(var.UpgradeCode)">
+        <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64"/>
+        <MediaTemplate EmbedCab="yes"/>
+
+        <!-- .NET Framework version detection -->
+        <!-- Ref Url: https://msdn.microsoft.com/en-us/library/ee942965(v=VS.110).aspx -->
+        <Condition Message="This application requires .NET Framework 4.5.1 or higher. Please install the .NET Framework then run this installer again.">
+            <![CDATA[Installed OR NETFRAMEWORK45 >= "#378675"]]>
+        </Condition>
+
+        <MajorUpgrade DowngradeErrorMessage="A newer version of $(var.ProductName) is already installed." />
+
+        <Feature Id="ProductFeature" Title="$(var.FeatureName)" Level="1">
+            <ComponentGroupRef Id="$(var.ComponentGroupId)" />
+        </Feature>
+        
+
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="$(var.PFilesFolder)">
+                <Directory Id="INSTALLFOLDER" Name="$(var.ProgramFilesFolderName)"/>
+            </Directory>
+            
+            <Directory Id="DesktopFolder"/>     <!-- Reference to these is necessary because they're used in FilesFragment -->
+            <Directory Id="ProgramMenuFolder">
+                <Directory Id="$(var.StartMenuFolderId)" Name="$(var.StartMenuFolderName)"/>
+            </Directory>
+        </Directory>
+
+        
+        <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+        <Property Id="ARPPRODUCTICON" Value="$(var.IconId)"/>
+
+        <Property Id="NETFRAMEWORK45">
+            <RegistrySearch Id="NetFramework45" Root="HKLM" Key="SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" Name="Release" Type="raw"/>
+        </Property>
+
+        <UI>
+			<UIRef Id="WixUI_InstallDir"/>
+        </UI>
+
+        <Icon Id="$(var.IconId)" SourceFile="$(var.IconSource)"/>
+        <Icon Id="$(var.IconExeId)" SourceFile="$(var.IconSource)"/>
+
+		<WixVariable Id="WixUILicenseRtf" Value="Resources\license.rtf"/>
+		<WixVariable Id="WixUIDialogBmp" Value="Resources\dialog.bmp"/>
+		<WixVariable Id="WixUIBannerBmp" Value="Resources\banner.bmp"/>
+    </Product>
+</Wix>

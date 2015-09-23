@@ -91,6 +91,14 @@ namespace TISFAT
 
 						pnl_PolyProperties.Visible = true;
 						break;
+					case "BitmapObject":
+						float rotation = ((BitmapObject.State)Program.MainTimeline.SelectedKeyframe.State).Rotation;
+
+						num_bitmapAngle.Value = (decimal)rotation;
+						tkb_bitmapAngle.Value = (int)rotation;
+
+						pnl_BitmapProperties.Visible = true;
+						break;
 					case "TextObject":
 						c = ((TextObject.State)Program.MainTimeline.SelectedKeyframe.State).TextColor;
 						Font font = ((TextObject.State)Program.MainTimeline.SelectedKeyframe.State).TextFont;
@@ -629,7 +637,33 @@ namespace TISFAT
 			state.Text = rtb_textText.Text;
 
 			Program.MainTimeline.GLContext.Invalidate();
-		} 
+		}
 		#endregion
+
+		private void num_bitmapAngle_ValueChanged(object sender, EventArgs e)
+		{
+			if (Program.MainTimeline.SelectedKeyframe == null)
+				return;
+			if (Program.MainTimeline.SelectedKeyframe.State.GetType() != typeof(BitmapObject.State))
+				return;
+
+			tkb_bitmapAngle.Value = (int)num_bitmapAngle.Value;
+
+			BitmapObject.State state = Program.MainTimeline.SelectedKeyframe.State as BitmapObject.State;
+
+			state.Rotation = (float)num_bitmapAngle.Value;
+
+			Program.MainTimeline.GLContext.Invalidate();
+		}
+
+		private void tkb_bitmapAngle_Scroll(object sender, EventArgs e)
+		{
+			if (Program.MainTimeline.SelectedKeyframe == null)
+				return;
+			if (Program.MainTimeline.SelectedKeyframe.State.GetType() != typeof(BitmapObject.State))
+				return;
+
+			num_bitmapAngle.Value = (decimal)tkb_bitmapAngle.Value;
+		}
 	}
 }

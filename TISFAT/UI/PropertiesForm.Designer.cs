@@ -31,6 +31,10 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PropertiesForm));
 			this.grp_Main = new System.Windows.Forms.GroupBox();
 			this.pnl_TextProperties = new System.Windows.Forms.Panel();
+			this.btn_textOpenFontPicker = new System.Windows.Forms.Button();
+			this.label2 = new System.Windows.Forms.Label();
+			this.txt_textFont = new System.Windows.Forms.TextBox();
+			this.lbl_textText = new System.Windows.Forms.Label();
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.rtb_textText = new System.Windows.Forms.RichTextBox();
 			this.lbl_textApplyColor = new System.Windows.Forms.Label();
@@ -94,10 +98,9 @@
 			this.pnl_stickFigureColor = new System.Windows.Forms.Panel();
 			this.lbl_stickFigureColorNumbers = new System.Windows.Forms.Label();
 			this.pnl_stickFigureColorImg = new System.Windows.Forms.Panel();
-			this.lbl_textText = new System.Windows.Forms.Label();
-			this.txt_textFont = new System.Windows.Forms.TextBox();
-			this.label2 = new System.Windows.Forms.Label();
-			this.btn_textOpenFontPicker = new System.Windows.Forms.Button();
+			this.tkb_bitmapAngle = new System.Windows.Forms.TrackBar();
+			this.num_bitmapAngle = new System.Windows.Forms.NumericUpDown();
+			this.lbl_bitmapAngle = new System.Windows.Forms.Label();
 			this.grp_Main.SuspendLayout();
 			this.pnl_TextProperties.SuspendLayout();
 			this.panel2.SuspendLayout();
@@ -110,22 +113,25 @@
 			this.pnl_RectangleProperties.SuspendLayout();
 			this.pnl_rectColor.SuspendLayout();
 			this.pnl_PropertiesDescription.SuspendLayout();
+			this.pnl_BitmapProperties.SuspendLayout();
 			this.pnl_LineProperties.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.num_lineThickness)).BeginInit();
 			this.pnl_lineColor.SuspendLayout();
 			this.pnl_StickFigureProperties.SuspendLayout();
 			this.pnl_stickFigureColor.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.tkb_bitmapAngle)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.num_bitmapAngle)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// grp_Main
 			// 
+			this.grp_Main.Controls.Add(this.pnl_BitmapProperties);
 			this.grp_Main.Controls.Add(this.pnl_TextProperties);
 			this.grp_Main.Controls.Add(this.pnl_PolyProperties);
 			this.grp_Main.Controls.Add(this.pnl_CircleProperties);
 			this.grp_Main.Controls.Add(this.pnl_RectangleProperties);
 			this.grp_Main.Controls.Add(this.pnl_PropertiesDescription);
 			this.grp_Main.Controls.Add(this.pnl_PointLightProperties);
-			this.grp_Main.Controls.Add(this.pnl_BitmapProperties);
 			this.grp_Main.Controls.Add(this.pnl_LineProperties);
 			this.grp_Main.Controls.Add(this.pnl_StickFigureProperties);
 			this.grp_Main.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -154,6 +160,44 @@
 			this.pnl_TextProperties.Size = new System.Drawing.Size(188, 294);
 			this.pnl_TextProperties.TabIndex = 7;
 			this.pnl_TextProperties.Visible = false;
+			// 
+			// btn_textOpenFontPicker
+			// 
+			this.btn_textOpenFontPicker.Location = new System.Drawing.Point(34, 232);
+			this.btn_textOpenFontPicker.Name = "btn_textOpenFontPicker";
+			this.btn_textOpenFontPicker.Size = new System.Drawing.Size(120, 23);
+			this.btn_textOpenFontPicker.TabIndex = 30;
+			this.btn_textOpenFontPicker.Text = "Open Font Picker";
+			this.btn_textOpenFontPicker.UseVisualStyleBackColor = true;
+			this.btn_textOpenFontPicker.Click += new System.EventHandler(this.btn_textOpenFontPicker_Click);
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(80, 190);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(28, 13);
+			this.label2.TabIndex = 29;
+			this.label2.Text = "Font";
+			// 
+			// txt_textFont
+			// 
+			this.txt_textFont.Enabled = false;
+			this.txt_textFont.Location = new System.Drawing.Point(38, 206);
+			this.txt_textFont.Name = "txt_textFont";
+			this.txt_textFont.Size = new System.Drawing.Size(113, 20);
+			this.txt_textFont.TabIndex = 28;
+			this.txt_textFont.Text = "Ay thats a dank font yo";
+			this.txt_textFont.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			// 
+			// lbl_textText
+			// 
+			this.lbl_textText.AutoSize = true;
+			this.lbl_textText.Location = new System.Drawing.Point(80, 108);
+			this.lbl_textText.Name = "lbl_textText";
+			this.lbl_textText.Size = new System.Drawing.Size(28, 13);
+			this.lbl_textText.TabIndex = 27;
+			this.lbl_textText.Text = "Text";
 			// 
 			// panel2
 			// 
@@ -565,6 +609,9 @@
 			// 
 			// pnl_BitmapProperties
 			// 
+			this.pnl_BitmapProperties.Controls.Add(this.lbl_bitmapAngle);
+			this.pnl_BitmapProperties.Controls.Add(this.num_bitmapAngle);
+			this.pnl_BitmapProperties.Controls.Add(this.tkb_bitmapAngle);
 			this.pnl_BitmapProperties.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnl_BitmapProperties.Location = new System.Drawing.Point(3, 16);
 			this.pnl_BitmapProperties.Name = "pnl_BitmapProperties";
@@ -783,43 +830,43 @@
 			this.pnl_stickFigureColorImg.TabIndex = 0;
 			this.pnl_stickFigureColorImg.Click += new System.EventHandler(this.pnl_stickFigureColorImg_Click);
 			// 
-			// lbl_textText
+			// tkb_bitmapAngle
 			// 
-			this.lbl_textText.AutoSize = true;
-			this.lbl_textText.Location = new System.Drawing.Point(80, 108);
-			this.lbl_textText.Name = "lbl_textText";
-			this.lbl_textText.Size = new System.Drawing.Size(28, 13);
-			this.lbl_textText.TabIndex = 27;
-			this.lbl_textText.Text = "Text";
+			this.tkb_bitmapAngle.Location = new System.Drawing.Point(34, 54);
+			this.tkb_bitmapAngle.Maximum = 360;
+			this.tkb_bitmapAngle.Minimum = -360;
+			this.tkb_bitmapAngle.Name = "tkb_bitmapAngle";
+			this.tkb_bitmapAngle.Size = new System.Drawing.Size(120, 45);
+			this.tkb_bitmapAngle.TabIndex = 0;
+			this.tkb_bitmapAngle.TickStyle = System.Windows.Forms.TickStyle.Both;
+			this.tkb_bitmapAngle.Scroll += new System.EventHandler(this.tkb_bitmapAngle_Scroll);
 			// 
-			// txt_textFont
+			// num_bitmapAngle
 			// 
-			this.txt_textFont.Enabled = false;
-			this.txt_textFont.Location = new System.Drawing.Point(38, 206);
-			this.txt_textFont.Name = "txt_textFont";
-			this.txt_textFont.Size = new System.Drawing.Size(113, 20);
-			this.txt_textFont.TabIndex = 28;
-			this.txt_textFont.Text = "Ay thats a dank font yo";
-			this.txt_textFont.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.num_bitmapAngle.Location = new System.Drawing.Point(34, 29);
+			this.num_bitmapAngle.Maximum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            0});
+			this.num_bitmapAngle.Minimum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            -2147483648});
+			this.num_bitmapAngle.Name = "num_bitmapAngle";
+			this.num_bitmapAngle.Size = new System.Drawing.Size(120, 20);
+			this.num_bitmapAngle.TabIndex = 1;
+			this.num_bitmapAngle.ValueChanged += new System.EventHandler(this.num_bitmapAngle_ValueChanged);
 			// 
-			// label2
+			// lbl_bitmapAngle
 			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(80, 190);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(28, 13);
-			this.label2.TabIndex = 29;
-			this.label2.Text = "Font";
-			// 
-			// btn_textOpenFontPicker
-			// 
-			this.btn_textOpenFontPicker.Location = new System.Drawing.Point(34, 232);
-			this.btn_textOpenFontPicker.Name = "btn_textOpenFontPicker";
-			this.btn_textOpenFontPicker.Size = new System.Drawing.Size(120, 23);
-			this.btn_textOpenFontPicker.TabIndex = 30;
-			this.btn_textOpenFontPicker.Text = "Open Font Picker";
-			this.btn_textOpenFontPicker.UseVisualStyleBackColor = true;
-			this.btn_textOpenFontPicker.Click += new System.EventHandler(this.btn_textOpenFontPicker_Click);
+			this.lbl_bitmapAngle.AutoSize = true;
+			this.lbl_bitmapAngle.Location = new System.Drawing.Point(60, 13);
+			this.lbl_bitmapAngle.Name = "lbl_bitmapAngle";
+			this.lbl_bitmapAngle.Size = new System.Drawing.Size(69, 13);
+			this.lbl_bitmapAngle.TabIndex = 2;
+			this.lbl_bitmapAngle.Text = "Bitmap Angle";
 			// 
 			// PropertiesForm
 			// 
@@ -851,6 +898,8 @@
 			this.pnl_RectangleProperties.PerformLayout();
 			this.pnl_rectColor.ResumeLayout(false);
 			this.pnl_PropertiesDescription.ResumeLayout(false);
+			this.pnl_BitmapProperties.ResumeLayout(false);
+			this.pnl_BitmapProperties.PerformLayout();
 			this.pnl_LineProperties.ResumeLayout(false);
 			this.pnl_LineProperties.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.num_lineThickness)).EndInit();
@@ -858,6 +907,8 @@
 			this.pnl_StickFigureProperties.ResumeLayout(false);
 			this.pnl_StickFigureProperties.PerformLayout();
 			this.pnl_stickFigureColor.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.tkb_bitmapAngle)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.num_bitmapAngle)).EndInit();
 			this.ResumeLayout(false);
 
         }
@@ -932,5 +983,8 @@
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.TextBox txt_textFont;
 		private System.Windows.Forms.Button btn_textOpenFontPicker;
+		private System.Windows.Forms.Label lbl_bitmapAngle;
+		private System.Windows.Forms.NumericUpDown num_bitmapAngle;
+		private System.Windows.Forms.TrackBar tkb_bitmapAngle;
 	}
 }

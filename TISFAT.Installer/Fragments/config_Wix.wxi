@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+	
+    <!-- Separator | Make Changes to these variables -->
+    
+    <?define ProductName="TISFAT Zero"?>
+    <?define ProductManufacturer="Atomic Software"?>
+    
+    <?define IconId="TISFAT_Icon"?>
+    <?define IconSource="Resources\T0.ico"?>
+    
+    <?define TargetArchitecture="64"?>
+
+    <?define ProgramFilesFolderName="TISFAT Zero"?>
+    <?define StartMenuFolderId="TISFATStartMenuFolder"?>
+    <?define StartMenuFolderName="TISFAT Zero"?>
+    
+    <?define FeatureName="TISFAT Zero"?>
+    <?define ComponentGroupId="TISFATFiles"?>
+    
+    <?define BinDirectory="..\TISFAT\bin\Release"?>
+
+
+    <!--  Versioning. These must be changed for upgrades.
+          Recompiling with newer files isn't enough -->
+
+    <?define VersionNumber="1.0.1.0" ?>
+
+    <?define UpgradeCode="BAEE4265-CA67-4FE3-9626-3E2CCE77FF16"?>
+    
+    <!-- End Separator | Don't make changes below here -->
+    
+    <?if $(var.TargetArchitecture) = "32"?>
+        <?define PFilesFolder="ProgramFilesFolder"?>
+        <?define TargetPlatform="x86"?>
+    <?else?>
+        <?define PFilesFolder="ProgramFiles64Folder"?>
+        <?define TargetPlatform="x64"?>
+    <?endif?>
+    
+    <?define IconExeId="$(var.IconId).exe"?>
+</Include>

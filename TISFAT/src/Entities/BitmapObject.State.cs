@@ -12,6 +12,7 @@ namespace TISFAT.Entities
 			public RectangleF Bounds;
 			public float TexWidth;
 			public float TexHeight;
+			public float Rotation;
 
 			public State() { }
 
@@ -21,6 +22,7 @@ namespace TISFAT.Entities
 				state.Bounds = new RectangleF(Bounds.Location, Bounds.Size);
 				state.TexHeight = this.TexHeight;
 				state.TexWidth = this.TexWidth;
+				state.Rotation = this.Rotation;
 				return state;
 			}
 
@@ -112,6 +114,7 @@ namespace TISFAT.Entities
 
 				writer.Write((double)TexWidth);
 				writer.Write((double)TexHeight);
+				writer.Write((double)Rotation);
 			}
 
 			public void Read(BinaryReader reader, UInt16 version)
@@ -125,6 +128,7 @@ namespace TISFAT.Entities
 
 				TexWidth = (float)reader.ReadDouble();
 				TexHeight = (float)reader.ReadDouble();
+				Rotation = (float)reader.ReadDouble();
 			}
 		}
 	}

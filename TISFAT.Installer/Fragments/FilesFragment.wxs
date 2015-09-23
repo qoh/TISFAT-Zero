@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <?include $(sys.CURRENTDIR)Fragments\config_Wix.wxi?>
+    <Fragment>
+        <DirectoryRef Id="INSTALLFOLDER">
+            <Component Id="cmpB8C0EBDE7DE2CC411B550EDFBA85C027" Guid="{1A46E73A-2FC1-4CA5-888C-7890B4F77306}" Win64="yes">
+                <File Id="fil21F629ADBC39520BE5C85640CE00209B" KeyPath="yes" Source="$(var.BinDirectory)\Cyotek.Windows.Forms.ColorPicker.dll" />
+            </Component>
+            <Component Id="cmp5097CAF52967A6CF76C81E53F4DD535C" Guid="{C452E9B5-4DD8-4E13-A2FC-8BAC150D926E}" Win64="yes">
+                <File Id="fil288D72DC7A0E11135BBE918AEA1D3A82" KeyPath="yes" Source="$(var.BinDirectory)\ffmpeg.exe" />
+            </Component>
+            <Component Id="cmp2D910AE3FB01D8D6898D22BF742CCA9C" Guid="{C54F6823-F1A6-4996-A0A5-79784C0AEC85}" Win64="yes">
+                <File Id="fil04E1DDC65DABABE0F39C79667CA014CD" KeyPath="yes" Source="$(var.BinDirectory)\OpenTK.dll" />
+            </Component>
+            <Component Id="cmp87F301ED03A0753CE9EE6AB4F07FC4F6" Guid="{0795F06A-CFBC-467B-872E-BF7FC0C04E79}" Win64="yes">
+                <File Id="fil6FD05457390B511FB20295E9898EEA9F" KeyPath="yes" Source="$(var.BinDirectory)\OpenTK.GLControl.dll" />
+            </Component>
+            <Component Id="cmp9C92424AB720D958633C387CCD4C54FE" Guid="{BEFAE824-A8B1-406F-8D31-B00D2489C464}" Win64="yes">
+				<Shortcut Id="scDesktopIcon" Advertise="yes" Directory="DesktopFolder" Icon="TISFAT_Icon.exe" Name="TISFAT Zero" WorkingDirectory="INSTALLFOLDER" />
+				<Shortcut Id="scStartIcon" Advertise="yes" Directory="TISFATStartMenuFolder" Icon="TISFAT_Icon.exe" Name="TISFAT Zero" WorkingDirectory="INSTALLFOLDER" />
+				<RemoveFolder Id="RemoveStartMenuFolder" Directory="TISFATStartMenuFolder" On="uninstall" />
+
+                <File Id="filFB2232F322FA11A8A804E01365010A67" KeyPath="yes" Source="$(var.BinDirectory)\TISFAT.exe" />
+            </Component>
+            <Directory Id="dirE9BACA1759D12D11018357DC8AB0F0CF" Name="Shaders">
+                <Component Id="cmp9BAFF94E331EE8CDC500567776E9AC3C" Guid="{BCB47E15-727C-417F-B8DC-C7195C525AC4}" Win64="yes">
+                    <File Id="filA24E20BAF69058F74FC3928E1CF28FA6" KeyPath="yes" Source="$(var.BinDirectory)\Shaders\ColorPicker.frag" />
+                </Component>
+                <Component Id="cmp2C1CBDCD3C96C069265EDB8010EAE245" Guid="{838559FE-CBF3-4F2A-8A95-9BB5A54F2507}" Win64="yes">
+                    <File Id="fil22FE314723941D6F2FD0F7BD01F11ED7" KeyPath="yes" Source="$(var.BinDirectory)\Shaders\ColorPicker.vert" />
+                </Component>
+                <Component Id="cmp8C2B46036FF23F2B0B895B661479E2DA" Guid="{EE4EA2EE-E9F3-4793-AB7D-78ED2DFCBB20}" Win64="yes">
+                    <File Id="fil0014BE2A1AE5FA2D9A1E6B5269F3B425" KeyPath="yes" Source="$(var.BinDirectory)\Shaders\PointLight.frag" />
+                </Component>
+                <Component Id="cmpDA47FB051434A13172B6EAF3BD139D22" Guid="{23B3A2A3-10C9-425F-9F3E-2705904D3FE3}" Win64="yes">
+                    <File Id="filED9BBE822807671EA67253C04EEBBD99" KeyPath="yes" Source="$(var.BinDirectory)\Shaders\PointLight.vert" />
+                </Component>
+            </Directory>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="TISFATFiles">
+            <ComponentRef Id="cmpB8C0EBDE7DE2CC411B550EDFBA85C027" />
+            <ComponentRef Id="cmp5097CAF52967A6CF76C81E53F4DD535C" />
+            <ComponentRef Id="cmp2D910AE3FB01D8D6898D22BF742CCA9C" />
+            <ComponentRef Id="cmp87F301ED03A0753CE9EE6AB4F07FC4F6" />
+            <ComponentRef Id="cmp9C92424AB720D958633C387CCD4C54FE" />
+            <ComponentRef Id="cmp9BAFF94E331EE8CDC500567776E9AC3C" />
+            <ComponentRef Id="cmp2C1CBDCD3C96C069265EDB8010EAE245" />
+            <ComponentRef Id="cmp8C2B46036FF23F2B0B895B661479E2DA" />
+            <ComponentRef Id="cmpDA47FB051434A13172B6EAF3BD139D22" />
+        </ComponentGroup>
+    </Fragment>
+</Wix>

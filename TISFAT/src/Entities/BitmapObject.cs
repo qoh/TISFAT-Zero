@@ -20,6 +20,7 @@ namespace TISFAT.Entities
 			State state = new State();
 
 			state.Bounds = Interpolation.Interpolate(t, current.Bounds, target.Bounds, mode);
+			state.Rotation = Interpolation.Interpolate(t, current.Rotation, target.Rotation, mode);
 
 			return state;
 		}
@@ -27,7 +28,7 @@ namespace TISFAT.Entities
 		public void Draw(IEntityState _state)
 		{
 			State state = _state as State;
-			Drawing.Bitmap(state.Bounds.Location, state.Bounds.Size, TextureID);
+			Drawing.Bitmap(state.Bounds.Location, state.Bounds.Size, state.Rotation, TextureID);
 		}
 
 		private void DrawHandle(State state, Color c)
@@ -45,7 +46,7 @@ namespace TISFAT.Entities
 		{
 			State state = _state as State;
 
-			Drawing.Bitmap(state.Bounds.Location, state.Bounds.Size, TextureID);
+			Drawing.Bitmap(state.Bounds.Location, state.Bounds.Size, state.Rotation, TextureID);
 			DrawHandle(state, Color.Cyan);
 		}
 

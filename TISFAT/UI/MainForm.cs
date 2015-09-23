@@ -17,6 +17,9 @@ namespace TISFAT
 	public partial class MainForm : Form
 	{
 		#region Properties
+		IAction ItemSavedOn;
+		IAction LastAction;
+
 		public Project ActiveProject;
 		private string ProjectFileName;
 		private bool ProjectDirty;
@@ -93,6 +96,10 @@ namespace TISFAT
 			if (!action.Do())
 				return;
 
+			SetDirty(true);
+
+			LastAction = action;
+
 			UndoList.Push(action);
 			RedoList.Clear();
 
@@ -121,6 +128,11 @@ namespace TISFAT
 				return;
 
 			IAction item = UndoList.Pop();
+
+			SetDirty(UndoList.Count == 0 ? item != ItemSavedOn : ItemSavedOn != null);
+
+			LastAction = item;
+
 			RedoList.Push(item);
 			item.Undo();
 
@@ -133,6 +145,11 @@ namespace TISFAT
 				return;
 
 			IAction item = RedoList.Pop();
+
+			SetDirty(RedoList.Count == 0 ? item != ItemSavedOn : ItemSavedOn != null);
+
+			LastAction = item;
+
 			UndoList.Push(item);
 			item.Do();
 
@@ -181,6 +198,9 @@ namespace TISFAT
 
 			SetFileName(filename);
 
+			MainTimeline.ClearSelection();
+			MainTimeline.SeekStart();
+
 			if (MainTimeline != null)
 				MainTimeline.GLContext.Invalidate();
 		}
@@ -189,6 +209,8 @@ namespace TISFAT
 		{
 			if (MainTimeline == null)
 				return;
+
+			ItemSavedOn = LastAction;
 
 			using (var writer = new BinaryWriter(new FileStream(filename, FileMode.Create)))
 			{
@@ -379,6 +401,31 @@ namespace TISFAT
 			ColorPickerDialog dlg = new ColorPickerDialog();
 
 			dlg.ShowDialog();
+		}
+
+		private void MainForm_KeyDown(object sender, KeyEventArgs e)
+		{
+			CheckKeyPressed(e);
+		}
+
+		public void CheckKeyPressed(KeyEventArgs e)
+		{
+			if (e.Control)
+			{
+				if (e.KeyCode == Keys.S)
+					saveToolStripMenuItem_Click(null, null);
+				else if (e.KeyCode == Keys.O)
+					openToolStripMenuItem_Click(null, null);
+				else if (e.KeyCode == Keys.Z)
+					Undo();
+				else if (e.KeyCode == Keys.Y)
+					Redo();
+			}
+			else if (e.KeyCode == Keys.Space)
+			{
+				Program.MainTimeline.TogglePause();
+				Form_Timeline.PlayButton.Checked = MainTimeline.IsPlaying();
+			}
 		}
 	}
 }

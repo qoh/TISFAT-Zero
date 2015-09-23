@@ -395,11 +395,13 @@
 			this.Controls.Add(this.GLContext);
 			this.Controls.Add(this.pnl_ToolboxPanel);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+			this.KeyPreview = true;
 			this.MinimumSize = new System.Drawing.Size(768, 136);
 			this.Name = "TimelineForm";
 			this.Text = "Timeline";
 			this.Load += new System.EventHandler(this.TimelineForm_Load);
 			this.Enter += new System.EventHandler(this.TimelineForm_Enter);
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TimelineForm_KeyDown);
 			this.Resize += new System.EventHandler(this.TimelineForm_Resize);
 			this.pnl_ToolboxPanel.ResumeLayout(false);
 			this.cxtm_Timeline.ResumeLayout(false);

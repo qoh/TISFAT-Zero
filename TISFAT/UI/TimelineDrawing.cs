@@ -202,6 +202,7 @@ namespace TISFAT
 				if (HoveredLayerIndex == i || !layer.Visible)
 					Drawing.Bitmap(new PointF(65, 16 * (i + 1) + 2),
 						new Size(14, 14),
+						0,
 						layer.Visible ?
 						(HoveredLayerOverVis ? VisibilityBitmapOn_hover : VisibilityBitmapOn) :
 						(HoveredLayerOverVis ? VisibilityBitmapOff_hover : VisibilityBitmapOff));

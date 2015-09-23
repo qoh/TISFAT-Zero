@@ -353,7 +353,7 @@ namespace TISFAT.Util
 			GL.Disable(EnableCap.Blend);
 		}
 
-		public static void Bitmap(PointF position, SizeF size, int texID)
+		public static void Bitmap(PointF position, SizeF size, float rotation, int texID)
 		{
 			GL.BindTexture(TextureTarget.Texture2D, texID);
 
@@ -363,6 +363,7 @@ namespace TISFAT.Util
 
 			GL.PushMatrix();
 			GL.Translate(position.X, position.Y, 0);
+			//GL.Rotate(rotation, 0, 0, 1);
 
 			GL.Color4(Color.White);
 
@@ -379,9 +380,9 @@ namespace TISFAT.Util
 			GL.Disable(EnableCap.Texture2D);
 		}
 
-		public static void Bitmap(PointF position, SizeF size, string path)
+		public static void Bitmap(PointF position, SizeF size, float rotation, string path)
 		{
-			Bitmap(position, size, GetCachedBitmap(path));
+			Bitmap(position, size, rotation, GetCachedBitmap(path));
 		}
 
 		public static void Text(string Text, PointF position, Font font, Color color)
@@ -403,7 +404,7 @@ namespace TISFAT.Util
 
 			int id = GenerateTexID(bmp);
 
-			Bitmap(position, size, id);
+			Bitmap(position, size, 0, id);
 
 			GL.DeleteTexture(id);
 		}
@@ -412,7 +413,7 @@ namespace TISFAT.Util
 		{
 			int id = GetCachedTextRect(Text, area, font, color, alignment);
 
-			Bitmap(position, new SizeF(area.Width, area.Height), id);
+			Bitmap(position, new SizeF(area.Width, area.Height), 0, id);
 		}
 
 		public static void PointLight(PointF position, Color color, Vector3 attenuation, float radius)

@@ -62,7 +62,7 @@ namespace TISFAT
 
 			GL.UseProgram(0);
 
-			Drawing.Bitmap(new PointF(265.0f, 0.0f), new SizeF(20.0f, 258.0f), HueBar);
+			Drawing.Bitmap(new PointF(265.0f, 0.0f), new SizeF(20.0f, 258.0f), 0, HueBar);
 
 			GLContext.SwapBuffers();
 		}

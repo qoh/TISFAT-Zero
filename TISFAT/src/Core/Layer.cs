@@ -181,7 +181,6 @@ namespace TISFAT
 
 	#endregion
 
-
 	public class Layer : ISaveable
 	{
 		public string Name;

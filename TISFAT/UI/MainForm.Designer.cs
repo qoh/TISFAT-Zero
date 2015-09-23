@@ -483,10 +483,12 @@
 			this.Controls.Add(this.sc_MainContainer);
 			this.DoubleBuffered = true;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.KeyPreview = true;
 			this.MinimumSize = new System.Drawing.Size(800, 580);
 			this.Name = "MainForm";
 			this.Text = "TISFAT Zero";
 			this.Load += new System.EventHandler(this.MainForm_Load);
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
 			this.sc_MainContainer.Panel1.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.sc_MainContainer)).EndInit();
 			this.sc_MainContainer.ResumeLayout(false);

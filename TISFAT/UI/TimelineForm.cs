@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using TISFAT.Controls;
 
 namespace TISFAT
 {
@@ -28,7 +29,7 @@ namespace TISFAT
 			InitializeComponent();
 
 			GLContext.VSync = true;
-			GLContext.KeyPress += TimelineForm_KeyPress;
+			GLContext.KeyDown += TimelineForm_KeyDown;
 			GLContext.MouseWheel += GLContext_MouseWheel;
 
 			MainTimeline = new Timeline(GLContext);
@@ -38,6 +39,8 @@ namespace TISFAT
 			TopLevel = false;
 			parent.Controls.Add(this);
 		}
+
+		public BitmapButtonControl PlayButton { get { return btn_PlayPause; } }
 
 		public void ShowCxtMenu(Point Location, int FrameType, int FrameIndex)
 		{
@@ -91,18 +94,6 @@ namespace TISFAT
 		}
 
 		#region GLContext <-> Timeline Hooks
-
-		private void TimelineForm_KeyPress(object sender, KeyPressEventArgs e)
-		{
-			if (e.KeyChar == (char)Keys.Q)
-				MainTimeline.SeekStart();
-
-			if (e.KeyChar == (char)Keys.Space)
-			{
-				btn_PlayPause.Checked = !btn_PlayPause.Checked;
-				btn_PlayPause_Click(null, null);
-			}
-		}
 
 		private void GLContext_MouseMove(object sender, MouseEventArgs e)
 		{
@@ -194,7 +185,7 @@ namespace TISFAT
 		#endregion
 
 		#region Playback Control Hooks
-		private void btn_PlayPause_Click(object sender, EventArgs e)
+		public void btn_PlayPause_Click(object sender, EventArgs e)
 		{
 			MainTimeline.TogglePause();
 		}
@@ -337,6 +328,11 @@ namespace TISFAT
 		{
 			if (MainTimeline != null)
 				MainTimeline.ChangeInterpolationMode(Util.EntityInterpolationMode.ExpoInOut);
+		}
+
+		private void TimelineForm_KeyDown(object sender, KeyEventArgs e)
+		{
+			Program.Form_Main.CheckKeyPressed(e);
 		}
 	}
 }

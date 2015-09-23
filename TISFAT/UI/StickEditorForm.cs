@@ -42,6 +42,7 @@ namespace TISFAT
 			}
 		}
 		StickFigure.Joint.State ActiveDragObject;
+		StickFigure.Joint.State HoveredObject;
 		IManipulatableParams ActiveDragParams;
 
 		private EditorManipMode _ActiveManipMode;
