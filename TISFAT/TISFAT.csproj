@@ -291,7 +291,6 @@
     <None Include="Shaders\PointLight.vert">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="TISFAT Keyfile.pfx" />
     <None Include="TISFAT Keyfile.snk" />
   </ItemGroup>
   <ItemGroup>
