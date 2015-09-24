@@ -42,7 +42,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>TISFAT Keyfile.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>TISFAT Keyfile.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cyotek.Windows.Forms.ColorPicker">
@@ -280,6 +280,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TISFAT Keyfile.pfx" />
+    <None Include="TISFAT Keyfile.snk" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
