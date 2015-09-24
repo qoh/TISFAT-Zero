@@ -79,7 +79,10 @@
     <Compile Include="src\Entities\CircleObject.State.cs">
       <DependentUpon>CircleObject.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\Entities\CustomFigure.cs" />
+    <Compile Include="src\Entities\CustomFigObject.cs" />
+    <Compile Include="src\Entities\EmitterObject.cs" />
+    <Compile Include="src\Entities\EmitterObject.Emitter.cs" />
+    <Compile Include="src\Entities\EmitterObject.Particle.cs" />
     <Compile Include="src\Entities\LineObject.cs" />
     <Compile Include="src\Entities\LineObject.State.cs">
       <DependentUpon>LineObject.cs</DependentUpon>
@@ -183,6 +186,12 @@
     <Compile Include="src\Interfaces\ISaveable.cs" />
     <Compile Include="src\Core\Layer.cs" />
     <Compile Include="src\Util\Interpolation.cs" />
+    <Compile Include="UI\ParticleEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ParticleEditorForm.Designer.cs">
+      <DependentUpon>ParticleEditorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\StickEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -248,6 +257,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UI\ParticleEditorForm.resx">
+      <DependentUpon>ParticleEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\StickEditorForm.resx">
       <DependentUpon>StickEditorForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -327,6 +339,7 @@
     <Content Include="ffmpeg.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\blot.png" />
     <None Include="Resources\transform_move.png" />
     <None Include="Resources\cursor.png" />
     <None Include="Resources\bullet_delete.png" />

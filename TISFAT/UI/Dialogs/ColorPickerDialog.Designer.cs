@@ -151,7 +151,8 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "ColorPickerDialog";
-			this.Text = "ColorPickerDialog";
+			this.Text = "Pick a Color";
+			this.Load += new System.EventHandler(this.ColorPickerDialog_Load);
 			this.pnl_ColorBorder.ResumeLayout(false);
 			this.ResumeLayout(false);
 

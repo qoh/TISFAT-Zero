@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TISFAT.Entities
 {
-	public class CustomFigure : StickFigure
+	public class CustomFigObject : StickFigure
 	{
 		public override Layer CreateDefaultLayer(uint StartTime, uint EndTime, LayerCreationArgs e)
 		{
@@ -18,10 +18,10 @@ namespace TISFAT.Entities
 
 			Layer CustomLayer = new Layer(this);
 
-			if (!Program.ActiveProject.LayerCount.ContainsKey(typeof(CustomFigure)))
-				Program.ActiveProject.LayerCount.Add(typeof(CustomFigure), 0);
+			if (!Program.ActiveProject.LayerCount.ContainsKey(typeof(CustomFigObject)))
+				Program.ActiveProject.LayerCount.Add(typeof(CustomFigObject), 0);
 
-			int CustomLayerCount = ++Program.ActiveProject.LayerCount[typeof(CustomFigure)];
+			int CustomLayerCount = ++Program.ActiveProject.LayerCount[typeof(CustomFigObject)];
 			CustomLayer.Name = "Custom Figure " + CustomLayerCount;
 
 			CustomLayer.Framesets.Add(new Frameset());

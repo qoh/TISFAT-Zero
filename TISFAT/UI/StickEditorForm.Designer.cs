@@ -45,7 +45,7 @@
 			this.btn_editModeDelete = new TISFAT.Controls.BitmapButtonControl();
 			this.btn_Redo = new TISFAT.Controls.BitmapButtonControl();
 			this.btn_Undo = new TISFAT.Controls.BitmapButtonControl();
-			this.separatorControl1 = new TISFAT.UI.Controls.SeparatorControl();
+			this.separatorControl1 = new TISFAT.Controls.SeparatorControl();
 			this.btn_SaveProject = new TISFAT.Controls.BitmapButtonControl();
 			this.btn_OpenProject = new TISFAT.Controls.BitmapButtonControl();
 			this.btn_NewProject = new TISFAT.Controls.BitmapButtonControl();
@@ -762,7 +762,7 @@
 		private System.Windows.Forms.Panel pnl_SideBar;
 		private Controls.BitmapButtonControl btn_Redo;
 		private Controls.BitmapButtonControl btn_Undo;
-		private UI.Controls.SeparatorControl separatorControl1;
+		private Controls.SeparatorControl separatorControl1;
 		private Controls.BitmapButtonControl btn_SaveProject;
 		private Controls.BitmapButtonControl btn_OpenProject;
 		private Controls.BitmapButtonControl btn_NewProject;

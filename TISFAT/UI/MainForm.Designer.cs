@@ -33,13 +33,13 @@
 			this.btn_ExportProject = new TISFAT.Controls.BitmapButtonControl();
 			this.btn_Redo = new TISFAT.Controls.BitmapButtonControl();
 			this.btn_Undo = new TISFAT.Controls.BitmapButtonControl();
-			this.separatorControl2 = new TISFAT.UI.Controls.SeparatorControl();
+			this.separatorControl2 = new TISFAT.Controls.SeparatorControl();
 			this.btn_SaveProject = new TISFAT.Controls.BitmapButtonControl();
 			this.btn_OpenProject = new TISFAT.Controls.BitmapButtonControl();
 			this.btn_NewProject = new TISFAT.Controls.BitmapButtonControl();
 			this.btn_AddLayer = new TISFAT.Controls.BitmapButtonControl();
 			this.btn_RemoveLayer = new TISFAT.Controls.BitmapButtonControl();
-			this.separatorControl1 = new TISFAT.UI.Controls.SeparatorControl();
+			this.separatorControl1 = new TISFAT.Controls.SeparatorControl();
 			this.btn_EditModePhase = new TISFAT.Controls.BitmapButtonControl();
 			this.btn_EditModeOnion = new TISFAT.Controls.BitmapButtonControl();
 			this.btn_EditModeDefault = new TISFAT.Controls.BitmapButtonControl();
@@ -58,8 +58,6 @@
 			this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.openColorPickerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -317,7 +315,6 @@
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.editToolStripMenuItem,
-            this.debugToolStripMenuItem,
             this.helpToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
@@ -425,21 +422,6 @@
 			this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
 			this.preferencesToolStripMenuItem.Text = "Preferences";
 			// 
-			// debugToolStripMenuItem
-			// 
-			this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openColorPickerToolStripMenuItem});
-			this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
-			this.debugToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
-			this.debugToolStripMenuItem.Text = "Debug";
-			// 
-			// openColorPickerToolStripMenuItem
-			// 
-			this.openColorPickerToolStripMenuItem.Name = "openColorPickerToolStripMenuItem";
-			this.openColorPickerToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-			this.openColorPickerToolStripMenuItem.Text = "Open Color Picker";
-			this.openColorPickerToolStripMenuItem.Click += new System.EventHandler(this.openColorPickerToolStripMenuItem_Click);
-			// 
 			// helpToolStripMenuItem
 			// 
 			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -525,18 +507,16 @@
 		private Controls.BitmapButtonControl btn_EditModePhase;
 		private Controls.BitmapButtonControl btn_EditModeOnion;
 		private Controls.BitmapButtonControl btn_EditModeDefault;
-		private UI.Controls.SeparatorControl separatorControl1;
+		private Controls.SeparatorControl separatorControl1;
 		private Controls.BitmapButtonControl btn_AddLayer;
 		private Controls.BitmapButtonControl btn_RemoveLayer;
 		private Controls.BitmapButtonControl btn_OpenProject;
 		private Controls.BitmapButtonControl btn_NewProject;
 		private Controls.BitmapButtonControl btn_SaveProject;
-		private UI.Controls.SeparatorControl separatorControl2;
+		private Controls.SeparatorControl separatorControl2;
 		private Controls.BitmapButtonControl btn_Redo;
 		private Controls.BitmapButtonControl btn_Undo;
 		private Controls.BitmapButtonControl btn_ExportProject;
-		private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem openColorPickerToolStripMenuItem;
 	}
 }
 

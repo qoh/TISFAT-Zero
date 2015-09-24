@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace TISFAT.UI.Controls
+namespace TISFAT.Controls
 {
 	public partial class SeparatorControl : UserControl
 	{

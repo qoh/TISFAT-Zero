@@ -40,14 +40,32 @@
 			System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("Polygon", 5);
 			System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("Bitmap", 0);
 			System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("Text", 8);
-			System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem("Point Light", 3);
+			System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem("Particle Effect", 9);
+			System.Windows.Forms.ListViewItem listViewItem10 = new System.Windows.Forms.ListViewItem("Point Light", 3);
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddLayerDialog));
 			this.grp_Properties = new System.Windows.Forms.GroupBox();
 			this.pnl_PropertiesDescription = new System.Windows.Forms.Panel();
 			this.lbl_PropertiesDescription = new System.Windows.Forms.Label();
+			this.pnl_ParticleProperties = new System.Windows.Forms.Panel();
+			this.btn_openParticleEditor = new System.Windows.Forms.Button();
+			this.lbl_createNewParticle = new System.Windows.Forms.Label();
+			this.lbl_particleUseExisting = new System.Windows.Forms.Label();
+			this.txt_particleBrowse = new System.Windows.Forms.TextBox();
+			this.btn_particleBrowse = new System.Windows.Forms.Button();
+			this.lbl_particleDescription = new System.Windows.Forms.Label();
+			this.pnl_CustomFigureProperties = new System.Windows.Forms.Panel();
+			this.btn_openStickEditor = new System.Windows.Forms.Button();
+			this.lbl_openStickEditor = new System.Windows.Forms.Label();
+			this.lbl_customFigPath = new System.Windows.Forms.Label();
+			this.txt_customFigPath = new System.Windows.Forms.TextBox();
+			this.btn_customFigBrowse = new System.Windows.Forms.Button();
+			this.lbl_CustomFigureDescription = new System.Windows.Forms.Label();
+			this.pnl_PolygonProperties = new System.Windows.Forms.Panel();
+			this.label1 = new System.Windows.Forms.Label();
+			this.lbl_polyNumPoints = new System.Windows.Forms.Label();
+			this.num_polyNumPoints = new System.Windows.Forms.NumericUpDown();
 			this.pnl_PointLightProperties = new System.Windows.Forms.Panel();
 			this.pnl_TextProperties = new System.Windows.Forms.Panel();
-			this.pnl_PolygonProperties = new System.Windows.Forms.Panel();
 			this.pnl_CircleProperties = new System.Windows.Forms.Panel();
 			this.pnl_RectangleProperties = new System.Windows.Forms.Panel();
 			this.pnl_LineProperties = new System.Windows.Forms.Panel();
@@ -59,36 +77,29 @@
 			this.lbl_DefaultFigureVariantDetail = new System.Windows.Forms.Label();
 			this.cmb_DefaultFigureVariant = new System.Windows.Forms.ComboBox();
 			this.lbl_DefaultFigureVariant = new System.Windows.Forms.Label();
-			this.pnl_CustomFigureProperties = new System.Windows.Forms.Panel();
-			this.btn_openStickEditor = new System.Windows.Forms.Button();
-			this.lbl_openStickEditor = new System.Windows.Forms.Label();
-			this.lbl_customFigPath = new System.Windows.Forms.Label();
-			this.txt_customFigPath = new System.Windows.Forms.TextBox();
-			this.btn_customFigBrowse = new System.Windows.Forms.Button();
-			this.lbl_CustomFigureDescription = new System.Windows.Forms.Label();
 			this.lsv_LayerTypes = new System.Windows.Forms.ListView();
 			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 			this.btn_Add = new System.Windows.Forms.Button();
 			this.btn_Cancel = new System.Windows.Forms.Button();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.num_polyNumPoints = new System.Windows.Forms.NumericUpDown();
-			this.lbl_polyNumPoints = new System.Windows.Forms.Label();
-			this.label1 = new System.Windows.Forms.Label();
 			this.grp_Properties.SuspendLayout();
 			this.pnl_PropertiesDescription.SuspendLayout();
+			this.pnl_ParticleProperties.SuspendLayout();
+			this.pnl_CustomFigureProperties.SuspendLayout();
 			this.pnl_PolygonProperties.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_polyNumPoints)).BeginInit();
 			this.pnl_BitmapProperties.SuspendLayout();
 			this.pnl_DefaultFigureProperties.SuspendLayout();
-			this.pnl_CustomFigureProperties.SuspendLayout();
 			this.groupBox1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.num_polyNumPoints)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// grp_Properties
 			// 
 			this.grp_Properties.BackColor = System.Drawing.SystemColors.Control;
-			this.grp_Properties.Controls.Add(this.pnl_PolygonProperties);
+			this.grp_Properties.Controls.Add(this.pnl_ParticleProperties);
 			this.grp_Properties.Controls.Add(this.pnl_PropertiesDescription);
+			this.grp_Properties.Controls.Add(this.pnl_CustomFigureProperties);
+			this.grp_Properties.Controls.Add(this.pnl_PolygonProperties);
 			this.grp_Properties.Controls.Add(this.pnl_PointLightProperties);
 			this.grp_Properties.Controls.Add(this.pnl_TextProperties);
 			this.grp_Properties.Controls.Add(this.pnl_CircleProperties);
@@ -96,7 +107,6 @@
 			this.grp_Properties.Controls.Add(this.pnl_LineProperties);
 			this.grp_Properties.Controls.Add(this.pnl_BitmapProperties);
 			this.grp_Properties.Controls.Add(this.pnl_DefaultFigureProperties);
-			this.grp_Properties.Controls.Add(this.pnl_CustomFigureProperties);
 			this.grp_Properties.Location = new System.Drawing.Point(144, 0);
 			this.grp_Properties.Name = "grp_Properties";
 			this.grp_Properties.Size = new System.Drawing.Size(252, 221);
@@ -126,6 +136,193 @@
     "ate.";
 			this.lbl_PropertiesDescription.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
+			// pnl_ParticleProperties
+			// 
+			this.pnl_ParticleProperties.Controls.Add(this.btn_openParticleEditor);
+			this.pnl_ParticleProperties.Controls.Add(this.lbl_createNewParticle);
+			this.pnl_ParticleProperties.Controls.Add(this.lbl_particleUseExisting);
+			this.pnl_ParticleProperties.Controls.Add(this.txt_particleBrowse);
+			this.pnl_ParticleProperties.Controls.Add(this.btn_particleBrowse);
+			this.pnl_ParticleProperties.Controls.Add(this.lbl_particleDescription);
+			this.pnl_ParticleProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnl_ParticleProperties.Location = new System.Drawing.Point(3, 16);
+			this.pnl_ParticleProperties.Name = "pnl_ParticleProperties";
+			this.pnl_ParticleProperties.Size = new System.Drawing.Size(246, 202);
+			this.pnl_ParticleProperties.TabIndex = 11;
+			this.pnl_ParticleProperties.Visible = false;
+			// 
+			// btn_openParticleEditor
+			// 
+			this.btn_openParticleEditor.Location = new System.Drawing.Point(37, 157);
+			this.btn_openParticleEditor.Name = "btn_openParticleEditor";
+			this.btn_openParticleEditor.Size = new System.Drawing.Size(172, 23);
+			this.btn_openParticleEditor.TabIndex = 7;
+			this.btn_openParticleEditor.Text = "Open Particle Editor";
+			this.btn_openParticleEditor.UseVisualStyleBackColor = true;
+			this.btn_openParticleEditor.Click += new System.EventHandler(this.btn_openParticleEditor_Click);
+			// 
+			// lbl_createNewParticle
+			// 
+			this.lbl_createNewParticle.Location = new System.Drawing.Point(25, 115);
+			this.lbl_createNewParticle.Name = "lbl_createNewParticle";
+			this.lbl_createNewParticle.Size = new System.Drawing.Size(197, 39);
+			this.lbl_createNewParticle.TabIndex = 6;
+			this.lbl_createNewParticle.Text = "If you\'d like to create a new emitter, click the button below.";
+			this.lbl_createNewParticle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+			// 
+			// lbl_particleUseExisting
+			// 
+			this.lbl_particleUseExisting.AutoSize = true;
+			this.lbl_particleUseExisting.Location = new System.Drawing.Point(25, 64);
+			this.lbl_particleUseExisting.Name = "lbl_particleUseExisting";
+			this.lbl_particleUseExisting.Size = new System.Drawing.Size(98, 13);
+			this.lbl_particleUseExisting.TabIndex = 5;
+			this.lbl_particleUseExisting.Text = "Use existing emitter";
+			// 
+			// txt_particleBrowse
+			// 
+			this.txt_particleBrowse.Enabled = false;
+			this.txt_particleBrowse.Location = new System.Drawing.Point(28, 80);
+			this.txt_particleBrowse.Name = "txt_particleBrowse";
+			this.txt_particleBrowse.Size = new System.Drawing.Size(172, 20);
+			this.txt_particleBrowse.TabIndex = 4;
+			// 
+			// btn_particleBrowse
+			// 
+			this.btn_particleBrowse.Location = new System.Drawing.Point(200, 79);
+			this.btn_particleBrowse.Name = "btn_particleBrowse";
+			this.btn_particleBrowse.Size = new System.Drawing.Size(22, 22);
+			this.btn_particleBrowse.TabIndex = 3;
+			this.btn_particleBrowse.Text = "..";
+			this.btn_particleBrowse.UseVisualStyleBackColor = true;
+			// 
+			// lbl_particleDescription
+			// 
+			this.lbl_particleDescription.Location = new System.Drawing.Point(25, 10);
+			this.lbl_particleDescription.Name = "lbl_particleDescription";
+			this.lbl_particleDescription.Size = new System.Drawing.Size(197, 39);
+			this.lbl_particleDescription.TabIndex = 0;
+			this.lbl_particleDescription.Text = "Particle Systems allow you to create custom particle effects that animate over ti" +
+    "me.";
+			this.lbl_particleDescription.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+			// 
+			// pnl_CustomFigureProperties
+			// 
+			this.pnl_CustomFigureProperties.Controls.Add(this.btn_openStickEditor);
+			this.pnl_CustomFigureProperties.Controls.Add(this.lbl_openStickEditor);
+			this.pnl_CustomFigureProperties.Controls.Add(this.lbl_customFigPath);
+			this.pnl_CustomFigureProperties.Controls.Add(this.txt_customFigPath);
+			this.pnl_CustomFigureProperties.Controls.Add(this.btn_customFigBrowse);
+			this.pnl_CustomFigureProperties.Controls.Add(this.lbl_CustomFigureDescription);
+			this.pnl_CustomFigureProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnl_CustomFigureProperties.Location = new System.Drawing.Point(3, 16);
+			this.pnl_CustomFigureProperties.Name = "pnl_CustomFigureProperties";
+			this.pnl_CustomFigureProperties.Size = new System.Drawing.Size(246, 202);
+			this.pnl_CustomFigureProperties.TabIndex = 4;
+			this.pnl_CustomFigureProperties.Visible = false;
+			// 
+			// btn_openStickEditor
+			// 
+			this.btn_openStickEditor.Location = new System.Drawing.Point(37, 157);
+			this.btn_openStickEditor.Name = "btn_openStickEditor";
+			this.btn_openStickEditor.Size = new System.Drawing.Size(172, 23);
+			this.btn_openStickEditor.TabIndex = 7;
+			this.btn_openStickEditor.Text = "Open Stick Editor";
+			this.btn_openStickEditor.UseVisualStyleBackColor = true;
+			this.btn_openStickEditor.Click += new System.EventHandler(this.btn_openStickEditor_Click);
+			// 
+			// lbl_openStickEditor
+			// 
+			this.lbl_openStickEditor.Location = new System.Drawing.Point(25, 115);
+			this.lbl_openStickEditor.Name = "lbl_openStickEditor";
+			this.lbl_openStickEditor.Size = new System.Drawing.Size(197, 39);
+			this.lbl_openStickEditor.TabIndex = 6;
+			this.lbl_openStickEditor.Text = "If you\'d like to create a new figure, click the button below";
+			this.lbl_openStickEditor.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+			// 
+			// lbl_customFigPath
+			// 
+			this.lbl_customFigPath.AutoSize = true;
+			this.lbl_customFigPath.Location = new System.Drawing.Point(25, 64);
+			this.lbl_customFigPath.Name = "lbl_customFigPath";
+			this.lbl_customFigPath.Size = new System.Drawing.Size(93, 13);
+			this.lbl_customFigPath.TabIndex = 5;
+			this.lbl_customFigPath.Text = "Use existing figure";
+			// 
+			// txt_customFigPath
+			// 
+			this.txt_customFigPath.Enabled = false;
+			this.txt_customFigPath.Location = new System.Drawing.Point(28, 80);
+			this.txt_customFigPath.Name = "txt_customFigPath";
+			this.txt_customFigPath.Size = new System.Drawing.Size(172, 20);
+			this.txt_customFigPath.TabIndex = 4;
+			// 
+			// btn_customFigBrowse
+			// 
+			this.btn_customFigBrowse.Location = new System.Drawing.Point(200, 79);
+			this.btn_customFigBrowse.Name = "btn_customFigBrowse";
+			this.btn_customFigBrowse.Size = new System.Drawing.Size(22, 22);
+			this.btn_customFigBrowse.TabIndex = 3;
+			this.btn_customFigBrowse.Text = "..";
+			this.btn_customFigBrowse.UseVisualStyleBackColor = true;
+			this.btn_customFigBrowse.Click += new System.EventHandler(this.btn_customFigBrowse_Click);
+			// 
+			// lbl_CustomFigureDescription
+			// 
+			this.lbl_CustomFigureDescription.Location = new System.Drawing.Point(25, 10);
+			this.lbl_CustomFigureDescription.Name = "lbl_CustomFigureDescription";
+			this.lbl_CustomFigureDescription.Size = new System.Drawing.Size(197, 39);
+			this.lbl_CustomFigureDescription.TabIndex = 0;
+			this.lbl_CustomFigureDescription.Text = "Custom figures allow you to create new figures with custom properties";
+			this.lbl_CustomFigureDescription.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+			// 
+			// pnl_PolygonProperties
+			// 
+			this.pnl_PolygonProperties.Controls.Add(this.label1);
+			this.pnl_PolygonProperties.Controls.Add(this.lbl_polyNumPoints);
+			this.pnl_PolygonProperties.Controls.Add(this.num_polyNumPoints);
+			this.pnl_PolygonProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnl_PolygonProperties.Location = new System.Drawing.Point(3, 16);
+			this.pnl_PolygonProperties.Name = "pnl_PolygonProperties";
+			this.pnl_PolygonProperties.Size = new System.Drawing.Size(246, 202);
+			this.pnl_PolygonProperties.TabIndex = 8;
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.label1.Location = new System.Drawing.Point(29, 115);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(189, 13);
+			this.label1.TabIndex = 2;
+			this.label1.Text = "* Minimum of 3 points, maximum of 100";
+			// 
+			// lbl_polyNumPoints
+			// 
+			this.lbl_polyNumPoints.AutoSize = true;
+			this.lbl_polyNumPoints.Location = new System.Drawing.Point(79, 75);
+			this.lbl_polyNumPoints.Name = "lbl_polyNumPoints";
+			this.lbl_polyNumPoints.Size = new System.Drawing.Size(88, 13);
+			this.lbl_polyNumPoints.TabIndex = 1;
+			this.lbl_polyNumPoints.Text = "Number of Points";
+			// 
+			// num_polyNumPoints
+			// 
+			this.num_polyNumPoints.Location = new System.Drawing.Point(63, 91);
+			this.num_polyNumPoints.Minimum = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+			this.num_polyNumPoints.Name = "num_polyNumPoints";
+			this.num_polyNumPoints.Size = new System.Drawing.Size(120, 20);
+			this.num_polyNumPoints.TabIndex = 0;
+			this.num_polyNumPoints.Value = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
+			// 
 			// pnl_PointLightProperties
 			// 
 			this.pnl_PointLightProperties.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -141,17 +338,6 @@
 			this.pnl_TextProperties.Name = "pnl_TextProperties";
 			this.pnl_TextProperties.Size = new System.Drawing.Size(246, 202);
 			this.pnl_TextProperties.TabIndex = 9;
-			// 
-			// pnl_PolygonProperties
-			// 
-			this.pnl_PolygonProperties.Controls.Add(this.label1);
-			this.pnl_PolygonProperties.Controls.Add(this.lbl_polyNumPoints);
-			this.pnl_PolygonProperties.Controls.Add(this.num_polyNumPoints);
-			this.pnl_PolygonProperties.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnl_PolygonProperties.Location = new System.Drawing.Point(3, 16);
-			this.pnl_PolygonProperties.Name = "pnl_PolygonProperties";
-			this.pnl_PolygonProperties.Size = new System.Drawing.Size(246, 202);
-			this.pnl_PolygonProperties.TabIndex = 8;
 			// 
 			// pnl_CircleProperties
 			// 
@@ -259,76 +445,6 @@
 			this.lbl_DefaultFigureVariant.TabIndex = 0;
 			this.lbl_DefaultFigureVariant.Text = "Figure Variant";
 			// 
-			// pnl_CustomFigureProperties
-			// 
-			this.pnl_CustomFigureProperties.Controls.Add(this.btn_openStickEditor);
-			this.pnl_CustomFigureProperties.Controls.Add(this.lbl_openStickEditor);
-			this.pnl_CustomFigureProperties.Controls.Add(this.lbl_customFigPath);
-			this.pnl_CustomFigureProperties.Controls.Add(this.txt_customFigPath);
-			this.pnl_CustomFigureProperties.Controls.Add(this.btn_customFigBrowse);
-			this.pnl_CustomFigureProperties.Controls.Add(this.lbl_CustomFigureDescription);
-			this.pnl_CustomFigureProperties.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnl_CustomFigureProperties.Location = new System.Drawing.Point(3, 16);
-			this.pnl_CustomFigureProperties.Name = "pnl_CustomFigureProperties";
-			this.pnl_CustomFigureProperties.Size = new System.Drawing.Size(246, 202);
-			this.pnl_CustomFigureProperties.TabIndex = 4;
-			this.pnl_CustomFigureProperties.Visible = false;
-			// 
-			// btn_openStickEditor
-			// 
-			this.btn_openStickEditor.Location = new System.Drawing.Point(37, 157);
-			this.btn_openStickEditor.Name = "btn_openStickEditor";
-			this.btn_openStickEditor.Size = new System.Drawing.Size(172, 23);
-			this.btn_openStickEditor.TabIndex = 7;
-			this.btn_openStickEditor.Text = "Open Stick Editor";
-			this.btn_openStickEditor.UseVisualStyleBackColor = true;
-			this.btn_openStickEditor.Click += new System.EventHandler(this.btn_openStickEditor_Click);
-			// 
-			// lbl_openStickEditor
-			// 
-			this.lbl_openStickEditor.Location = new System.Drawing.Point(25, 115);
-			this.lbl_openStickEditor.Name = "lbl_openStickEditor";
-			this.lbl_openStickEditor.Size = new System.Drawing.Size(197, 39);
-			this.lbl_openStickEditor.TabIndex = 6;
-			this.lbl_openStickEditor.Text = "If you\'d like to create a new figure, click the button below";
-			this.lbl_openStickEditor.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-			// 
-			// lbl_customFigPath
-			// 
-			this.lbl_customFigPath.AutoSize = true;
-			this.lbl_customFigPath.Location = new System.Drawing.Point(25, 64);
-			this.lbl_customFigPath.Name = "lbl_customFigPath";
-			this.lbl_customFigPath.Size = new System.Drawing.Size(93, 13);
-			this.lbl_customFigPath.TabIndex = 5;
-			this.lbl_customFigPath.Text = "Use existing figure";
-			// 
-			// txt_customFigPath
-			// 
-			this.txt_customFigPath.Enabled = false;
-			this.txt_customFigPath.Location = new System.Drawing.Point(28, 80);
-			this.txt_customFigPath.Name = "txt_customFigPath";
-			this.txt_customFigPath.Size = new System.Drawing.Size(172, 20);
-			this.txt_customFigPath.TabIndex = 4;
-			// 
-			// btn_customFigBrowse
-			// 
-			this.btn_customFigBrowse.Location = new System.Drawing.Point(200, 79);
-			this.btn_customFigBrowse.Name = "btn_customFigBrowse";
-			this.btn_customFigBrowse.Size = new System.Drawing.Size(22, 22);
-			this.btn_customFigBrowse.TabIndex = 3;
-			this.btn_customFigBrowse.Text = "..";
-			this.btn_customFigBrowse.UseVisualStyleBackColor = true;
-			this.btn_customFigBrowse.Click += new System.EventHandler(this.btn_customFigBrowse_Click);
-			// 
-			// lbl_CustomFigureDescription
-			// 
-			this.lbl_CustomFigureDescription.Location = new System.Drawing.Point(25, 10);
-			this.lbl_CustomFigureDescription.Name = "lbl_CustomFigureDescription";
-			this.lbl_CustomFigureDescription.Size = new System.Drawing.Size(197, 39);
-			this.lbl_CustomFigureDescription.TabIndex = 0;
-			this.lbl_CustomFigureDescription.Text = "Custom figures allow you to create new figures with custom properties";
-			this.lbl_CustomFigureDescription.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-			// 
 			// lsv_LayerTypes
 			// 
 			this.lsv_LayerTypes.BackColor = System.Drawing.SystemColors.Control;
@@ -368,7 +484,9 @@
 			listViewItem8.Group = listViewGroup3;
 			listViewItem8.Tag = "TextObject";
 			listViewItem9.Group = listViewGroup3;
-			listViewItem9.Tag = "PointLight";
+			listViewItem9.Tag = "EmitterObject";
+			listViewItem10.Group = listViewGroup3;
+			listViewItem10.Tag = "PointLight";
 			this.lsv_LayerTypes.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1,
             listViewItem2,
@@ -378,7 +496,8 @@
             listViewItem6,
             listViewItem7,
             listViewItem8,
-            listViewItem9});
+            listViewItem9,
+            listViewItem10});
 			this.lsv_LayerTypes.Location = new System.Drawing.Point(3, 16);
 			this.lsv_LayerTypes.Name = "lsv_LayerTypes";
 			this.lsv_LayerTypes.Size = new System.Drawing.Size(129, 202);
@@ -401,6 +520,7 @@
 			this.imageList1.Images.SetKeyName(6, "rectangle.png");
 			this.imageList1.Images.SetKeyName(7, "circle.png");
 			this.imageList1.Images.SetKeyName(8, "text.png");
+			this.imageList1.Images.SetKeyName(9, "boom.png");
 			// 
 			// btn_Add
 			// 
@@ -432,42 +552,6 @@
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Layer Type";
 			// 
-			// num_polyNumPoints
-			// 
-			this.num_polyNumPoints.Location = new System.Drawing.Point(63, 91);
-			this.num_polyNumPoints.Minimum = new decimal(new int[] {
-            3,
-            0,
-            0,
-            0});
-			this.num_polyNumPoints.Name = "num_polyNumPoints";
-			this.num_polyNumPoints.Size = new System.Drawing.Size(120, 20);
-			this.num_polyNumPoints.TabIndex = 0;
-			this.num_polyNumPoints.Value = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
-			// 
-			// lbl_polyNumPoints
-			// 
-			this.lbl_polyNumPoints.AutoSize = true;
-			this.lbl_polyNumPoints.Location = new System.Drawing.Point(79, 75);
-			this.lbl_polyNumPoints.Name = "lbl_polyNumPoints";
-			this.lbl_polyNumPoints.Size = new System.Drawing.Size(88, 13);
-			this.lbl_polyNumPoints.TabIndex = 1;
-			this.lbl_polyNumPoints.Text = "Number of Points";
-			// 
-			// label1
-			// 
-			this.label1.AutoSize = true;
-			this.label1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.label1.Location = new System.Drawing.Point(29, 115);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(189, 13);
-			this.label1.TabIndex = 2;
-			this.label1.Text = "* Minimum of 3 points, maximum of 100";
-			// 
 			// AddLayerDialog
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -486,16 +570,18 @@
 			this.Load += new System.EventHandler(this.AddLayerDialog_Load);
 			this.grp_Properties.ResumeLayout(false);
 			this.pnl_PropertiesDescription.ResumeLayout(false);
+			this.pnl_ParticleProperties.ResumeLayout(false);
+			this.pnl_ParticleProperties.PerformLayout();
+			this.pnl_CustomFigureProperties.ResumeLayout(false);
+			this.pnl_CustomFigureProperties.PerformLayout();
 			this.pnl_PolygonProperties.ResumeLayout(false);
 			this.pnl_PolygonProperties.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_polyNumPoints)).EndInit();
 			this.pnl_BitmapProperties.ResumeLayout(false);
 			this.pnl_BitmapProperties.PerformLayout();
 			this.pnl_DefaultFigureProperties.ResumeLayout(false);
 			this.pnl_DefaultFigureProperties.PerformLayout();
-			this.pnl_CustomFigureProperties.ResumeLayout(false);
-			this.pnl_CustomFigureProperties.PerformLayout();
 			this.groupBox1.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.num_polyNumPoints)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -533,5 +619,12 @@
 		private System.Windows.Forms.Label lbl_polyNumPoints;
 		private System.Windows.Forms.NumericUpDown num_polyNumPoints;
 		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Panel pnl_ParticleProperties;
+		private System.Windows.Forms.Button btn_openParticleEditor;
+		private System.Windows.Forms.Label lbl_createNewParticle;
+		private System.Windows.Forms.Label lbl_particleUseExisting;
+		private System.Windows.Forms.TextBox txt_particleBrowse;
+		private System.Windows.Forms.Button btn_particleBrowse;
+		private System.Windows.Forms.Label lbl_particleDescription;
 	}
 }

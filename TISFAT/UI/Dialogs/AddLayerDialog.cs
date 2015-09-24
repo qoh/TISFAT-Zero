@@ -33,7 +33,7 @@ namespace TISFAT
 					break;
 				case "CustomFigure":
 					if(CustomFigure != null)
-					Program.Form_Main.Do(new LayerAddAction(typeof(CustomFigure), 0, 20, new LayerCreationArgs(2, new Tuple<StickFigure, StickFigure.State>(CustomFigure, CustomFigureState))));
+					Program.Form_Main.Do(new LayerAddAction(typeof(CustomFigObject), 0, 20, new LayerCreationArgs(2, new Tuple<StickFigure, StickFigure.State>(CustomFigure, CustomFigureState))));
 					break;
 				case "LineObject":
 					Program.Form_Main.Do(new LayerAddAction(typeof(LineObject), 0, 20, new LayerCreationArgs(0, "")));
@@ -53,6 +53,8 @@ namespace TISFAT
 					break;
 				case "TextObject":
 					Program.Form_Main.Do(new LayerAddAction(typeof(TextObject), 0, 20, new LayerCreationArgs(0, "")));
+					break;
+				case "EmitterObject":
 					break;
 				case "PointLight":
 					Program.Form_Main.Do(new LayerAddAction(typeof(PointLight), 0, 20, new LayerCreationArgs(0, "")));
@@ -94,6 +96,7 @@ namespace TISFAT
 			pnl_PolygonProperties.Visible = false;
 			pnl_BitmapProperties.Visible = false;
 			pnl_TextProperties.Visible = false;
+			pnl_ParticleProperties.Visible = false;
 			pnl_PointLightProperties.Visible = false;
 		}
 
@@ -129,6 +132,9 @@ namespace TISFAT
 					break;
 				case "TextObject":
 					pnl_TextProperties.Visible = true;
+					break;
+				case "EmitterObject":
+					pnl_ParticleProperties.Visible = true;
 					break;
 				case "PointLight":
 					pnl_PointLightProperties.Visible = true;
@@ -183,6 +189,16 @@ namespace TISFAT
 				txt_customFigPath.Text = "Custom figure created with Editor";
 				CustomFigure = f.CreatedFigure;
 				CustomFigureState = f.CreatedFigureState;
+			}
+		}
+
+		private void btn_openParticleEditor_Click(object sender, EventArgs e)
+		{
+			ParticleEditorForm f = new ParticleEditorForm();
+
+			if(f.ShowDialog() == DialogResult.OK)
+			{
+				txt_particleBrowse.Text = "Particle created with Editor";
 			}
 		}
 	}

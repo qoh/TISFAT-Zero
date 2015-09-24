@@ -1,4 +1,4 @@
-﻿namespace TISFAT.UI.Controls
+﻿namespace TISFAT.Controls
 {
 	partial class SeparatorControl
 	{

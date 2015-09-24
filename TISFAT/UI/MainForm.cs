@@ -396,13 +396,6 @@ namespace TISFAT
 			dlg.ShowDialog();
 		}
 
-		private void openColorPickerToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ColorPickerDialog dlg = new ColorPickerDialog();
-
-			dlg.ShowDialog();
-		}
-
 		private void MainForm_KeyDown(object sender, KeyEventArgs e)
 		{
 			CheckKeyPressed(e);

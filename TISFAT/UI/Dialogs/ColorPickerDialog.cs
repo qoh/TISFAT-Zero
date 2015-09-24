@@ -24,6 +24,11 @@ namespace TISFAT
 			InitializeComponent();
 		}
 
+		private void ColorPickerDialog_Load(object sender, EventArgs e)
+		{
+			colorEditorManager1.Color = Color.Black;
+		}
+
 		private void btn_ExpandWindow_Click(object sender, EventArgs e)
 		{
 			if(expanded)

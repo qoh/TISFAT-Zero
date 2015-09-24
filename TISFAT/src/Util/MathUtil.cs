@@ -35,5 +35,10 @@ namespace TISFAT.Util
 		{
 			return PointInRect(A, new RectangleF(B.X - Tolerance, B.Y - Tolerance, Tolerance * 2, Tolerance * 2));
 		}
+
+		public static float DegToRad(float degrees)
+		{
+			return (float)Math.PI * degrees / 180;
+		}
 	}
 }
