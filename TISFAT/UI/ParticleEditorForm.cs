@@ -3,13 +3,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TISFAT.Entities;
 using TISFAT.Util;
@@ -37,46 +31,61 @@ namespace TISFAT
 			GLContext.VSync = true;
 
 			GLContext.Paint += GLContext_Paint;
+			GLContext.MouseMove += GLContext_MouseMove;
+			GLContext.MouseDown += GLContext_MouseDown;
 
 			pnl_GLArea.Controls.Add(GLContext);
 		}
 
 		private void ParticleEditorForm_Load(object sender, EventArgs e)
 		{
-			MainEmitter = new EmitterObject.Emitter();
+			EmitterObject.ParticleSystem system = new EmitterObject.ParticleSystem();
 
-			MainEmitter.Position = new PointF(200, 200);
-			MainEmitter.EmissionRate = 0.6f;
-			MainEmitter.EmissionVelocity = 10.0f;
-			MainEmitter.EmissionVelocityVariance = 2.0f;
-			MainEmitter.ParticleLifetime = 10.0f;
+			system.EmissionAngleMin = 270.0f;
+			system.EmissionAngleMax = 275.0f;
+			system.EmissionOffsetMax = 0.0f;
+			system.EmissionOffsetMin = 0.0f;
+			system.EmissionRate = 40.0f;
+			system.EmissionSpeedMin = 35.0f;
+			system.EmissionSpeedMax = 40.0f;
+			system.LifetimeMin = 15.0f;
+			system.LifetimeMax = 20.0f;
+			system.ParticleAcceleration = new Vector2F(0, 3f);
+			system.ParticleDrag = new Vector2F(0.0f, 0.0f);
 
-			//MainEmitter.Configure();
+			system.ParticleSize = new List<Tuple<float, float>>();
+			system.ParticleSize.Add(new Tuple<float, float>(0.25f, 4));
+			system.ParticleSize.Add(new Tuple<float, float>(0.5f, 6));
+			system.ParticleSize.Add(new Tuple<float, float>(0.75f, 8));
+			system.ParticleSize.Add(new Tuple<float, float>(1, 3));
 
-			//MainEmitter.duration = 80000.0f;
-			//MainEmitter.position = new PointF(125, 200);
-			//MainEmitter.positionVariance = new PointF(0, 0);
-			//MainEmitter.life = 40f;
-			//MainEmitter.lifeVariance = 1.0f;
-			//MainEmitter._totalParticles = 400;
-			//MainEmitter.emissionRate = 20;
-			//MainEmitter.startColor = Color.FromArgb(255, 20, 60, 255);
-			//MainEmitter.startColorVariance = Color.FromArgb(76, 0, 0, 48);
-			//MainEmitter.endColor = Color.FromArgb(0, 199, 199, 255);
-			//MainEmitter.endColorVariance = Color.FromArgb(0, 0, 0, 0);
-			//MainEmitter.speed = 10;
-			//MainEmitter.speedVariance = 10;
-			//MainEmitter.angle = 90;
-			//MainEmitter.angleVariance = 10;
-			//MainEmitter.gravity = new PointF(0, 350.0f);
-			//MainEmitter.radialAccel = 0;
-			//MainEmitter.radialAccelVariance = 0;
-			//MainEmitter.tangentialAccel = 0;
-			//MainEmitter.tangentialAccelVariance = 0;
+			system.ParticleColor = new List<Tuple<float, Color>>();
+			system.ParticleColor.Add(new Tuple<float, Color>(0, Color.FromArgb(255, 20, 60, 255)));
+			system.ParticleColor.Add(new Tuple<float, Color>(1, Color.FromArgb(0, 199, 199, 255)));
 
-			//MainEmitter.Restart();
+			MainEmitter = new EmitterObject.Emitter(system);
+			MainEmitter.Position = new Vector2F(200, 200);
+
+			RefreshProperties();
 
 			GLContext_Init();
+		}
+
+		private void RefreshProperties()
+		{
+			num_emissionRate.Value = (decimal)MainEmitter.System.EmissionRate;
+			num_emissionAngleMin.Value = (decimal)MainEmitter.System.EmissionAngleMin;
+			num_emissionAngleMax.Value = (decimal)MainEmitter.System.EmissionAngleMax;
+			num_emissionSpeedMin.Value = (decimal)MainEmitter.System.EmissionSpeedMin;
+			num_emissionSpeedMax.Value = (decimal)MainEmitter.System.EmissionSpeedMax;
+			num_emissionOffsetMin.Value = (decimal)MainEmitter.System.EmissionOffsetMin;
+			num_emissionOffsetMax.Value = (decimal)MainEmitter.System.EmissionOffsetMax;
+			num_particleLifetimeMin.Value = (decimal)MainEmitter.System.LifetimeMin;
+			num_particleLifetimeMax.Value = (decimal)MainEmitter.System.LifetimeMax;
+			num_particleDragX.Value = (decimal)MainEmitter.System.ParticleDrag.X;
+			num_particleDragY.Value = (decimal)MainEmitter.System.ParticleDrag.Y;
+			num_particleGravityX.Value = (decimal)MainEmitter.System.ParticleAcceleration.X;
+			num_particleGravityY.Value = (decimal)MainEmitter.System.ParticleAcceleration.Y;
 		}
 
 		public void GLContext_Init()
@@ -107,5 +116,98 @@ namespace TISFAT
 
 			GLContext.Invalidate();
 		}
+
+		private void GLContext_MouseDown(object sender, MouseEventArgs e)
+		{
+			MainEmitter.Position = new Vector2F(e.X, e.Y);
+		}
+
+		private void GLContext_MouseMove(object sender, MouseEventArgs e)
+		{
+			if(e.Button == MouseButtons.Left)
+				MainEmitter.Position = new Vector2F(e.X, e.Y);
+		}
+
+		#region numUpDown interaction 
+		private void num_emissionRate_ValueChanged(object sender, EventArgs e)
+		{
+			MainEmitter.System.EmissionRate = (float)num_emissionRate.Value;
+			MainEmitter.Reset();
+		}
+
+		private void num_emissionAngleMin_ValueChanged(object sender, EventArgs e)
+		{
+			MainEmitter.System.EmissionAngleMin = (float)num_emissionAngleMin.Value;
+			MainEmitter.Reset();
+		}
+
+		private void num_emissionAngleMax_ValueChanged(object sender, EventArgs e)
+		{
+			MainEmitter.System.EmissionAngleMax = (float)num_emissionAngleMax.Value;
+			MainEmitter.Reset();
+		}
+
+		private void num_emissionSpeedMin_ValueChanged(object sender, EventArgs e)
+		{
+			MainEmitter.System.EmissionSpeedMin = (float)num_emissionSpeedMin.Value;
+			MainEmitter.Reset();
+		}
+
+		private void num_emissionSpeedMax_ValueChanged(object sender, EventArgs e)
+		{
+			MainEmitter.System.EmissionSpeedMax = (float)num_emissionSpeedMax.Value;
+			MainEmitter.Reset();
+		}
+
+		private void num_emissionOffsetMin_ValueChanged(object sender, EventArgs e)
+		{
+			MainEmitter.System.EmissionOffsetMin = (float)num_emissionOffsetMin.Value;
+			MainEmitter.Reset();
+		}
+
+		private void num_emissionOffsetMax_ValueChanged(object sender, EventArgs e)
+		{
+			MainEmitter.System.EmissionOffsetMax = (float)num_emissionOffsetMax.Value;
+			MainEmitter.Reset();
+		}
+
+		private void num_particleLifetimeMin_ValueChanged(object sender, EventArgs e)
+		{
+			MainEmitter.System.LifetimeMin = (float)num_particleLifetimeMin.Value;
+			MainEmitter.Reset();
+		}
+
+		private void num_particleLifetimeMax_ValueChanged(object sender, EventArgs e)
+		{
+			MainEmitter.System.LifetimeMax = (float)num_particleLifetimeMax.Value;
+			MainEmitter.Reset();
+		}
+
+		private void num_particleDragX_ValueChanged(object sender, EventArgs e)
+		{
+			MainEmitter.System.ParticleDrag.X = -(float)num_particleDragX.Value;
+			MainEmitter.Reset();
+		}
+
+		private void num_particleDragY_ValueChanged(object sender, EventArgs e)
+		{
+			MainEmitter.System.ParticleDrag.Y = -(float)num_particleDragY.Value;
+			MainEmitter.Reset();
+		}
+
+		private void num_particleGravityX_ValueChanged(object sender, EventArgs e)
+		{
+			MainEmitter.System.ParticleAcceleration.X = (float)num_particleGravityX.Value;
+			MainEmitter.Reset();
+		}
+
+		private void num_particleGravityY_ValueChanged(object sender, EventArgs e)
+		{
+			MainEmitter.System.ParticleAcceleration.Y = (float)num_particleGravityY.Value;
+			MainEmitter.Reset();
+		}
+		#endregion
+
+
 	}
 }

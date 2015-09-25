@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TISFAT.Util;
 
 namespace TISFAT.Entities
@@ -13,71 +10,64 @@ namespace TISFAT.Entities
 		public class Emitter
 		{
 			#region Old Code
-			public PointF Position;
-
-			public float EmissionRate;
-
-			public float EmissionVelocity;
-			public float EmissionVelocityVariance;
-			public float EmissionAngle;
-			public float EmissionAngleVariance;
-
-			public float ParticleLifetime;
-			public float ParticleLifetimeVariance;
-
-			public bool OrientParticles;
+			public Vector2F Position;
+			public ParticleSystem System;
 
 			public List<Particle> Particles;
-			public int ParticleTex;
+			
+			private float emissionTimeAccum;
+			private Random RandomGen;
 
-			private float lastEmitTime;
-
-			public Emitter()
+			public Emitter(ParticleSystem system, Random randomGen = null)
 			{
+				System = system;
+				RandomGen = randomGen ?? new Random();
 				Particles = new List<Particle>();
+				Reset();
 			}
 
-			public void Emit(PointF Loc)
+			public void Reset()
 			{
-				Random r = new Random();
+				emissionTimeAccum = 0.0f;
+			}
 
-				Particles.Add(new Particle(
-					new PointF(Loc.X + r.Next(-(int)EmissionAngleVariance, (int)EmissionAngleVariance), Loc.Y + r.Next(-(int)EmissionAngleVariance, (int)EmissionAngleVariance)), 
-					new PointF(EmissionVelocity, 0),
-					ParticleLifetime,
-					ParticleTex));
+			public void ClearParticles()
+			{
+				Particles.Clear();
+			}
 
-
-				lastEmitTime = 0;
+			public void EmitParticle()
+			{
+				Particles.Add(new Particle(System, RandomGen, Position));
 			}
 
 			public void Update(float dt)
 			{
-				List<Particle> ScheduledDelete = new List<Particle>();
+				int index = 0;
 
-				lastEmitTime += dt;
-
-				if (lastEmitTime > EmissionRate)
-					Emit(Position);
-
-				foreach(Particle p in Particles)
+				while (index < Particles.Count)
 				{
-					if (!p.Update(dt))
-						ScheduledDelete.Add(p);
+					if (!Particles[index].Update(dt))
+						Particles.RemoveAt(index);
+					else
+						index++;
 				}
 
-				foreach(Particle p in ScheduledDelete)
-				{
-					Particles.Remove(p);
-				}
+				emissionTimeAccum += dt;
+
+				int count = (int)Math.Floor(emissionTimeAccum * System.EmissionRate);
+				for (int i = 0; i < count; i++)
+					EmitParticle();
+
+				emissionTimeAccum -= (float)count / System.EmissionRate;
 			}
 
 			public void Draw()
 			{
 				foreach (Particle p in Particles)
-				{
 					p.Draw();
-				}
+
+				Drawing.Rectangle(new PointF(Position.X, Position.Y), new SizeF(4, 4), Color.Red);
 			}
 			#endregion
 		}

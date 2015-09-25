@@ -1,10 +1,5 @@
-﻿using OpenTK;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TISFAT.Util;
 
 namespace TISFAT.Entities
@@ -14,59 +9,56 @@ namespace TISFAT.Entities
 		public class Particle
 		{
 			#region Old Code
-			public PointF OriginalPos;
-			public PointF Position;
+			public ParticleSystem System;
 
-			public float Gravity;
-			public float GravityVariance;
-			public PointF GravityDir;
+			public Vector2F Position;
+			public Vector2F Velocity;
 
-			public PointF Drag;
-			public float DragVariance;
+			float MaxLifetime;
+			float CurLifetime;
 
-			public bool Recolor;
+			private Random RandomGen;
 
-			public List<PointF> Sizes;
-			public List<Color> Colors;
-
-			public PointF Velocity;
-			public double Lifetime;
-
-			public double Age;
-
-			private int TexID;
-
-			public Particle(PointF pos, PointF vel, float life, int textureID)
+			public Particle(ParticleSystem system, Random randomGen, Vector2F position)
 			{
-				OriginalPos = pos;
-				Position = pos;
+				System = system;
+				RandomGen = randomGen;
 
-				Velocity = vel;
-				Lifetime = life;
-				TexID = textureID;
-				Drag = new PointF(0.5f, 0);
-				Gravity = 10.0f;
-				GravityDir = new PointF(0, 1);
+				float angle = Interpolation.Interpolate((float)RandomGen.NextDouble(), System.EmissionAngleMin, System.EmissionAngleMax, EntityInterpolationMode.Linear);
+				Vector2F direction = new Vector2F(1.0f, 0.0f).Rotate(angle);
+
+				float speed = Interpolation.Interpolate((float)RandomGen.NextDouble(), System.EmissionSpeedMin, System.EmissionSpeedMax, EntityInterpolationMode.Linear);
+				float offset = Interpolation.Interpolate((float)RandomGen.NextDouble(), System.EmissionOffsetMin, System.EmissionOffsetMax, EntityInterpolationMode.Linear);
+
+				Position = position + direction * offset;
+				Velocity = direction * speed;
+
+				CurLifetime = 0.0f;
+				MaxLifetime = Interpolation.Interpolate((float)RandomGen.NextDouble(), System.LifetimeMin, System.LifetimeMax, EntityInterpolationMode.Linear);
 			}
 
 			public bool Update(float dt)
 			{
-				Age += dt;
+				CurLifetime += dt;
 
-				if (Age >= Lifetime)
+				if (CurLifetime >= MaxLifetime)
 					return false;
 
-				Position = new PointF(Position.X + (Gravity * GravityDir.X * dt), Position.Y + (Gravity * GravityDir.Y * dt));
-				Position = new PointF(Position.X + (Velocity.X * dt), Position.Y + (Velocity.Y * dt));
-
-				Velocity = new PointF(Velocity.X - Drag.X * dt, Velocity.Y - Drag.Y * dt);
+				Velocity += System.ParticleDrag * Velocity * dt;
+				Velocity += System.ParticleAcceleration * dt;
+				Position += Velocity * dt;
 
 				return true;
 			}
 
 			public void Draw()
 			{
-				Drawing.Bitmap(Position, new SizeF(8, 8), 0, TexID);
+				float time = CurLifetime / MaxLifetime;
+
+				float size = System.EvaluateParticleSize(time);
+				Color color = System.EvaluateParticleColor(time);
+
+				Drawing.Circle(new PointF(Position.X, Position.Y), size, color);
 			}
 			#endregion
 		}

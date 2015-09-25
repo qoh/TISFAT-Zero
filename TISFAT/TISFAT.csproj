@@ -83,6 +83,7 @@
     <Compile Include="src\Entities\EmitterObject.cs" />
     <Compile Include="src\Entities\EmitterObject.Emitter.cs" />
     <Compile Include="src\Entities\EmitterObject.Particle.cs" />
+    <Compile Include="src\Entities\EmitterObject.ParticleSystem.cs" />
     <Compile Include="src\Entities\LineObject.cs" />
     <Compile Include="src\Entities\LineObject.State.cs">
       <DependentUpon>LineObject.cs</DependentUpon>

@@ -141,5 +141,10 @@ namespace TISFAT.Util
 			(int)Interpolate(t, a.G, b.G, mode),
 			(int)Interpolate(t, a.B, b.B, mode));
 		}
+
+		public static float Uninterpolate(float t, float a, float b)
+		{
+			return (t - a) / (b - a);
+		}
 	}
 }
