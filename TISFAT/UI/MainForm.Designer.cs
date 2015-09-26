@@ -58,8 +58,6 @@
 			this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.openColorPickerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -126,6 +124,7 @@
 			this.btn_ExportProject.Size = new System.Drawing.Size(24, 24);
 			this.btn_ExportProject.TabIndex = 13;
 			this.btn_ExportProject.ToggleButton = false;
+			this.btn_ExportProject.ToolTipHint = "Export\r\n\r\nAllows you to export the animation to various filetypes.";
 			this.btn_ExportProject.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
 			// 
 			// btn_Redo
@@ -142,6 +141,7 @@
 			this.btn_Redo.Size = new System.Drawing.Size(24, 24);
 			this.btn_Redo.TabIndex = 12;
 			this.btn_Redo.ToggleButton = false;
+			this.btn_Redo.ToolTipHint = "Redo\r\n\r\nReverts the previous undo.";
 			this.btn_Redo.Click += new System.EventHandler(this.btn_Redo_Click);
 			// 
 			// btn_Undo
@@ -158,6 +158,7 @@
 			this.btn_Undo.Size = new System.Drawing.Size(24, 24);
 			this.btn_Undo.TabIndex = 11;
 			this.btn_Undo.ToggleButton = false;
+			this.btn_Undo.ToolTipHint = "Undo\r\n\r\nReverts the previous action.";
 			this.btn_Undo.Click += new System.EventHandler(this.btn_Undo_Click);
 			// 
 			// separatorControl2
@@ -183,6 +184,7 @@
 			this.btn_SaveProject.Size = new System.Drawing.Size(24, 24);
 			this.btn_SaveProject.TabIndex = 9;
 			this.btn_SaveProject.ToggleButton = false;
+			this.btn_SaveProject.ToolTipHint = "Save\r\n\r\nSaves the project.";
 			this.btn_SaveProject.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
 			// 
 			// btn_OpenProject
@@ -199,6 +201,7 @@
 			this.btn_OpenProject.Size = new System.Drawing.Size(24, 24);
 			this.btn_OpenProject.TabIndex = 8;
 			this.btn_OpenProject.ToggleButton = false;
+			this.btn_OpenProject.ToolTipHint = "Open\r\n\r\nAllows you to open a project";
 			this.btn_OpenProject.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
 			// 
 			// btn_NewProject
@@ -215,6 +218,7 @@
 			this.btn_NewProject.Size = new System.Drawing.Size(24, 24);
 			this.btn_NewProject.TabIndex = 7;
 			this.btn_NewProject.ToggleButton = false;
+			this.btn_NewProject.ToolTipHint = "New\r\n\r\nCreates a new project.";
 			this.btn_NewProject.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
 			// 
 			// btn_AddLayer
@@ -232,6 +236,7 @@
 			this.btn_AddLayer.Size = new System.Drawing.Size(24, 24);
 			this.btn_AddLayer.TabIndex = 6;
 			this.btn_AddLayer.ToggleButton = false;
+			this.btn_AddLayer.ToolTipHint = "Add Layer\r\n\r\nAllows you to create new layers.";
 			this.btn_AddLayer.Click += new System.EventHandler(this.btn_AddLayer_Click);
 			// 
 			// btn_RemoveLayer
@@ -249,6 +254,7 @@
 			this.btn_RemoveLayer.Size = new System.Drawing.Size(24, 24);
 			this.btn_RemoveLayer.TabIndex = 5;
 			this.btn_RemoveLayer.ToggleButton = false;
+			this.btn_RemoveLayer.ToolTipHint = "Remove Layer\r\n\r\nRemoves the currently selected layer.";
 			this.btn_RemoveLayer.Click += new System.EventHandler(this.btn_RemoveLayer_Click);
 			// 
 			// separatorControl1
@@ -276,6 +282,7 @@
 			this.btn_EditModePhase.Size = new System.Drawing.Size(24, 24);
 			this.btn_EditModePhase.TabIndex = 3;
 			this.btn_EditModePhase.ToggleButton = false;
+			this.btn_EditModePhase.ToolTipHint = "Onion Skin - Phase\r\n\r\nPlays back the previous and next second of animation.";
 			this.btn_EditModePhase.Click += new System.EventHandler(this.btn_EditModePhase_Click);
 			// 
 			// btn_EditModeOnion
@@ -293,6 +300,8 @@
 			this.btn_EditModeOnion.Size = new System.Drawing.Size(24, 24);
 			this.btn_EditModeOnion.TabIndex = 2;
 			this.btn_EditModeOnion.ToggleButton = false;
+			this.btn_EditModeOnion.ToolTipHint = "Onion Skin - Previous Keyframe\r\n\r\nDisplays the previous keyframe as an onion skin" +
+    ".\r\n";
 			this.btn_EditModeOnion.Click += new System.EventHandler(this.btn_EditModeOnion_Click);
 			// 
 			// btn_EditModeDefault
@@ -310,6 +319,7 @@
 			this.btn_EditModeDefault.Size = new System.Drawing.Size(24, 24);
 			this.btn_EditModeDefault.TabIndex = 1;
 			this.btn_EditModeDefault.ToggleButton = false;
+			this.btn_EditModeDefault.ToolTipHint = "Onion Skin - Default\r\n\r\nThe default behavior.";
 			this.btn_EditModeDefault.Click += new System.EventHandler(this.btn_EditModeDefault_Click);
 			// 
 			// menuStrip1
@@ -317,7 +327,6 @@
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.editToolStripMenuItem,
-            this.debugToolStripMenuItem,
             this.helpToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
@@ -425,21 +434,6 @@
 			this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
 			this.preferencesToolStripMenuItem.Text = "Preferences";
 			// 
-			// debugToolStripMenuItem
-			// 
-			this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openColorPickerToolStripMenuItem});
-			this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
-			this.debugToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
-			this.debugToolStripMenuItem.Text = "Debug";
-			// 
-			// openColorPickerToolStripMenuItem
-			// 
-			this.openColorPickerToolStripMenuItem.Name = "openColorPickerToolStripMenuItem";
-			this.openColorPickerToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-			this.openColorPickerToolStripMenuItem.Text = "Open Color Picker";
-			this.openColorPickerToolStripMenuItem.Click += new System.EventHandler(this.openColorPickerToolStripMenuItem_Click);
-			// 
 			// helpToolStripMenuItem
 			// 
 			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -535,8 +529,6 @@
 		private Controls.BitmapButtonControl btn_Redo;
 		private Controls.BitmapButtonControl btn_Undo;
 		private Controls.BitmapButtonControl btn_ExportProject;
-		private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem openColorPickerToolStripMenuItem;
 	}
 }
 

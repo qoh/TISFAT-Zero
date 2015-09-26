@@ -108,6 +108,7 @@ namespace TISFAT.Entities
 				writer.Write((double)Bounds.Y);
 				writer.Write((double)Bounds.Width);
 				writer.Write((double)Bounds.Height);
+				FileFormat.WriteColor(Color, writer);
 			}
 
 			public void Read(BinaryReader reader, UInt16 version)
@@ -118,6 +119,9 @@ namespace TISFAT.Entities
 				Bounds.Y = (float)reader.ReadDouble();
 				Bounds.Width = (float)reader.ReadDouble();
 				Bounds.Height = (float)reader.ReadDouble();
+
+				if (version >= 3)
+					Color = FileFormat.ReadColor(reader);
 			}
 		}
 	}

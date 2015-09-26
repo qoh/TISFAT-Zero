@@ -418,10 +418,10 @@ namespace TISFAT
 						}
 						else
 							if (TargetTime >= SelectedLayer.Framesets[i].StartTime)
-							return;
+								return;
 					}
 
-					if (TargetTime > SelectedFrameset.StartTime)
+					if (TargetTime >= SelectedFrameset.StartTime)
 					{
 						foreach (Keyframe frame in SelectedFrameset.Keyframes)
 						{

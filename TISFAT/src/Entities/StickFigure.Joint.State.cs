@@ -61,7 +61,7 @@ namespace TISFAT.Entities
 
 					Parent.Children.Remove(this);
 				}
-
+				
 				public void SetColor(Color color, State from)
 				{
 					List<State> affected = new List<State>();
@@ -113,45 +113,108 @@ namespace TISFAT.Entities
 							target.Y - mparams.AbsoluteOffset.Y);
 					}
 
-					float nx = target.X;
-					float ny = target.Y;
-
-					float ox = Location.X;
-					float oy = Location.Y;
-
-					Location = target;
-
-					foreach (State state in affected)
+					if (!mparams.PivotDrag)
 					{
-						PointF loc;
+						float nx = target.X;
+						float ny = target.Y;
 
-						if (mparams.AbsoluteDrag)
+						float ox = Location.X;
+						float oy = Location.Y;
+
+						Location = target;
+
+						foreach (State state in affected)
 						{
-							loc = new PointF(
-								state.Location.X + (nx - ox),
-								state.Location.Y + (ny - oy)
-							);
+							PointF loc;
+
+							if (mparams.AbsoluteDrag)
+							{
+								loc = new PointF(
+									state.Location.X + (nx - ox),
+									state.Location.Y + (ny - oy)
+								);
+							}
+							else
+							{
+								if (mparams.DisableIK)
+									return;
+
+								float jx = state.Location.X;
+								float jy = state.Location.Y;
+
+								float dx = ox - jx;
+								float dy = oy - jy;
+								float dm = (float)Math.Sqrt((double)(dx * dx + dy * dy));
+
+								float lx = jx - nx;
+								float ly = jy - ny;
+								float lm = (float)Math.Sqrt((double)(lx * lx + ly * ly));
+
+								loc = new PointF(nx + (lx / lm) * dm, ny + (ly / lm) * dm);
+							}
+
+							state.Move(loc, mparams, this);
+						}
+					}
+					else
+					{
+						if (Parent != null)
+						{
+							float dx = target.X - Parent.Location.X;
+							float dy = target.Y - Parent.Location.Y;
+
+							float length = (float)Math.Sqrt(dx * dx + dy * dy);
+
+							dx /= length;
+							dy /= length;
+
+							dx *= mparams.PivotLength;
+							dy *= mparams.PivotLength;
+
+							Location = new PointF(Parent.Location.X + dx, Parent.Location.Y + dy);
+
+							float angleDiff = (float)MathUtil.Angle(Location, Parent.Location) - mparams.PivotAngle;
+
+							Stack<State> open = new Stack<State>();
+							open.Push(this);
+
+							while (open.Count > 0)
+							{
+								State current = open.Pop();
+
+								foreach (State child in current.Children)
+								{
+									open.Push(child);
+									var info = mparams.PivotInfo[child];
+
+									float angle = info.Item2 + angleDiff;
+									float x = (float)(Parent.Location.X + Math.Cos(angle) * info.Item1);
+									float y  = (float)(Parent.Location.Y + Math.Sin(angle) * info.Item1); // or maybe the other way around, depends
+									child.Location = new PointF(x, y);
+								}
+							}
 						}
 						else
 						{
-							if (mparams.DisableIK)
-								return;
+							Stack<State> open = new Stack<State>();
+							open.Push(this);
 
-							float jx = state.Location.X;
-							float jy = state.Location.Y;
+							while (open.Count > 0)
+							{
+								State current = open.Pop();
 
-							float dx = ox - jx;
-							float dy = oy - jy;
-							float dm = (float)Math.Sqrt((double)(dx * dx + dy * dy));
+								foreach (State child in current.Children)
+								{
+									open.Push(child);
 
-							float lx = jx - nx;
-							float ly = jy - ny;
-							float lm = (float)Math.Sqrt((double)(lx * lx + ly * ly));
+									child.Location = new PointF(
+										child.Location.X + (target.X - Location.X),
+										child.Location.Y + (target.Y - Location.Y));
+								}
+							}
 
-							loc = new PointF(nx + (lx / lm) * dm, ny + (ly / lm) * dm);
+							Location = target;
 						}
-
-						state.Move(loc, mparams, this);
 					}
 				}
 
@@ -215,6 +278,7 @@ namespace TISFAT.Entities
 					writer.Write(JointColor.B);
 					writer.Write((double)Thickness);
 					writer.Write(Manipulatable);
+					writer.Write(ID);
 					FileFormat.WriteList(writer, Children);
 				}
 
@@ -231,7 +295,13 @@ namespace TISFAT.Entities
 					Thickness = (float)reader.ReadDouble();
 
 					if (version >= 2)
+					{
 						Manipulatable = reader.ReadBoolean();
+						if (version >= 3)
+						{
+							ID = reader.ReadInt32();
+						}
+					}
 					else
 						Manipulatable = true;
 

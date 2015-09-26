@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -36,6 +37,13 @@ namespace TISFAT.Entities
 		public class ManipulateParams : IManipulatableParams
 		{
 			public bool DisableIK;
+
+			public bool PivotDrag;
+			public float PivotLength;
+			public float PivotAngle;
+
+            public Dictionary<Joint.State, Tuple<float, float>> PivotInfo = new Dictionary<Joint.State, Tuple<float, float>>();
+
 			public bool AbsoluteDrag;
 			public PointF AbsoluteOffset;
 		}
@@ -59,6 +67,8 @@ namespace TISFAT.Entities
 			result.Params = mparams;
 
 			if (modifiers == Keys.Shift)
+				mparams.PivotDrag = true;
+			else if (modifiers == Keys.Alt)
 				mparams.DisableIK = true;
 
 			if (button == MouseButtons.Right)
@@ -73,6 +83,32 @@ namespace TISFAT.Entities
 
 				if (target == null)
 					return null;
+
+				if (mparams.PivotDrag && target.Parent != null)
+				{
+					mparams.PivotLength = (float)MathUtil.Length(target.Location, target.Parent.Location);
+					mparams.PivotAngle = (float)MathUtil.Angle(target.Location, target.Parent.Location);
+
+					// you need to go through every descendant (not child) of target here and store their angle and distance to target's parent
+					mparams.PivotInfo = new Dictionary<Joint.State, Tuple<float, float>>();
+					Stack<Joint.State> open = new Stack<Joint.State>();
+					open.Push(target);
+
+					while (open.Count > 0)
+					{
+						Joint.State current = open.Pop();
+
+						foreach (Joint.State child in current.Children)
+						{
+							open.Push(child);
+
+							float distance = (float)MathUtil.Length(target.Parent.Location, child.Location);
+							float angle = (float)MathUtil.Angle(child.Location, target.Parent.Location); // or the other way around, depends
+
+							mparams.PivotInfo[child] = new Tuple<float, float>(distance, angle);
+						}
+					}
+				}
 
 				result.Target = target;
 				mparams.AbsoluteDrag = false;

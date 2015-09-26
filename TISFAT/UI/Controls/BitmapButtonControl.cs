@@ -8,6 +8,19 @@ namespace TISFAT.Controls
 	public partial class BitmapButtonControl : UserControl
 	{
 		#region Designer Properties
+		[Description("The ToolTip that is displayed when the user hovers over the control. Using other controls won't work."), Editor("System.ComponentModel.Design.MultilineStringEditor", "System.Drawing.Design.UITypeEditor")]
+		public string ToolTipHint
+		{
+			get
+			{
+				return toolTip1.GetToolTip(btn_MainButton);
+			}
+			set
+			{
+				toolTip1.SetToolTip(btn_MainButton, value);
+			}
+		}
+
 		private Bitmap _ImageDefault;
 		[Description("Image displayed when the user isn't interacting with the control."), Category("Appearance")]
 		public Bitmap ImageDefault

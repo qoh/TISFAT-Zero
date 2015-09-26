@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+			this.components = new System.ComponentModel.Container();
 			this.btn_MainButton = new System.Windows.Forms.Button();
+			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.SuspendLayout();
 			// 
 			// btn_MainButton
@@ -63,5 +65,6 @@
         #endregion
 
         private System.Windows.Forms.Button btn_MainButton;
-    }
+		private System.Windows.Forms.ToolTip toolTip1;
+	}
 }

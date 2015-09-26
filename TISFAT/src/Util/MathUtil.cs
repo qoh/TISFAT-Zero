@@ -35,5 +35,30 @@ namespace TISFAT.Util
 		{
 			return PointInRect(A, new RectangleF(B.X - Tolerance, B.Y - Tolerance, Tolerance * 2, Tolerance * 2));
 		}
+
+		public static PointF Difference(PointF a, PointF b)
+		{
+			return new PointF(a.X - b.X, a.Y - b.Y);
+		}
+
+		public static double Angle(PointF a)
+		{
+			return Math.Atan2(a.Y, a.X);
+		}
+
+		public static double Angle(PointF a, PointF b)
+		{
+			return Angle(Difference(a, b));
+		}
+
+		public static double Length(PointF a)
+		{
+			return Math.Sqrt(a.X * a.X + a.Y * a.Y);
+		}
+
+		public static double Length(PointF a, PointF b)
+		{
+			return Length(Difference(a, b));
+		}
 	}
 }
