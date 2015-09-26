@@ -160,8 +160,12 @@ namespace TISFAT
 			if (PrevIndex + 1 > Program.ActiveProject.Layers.Count - 1)
 				return false;
 
+			Layer L = Program.ActiveProject.Layers[PrevIndex];
+
 			Program.ActiveProject.Layers.RemoveAt(PrevIndex);
-			Program.ActiveProject.Layers.Insert(PrevIndex + 1, Program.ActiveProject.Layers[TargetLayerIndex]);
+			Program.ActiveProject.Layers.Insert(PrevIndex + 1, L);
+
+			TargetLayerIndex = TargetLayerIndex = Program.ActiveProject.Layers.IndexOf(L);
 
 			Program.MainTimeline.GLContext.Invalidate();
 
@@ -170,8 +174,12 @@ namespace TISFAT
 
 		public bool Undo()
 		{
+			Layer L = Program.ActiveProject.Layers[TargetLayerIndex];
+
 			Program.ActiveProject.Layers.RemoveAt(PrevIndex + 1);
-			Program.ActiveProject.Layers.Insert(PrevIndex, Program.ActiveProject.Layers[TargetLayerIndex]);
+			Program.ActiveProject.Layers.Insert(PrevIndex, L);
+
+			TargetLayerIndex = TargetLayerIndex = Program.ActiveProject.Layers.IndexOf(L);
 
 			Program.MainTimeline.GLContext.Invalidate();
 

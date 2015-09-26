@@ -81,6 +81,7 @@ namespace TISFAT
 			GLContext.MouseMove += GLContext_MouseMove;
 			GLContext.MouseDown += GLContext_MouseDown;
 			GLContext.MouseUp += GLContext_MouseUp;
+			GLContext.KeyDown += GLContext_KeyDown;
 
 			pnl_GLArea.Controls.Add(GLContext);
 		}
@@ -152,7 +153,7 @@ namespace TISFAT
 			if(ActiveManipMode == EditorManipMode.Move && ActiveDragObject != null)
 			{
 				ActiveFigure.ManipulateUpdate(ActiveDragObject, ActiveDragParams, e.Location);
-				ActiveDragObject.GetEquivalentJoint(ActiveFigure.Root, ActiveDragObject.ID).Location = ActiveDragObject.Location;
+				ActiveDragObject.GetEquivalentJoint(ActiveFigure.Root, ActiveDragObject.ID).ResetFrom(ActiveDragObject);
 				GLContext.Invalidate();
 			} 
 			else if(ActiveManipMode == EditorManipMode.Add && SelectedObject != null)
@@ -185,6 +186,7 @@ namespace TISFAT
 				int ID = ActiveFigure.GetJointCount();
 				int ID2 = ID;
 
+				// TODO: ban Evar from coding at 7 am
 				StickFigure.Joint.RelativeTo(ActiveFigureState.Root.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID), new PointF(-(SelectedObject.Location.X - e.X), -(SelectedObject.Location.Y - e.Y)), ref ID);
 				SelectedObject = StickFigure.Joint.State.RelativeTo(SelectedObject, new PointF(-(SelectedObject.Location.X - e.X), -(SelectedObject.Location.Y - e.Y)), ref ID2);
 			}
@@ -212,6 +214,77 @@ namespace TISFAT
 		private void GLContext_MouseUp(object sender, MouseEventArgs e)
 		{
 			ActiveDragObject = null;
+		}
+
+		private void GLContext_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.D1)
+				ActiveManipMode = EditorManipMode.Pointer;
+			else if (e.KeyCode == Keys.D2)
+				ActiveManipMode = EditorManipMode.Move;
+			else if (e.KeyCode == Keys.D3)
+				ActiveManipMode = EditorManipMode.Add;
+			else if (e.KeyCode == Keys.D4)
+				ActiveManipMode = EditorManipMode.Delete;
+			else if (e.KeyCode == Keys.M && SelectedObject != null && SelectedObject.Parent != null)
+			{
+				StickFigure.Joint current = SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID);
+
+				foreach (StickFigure.Joint.State state in SelectedObject.Children)
+				{
+					state.Parent = SelectedObject.Parent;
+					SelectedObject.Parent.Children.Add(state);
+				}
+
+				foreach (StickFigure.Joint joint in current.Children)
+				{
+					joint.Parent = current.Parent;
+					current.Parent.Children.Add(joint);
+				}
+
+				SelectedObject.Parent.Children.Remove(SelectedObject);
+				current.Parent.Children.Remove(current);
+
+				SelectedObject = SelectedObject.Parent;
+				GLContext.Invalidate();
+			}
+			else if (e.KeyCode == Keys.S && SelectedObject != null && SelectedObject.Parent != null)
+			{
+				StickFigure.Joint SelectedJoint = SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID);
+
+				float x = (SelectedObject.Location.X + SelectedObject.Parent.Location.X) / 2;
+				float y = (SelectedObject.Location.Y + SelectedObject.Parent.Location.Y) / 2;
+
+				int ID = ActiveFigure.GetJointCount();
+
+				/*
+				StickFigure.Joint.RelativeTo(ActiveFigureState.Root.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID), new PointF(-(SelectedObject.Location.X - e.X), -(SelectedObject.Location.Y - e.Y)), ref ID);
+				SelectedObject = StickFigure.Joint.State.RelativeTo(SelectedObject, new PointF(-(SelectedObject.Location.X - e.X), -(SelectedObject.Location.Y - e.Y)), ref ID2);
+				*/
+
+				StickFigure.Joint newJoint = new StickFigure.Joint(SelectedJoint.Parent, ID);
+				newJoint.Location = new PointF(x, y);
+				newJoint.HandleColor = SelectedJoint.Parent.HandleColor;
+				newJoint.JointColor = SelectedJoint.Parent.JointColor;
+				newJoint.Thickness = SelectedJoint.Parent.Thickness;
+				newJoint.Children.Add(SelectedJoint);
+				SelectedJoint.Parent.Children.Add(newJoint);
+
+				StickFigure.Joint.State newState = new StickFigure.Joint.State(SelectedObject.Parent, ID);
+				newState.JointColor = SelectedObject.Parent.JointColor;
+				newState.Thickness = SelectedObject.Parent.Thickness;
+				newState.Location = new PointF(x, y);
+				newState.Children.Add(SelectedObject);
+				SelectedObject.Parent.Children.Add(newState);
+
+				SelectedObject.Parent.Children.Remove(SelectedObject);
+				SelectedObject.Parent = newState;
+
+				SelectedJoint.Parent.Children.Remove(SelectedJoint);
+				SelectedJoint.Parent = newJoint;
+
+				GLContext.Invalidate();
+			}
 		}
 
 		public void GLContext_Paint(object sender, PaintEventArgs e)

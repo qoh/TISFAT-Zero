@@ -78,6 +78,19 @@ namespace TISFAT.Entities
 			}
 			#endregion
 
+			public void ResetFrom(State from)
+			{
+				if (Children.Count != from.Children.Count)
+					throw new ArgumentException("what the butts");
+
+				JointColor = from.JointColor;
+				Location = from.Location;
+				Thickness = from.Thickness;
+
+				for (int i = 0; i < Children.Count; i++)
+					Children[i].ResetFrom(from.Children[i]);
+			}
+
 			#region Drawing
 			public void Draw(State state)
 			{
@@ -186,6 +199,7 @@ namespace TISFAT.Entities
 				writer.Write(HandleVisible);
 				writer.Write(Manipulatable);
 				writer.Write(Visible);
+				writer.Write(ID);
 				FileFormat.WriteList(writer, Children);
 			}
 
@@ -213,6 +227,11 @@ namespace TISFAT.Entities
 					HandleVisible = reader.ReadBoolean();
 					Manipulatable = reader.ReadBoolean();
 					Visible = reader.ReadBoolean();
+
+					if (version >= 3)
+					{
+						ID = reader.ReadInt32();
+					}
 				}
 				else
 				{
