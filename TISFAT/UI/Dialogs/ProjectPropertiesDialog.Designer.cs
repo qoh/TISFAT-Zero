@@ -41,15 +41,18 @@
 			this.lbl_AnimSpeed = new System.Windows.Forms.Label();
 			this.num_AnimSpeed = new System.Windows.Forms.NumericUpDown();
 			this.lbl_AnimSpeedDesc = new System.Windows.Forms.Label();
+			this.num_FPS = new System.Windows.Forms.NumericUpDown();
+			this.lbl_FPS = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.num_CanvasWidth)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_CanvasHeight)).BeginInit();
 			this.grp_Canvas.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.num_AnimSpeed)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.num_FPS)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// btn_OK
 			// 
-			this.btn_OK.Location = new System.Drawing.Point(77, 194);
+			this.btn_OK.Location = new System.Drawing.Point(77, 204);
 			this.btn_OK.Name = "btn_OK";
 			this.btn_OK.Size = new System.Drawing.Size(75, 23);
 			this.btn_OK.TabIndex = 0;
@@ -60,7 +63,7 @@
 			// btn_Cancel
 			// 
 			this.btn_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btn_Cancel.Location = new System.Drawing.Point(182, 194);
+			this.btn_Cancel.Location = new System.Drawing.Point(182, 204);
 			this.btn_Cancel.Name = "btn_Cancel";
 			this.btn_Cancel.Size = new System.Drawing.Size(75, 23);
 			this.btn_Cancel.TabIndex = 1;
@@ -155,15 +158,15 @@
 			// lbl_AnimSpeed
 			// 
 			this.lbl_AnimSpeed.AutoSize = true;
-			this.lbl_AnimSpeed.Location = new System.Drawing.Point(124, 123);
+			this.lbl_AnimSpeed.Location = new System.Drawing.Point(181, 125);
 			this.lbl_AnimSpeed.Name = "lbl_AnimSpeed";
-			this.lbl_AnimSpeed.Size = new System.Drawing.Size(87, 13);
+			this.lbl_AnimSpeed.Size = new System.Drawing.Size(106, 13);
 			this.lbl_AnimSpeed.TabIndex = 10;
-			this.lbl_AnimSpeed.Text = "Animation Speed";
+			this.lbl_AnimSpeed.Text = "Keyframes per Frame";
 			// 
 			// num_AnimSpeed
 			// 
-			this.num_AnimSpeed.Location = new System.Drawing.Point(132, 139);
+			this.num_AnimSpeed.Location = new System.Drawing.Point(197, 141);
 			this.num_AnimSpeed.Maximum = new decimal(new int[] {
             240,
             0,
@@ -175,12 +178,33 @@
 			// 
 			// lbl_AnimSpeedDesc
 			// 
-			this.lbl_AnimSpeedDesc.Location = new System.Drawing.Point(58, 162);
+			this.lbl_AnimSpeedDesc.Location = new System.Drawing.Point(58, 172);
 			this.lbl_AnimSpeedDesc.Name = "lbl_AnimSpeedDesc";
 			this.lbl_AnimSpeedDesc.Size = new System.Drawing.Size(219, 32);
 			this.lbl_AnimSpeedDesc.TabIndex = 11;
 			this.lbl_AnimSpeedDesc.Text = "This is how many frames on the timeline pass per second during playback.\r\n";
 			this.lbl_AnimSpeedDesc.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+			// 
+			// num_FPS
+			// 
+			this.num_FPS.Location = new System.Drawing.Point(70, 141);
+			this.num_FPS.Maximum = new decimal(new int[] {
+            240,
+            0,
+            0,
+            0});
+			this.num_FPS.Name = "num_FPS";
+			this.num_FPS.Size = new System.Drawing.Size(71, 20);
+			this.num_FPS.TabIndex = 12;
+			// 
+			// lbl_FPS
+			// 
+			this.lbl_FPS.AutoSize = true;
+			this.lbl_FPS.Location = new System.Drawing.Point(88, 125);
+			this.lbl_FPS.Name = "lbl_FPS";
+			this.lbl_FPS.Size = new System.Drawing.Size(27, 13);
+			this.lbl_FPS.TabIndex = 13;
+			this.lbl_FPS.Text = "FPS";
 			// 
 			// ProjectPropertiesDialog
 			// 
@@ -188,8 +212,10 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.btn_Cancel;
-			this.ClientSize = new System.Drawing.Size(334, 221);
+			this.ClientSize = new System.Drawing.Size(334, 231);
 			this.ControlBox = false;
+			this.Controls.Add(this.num_FPS);
+			this.Controls.Add(this.lbl_FPS);
 			this.Controls.Add(this.lbl_AnimSpeedDesc);
 			this.Controls.Add(this.num_AnimSpeed);
 			this.Controls.Add(this.lbl_AnimSpeed);
@@ -208,6 +234,7 @@
 			this.grp_Canvas.ResumeLayout(false);
 			this.grp_Canvas.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.num_AnimSpeed)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.num_FPS)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -228,5 +255,7 @@
 		private System.Windows.Forms.Label lbl_AnimSpeed;
 		private System.Windows.Forms.NumericUpDown num_AnimSpeed;
 		private System.Windows.Forms.Label lbl_AnimSpeedDesc;
+		private System.Windows.Forms.NumericUpDown num_FPS;
+		private System.Windows.Forms.Label lbl_FPS;
 	}
 }
