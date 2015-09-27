@@ -362,8 +362,9 @@ namespace TISFAT.Util
 			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
 			GL.PushMatrix();
-			GL.Translate(position.X, position.Y, 0);
-			//GL.Rotate(rotation, 0, 0, 1);
+			GL.Translate(position.X + size.Width / 2, position.Y + size.Height / 2, 0);
+			GL.Rotate(rotation, 0, 0, 1);
+			GL.Translate(-size.Width / 2, -size.Height / 2, 0);
 
 			GL.Color4(Color.White);
 
