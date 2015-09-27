@@ -226,6 +226,10 @@ namespace TISFAT
 		{
 			string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 			string fileName = Path.Combine(appData, "TISFAT Zero\\autosave.tzp");
+
+			if (!Directory.Exists(Path.GetDirectoryName(fileName)))
+				Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+
 			ProjectSave(fileName);
 		}
 
