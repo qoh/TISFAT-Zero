@@ -38,8 +38,6 @@ namespace TISFAT.Entities
 			public bool Manipulatable;
 			public bool Visible;
 
-			public int ID { get; set; };
-
 			#region Constructors
 			public Joint()
 			{
@@ -58,7 +56,7 @@ namespace TISFAT.Entities
 				Manipulatable = true;
 			}
 
-			public Joint(Joint parent, int lastID)
+			public Joint(Joint parent)
 			{
 				Parent = parent;
 				Children = new List<Joint>();
@@ -73,13 +71,11 @@ namespace TISFAT.Entities
 				HandleVisible = true;
 				Visible = true;
 				Manipulatable = true;
-
-				ID = lastID;
 			}
 
 			public Joint Clone(Joint parent = null)
 			{
-				Joint j = new Joint(parent, parent != null ? parent.ID : 0);
+				Joint j = new Joint(parent);
 				j.Parent = parent;
 				j.Children = new List<Joint>();
 
@@ -109,10 +105,10 @@ namespace TISFAT.Entities
 				return j;
 			}
 
-			public static Joint RelativeTo(Joint parent, PointF location, ref int ID)
+			public static Joint RelativeTo(Joint parent, PointF location)
 			{
 				if (parent == null) throw new NullReferenceException("wat");
-				Joint joint = new Joint(parent, ++ID);
+				Joint joint = new Joint(parent);
 				joint.Location = new PointF(parent.Location.X + location.X, parent.Location.Y + location.Y);
 				parent.Children.Add(joint);
 				return joint;
@@ -217,15 +213,13 @@ namespace TISFAT.Entities
 
 			public State Copy(State parent = null)
 			{
-				State state = new State(parent, ID);
+				State state = new State(parent);
 				state.Location = Location;
 				state.Thickness = Thickness;
 				state.JointColor = JointColor;
 				state.Manipulatable = Manipulatable;
 
 				state.BitmapIndex = InitialBitmapIndex;
-
-				state.ID = ID;
 
 				foreach (Joint child in Children)
 					state.Children.Add(child.Copy(state));
@@ -263,7 +257,6 @@ namespace TISFAT.Entities
 				writer.Write(HandleVisible);
 				writer.Write(Manipulatable);
 				writer.Write(Visible);
-				writer.Write(ID);
 				FileFormat.WriteList(writer, Children);
 
 				List<string> names = new List<string>();
@@ -311,11 +304,6 @@ namespace TISFAT.Entities
 					HandleVisible = reader.ReadBoolean();
 					Manipulatable = reader.ReadBoolean();
 					Visible = reader.ReadBoolean();
-
-					if (version >= 3)
-					{
-						ID = reader.ReadInt32();
-					}
 				}
 				else
 				{

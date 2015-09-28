@@ -139,16 +139,12 @@ namespace TISFAT
 			cmb_stickBitmaps.Visible = false;
 			lbl_stickBitmap.Visible = false;
 
-			if (Program.MainTimeline.SelectedFrameset == null)
-				return;
-			if (Program.MainTimeline.SelectedLayer.Data.GetType() != typeof(CustomFigure))
-				return;
-			if (Program.Form_Canvas.LastDragObject.GetType() != typeof(CustomFigure.Joint.State))
+			if (Program.Form_Canvas.StickFigurePair == null)
 				return;
 
-			CustomFigure.Joint.State state = Program.Form_Canvas.LastDragObject as CustomFigure.Joint.State;
+			StickFigure.Joint.State state = Program.Form_Canvas.StickFigurePair.Item2;
 
-			var Bitmaps = state.GetEquivalentJoint(((CustomFigure)Program.MainTimeline.SelectedLayer.Data).Root, state.ID).Bitmaps;
+			var Bitmaps = Program.Form_Canvas.StickFigurePair.Item1.Bitmaps;
 
 			if (Bitmaps.Count < 1)
 				return;
@@ -231,9 +227,10 @@ namespace TISFAT
 			if (Program.MainTimeline.SelectedLayer.Data.GetType() != typeof(CustomFigure))
 				return;
 
-			CustomFigure.Joint.State state = Program.Form_Canvas.LastDragObject as CustomFigure.Joint.State;
+			StickFigure.State state = Program.MainTimeline.SelectedKeyframe.State as StickFigure.State;
+			StickFigure.Joint.State jointState = state.Root.FindState((StickFigure.Joint.State)Program.Form_Canvas.LastDragObject);
 
-			state.BitmapIndex = cmb_stickBitmaps.SelectedIndex - 1;
+			jointState.BitmapIndex = cmb_stickBitmaps.SelectedIndex - 1;
 
 			Program.MainTimeline.GLContext.Invalidate();
 		}

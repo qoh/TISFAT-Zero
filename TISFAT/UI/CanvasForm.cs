@@ -4,6 +4,7 @@ using OpenTK.Graphics.OpenGL;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using TISFAT.Entities;
 
 namespace TISFAT
 {
@@ -13,6 +14,8 @@ namespace TISFAT
 		Panel ContextContainer;
 		GLControl GLContext;
 		static int MSAASamples = 8;
+
+		public Tuple<StickFigure.Joint, StickFigure.Joint.State> StickFigurePair;
 
 		private IManipulatable ActiveDragObject;
 		public IManipulatable LastDragObject;
@@ -123,8 +126,13 @@ namespace TISFAT
 			ActiveDragObject = null;
 			Timeline timeline = Program.MainTimeline;
 
+			if (timeline.SelectedLayer == null)
+				return;
 			if (timeline.SelectedKeyframe == null)
 				return;
+
+			if (timeline.SelectedLayer.Data.GetType() == typeof(StickFigure) || timeline.SelectedLayer.Data.GetType() == typeof(CustomFigure))
+				StickFigurePair = StickFigure.FindJointStatePair(((StickFigure)timeline.SelectedLayer.Data).Root, ((StickFigure.State)timeline.SelectedKeyframe.State).Root, e.Location);
 
 			ManipulateResult result = timeline.SelectedLayer.Data.TryManipulate(
 				timeline.SelectedKeyframe.State, e.Location, e.Button, ModifierKeys);
@@ -132,8 +140,8 @@ namespace TISFAT
 			if (result != null)
 			{
 				ActiveDragObject = result.Target;
-				LastDragObject = result.Target;
 				ActiveDragParams = result.Params;
+				LastDragObject = result.Target;
 				ActiveDragPrevState = timeline.SelectedKeyframe.State.Copy();
 
 				Program.Form_Properties.UpdateStickFigurePanel();
