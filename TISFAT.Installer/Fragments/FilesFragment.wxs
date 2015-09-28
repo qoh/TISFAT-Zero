@@ -3,42 +3,42 @@
     <?include $(sys.CURRENTDIR)Fragments\config_Wix.wxi?>
     <Fragment>
         <DirectoryRef Id="INSTALLFOLDER">
-            <Component Id="cmpB8C0EBDE7DE2CC411B550EDFBA85C027" Guid="{8C0E1790-099F-47BE-B6C7-51BD7D8A5A75}" Win64="yes">
+            <Component Id="cmpB8C0EBDE7DE2CC411B550EDFBA85C027" Guid="{284F981C-4ACE-42E1-9808-0BD89F8FEC8F}" Win64="yes">
                 <File Id="fil21F629ADBC39520BE5C85640CE00209B" KeyPath="yes" Source="$(var.BinDirectory)\Cyotek.Windows.Forms.ColorPicker.dll" />
             </Component>
-            <Component Id="cmp5097CAF52967A6CF76C81E53F4DD535C" Guid="{721E9B33-4E85-4D41-98C2-B946115042CC}" Win64="yes">
+            <Component Id="cmp5097CAF52967A6CF76C81E53F4DD535C" Guid="{4DEAD8AF-1F24-4651-A535-C4A479B1509F}" Win64="yes">
                 <File Id="fil288D72DC7A0E11135BBE918AEA1D3A82" KeyPath="yes" Source="$(var.BinDirectory)\ffmpeg.exe" />
             </Component>
-            <Component Id="cmp2D910AE3FB01D8D6898D22BF742CCA9C" Guid="{508C33E2-0A93-4B47-AE28-DC25008A26E7}" Win64="yes">
+            <Component Id="cmp2D910AE3FB01D8D6898D22BF742CCA9C" Guid="{3A91B58E-B930-4B84-B796-E40BFD1F245A}" Win64="yes">
                 <File Id="fil04E1DDC65DABABE0F39C79667CA014CD" KeyPath="yes" Source="$(var.BinDirectory)\OpenTK.dll" />
             </Component>
-            <Component Id="cmp87F301ED03A0753CE9EE6AB4F07FC4F6" Guid="{0E2423B7-F93F-4B17-BF04-4F00B919C751}" Win64="yes">
+            <Component Id="cmp87F301ED03A0753CE9EE6AB4F07FC4F6" Guid="{4945BAAD-D611-4710-8392-0098B46216E4}" Win64="yes">
                 <File Id="fil6FD05457390B511FB20295E9898EEA9F" KeyPath="yes" Source="$(var.BinDirectory)\OpenTK.GLControl.dll" />
             </Component>
-            <Component Id="cmpAD877564A65C79E2584096605D7BB46A" Guid="{444B2C5D-383A-4D85-A8C1-ECB91BE5AB19}" Win64="yes">
+            <Component Id="cmpAD877564A65C79E2584096605D7BB46A" Guid="{761E3AEA-173F-44FD-8BFF-5D05C5CDB1F8}" Win64="yes">
                 <File Id="fil2FF35CAD3A5C646910F13166D01170B6" KeyPath="yes" Source="$(var.BinDirectory)\OpenTK.xml" />
             </Component>
-            <Component Id="cmp9C92424AB720D958633C387CCD4C54FE" Guid="{E4124F10-E692-4B0B-8B13-34D65D885C55}" Win64="yes">
+            <Component Id="cmp9C92424AB720D958633C387CCD4C54FE" Guid="{E0DB8509-429B-433A-B2E2-0F346C14078C}" Win64="yes">
 				<Shortcut Id="scDesktopIcon" Advertise="yes" Directory="DesktopFolder" Icon="TISFAT_Icon.exe" Name="TISFAT Zero" WorkingDirectory="INSTALLFOLDER" />
 				<Shortcut Id="scStartIcon" Advertise="yes" Directory="TISFATStartMenuFolder" Icon="TISFAT_Icon.exe" Name="TISFAT Zero" WorkingDirectory="INSTALLFOLDER" />
 				<RemoveFolder Id="RemoveStartMenuFolder" Directory="TISFATStartMenuFolder" On="uninstall" />
 
                 <File Id="filFB2232F322FA11A8A804E01365010A67" KeyPath="yes" Source="$(var.BinDirectory)\TISFAT.exe" />
             </Component>
-            <Component Id="cmpBEFBC61235BA255EBDFA0133025AB7DE" Guid="{A8E67B8B-DAC0-44D0-9595-66091DFC5CA1}" Win64="yes">
+            <Component Id="cmpBEFBC61235BA255EBDFA0133025AB7DE" Guid="{95B5218A-589E-4F9E-85AC-287C39506350}" Win64="yes">
                 <File Id="filE70E2EDA7B78AA3ABAD60D186598E51B" KeyPath="yes" Source="$(var.BinDirectory)\TISFAT.exe.config" />
             </Component>
             <Directory Id="dirE9BACA1759D12D11018357DC8AB0F0CF" Name="Shaders">
-                <Component Id="cmp9BAFF94E331EE8CDC500567776E9AC3C" Guid="{BE50B0F8-75B9-4D8E-8026-E1E791E60653}" Win64="yes">
+                <Component Id="cmp9BAFF94E331EE8CDC500567776E9AC3C" Guid="{A9BCB7DA-FBE8-465F-BD26-DDE8777A96D1}" Win64="yes">
                     <File Id="filA24E20BAF69058F74FC3928E1CF28FA6" KeyPath="yes" Source="$(var.BinDirectory)\Shaders\ColorPicker.frag" />
                 </Component>
-                <Component Id="cmp2C1CBDCD3C96C069265EDB8010EAE245" Guid="{A372FB21-DA9C-4806-8019-A8CC8321F6C7}" Win64="yes">
+                <Component Id="cmp2C1CBDCD3C96C069265EDB8010EAE245" Guid="{48F87FF6-1C2E-461B-8D19-B2DA63926279}" Win64="yes">
                     <File Id="fil22FE314723941D6F2FD0F7BD01F11ED7" KeyPath="yes" Source="$(var.BinDirectory)\Shaders\ColorPicker.vert" />
                 </Component>
-                <Component Id="cmp8C2B46036FF23F2B0B895B661479E2DA" Guid="{B1964427-EAA3-4C3D-8843-CBA350352FAA}" Win64="yes">
+                <Component Id="cmp8C2B46036FF23F2B0B895B661479E2DA" Guid="{BB56FA37-DFF2-4BBA-92E2-EB3BCC70F2D6}" Win64="yes">
                     <File Id="fil0014BE2A1AE5FA2D9A1E6B5269F3B425" KeyPath="yes" Source="$(var.BinDirectory)\Shaders\PointLight.frag" />
                 </Component>
-                <Component Id="cmpDA47FB051434A13172B6EAF3BD139D22" Guid="{F5359C8B-20E3-4610-87C2-692241AF8E02}" Win64="yes">
+                <Component Id="cmpDA47FB051434A13172B6EAF3BD139D22" Guid="{E1F69FEA-EFBD-4A18-8C3A-781632F5BE23}" Win64="yes">
                     <File Id="filED9BBE822807671EA67253C04EEBBD99" KeyPath="yes" Source="$(var.BinDirectory)\Shaders\PointLight.vert" />
                 </Component>
             </Directory>
