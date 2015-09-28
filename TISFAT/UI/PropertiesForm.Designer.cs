@@ -30,6 +30,10 @@
         {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PropertiesForm));
 			this.grp_Main = new System.Windows.Forms.GroupBox();
+			this.pnl_BitmapProperties = new System.Windows.Forms.Panel();
+			this.lbl_bitmapAngle = new System.Windows.Forms.Label();
+			this.num_bitmapAngle = new System.Windows.Forms.NumericUpDown();
+			this.tkb_bitmapAngle = new System.Windows.Forms.TrackBar();
 			this.pnl_TextProperties = new System.Windows.Forms.Panel();
 			this.btn_textOpenFontPicker = new System.Windows.Forms.Button();
 			this.label2 = new System.Windows.Forms.Label();
@@ -76,7 +80,6 @@
 			this.pnl_PropertiesDescription = new System.Windows.Forms.Panel();
 			this.lbl_PropertiesDescription = new System.Windows.Forms.Label();
 			this.pnl_PointLightProperties = new System.Windows.Forms.Panel();
-			this.pnl_BitmapProperties = new System.Windows.Forms.Panel();
 			this.pnl_LineProperties = new System.Windows.Forms.Panel();
 			this.lbl_lineApplyThickness = new System.Windows.Forms.Label();
 			this.btn_lineThicknessFrameset = new System.Windows.Forms.Button();
@@ -98,10 +101,13 @@
 			this.pnl_stickFigureColor = new System.Windows.Forms.Panel();
 			this.lbl_stickFigureColorNumbers = new System.Windows.Forms.Label();
 			this.pnl_stickFigureColorImg = new System.Windows.Forms.Panel();
-			this.tkb_bitmapAngle = new System.Windows.Forms.TrackBar();
-			this.num_bitmapAngle = new System.Windows.Forms.NumericUpDown();
-			this.lbl_bitmapAngle = new System.Windows.Forms.Label();
+			this.btn_stickOpenInEditor = new System.Windows.Forms.Button();
+			this.cmb_stickBitmaps = new System.Windows.Forms.ComboBox();
+			this.lbl_stickBitmap = new System.Windows.Forms.Label();
 			this.grp_Main.SuspendLayout();
+			this.pnl_BitmapProperties.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_bitmapAngle)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.tkb_bitmapAngle)).BeginInit();
 			this.pnl_TextProperties.SuspendLayout();
 			this.panel2.SuspendLayout();
 			this.pnl_textColor.SuspendLayout();
@@ -113,18 +119,16 @@
 			this.pnl_RectangleProperties.SuspendLayout();
 			this.pnl_rectColor.SuspendLayout();
 			this.pnl_PropertiesDescription.SuspendLayout();
-			this.pnl_BitmapProperties.SuspendLayout();
 			this.pnl_LineProperties.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.num_lineThickness)).BeginInit();
 			this.pnl_lineColor.SuspendLayout();
 			this.pnl_StickFigureProperties.SuspendLayout();
 			this.pnl_stickFigureColor.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.tkb_bitmapAngle)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.num_bitmapAngle)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// grp_Main
 			// 
+			this.grp_Main.Controls.Add(this.pnl_StickFigureProperties);
 			this.grp_Main.Controls.Add(this.pnl_BitmapProperties);
 			this.grp_Main.Controls.Add(this.pnl_TextProperties);
 			this.grp_Main.Controls.Add(this.pnl_PolyProperties);
@@ -133,7 +137,6 @@
 			this.grp_Main.Controls.Add(this.pnl_PropertiesDescription);
 			this.grp_Main.Controls.Add(this.pnl_PointLightProperties);
 			this.grp_Main.Controls.Add(this.pnl_LineProperties);
-			this.grp_Main.Controls.Add(this.pnl_StickFigureProperties);
 			this.grp_Main.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.grp_Main.Location = new System.Drawing.Point(4, 4);
 			this.grp_Main.Name = "grp_Main";
@@ -141,6 +144,56 @@
 			this.grp_Main.TabIndex = 1;
 			this.grp_Main.TabStop = false;
 			this.grp_Main.Text = "Active Figure";
+			// 
+			// pnl_BitmapProperties
+			// 
+			this.pnl_BitmapProperties.Controls.Add(this.lbl_bitmapAngle);
+			this.pnl_BitmapProperties.Controls.Add(this.num_bitmapAngle);
+			this.pnl_BitmapProperties.Controls.Add(this.tkb_bitmapAngle);
+			this.pnl_BitmapProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnl_BitmapProperties.Location = new System.Drawing.Point(3, 16);
+			this.pnl_BitmapProperties.Name = "pnl_BitmapProperties";
+			this.pnl_BitmapProperties.Size = new System.Drawing.Size(188, 294);
+			this.pnl_BitmapProperties.TabIndex = 8;
+			this.pnl_BitmapProperties.Visible = false;
+			// 
+			// lbl_bitmapAngle
+			// 
+			this.lbl_bitmapAngle.AutoSize = true;
+			this.lbl_bitmapAngle.Location = new System.Drawing.Point(60, 13);
+			this.lbl_bitmapAngle.Name = "lbl_bitmapAngle";
+			this.lbl_bitmapAngle.Size = new System.Drawing.Size(69, 13);
+			this.lbl_bitmapAngle.TabIndex = 2;
+			this.lbl_bitmapAngle.Text = "Bitmap Angle";
+			// 
+			// num_bitmapAngle
+			// 
+			this.num_bitmapAngle.Location = new System.Drawing.Point(34, 29);
+			this.num_bitmapAngle.Maximum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            0});
+			this.num_bitmapAngle.Minimum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            -2147483648});
+			this.num_bitmapAngle.Name = "num_bitmapAngle";
+			this.num_bitmapAngle.Size = new System.Drawing.Size(120, 20);
+			this.num_bitmapAngle.TabIndex = 1;
+			this.num_bitmapAngle.ValueChanged += new System.EventHandler(this.num_bitmapAngle_ValueChanged);
+			// 
+			// tkb_bitmapAngle
+			// 
+			this.tkb_bitmapAngle.Location = new System.Drawing.Point(34, 54);
+			this.tkb_bitmapAngle.Maximum = 360;
+			this.tkb_bitmapAngle.Minimum = -360;
+			this.tkb_bitmapAngle.Name = "tkb_bitmapAngle";
+			this.tkb_bitmapAngle.Size = new System.Drawing.Size(120, 45);
+			this.tkb_bitmapAngle.TabIndex = 0;
+			this.tkb_bitmapAngle.TickStyle = System.Windows.Forms.TickStyle.Both;
+			this.tkb_bitmapAngle.Scroll += new System.EventHandler(this.tkb_bitmapAngle_Scroll);
 			// 
 			// pnl_TextProperties
 			// 
@@ -607,18 +660,6 @@
 			this.pnl_PointLightProperties.TabIndex = 9;
 			this.pnl_PointLightProperties.Visible = false;
 			// 
-			// pnl_BitmapProperties
-			// 
-			this.pnl_BitmapProperties.Controls.Add(this.lbl_bitmapAngle);
-			this.pnl_BitmapProperties.Controls.Add(this.num_bitmapAngle);
-			this.pnl_BitmapProperties.Controls.Add(this.tkb_bitmapAngle);
-			this.pnl_BitmapProperties.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnl_BitmapProperties.Location = new System.Drawing.Point(3, 16);
-			this.pnl_BitmapProperties.Name = "pnl_BitmapProperties";
-			this.pnl_BitmapProperties.Size = new System.Drawing.Size(188, 294);
-			this.pnl_BitmapProperties.TabIndex = 8;
-			this.pnl_BitmapProperties.Visible = false;
-			// 
 			// pnl_LineProperties
 			// 
 			this.pnl_LineProperties.Controls.Add(this.lbl_lineApplyThickness);
@@ -752,6 +793,9 @@
 			// 
 			// pnl_StickFigureProperties
 			// 
+			this.pnl_StickFigureProperties.Controls.Add(this.lbl_stickBitmap);
+			this.pnl_StickFigureProperties.Controls.Add(this.cmb_stickBitmaps);
+			this.pnl_StickFigureProperties.Controls.Add(this.btn_stickOpenInEditor);
 			this.pnl_StickFigureProperties.Controls.Add(this.label1);
 			this.pnl_StickFigureProperties.Controls.Add(this.btn_stickApplyToFrameset);
 			this.pnl_StickFigureProperties.Controls.Add(this.btn_stickApplyToLayer);
@@ -830,43 +874,37 @@
 			this.pnl_stickFigureColorImg.TabIndex = 0;
 			this.pnl_stickFigureColorImg.Click += new System.EventHandler(this.pnl_stickFigureColorImg_Click);
 			// 
-			// tkb_bitmapAngle
+			// btn_stickOpenInEditor
 			// 
-			this.tkb_bitmapAngle.Location = new System.Drawing.Point(34, 54);
-			this.tkb_bitmapAngle.Maximum = 360;
-			this.tkb_bitmapAngle.Minimum = -360;
-			this.tkb_bitmapAngle.Name = "tkb_bitmapAngle";
-			this.tkb_bitmapAngle.Size = new System.Drawing.Size(120, 45);
-			this.tkb_bitmapAngle.TabIndex = 0;
-			this.tkb_bitmapAngle.TickStyle = System.Windows.Forms.TickStyle.Both;
-			this.tkb_bitmapAngle.Scroll += new System.EventHandler(this.tkb_bitmapAngle_Scroll);
+			this.btn_stickOpenInEditor.Location = new System.Drawing.Point(23, 204);
+			this.btn_stickOpenInEditor.Name = "btn_stickOpenInEditor";
+			this.btn_stickOpenInEditor.Size = new System.Drawing.Size(142, 23);
+			this.btn_stickOpenInEditor.TabIndex = 5;
+			this.btn_stickOpenInEditor.Text = "Open in Stick Editor";
+			this.btn_stickOpenInEditor.UseVisualStyleBackColor = true;
+			this.btn_stickOpenInEditor.Visible = false;
+			this.btn_stickOpenInEditor.Click += new System.EventHandler(this.btn_stickOpenInEditor_Click);
 			// 
-			// num_bitmapAngle
+			// cmb_stickBitmaps
 			// 
-			this.num_bitmapAngle.Location = new System.Drawing.Point(34, 29);
-			this.num_bitmapAngle.Maximum = new decimal(new int[] {
-            360,
-            0,
-            0,
-            0});
-			this.num_bitmapAngle.Minimum = new decimal(new int[] {
-            360,
-            0,
-            0,
-            -2147483648});
-			this.num_bitmapAngle.Name = "num_bitmapAngle";
-			this.num_bitmapAngle.Size = new System.Drawing.Size(120, 20);
-			this.num_bitmapAngle.TabIndex = 1;
-			this.num_bitmapAngle.ValueChanged += new System.EventHandler(this.num_bitmapAngle_ValueChanged);
+			this.cmb_stickBitmaps.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmb_stickBitmaps.FormattingEnabled = true;
+			this.cmb_stickBitmaps.Location = new System.Drawing.Point(34, 141);
+			this.cmb_stickBitmaps.Name = "cmb_stickBitmaps";
+			this.cmb_stickBitmaps.Size = new System.Drawing.Size(121, 21);
+			this.cmb_stickBitmaps.TabIndex = 6;
+			this.cmb_stickBitmaps.Visible = false;
+			this.cmb_stickBitmaps.SelectionChangeCommitted += new System.EventHandler(this.cmb_stickBitmaps_SelectionChangeCommitted);
 			// 
-			// lbl_bitmapAngle
+			// lbl_stickBitmap
 			// 
-			this.lbl_bitmapAngle.AutoSize = true;
-			this.lbl_bitmapAngle.Location = new System.Drawing.Point(60, 13);
-			this.lbl_bitmapAngle.Name = "lbl_bitmapAngle";
-			this.lbl_bitmapAngle.Size = new System.Drawing.Size(69, 13);
-			this.lbl_bitmapAngle.TabIndex = 2;
-			this.lbl_bitmapAngle.Text = "Bitmap Angle";
+			this.lbl_stickBitmap.AutoSize = true;
+			this.lbl_stickBitmap.Location = new System.Drawing.Point(75, 125);
+			this.lbl_stickBitmap.Name = "lbl_stickBitmap";
+			this.lbl_stickBitmap.Size = new System.Drawing.Size(39, 13);
+			this.lbl_stickBitmap.TabIndex = 7;
+			this.lbl_stickBitmap.Text = "Bitmap";
+			this.lbl_stickBitmap.Visible = false;
 			// 
 			// PropertiesForm
 			// 
@@ -883,6 +921,10 @@
 			this.Text = "Properties";
 			this.Enter += new System.EventHandler(this.ToolboxForm_Enter);
 			this.grp_Main.ResumeLayout(false);
+			this.pnl_BitmapProperties.ResumeLayout(false);
+			this.pnl_BitmapProperties.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_bitmapAngle)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.tkb_bitmapAngle)).EndInit();
 			this.pnl_TextProperties.ResumeLayout(false);
 			this.pnl_TextProperties.PerformLayout();
 			this.panel2.ResumeLayout(false);
@@ -898,8 +940,6 @@
 			this.pnl_RectangleProperties.PerformLayout();
 			this.pnl_rectColor.ResumeLayout(false);
 			this.pnl_PropertiesDescription.ResumeLayout(false);
-			this.pnl_BitmapProperties.ResumeLayout(false);
-			this.pnl_BitmapProperties.PerformLayout();
 			this.pnl_LineProperties.ResumeLayout(false);
 			this.pnl_LineProperties.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.num_lineThickness)).EndInit();
@@ -907,8 +947,6 @@
 			this.pnl_StickFigureProperties.ResumeLayout(false);
 			this.pnl_StickFigureProperties.PerformLayout();
 			this.pnl_stickFigureColor.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.tkb_bitmapAngle)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.num_bitmapAngle)).EndInit();
 			this.ResumeLayout(false);
 
         }
@@ -986,5 +1024,8 @@
 		private System.Windows.Forms.Label lbl_bitmapAngle;
 		private System.Windows.Forms.NumericUpDown num_bitmapAngle;
 		private System.Windows.Forms.TrackBar tkb_bitmapAngle;
+		private System.Windows.Forms.Button btn_stickOpenInEditor;
+		private System.Windows.Forms.Label lbl_stickBitmap;
+		private System.Windows.Forms.ComboBox cmb_stickBitmaps;
 	}
 }

@@ -36,6 +36,14 @@ namespace TISFAT.Util
 			return PointInRect(A, new RectangleF(B.X - Tolerance, B.Y - Tolerance, Tolerance * 2, Tolerance * 2));
 		}
 
+		public static PointF Rotate(PointF dir, float phi)
+		{
+			float c = (float)Math.Cos(phi);
+			float s = (float)Math.Sin(phi);
+
+			return new PointF(c * dir.X - s * dir.Y, s * dir.X + c * dir.Y);
+		}
+
 		public static PointF Difference(PointF a, PointF b)
 		{
 			return new PointF(a.X - b.X, a.Y - b.Y);

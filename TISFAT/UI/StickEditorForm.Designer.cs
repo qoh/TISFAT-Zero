@@ -65,6 +65,10 @@
 			this.lbl_jointColor = new System.Windows.Forms.Label();
 			this.grp_jointBitmaps = new System.Windows.Forms.GroupBox();
 			this.pnl_Bitmaps = new System.Windows.Forms.Panel();
+			this.num_bitmapRotation = new System.Windows.Forms.NumericUpDown();
+			this.lbl_bitmapRotation = new System.Windows.Forms.Label();
+			this.tkb_bitmapRotation = new System.Windows.Forms.TrackBar();
+			this.btn_saveBitmap = new System.Windows.Forms.Button();
 			this.num_bitmapYOffset = new System.Windows.Forms.NumericUpDown();
 			this.btn_bitmapRemove = new System.Windows.Forms.Button();
 			this.num_bitmapXOffset = new System.Windows.Forms.NumericUpDown();
@@ -93,6 +97,8 @@
 			this.pnl_jointColorImgBorder.SuspendLayout();
 			this.grp_jointBitmaps.SuspendLayout();
 			this.pnl_Bitmaps.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_bitmapRotation)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.tkb_bitmapRotation)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_bitmapYOffset)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_bitmapXOffset)).BeginInit();
 			this.grp_handleProperties.SuspendLayout();
@@ -224,6 +230,7 @@
 			this.btn_editModePointer.Size = new System.Drawing.Size(24, 24);
 			this.btn_editModePointer.TabIndex = 24;
 			this.btn_editModePointer.ToggleButton = false;
+			this.btn_editModePointer.ToolTipHint = "";
 			this.btn_editModePointer.Click += new System.EventHandler(this.btn_editModePointer_Click);
 			// 
 			// btn_editModeAdd
@@ -241,6 +248,7 @@
 			this.btn_editModeAdd.Size = new System.Drawing.Size(24, 24);
 			this.btn_editModeAdd.TabIndex = 23;
 			this.btn_editModeAdd.ToggleButton = false;
+			this.btn_editModeAdd.ToolTipHint = "";
 			this.btn_editModeAdd.Click += new System.EventHandler(this.btn_editModeAdd_Click);
 			// 
 			// btn_editModeMove
@@ -258,6 +266,7 @@
 			this.btn_editModeMove.Size = new System.Drawing.Size(24, 24);
 			this.btn_editModeMove.TabIndex = 22;
 			this.btn_editModeMove.ToggleButton = false;
+			this.btn_editModeMove.ToolTipHint = "";
 			this.btn_editModeMove.Click += new System.EventHandler(this.btn_editModeMove_Click);
 			// 
 			// btn_editModeDelete
@@ -275,6 +284,7 @@
 			this.btn_editModeDelete.Size = new System.Drawing.Size(24, 24);
 			this.btn_editModeDelete.TabIndex = 21;
 			this.btn_editModeDelete.ToggleButton = false;
+			this.btn_editModeDelete.ToolTipHint = "Delete Tool\r\n\r\nDeletes joints and their children on click.";
 			this.btn_editModeDelete.Click += new System.EventHandler(this.btn_editModeDelete_Click);
 			// 
 			// btn_Redo
@@ -291,6 +301,7 @@
 			this.btn_Redo.Size = new System.Drawing.Size(24, 24);
 			this.btn_Redo.TabIndex = 19;
 			this.btn_Redo.ToggleButton = false;
+			this.btn_Redo.ToolTipHint = "";
 			// 
 			// btn_Undo
 			// 
@@ -306,6 +317,7 @@
 			this.btn_Undo.Size = new System.Drawing.Size(24, 24);
 			this.btn_Undo.TabIndex = 18;
 			this.btn_Undo.ToggleButton = false;
+			this.btn_Undo.ToolTipHint = "";
 			// 
 			// separatorControl1
 			// 
@@ -330,6 +342,7 @@
 			this.btn_SaveProject.Size = new System.Drawing.Size(24, 24);
 			this.btn_SaveProject.TabIndex = 16;
 			this.btn_SaveProject.ToggleButton = false;
+			this.btn_SaveProject.ToolTipHint = "";
 			this.btn_SaveProject.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
 			// 
 			// btn_OpenProject
@@ -346,6 +359,7 @@
 			this.btn_OpenProject.Size = new System.Drawing.Size(24, 24);
 			this.btn_OpenProject.TabIndex = 15;
 			this.btn_OpenProject.ToggleButton = false;
+			this.btn_OpenProject.ToolTipHint = "";
 			this.btn_OpenProject.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
 			// 
 			// btn_NewProject
@@ -362,6 +376,7 @@
 			this.btn_NewProject.Size = new System.Drawing.Size(24, 24);
 			this.btn_NewProject.TabIndex = 14;
 			this.btn_NewProject.ToggleButton = false;
+			this.btn_NewProject.ToolTipHint = "";
 			this.btn_NewProject.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
 			// 
 			// pnl_GLArea
@@ -370,7 +385,7 @@
 			this.pnl_GLArea.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnl_GLArea.Location = new System.Drawing.Point(0, 54);
 			this.pnl_GLArea.Name = "pnl_GLArea";
-			this.pnl_GLArea.Size = new System.Drawing.Size(666, 557);
+			this.pnl_GLArea.Size = new System.Drawing.Size(666, 607);
 			this.pnl_GLArea.TabIndex = 3;
 			// 
 			// pnl_SideBar
@@ -384,7 +399,7 @@
 			this.pnl_SideBar.Location = new System.Drawing.Point(666, 54);
 			this.pnl_SideBar.Name = "pnl_SideBar";
 			this.pnl_SideBar.Padding = new System.Windows.Forms.Padding(4, 0, 4, 4);
-			this.pnl_SideBar.Size = new System.Drawing.Size(178, 557);
+			this.pnl_SideBar.Size = new System.Drawing.Size(178, 607);
 			this.pnl_SideBar.TabIndex = 4;
 			// 
 			// grp_jointProperties
@@ -399,7 +414,7 @@
 			this.grp_jointProperties.Location = new System.Drawing.Point(4, 103);
 			this.grp_jointProperties.Name = "grp_jointProperties";
 			this.grp_jointProperties.Padding = new System.Windows.Forms.Padding(1);
-			this.grp_jointProperties.Size = new System.Drawing.Size(170, 255);
+			this.grp_jointProperties.Size = new System.Drawing.Size(170, 215);
 			this.grp_jointProperties.TabIndex = 1;
 			this.grp_jointProperties.TabStop = false;
 			this.grp_jointProperties.Text = "Joint Properties";
@@ -522,15 +537,19 @@
 			// 
 			this.grp_jointBitmaps.Controls.Add(this.pnl_Bitmaps);
 			this.grp_jointBitmaps.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.grp_jointBitmaps.Location = new System.Drawing.Point(4, 358);
+			this.grp_jointBitmaps.Location = new System.Drawing.Point(4, 318);
 			this.grp_jointBitmaps.Name = "grp_jointBitmaps";
-			this.grp_jointBitmaps.Size = new System.Drawing.Size(170, 162);
+			this.grp_jointBitmaps.Size = new System.Drawing.Size(170, 252);
 			this.grp_jointBitmaps.TabIndex = 3;
 			this.grp_jointBitmaps.TabStop = false;
 			this.grp_jointBitmaps.Text = "Joint Bitmaps";
 			// 
 			// pnl_Bitmaps
 			// 
+			this.pnl_Bitmaps.Controls.Add(this.num_bitmapRotation);
+			this.pnl_Bitmaps.Controls.Add(this.lbl_bitmapRotation);
+			this.pnl_Bitmaps.Controls.Add(this.tkb_bitmapRotation);
+			this.pnl_Bitmaps.Controls.Add(this.btn_saveBitmap);
 			this.pnl_Bitmaps.Controls.Add(this.num_bitmapYOffset);
 			this.pnl_Bitmaps.Controls.Add(this.btn_bitmapRemove);
 			this.pnl_Bitmaps.Controls.Add(this.num_bitmapXOffset);
@@ -542,15 +561,63 @@
 			this.pnl_Bitmaps.Dock = System.Windows.Forms.DockStyle.Top;
 			this.pnl_Bitmaps.Location = new System.Drawing.Point(3, 16);
 			this.pnl_Bitmaps.Name = "pnl_Bitmaps";
-			this.pnl_Bitmaps.Size = new System.Drawing.Size(164, 141);
+			this.pnl_Bitmaps.Size = new System.Drawing.Size(164, 236);
 			this.pnl_Bitmaps.TabIndex = 11;
+			// 
+			// num_bitmapRotation
+			// 
+			this.num_bitmapRotation.Location = new System.Drawing.Point(79, 163);
+			this.num_bitmapRotation.Maximum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            0});
+			this.num_bitmapRotation.Minimum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            -2147483648});
+			this.num_bitmapRotation.Name = "num_bitmapRotation";
+			this.num_bitmapRotation.Size = new System.Drawing.Size(58, 20);
+			this.num_bitmapRotation.TabIndex = 16;
+			this.num_bitmapRotation.ValueChanged += new System.EventHandler(this.num_bitmapRotation_ValueChanged);
+			// 
+			// lbl_bitmapRotation
+			// 
+			this.lbl_bitmapRotation.AutoSize = true;
+			this.lbl_bitmapRotation.Location = new System.Drawing.Point(27, 166);
+			this.lbl_bitmapRotation.Name = "lbl_bitmapRotation";
+			this.lbl_bitmapRotation.Size = new System.Drawing.Size(47, 13);
+			this.lbl_bitmapRotation.TabIndex = 15;
+			this.lbl_bitmapRotation.Text = "Rotation";
+			// 
+			// tkb_bitmapRotation
+			// 
+			this.tkb_bitmapRotation.Location = new System.Drawing.Point(7, 189);
+			this.tkb_bitmapRotation.Maximum = 360;
+			this.tkb_bitmapRotation.Minimum = -360;
+			this.tkb_bitmapRotation.Name = "tkb_bitmapRotation";
+			this.tkb_bitmapRotation.Size = new System.Drawing.Size(150, 45);
+			this.tkb_bitmapRotation.TabIndex = 14;
+			this.tkb_bitmapRotation.TickStyle = System.Windows.Forms.TickStyle.Both;
+			this.tkb_bitmapRotation.ValueChanged += new System.EventHandler(this.tkb_bitmapRotation_ValueChanged);
+			// 
+			// btn_saveBitmap
+			// 
+			this.btn_saveBitmap.Location = new System.Drawing.Point(28, 79);
+			this.btn_saveBitmap.Name = "btn_saveBitmap";
+			this.btn_saveBitmap.Size = new System.Drawing.Size(108, 23);
+			this.btn_saveBitmap.TabIndex = 13;
+			this.btn_saveBitmap.Text = "Save Bitmap";
+			this.btn_saveBitmap.UseVisualStyleBackColor = true;
 			// 
 			// num_bitmapYOffset
 			// 
-			this.num_bitmapYOffset.Location = new System.Drawing.Point(59, 107);
+			this.num_bitmapYOffset.Location = new System.Drawing.Point(59, 136);
 			this.num_bitmapYOffset.Name = "num_bitmapYOffset";
 			this.num_bitmapYOffset.Size = new System.Drawing.Size(102, 20);
 			this.num_bitmapYOffset.TabIndex = 12;
+			this.num_bitmapYOffset.ValueChanged += new System.EventHandler(this.num_bitmapYOffset_ValueChanged);
 			// 
 			// btn_bitmapRemove
 			// 
@@ -560,13 +627,15 @@
 			this.btn_bitmapRemove.TabIndex = 11;
 			this.btn_bitmapRemove.Text = "Remove";
 			this.btn_bitmapRemove.UseVisualStyleBackColor = true;
+			this.btn_bitmapRemove.Click += new System.EventHandler(this.btn_bitmapRemove_Click);
 			// 
 			// num_bitmapXOffset
 			// 
-			this.num_bitmapXOffset.Location = new System.Drawing.Point(59, 81);
+			this.num_bitmapXOffset.Location = new System.Drawing.Point(59, 110);
 			this.num_bitmapXOffset.Name = "num_bitmapXOffset";
 			this.num_bitmapXOffset.Size = new System.Drawing.Size(102, 20);
 			this.num_bitmapXOffset.TabIndex = 4;
+			this.num_bitmapXOffset.ValueChanged += new System.EventHandler(this.num_bitmapXOffset_ValueChanged);
 			// 
 			// btn_bitmapAdd
 			// 
@@ -576,11 +645,12 @@
 			this.btn_bitmapAdd.TabIndex = 10;
 			this.btn_bitmapAdd.Text = "Add";
 			this.btn_bitmapAdd.UseVisualStyleBackColor = true;
+			this.btn_bitmapAdd.Click += new System.EventHandler(this.btn_bitmapAdd_Click);
 			// 
 			// lbl_bitmapYOffset
 			// 
 			this.lbl_bitmapYOffset.AutoSize = true;
-			this.lbl_bitmapYOffset.Location = new System.Drawing.Point(4, 110);
+			this.lbl_bitmapYOffset.Location = new System.Drawing.Point(4, 139);
 			this.lbl_bitmapYOffset.Name = "lbl_bitmapYOffset";
 			this.lbl_bitmapYOffset.Size = new System.Drawing.Size(45, 13);
 			this.lbl_bitmapYOffset.TabIndex = 3;
@@ -589,7 +659,7 @@
 			// lbl_bitmapXOffset
 			// 
 			this.lbl_bitmapXOffset.AutoSize = true;
-			this.lbl_bitmapXOffset.Location = new System.Drawing.Point(5, 84);
+			this.lbl_bitmapXOffset.Location = new System.Drawing.Point(5, 113);
 			this.lbl_bitmapXOffset.Name = "lbl_bitmapXOffset";
 			this.lbl_bitmapXOffset.Size = new System.Drawing.Size(45, 13);
 			this.lbl_bitmapXOffset.TabIndex = 2;
@@ -612,6 +682,7 @@
 			this.cmb_bitmaps.Name = "cmb_bitmaps";
 			this.cmb_bitmaps.Size = new System.Drawing.Size(150, 21);
 			this.cmb_bitmaps.TabIndex = 0;
+			this.cmb_bitmaps.SelectedIndexChanged += new System.EventHandler(this.cmb_bitmaps_SelectedIndexChanged);
 			// 
 			// grp_handleProperties
 			// 
@@ -695,7 +766,7 @@
 			// 
 			this.panel1.Controls.Add(this.btn_OK);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panel1.Location = new System.Drawing.Point(4, 520);
+			this.panel1.Location = new System.Drawing.Point(4, 570);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(170, 33);
 			this.panel1.TabIndex = 4;
@@ -715,7 +786,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(844, 611);
+			this.ClientSize = new System.Drawing.Size(844, 661);
 			this.Controls.Add(this.pnl_GLArea);
 			this.Controls.Add(this.pnl_SideBar);
 			this.Controls.Add(this.pnl_Toolbox);
@@ -741,6 +812,8 @@
 			this.grp_jointBitmaps.ResumeLayout(false);
 			this.pnl_Bitmaps.ResumeLayout(false);
 			this.pnl_Bitmaps.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_bitmapRotation)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.tkb_bitmapRotation)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_bitmapYOffset)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_bitmapXOffset)).EndInit();
 			this.grp_handleProperties.ResumeLayout(false);
@@ -808,5 +881,9 @@
 		private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+		private System.Windows.Forms.Button btn_saveBitmap;
+		private System.Windows.Forms.NumericUpDown num_bitmapRotation;
+		private System.Windows.Forms.Label lbl_bitmapRotation;
+		private System.Windows.Forms.TrackBar tkb_bitmapRotation;
 	}
 }

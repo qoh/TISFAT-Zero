@@ -13,6 +13,11 @@ namespace TISFAT.Entities
 
 		public StickFigure() { }
 
+		public StickFigure Copy()
+		{
+			return new StickFigure() { Root = Root.Clone() };
+		}
+
 		public IEntityState Interpolate(float t, IEntityState _current, IEntityState _target, EntityInterpolationMode mode)
 		{
 			State current = _current as State;
@@ -32,6 +37,22 @@ namespace TISFAT.Entities
 		{
 			State state = _state as State;
 			Root.DrawHandle(state.Root);
+		}
+
+		public static Tuple<Joint, Joint.State> FindJointStatePair(Joint rootJoint, Joint.State rootState, PointF pos)
+		{
+			if (MathUtil.IsPointInPoint(rootState.Location, pos, 4))
+				return new Tuple<Joint, Joint.State>(rootJoint, rootState);
+
+			for (int i = 0; i < rootJoint.Children.Count; i++)
+			{
+				var pair = FindJointStatePair(rootJoint.Children[i], rootState.Children[i], pos);
+
+				if (pair != null)
+					return pair;
+			}
+
+			return null;
 		}
 
 		public class ManipulateParams : IManipulatableParams
@@ -173,19 +194,17 @@ namespace TISFAT.Entities
 			{
 				var hip = new Joint();
 				hip.Location = new PointF(200, 200);
-				int ID = 0;
 				Root = hip;
-				Root.ID = 0;
-				var shoulder = Joint.RelativeTo(hip, new PointF(0, -53), ref ID);
-				var lElbow = Joint.RelativeTo(shoulder, new PointF(-21, 22), ref ID);
-				var lHand = Joint.RelativeTo(lElbow, new PointF(-5, 35), ref ID);
-				var rElbow = Joint.RelativeTo(shoulder, new PointF(21, 22), ref ID);
-				var rHand = Joint.RelativeTo(rElbow, new PointF(5, 35), ref ID);
-				var lKnee = Joint.RelativeTo(hip, new PointF(-16, 33), ref ID);
-				var lFoot = Joint.RelativeTo(lKnee, new PointF(-5, 41), ref ID);
-				var rKnee = Joint.RelativeTo(hip, new PointF(16, 33), ref ID);
-				var rFoot = Joint.RelativeTo(rKnee, new PointF(5, 41), ref ID);
-				var head = Joint.RelativeTo(shoulder, new PointF(0, -36), ref ID);
+				var shoulder = Joint.RelativeTo(hip, new PointF(0, -53));
+				var lElbow = Joint.RelativeTo(shoulder, new PointF(-21, 22));
+				var lHand = Joint.RelativeTo(lElbow, new PointF(-5, 35));
+				var rElbow = Joint.RelativeTo(shoulder, new PointF(21, 22));
+				var rHand = Joint.RelativeTo(rElbow, new PointF(5, 35));
+				var lKnee = Joint.RelativeTo(hip, new PointF(-16, 33));
+				var lFoot = Joint.RelativeTo(lKnee, new PointF(-5, 41));
+				var rKnee = Joint.RelativeTo(hip, new PointF(16, 33));
+				var rFoot = Joint.RelativeTo(rKnee, new PointF(5, 41));
+				var head = Joint.RelativeTo(shoulder, new PointF(0, -36));
 
 				shoulder.HandleColor = Color.Yellow;
 				hip.HandleColor = Color.Yellow;
@@ -201,20 +220,18 @@ namespace TISFAT.Entities
 			{
 				var shoulder = new Joint();
 				shoulder.Location = new PointF(200, 200);
-				int ID = 0;
 				Root = shoulder;
-				Root.ID = 0;
-				var neck = Joint.RelativeTo(shoulder, new PointF(0, -3), ref ID);
-				var lElbow = Joint.RelativeTo(shoulder, new PointF(-16, 11), ref ID);
-				var lHand = Joint.RelativeTo(lElbow, new PointF(-8, 18), ref ID);
-				var rElbow = Joint.RelativeTo(shoulder, new PointF(16, 11), ref ID);
-				var rHand = Joint.RelativeTo(rElbow, new PointF(8, 18), ref ID);
-				var hip = Joint.RelativeTo(shoulder, new PointF(0, 40), ref ID);
-				var lKnee = Joint.RelativeTo(hip, new PointF(-11, 23), ref ID);
-				var lFoot = Joint.RelativeTo(lKnee, new PointF(-9, 23), ref ID);
-				var rKnee = Joint.RelativeTo(hip, new PointF(11, 23), ref ID);
-				var rFoot = Joint.RelativeTo(rKnee, new PointF(9, 23), ref ID);
-				var head = Joint.RelativeTo(neck, new PointF(0, -8), ref ID);
+				var neck = Joint.RelativeTo(shoulder, new PointF(0, -3));
+				var lElbow = Joint.RelativeTo(shoulder, new PointF(-16, 11));
+				var lHand = Joint.RelativeTo(lElbow, new PointF(-8, 18));
+				var rElbow = Joint.RelativeTo(shoulder, new PointF(16, 11));
+				var rHand = Joint.RelativeTo(rElbow, new PointF(8, 18));
+				var hip = Joint.RelativeTo(shoulder, new PointF(0, 40));
+				var lKnee = Joint.RelativeTo(hip, new PointF(-11, 23));
+				var lFoot = Joint.RelativeTo(lKnee, new PointF(-9, 23));
+				var rKnee = Joint.RelativeTo(hip, new PointF(11, 23));
+				var rFoot = Joint.RelativeTo(rKnee, new PointF(9, 23));
+				var head = Joint.RelativeTo(neck, new PointF(0, -8));
 
 				shoulder.HandleColor = Color.Yellow;
 				hip.HandleColor = Color.Yellow;
