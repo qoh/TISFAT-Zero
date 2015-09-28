@@ -8,7 +8,7 @@ namespace TISFAT.Util
 {
 	static class FileFormat
 	{
-		public static UInt16 Version = 3;
+		public static UInt16 Version = 4;
 
 		static Dictionary<UInt16, Type> EntityTypes = new Dictionary<UInt16, Type>()
 		{
@@ -98,6 +98,99 @@ namespace TISFAT.Util
 			return list;
 		}
 
+		public static void WriteList(BinaryWriter writer, List<Bitmap> list)
+		{
+			writer.Write((UInt16)list.Count);
+
+			foreach (Bitmap item in list)
+				WriteBitmap(item, writer);
+		}
+
+		public static List<Bitmap> ReadBitmapList(BinaryReader reader, UInt16 version)
+		{
+			List<Bitmap> list = new List<Bitmap>();
+			UInt16 count = reader.ReadUInt16();
+
+			for (UInt16 i = 0; i < count; i++)
+			{
+				Bitmap img = ReadBitmap(reader);
+				list.Add(img);
+			}
+
+			return list;
+		}
+
+		public static void WriteList(BinaryWriter writer, List<string> list)
+		{
+			writer.Write((UInt16)list.Count);
+
+			foreach (string item in list)
+				writer.Write(item);
+		}
+
+		public static List<string> ReadStringList(BinaryReader reader, UInt16 version)
+		{
+			List<string> list = new List<string>();
+			UInt16 count = reader.ReadUInt16();
+
+			for (UInt16 i = 0; i < count; i++)
+			{
+				string str = reader.ReadString();
+				list.Add(str);
+			}
+
+			return list;
+		}
+
+		public static void WriteList(BinaryWriter writer, List<float> list)
+		{
+			writer.Write((UInt16)list.Count);
+
+			foreach (float item in list)
+				writer.Write((double)item);
+		}
+
+		public static List<float> ReadFloatList(BinaryReader reader, UInt16 version)
+		{
+			List<float> list = new List<float>();
+			UInt16 count = reader.ReadUInt16();
+
+			for (UInt16 i = 0; i < count; i++)
+			{
+				double num = reader.ReadDouble();
+				list.Add((float)num);
+			}
+
+			return list;
+		}
+
+		public static void WriteList(BinaryWriter writer, List<PointF> list)
+		{
+			writer.Write((UInt16)list.Count);
+
+			foreach (PointF item in list)
+			{
+				writer.Write((double)item.X);
+				writer.Write((double)item.Y);
+			}
+		}
+
+		public static List<PointF> ReadPointFList(BinaryReader reader, UInt16 version)
+		{
+			List<PointF> list = new List<PointF>();
+			UInt16 count = reader.ReadUInt16();
+
+			for (UInt16 i = 0; i < count; i++)
+			{
+				PointF pt = new PointF();
+				pt.X = (float)reader.ReadDouble();
+				pt.Y = (float)reader.ReadDouble();
+				list.Add(pt);
+			}
+
+			return list;
+		}
+
 		public static void WriteColor(Color color, BinaryWriter writer)
 		{
 			writer.Write(color.A);
@@ -122,7 +215,7 @@ namespace TISFAT.Util
 		{
 			Stream bitmapStream = new MemoryStream();
 
-			img.Save(bitmapStream, System.Drawing.Imaging.ImageFormat.Bmp);
+			img.Save(bitmapStream, System.Drawing.Imaging.ImageFormat.Png);
 
 			if (bitmapStream.Length > int.MaxValue)
 				throw new ArgumentOutOfRangeException("Bitmap length exceeds int MaxValue (What the fuck are you saving?! O_o)");

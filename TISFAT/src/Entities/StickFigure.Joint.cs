@@ -25,21 +25,33 @@ namespace TISFAT.Entities
 			public Color HandleColor;
 			public float Thickness;
 
+			// Item1 = ID, Item2.Item1 = Name, Item2.Item2 = Image
+			public List<Tuple<int, Tuple<string, Bitmap>>> Bitmaps;
+
+			// BitmapOffsets[Bitmap].Item1 = rotation, BitmapOffsets[Bitmap].Item2 = offset
+			public Dictionary<Bitmap, Tuple<float, PointF>> BitmapOffsets;
+
+			public int InitialBitmapIndex;
+
 			public DrawJointType DrawType;
 			public bool HandleVisible;
 			public bool Manipulatable;
 			public bool Visible;
 
-			public int ID;
+			public int ID { get; set; };
 
 			#region Constructors
 			public Joint()
 			{
 				Parent = null;
 				Children = new List<Joint>();
-				Thickness = 6;
 				JointColor = Color.Black;
 				HandleColor = Color.Blue;
+				Thickness = 6;
+
+				Bitmaps = new List<Tuple<int, Tuple<string, Bitmap>>>();
+				BitmapOffsets = new Dictionary<Bitmap, Tuple<float, PointF>>();
+				InitialBitmapIndex = -1;
 
 				HandleVisible = true;
 				Visible = true;
@@ -50,15 +62,51 @@ namespace TISFAT.Entities
 			{
 				Parent = parent;
 				Children = new List<Joint>();
-				Thickness = 6;
 				JointColor = Color.Black;
 				HandleColor = Color.Blue;
+				Thickness = 6;
+
+				Bitmaps = new List<Tuple<int, Tuple<string, Bitmap>>>();
+				BitmapOffsets = new Dictionary<Bitmap, Tuple<float, PointF>>();
+				InitialBitmapIndex = -1;
 
 				HandleVisible = true;
 				Visible = true;
 				Manipulatable = true;
 
 				ID = lastID;
+			}
+
+			public Joint Clone(Joint parent = null)
+			{
+				Joint j = new Joint(parent, parent != null ? parent.ID : 0);
+				j.Parent = parent;
+				j.Children = new List<Joint>();
+
+				foreach (Joint child in Children)
+					j.Children.Add(child.Clone(j));
+
+				j.JointColor = JointColor;
+				j.HandleColor = HandleColor;
+				j.Thickness = Thickness;
+
+				j.Bitmaps = new List<Tuple<int, Tuple<string, Bitmap>>>();
+				foreach (var img in Bitmaps)
+					j.Bitmaps.Add(img);
+
+				j.BitmapOffsets = new Dictionary<Bitmap, Tuple<float, PointF>>();
+
+				foreach (var offs in BitmapOffsets)
+					j.BitmapOffsets.Add(offs.Key, offs.Value);
+
+				j.InitialBitmapIndex = InitialBitmapIndex;
+
+				j.DrawType = DrawType;
+				j.HandleVisible = HandleVisible;
+				j.Visible = Visible;
+				j.Manipulatable = Manipulatable;
+
+				return j;
 			}
 
 			public static Joint RelativeTo(Joint parent, PointF location, ref int ID)
@@ -94,9 +142,6 @@ namespace TISFAT.Entities
 			#region Drawing
 			public void Draw(State state)
 			{
-				//if (Parent != null)
-				//    Drawing.CappedLine(state.Location, state.Parent.Location, state.Thickness, state.JointColor);
-
 				if (Children.Count != state.Children.Count)
 					throw new ArgumentException("State does not match this Joint");
 
@@ -133,6 +178,23 @@ namespace TISFAT.Entities
 				}
 				else
 					Drawing.CappedLine(state.Location, otherState.Location, state.Thickness, state.JointColor);
+
+				if(state.BitmapIndex != -1)
+				{
+					int ID = Bitmaps[state.BitmapIndex].Item1;
+					Bitmap bitmap = Bitmaps[state.BitmapIndex].Item2.Item2;
+
+					double angle = MathUtil.Angle(state.Location, otherState.Location);
+					double angleDiff = Math.PI * BitmapOffsets[bitmap].Item1 / 180;
+                    angle += angleDiff;
+					PointF Offsets = MathUtil.Rotate(BitmapOffsets[bitmap].Item2, (float)angle);
+
+					angle *= 180.0 / Math.PI;
+
+					Drawing.BitmapOriginRotation(new PointF(
+						state.Location.X + Offsets.X, 
+						state.Location.Y + Offsets.Y), bitmap.Size, (float)angle, ID);
+				}
 			}
 
 			public void DrawHandle(State state)
@@ -160,6 +222,8 @@ namespace TISFAT.Entities
 				state.Thickness = Thickness;
 				state.JointColor = JointColor;
 				state.Manipulatable = Manipulatable;
+
+				state.BitmapIndex = InitialBitmapIndex;
 
 				state.ID = ID;
 
@@ -201,6 +265,26 @@ namespace TISFAT.Entities
 				writer.Write(Visible);
 				writer.Write(ID);
 				FileFormat.WriteList(writer, Children);
+
+				List<string> names = new List<string>();
+				List<Bitmap> images = new List<Bitmap>();
+				List<float> rotations = new List<float>();
+				List<PointF> offsets = new List<PointF>();
+
+				for (int i = 0; i < Bitmaps.Count; i++)
+				{
+					names.Add(Bitmaps[i].Item2.Item1);
+					images.Add(Bitmaps[i].Item2.Item2);
+					rotations.Add(BitmapOffsets[Bitmaps[i].Item2.Item2].Item1);
+					offsets.Add(BitmapOffsets[Bitmaps[i].Item2.Item2].Item2);
+				}
+
+				FileFormat.WriteList(writer, names);
+				FileFormat.WriteList(writer, images);
+				FileFormat.WriteList(writer, rotations);
+				FileFormat.WriteList(writer, offsets);
+
+				writer.Write(InitialBitmapIndex);
 			}
 
 			public void Read(BinaryReader reader, UInt16 version)
@@ -246,6 +330,28 @@ namespace TISFAT.Entities
 
 				foreach (Joint child in Children)
 					child.Parent = this;
+
+				if (version >= 4)
+				{
+					List<string> names = FileFormat.ReadStringList(reader, version);
+					List<Bitmap> images = FileFormat.ReadBitmapList(reader, version);
+					List<float> rotations = FileFormat.ReadFloatList(reader, version);
+					List<PointF> offsets = FileFormat.ReadPointFList(reader, version);
+
+					List<Tuple<int, Tuple<string, Bitmap>>> bitmapTuple = new List<Tuple<int, Tuple<string, Bitmap>>>();
+					Dictionary<Bitmap, Tuple<float, PointF>> offsetDict = new Dictionary<Bitmap, Tuple<float, PointF>>();
+
+					for (int i = 0; i < names.Count; i++)
+					{
+						bitmapTuple.Add(new Tuple<int, Tuple<string, Bitmap>>(Drawing.GenerateTexID(images[i]), new Tuple<string, Bitmap>(names[i], images[i])));
+						offsetDict.Add(images[i], new Tuple<float, PointF>(rotations[i], offsets[i]));
+					}
+
+					Bitmaps = bitmapTuple;
+					BitmapOffsets = offsetDict;
+
+					InitialBitmapIndex = reader.ReadInt32();
+                }
 			}
 			#endregion
 		}

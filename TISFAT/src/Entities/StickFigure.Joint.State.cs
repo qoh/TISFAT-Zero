@@ -19,6 +19,8 @@ namespace TISFAT.Entities
 				public Color JointColor;
 				public float Thickness;
 
+				public int BitmapIndex;
+
 				public bool Manipulatable;
 
 				public int ID;
@@ -28,19 +30,24 @@ namespace TISFAT.Entities
 					Parent = null;
 					Children = new List<State>();
 					Location = new PointF();
-					Manipulatable = true;
 					JointColor = Color.Black;
 					Thickness = 6;
+
+					BitmapIndex = -1;
+
+					Manipulatable = true;
 				}
 
 				public State(State parent, int lastID)
 				{
 					Parent = parent;
 					Children = new List<State>();
-					Thickness = 6;
-					JointColor = Color.Black;
-
 					Location = new PointF();
+					JointColor = Color.Black;
+					Thickness = 6;
+
+					BitmapIndex = -1;
+
 					Manipulatable = true;
 
 					ID = lastID;
@@ -81,6 +88,8 @@ namespace TISFAT.Entities
 				public static State Interpolate(float t, State current, State target, EntityInterpolationMode mode)
 				{
 					State state = new State(current.Parent, current.ID);
+					state.BitmapIndex = current.BitmapIndex;
+
 					state.Location = Interpolation.Interpolate(t, current.Location, target.Location, mode);
 					state.JointColor = Interpolation.Interpolate(t, current.JointColor, target.JointColor, mode);
                     state.Thickness = Interpolation.Interpolate(t, current.Thickness, target.Thickness, mode);
@@ -262,6 +271,8 @@ namespace TISFAT.Entities
 					ret.Thickness = Thickness;
 					ret.Manipulatable = Manipulatable;
 
+					ret.BitmapIndex = BitmapIndex;
+
 					foreach (State child in Children)
 						ret.Children.Add(child.Clone(ret));
 
@@ -279,6 +290,7 @@ namespace TISFAT.Entities
 					writer.Write((double)Thickness);
 					writer.Write(Manipulatable);
 					writer.Write(ID);
+					writer.Write(BitmapIndex);
 					FileFormat.WriteList(writer, Children);
 				}
 
@@ -300,6 +312,11 @@ namespace TISFAT.Entities
 						if (version >= 3)
 						{
 							ID = reader.ReadInt32();
+
+							if (version >= 4)
+							{
+								BitmapIndex = reader.ReadInt32();
+							}
 						}
 					}
 					else

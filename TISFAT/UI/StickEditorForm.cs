@@ -45,6 +45,8 @@ namespace TISFAT
 		StickFigure.Joint.State HoveredObject;
 		IManipulatableParams ActiveDragParams;
 
+		public bool FromProperties;
+
 		private EditorManipMode _ActiveManipMode;
 		public EditorManipMode ActiveManipMode
 		{
@@ -64,7 +66,7 @@ namespace TISFAT
 		public bool IKEnabled { get { return ckb_EnableIK.Checked; } }
 		public bool DrawHandles { get { return ckb_DrawHandles.Checked; } }
 
-		public StickEditorForm()
+		public void InitContext()
 		{
 			InitializeComponent();
 
@@ -86,21 +88,40 @@ namespace TISFAT
 			pnl_GLArea.Controls.Add(GLContext);
 		}
 
+		public StickEditorForm()
+		{
+			InitContext();
+		}
+
+		public StickEditorForm(StickFigure Figure, StickFigure.State State)
+		{
+			InitContext();
+
+			FromProperties = true;
+
+			ActiveFigure = Figure;
+			ActiveFigureState = State;
+		}
+
+
 		private void StickEditorForm_Load(object sender, EventArgs e)
 		{
 			GLContext_Init();
 
-			ActiveFigure = new StickFigure();
-			SelectedObject = null;
+			if (!FromProperties)
+			{
+				ActiveFigure = new StickFigure();
+				SelectedObject = null;
 
-			int ID = 0;
-			
-			ActiveFigure.Root = new StickFigure.Joint();
-			ActiveFigure.Root.Location = new PointF(250, 250);
-			ActiveFigure.Root.ID = 0;
-			var next = StickFigure.Joint.RelativeTo(ActiveFigure.Root, new PointF(0, 50), ref ID);
+				int ID = 0;
 
-			ActiveFigureState = (StickFigure.State)ActiveFigure.CreateRefState();
+				ActiveFigure.Root = new StickFigure.Joint();
+				ActiveFigure.Root.Location = new PointF(250, 300);
+				ActiveFigure.Root.ID = 0;
+				var next = StickFigure.Joint.RelativeTo(ActiveFigure.Root, new PointF(0, -50), ref ID);
+
+				ActiveFigureState = (StickFigure.State)ActiveFigure.CreateRefState();
+			}
 
 			UpdateSelection();
         }
@@ -153,7 +174,8 @@ namespace TISFAT
 			if(ActiveManipMode == EditorManipMode.Move && ActiveDragObject != null)
 			{
 				ActiveFigure.ManipulateUpdate(ActiveDragObject, ActiveDragParams, e.Location);
-				ActiveDragObject.GetEquivalentJoint(ActiveFigure.Root, ActiveDragObject.ID).ResetFrom(ActiveDragObject);
+				if(!FromProperties)
+					ActiveDragObject.GetEquivalentJoint(ActiveFigure.Root, ActiveDragObject.ID).ResetFrom(ActiveDragObject);
 				GLContext.Invalidate();
 			} 
 			else if(ActiveManipMode == EditorManipMode.Add && SelectedObject != null)
@@ -339,12 +361,25 @@ namespace TISFAT
 				cmb_drawMode.SelectedText = "";
 
 				num_jointThickness.Value = 0;
+
+				cmb_bitmaps.Items.Clear();
+				num_bitmapXOffset.Value = 0;
+				num_bitmapYOffset.Value = 0;
+				num_bitmapRotation.Value = 0;
+				tkb_bitmapRotation.Value = 0;
 			}
 			else
 			{
 				grp_handleProperties.Enabled = true;
 				grp_jointProperties.Enabled = SelectedObject.Parent != null;
-				grp_jointBitmaps.Enabled = false;
+				grp_jointBitmaps.Enabled = SelectedObject.Parent != null;
+
+				bool hasBitmap = SelectedObject.BitmapIndex != -1;
+				btn_bitmapRemove.Enabled = hasBitmap;
+				num_bitmapRotation.Enabled = hasBitmap;
+				num_bitmapXOffset.Enabled = hasBitmap;
+				num_bitmapYOffset.Enabled = hasBitmap;
+				tkb_bitmapRotation.Enabled = hasBitmap;
 
 				Color c1 = SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID).HandleColor;
 				Color c2 = SelectedObject.JointColor;
@@ -360,7 +395,38 @@ namespace TISFAT
 				cmb_drawMode.SelectedIndex = (int)SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID).DrawType;
 
 				num_jointThickness.Value = (decimal)SelectedObject.Thickness;
+
+				StickFigure.Joint Joint = SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID);
+
+				cmb_bitmaps.Items.Clear();
+
+				cmb_bitmaps.Items.Add("(none)");
+
+				for (int i = 0; i < Joint.Bitmaps.Count; i++)
+					cmb_bitmaps.Items.Add(Joint.Bitmaps[i].Item2.Item1);
+
+				cmb_bitmaps.SelectedIndex = SelectedObject.BitmapIndex + 1;
+
+				if(SelectedObject.BitmapIndex != -1)
+				{
+					Bitmap bitmap = Joint.Bitmaps[SelectedObject.BitmapIndex].Item2.Item2;
+
+					num_bitmapXOffset.Value = (decimal)Joint.BitmapOffsets[bitmap].Item2.X;
+					num_bitmapYOffset.Value = (decimal)Joint.BitmapOffsets[bitmap].Item2.Y;
+					num_bitmapRotation.Value = (decimal)Joint.BitmapOffsets[bitmap].Item1;
+				}
 			}
+		}
+
+		public void AddBitmap(StickFigure.Joint joint, string name, Bitmap image)
+		{
+			joint.Bitmaps.Add(
+				new Tuple<int, Tuple<string, Bitmap>>(
+					Drawing.GenerateTexID(image),
+					new Tuple<string, Bitmap>(name, image)
+					));
+
+			joint.BitmapOffsets.Add(image, new Tuple<float, PointF>(0, new PointF(0, 0)));
 		}
 
 		private void btn_editModePointer_Click(object sender, EventArgs e)
@@ -500,6 +566,90 @@ namespace TISFAT
 			{
 				ProjectSave(dialog.FileName);
 			}
+		}
+
+		private void btn_bitmapAdd_Click(object sender, EventArgs e)
+		{
+			OpenFileDialog dlg = new OpenFileDialog();
+
+			dlg.Title = "Open an Image";
+			dlg.Filter = "Image Files|*.png;*.jpg;*.jpeg;*.gif;*.bmp";
+
+			if (dlg.ShowDialog() == DialogResult.OK)
+			{
+				AddBitmap(SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID), dlg.SafeFileName, (Bitmap)Image.FromFile(dlg.FileName));
+
+				SelectedObject.BitmapIndex++;
+				SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID).InitialBitmapIndex++;
+
+				UpdateSelection();
+				GLContext.Invalidate();
+			}
+		}
+
+		private void btn_bitmapRemove_Click(object sender, EventArgs e)
+		{
+			StickFigure.Joint joint = SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID);
+			int ind = cmb_bitmaps.SelectedIndex - 1;
+
+			Bitmap tmp = joint.Bitmaps[SelectedObject.BitmapIndex].Item2.Item2;
+			joint.Bitmaps.RemoveAt(ind);
+			joint.BitmapOffsets.Remove(tmp);
+			joint.InitialBitmapIndex = -1;
+			SelectedObject.BitmapIndex = -1;
+
+			cmb_bitmaps.Items.RemoveAt(cmb_bitmaps.SelectedIndex);
+
+			UpdateSelection();
+			GLContext.Invalidate();
+		}
+
+		private void num_bitmapRotation_ValueChanged(object sender, EventArgs e)
+		{
+			StickFigure.Joint joint = SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID);
+			Bitmap bitmap = joint.Bitmaps[SelectedObject.BitmapIndex].Item2.Item2;
+
+			tkb_bitmapRotation.Value = (int)num_bitmapRotation.Value;
+
+			joint.BitmapOffsets[bitmap] = new Tuple<float, PointF>((float)num_bitmapRotation.Value, joint.BitmapOffsets[bitmap].Item2);
+			GLContext.Invalidate();
+		}
+
+		private void tkb_bitmapRotation_ValueChanged(object sender, EventArgs e)
+		{
+			num_bitmapRotation.Value = (decimal)tkb_bitmapRotation.Value;
+		}
+
+		private void num_bitmapXOffset_ValueChanged(object sender, EventArgs e)
+		{
+			StickFigure.Joint joint = SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID);
+			Bitmap bitmap = joint.Bitmaps[SelectedObject.BitmapIndex].Item2.Item2;
+
+			joint.BitmapOffsets[bitmap] = new Tuple<float, PointF>(joint.BitmapOffsets[bitmap].Item1, new PointF((float)num_bitmapXOffset.Value, joint.BitmapOffsets[bitmap].Item2.Y));
+
+			GLContext.Invalidate();
+		}
+
+		private void num_bitmapYOffset_ValueChanged(object sender, EventArgs e)
+		{
+			StickFigure.Joint joint = SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID);
+			Bitmap bitmap = joint.Bitmaps[SelectedObject.BitmapIndex].Item2.Item2;
+
+			joint.BitmapOffsets[bitmap] = new Tuple<float, PointF>(joint.BitmapOffsets[bitmap].Item1, new PointF(joint.BitmapOffsets[bitmap].Item2.X, (float)num_bitmapYOffset.Value));
+
+			GLContext.Invalidate();
+		}
+
+		private void cmb_bitmaps_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			StickFigure.Joint joint = SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID);
+
+			SelectedObject.BitmapIndex = cmb_bitmaps.SelectedIndex - 1;
+			joint.InitialBitmapIndex = cmb_bitmaps.SelectedIndex - 1;
+
+			btn_bitmapRemove.Enabled = cmb_bitmaps.SelectedIndex > 0;
+
+			GLContext.Invalidate();
 		}
 	}
 }

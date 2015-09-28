@@ -13,6 +13,11 @@ namespace TISFAT.Entities
 
 		public StickFigure() { }
 
+		public StickFigure Copy()
+		{
+			return new StickFigure() { Root = Root.Clone() };
+		}
+
 		public IEntityState Interpolate(float t, IEntityState _current, IEntityState _target, EntityInterpolationMode mode)
 		{
 			State current = _current as State;

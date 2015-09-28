@@ -15,6 +15,7 @@ namespace TISFAT
 		static int MSAASamples = 8;
 
 		private IManipulatable ActiveDragObject;
+		public IManipulatable LastDragObject;
 		private IManipulatableParams ActiveDragParams;
 		private IEntityState ActiveDragPrevState;
 
@@ -131,8 +132,11 @@ namespace TISFAT
 			if (result != null)
 			{
 				ActiveDragObject = result.Target;
+				LastDragObject = result.Target;
 				ActiveDragParams = result.Params;
 				ActiveDragPrevState = timeline.SelectedKeyframe.State.Copy();
+
+				Program.Form_Properties.UpdateStickFigurePanel();
 			}
 		}
 
