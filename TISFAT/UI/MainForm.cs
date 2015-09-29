@@ -224,7 +224,13 @@ namespace TISFAT
 
 		public void AutoSave()
 		{
-			ProjectSave("autosave.tzp");
+			string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+			string fileName = Path.Combine(appData, "TISFAT Zero\\autosave.tzp");
+
+			if (!Directory.Exists(Path.GetDirectoryName(fileName)))
+				Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+
+			ProjectSave(fileName);
 		}
 
 		private void newToolStripMenuItem_Click(object sender, EventArgs e)

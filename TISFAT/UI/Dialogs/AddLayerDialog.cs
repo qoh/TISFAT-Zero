@@ -7,6 +7,7 @@ namespace TISFAT
 {
 	public partial class AddLayerDialog : Form
 	{
+		bool FigureFromFile;
 		StickFigure CustomFigure;
 		StickFigure.State CustomFigureState;
 
@@ -168,6 +169,7 @@ namespace TISFAT
 				{
 					UInt16 version = reader.ReadUInt16();
 					CustomFigure.Read(reader, version);
+					reader.Close();
 				}
 
 				CustomFigureState = (StickFigure.State)CustomFigure.CreateRefState();
@@ -181,6 +183,7 @@ namespace TISFAT
 			if(f.ShowDialog() == DialogResult.OK)
 			{
 				txt_customFigPath.Text = "Custom figure created with Editor";
+
 				CustomFigure = f.CreatedFigure;
 				CustomFigureState = f.CreatedFigureState;
 			}

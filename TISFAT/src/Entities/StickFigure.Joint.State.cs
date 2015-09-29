@@ -19,37 +19,76 @@ namespace TISFAT.Entities
 				public Color JointColor;
 				public float Thickness;
 
-				public bool Manipulatable;
+				public int BitmapIndex;
 
-				public int ID;
+				public bool Manipulatable;
 
 				public State()
 				{
 					Parent = null;
 					Children = new List<State>();
 					Location = new PointF();
-					Manipulatable = true;
 					JointColor = Color.Black;
 					Thickness = 6;
+
+					BitmapIndex = -1;
+
+					Manipulatable = true;
 				}
 
-				public State(State parent, int lastID)
+				public State(State parent)
 				{
 					Parent = parent;
 					Children = new List<State>();
-					Thickness = 6;
-					JointColor = Color.Black;
-
 					Location = new PointF();
-					Manipulatable = true;
+					JointColor = Color.Black;
+					Thickness = 6;
 
-					ID = lastID;
+					BitmapIndex = -1;
+
+					Manipulatable = true;
+				}
+				public bool StateEquals(object obj)
+				{
+					if (obj == null || GetType() != obj.GetType())
+					{
+						return false;
+					}
+					State state = obj as State;
+
+					return GetStateHash() == state.GetStateHash();
+				}
+				
+				public int GetStateHash()
+				{
+					int hash = 0;
+
+					hash += Children.Count;
+					hash += (int)Math.Floor(Location.X + Location.Y);
+					hash += JointColor.A + JointColor.R + JointColor.G + JointColor.B;
+					hash += (int)Math.Floor(Thickness);
+					hash += (Manipulatable ? 1 : 0);
+
+					return hash;
 				}
 
-				public static State RelativeTo(State parent, PointF location, ref int ID)
+				public State FindState(State target)
+				{
+					if (this.StateEquals(target))
+						return this;
+
+					foreach(State child in Children)
+					{
+						return child.FindState(target);
+					}
+
+					return null;
+				}
+
+				public static State RelativeTo(State parent, PointF location)
 				{
 					if (parent == null) throw new NullReferenceException("wat");
-					State state = new State(parent, ++ID);
+					State state = new State(parent);
 					state.Location = new PointF(parent.Location.X + location.X, parent.Location.Y + location.Y);
 					parent.Children.Add(state);
 					return state;
@@ -80,7 +119,9 @@ namespace TISFAT.Entities
 
 				public static State Interpolate(float t, State current, State target, EntityInterpolationMode mode)
 				{
-					State state = new State(current.Parent, current.ID);
+					State state = new State(current.Parent);
+					state.BitmapIndex = current.BitmapIndex;
+
 					state.Location = Interpolation.Interpolate(t, current.Location, target.Location, mode);
 					state.JointColor = Interpolation.Interpolate(t, current.JointColor, target.JointColor, mode);
                     state.Thickness = Interpolation.Interpolate(t, current.Thickness, target.Thickness, mode);
@@ -234,33 +275,35 @@ namespace TISFAT.Entities
 					return null;
 				}
 
-				public Joint GetEquivalentJoint(Joint Root, int testID)
-				{
-					if (Root.ID == testID)
-						return Root;
+				//public Joint GetEquivalentJoint(Joint Root, int testID)
+				//{
+				//	if (Root.ID == testID)
+				//		return Root;
 
-					for (int i = 0; i < Root.Children.Count; i++)
-					{
-						if (Root.Children[i].ID == testID)
-							return Root.Children[i];
+				//	for (int i = 0; i < Root.Children.Count; i++)
+				//	{
+				//		if (Root.Children[i].ID == testID)
+				//			return Root.Children[i];
 
-						Joint j = GetEquivalentJoint(Root.Children[i], testID);
+				//		Joint j = GetEquivalentJoint(Root.Children[i], testID);
 
-						if (j != null)
-							return j;
-					}
+				//		if (j != null)
+				//			return j;
+				//	}
 
-					return null;
-				}
+				//	return null;
+				//}
 
 				public State Clone(State from = null)
 				{
-					State ret = new State(from, from != null ? from.ID : 0);
+					State ret = new State(from);
 
 					ret.JointColor = JointColor;
 					ret.Location = Location;
 					ret.Thickness = Thickness;
 					ret.Manipulatable = Manipulatable;
+
+					ret.BitmapIndex = BitmapIndex;
 
 					foreach (State child in Children)
 						ret.Children.Add(child.Clone(ret));
@@ -278,7 +321,7 @@ namespace TISFAT.Entities
 					writer.Write(JointColor.B);
 					writer.Write((double)Thickness);
 					writer.Write(Manipulatable);
-					writer.Write(ID);
+					writer.Write(BitmapIndex);
 					FileFormat.WriteList(writer, Children);
 				}
 
@@ -297,9 +340,10 @@ namespace TISFAT.Entities
 					if (version >= 2)
 					{
 						Manipulatable = reader.ReadBoolean();
-						if (version >= 3)
+
+						if (version >= 4)
 						{
-							ID = reader.ReadInt32();
+							BitmapIndex = reader.ReadInt32();
 						}
 					}
 					else

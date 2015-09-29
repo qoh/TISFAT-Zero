@@ -53,6 +53,14 @@ namespace TISFAT
 
 						pnl_StickFigureProperties.Visible = true;
 						break;
+					case "CustomFigure":
+						c = ((StickFigure.State)Program.MainTimeline.SelectedKeyframe.State).Root.JointColor;
+
+						pnl_stickFigureColorImg.BackColor = c;
+						lbl_stickFigureColorNumbers.Text = string.Format("{0}, {1}, {2}", c.R, c.G, c.B);
+
+						pnl_StickFigureProperties.Visible = true;
+						break;
 					case "LineObject":
 						c = ((LineObject.State)Program.MainTimeline.SelectedKeyframe.State).Color;
 						float thickness = ((LineObject.State)Program.MainTimeline.SelectedKeyframe.State).Thickness;
@@ -125,6 +133,32 @@ namespace TISFAT
 		// TODO: Undo / Redo for this stuff
 
 		#region StickFigure Panel
+		public void UpdateStickFigurePanel()
+		{
+			cmb_stickBitmaps.Items.Clear();
+			cmb_stickBitmaps.Visible = false;
+			lbl_stickBitmap.Visible = false;
+
+			if (Program.Form_Canvas.StickFigurePair == null)
+				return;
+
+			StickFigure.Joint.State state = Program.Form_Canvas.StickFigurePair.Item2;
+
+			var Bitmaps = Program.Form_Canvas.StickFigurePair.Item1.Bitmaps;
+
+			if (Bitmaps.Count < 1)
+				return;
+
+			lbl_stickBitmap.Visible = true;
+			cmb_stickBitmaps.Visible = true;
+			cmb_stickBitmaps.Items.Add("(none)");
+
+			for (int i = 0; i < Bitmaps.Count; i++)
+				cmb_stickBitmaps.Items.Add(Bitmaps[i].Item2.Item1);
+
+			cmb_stickBitmaps.SelectedIndex = state.BitmapIndex + 1;
+		}
+
 		private void pnl_stickFigureColorImg_Click(object sender, EventArgs e)
 		{
 			if (Program.MainTimeline.SelectedKeyframe == null)
@@ -182,6 +216,21 @@ namespace TISFAT
 			{
 				fig.SetColor(frame.State, pnl_stickFigureColorImg.BackColor);
 			}
+
+			Program.MainTimeline.GLContext.Invalidate();
+		}
+
+		private void cmb_stickBitmaps_SelectionChangeCommitted(object sender, EventArgs e)
+		{
+			if (Program.MainTimeline.SelectedFrameset == null)
+				return;
+			if (Program.MainTimeline.SelectedLayer.Data.GetType() != typeof(CustomFigure))
+				return;
+
+			StickFigure.State state = Program.MainTimeline.SelectedKeyframe.State as StickFigure.State;
+			StickFigure.Joint.State jointState = state.Root.FindState((StickFigure.Joint.State)Program.Form_Canvas.LastDragObject);
+
+			jointState.BitmapIndex = cmb_stickBitmaps.SelectedIndex - 1;
 
 			Program.MainTimeline.GLContext.Invalidate();
 		}
@@ -664,6 +713,19 @@ namespace TISFAT
 				return;
 
 			num_bitmapAngle.Value = (decimal)tkb_bitmapAngle.Value;
+		}
+
+		private void btn_stickOpenInEditor_Click(object sender, EventArgs e)
+		{
+			StickEditorForm ed = new StickEditorForm(((StickFigure)Program.MainTimeline.SelectedLayer.Data).Copy(), (StickFigure.State)Program.MainTimeline.SelectedKeyframe.State.Copy());
+
+			if (ed.ShowDialog() == DialogResult.OK)
+			{
+				Program.MainTimeline.SelectedLayer.Data = ed.CreatedFigure;
+				Program.MainTimeline.SelectedKeyframe.State = ed.CreatedFigureState;
+			}
+
+			Program.MainTimeline.GLContext.Invalidate();
 		}
 	}
 }

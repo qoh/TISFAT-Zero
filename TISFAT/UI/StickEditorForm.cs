@@ -28,22 +28,24 @@ namespace TISFAT
 		StickFigure ActiveFigure;
 		StickFigure.State ActiveFigureState;
 
-		StickFigure.Joint.State _SelectedObject;
-		StickFigure.Joint.State SelectedObject
+		Tuple<StickFigure.Joint, StickFigure.Joint.State> _selectedState;
+		Tuple<StickFigure.Joint, StickFigure.Joint.State> SelectedPair
 		{
 			get
 			{
-				return _SelectedObject;
+				return _selectedState;
 			}
 			set
 			{
-				_SelectedObject = value;
+				_selectedState = value;
 				UpdateSelection();
 			}
 		}
-		StickFigure.Joint.State ActiveDragObject;
-		StickFigure.Joint.State HoveredObject;
+
+		Tuple<StickFigure.Joint, StickFigure.Joint.State> ActiveDragPair;
 		IManipulatableParams ActiveDragParams;
+
+		public bool FromProperties;
 
 		private EditorManipMode _ActiveManipMode;
 		public EditorManipMode ActiveManipMode
@@ -64,7 +66,7 @@ namespace TISFAT
 		public bool IKEnabled { get { return ckb_EnableIK.Checked; } }
 		public bool DrawHandles { get { return ckb_DrawHandles.Checked; } }
 
-		public StickEditorForm()
+		public void InitContext()
 		{
 			InitializeComponent();
 
@@ -86,21 +88,39 @@ namespace TISFAT
 			pnl_GLArea.Controls.Add(GLContext);
 		}
 
+		public StickEditorForm()
+		{
+			InitContext();
+		}
+
+		public StickEditorForm(StickFigure Figure, StickFigure.State State)
+		{
+			InitContext();
+
+			FromProperties = true;
+
+			ActiveFigure = Figure;
+			ActiveFigureState = State;
+		}
+
+
 		private void StickEditorForm_Load(object sender, EventArgs e)
 		{
 			GLContext_Init();
 
-			ActiveFigure = new StickFigure();
-			SelectedObject = null;
+			if (!FromProperties)
+			{
+				ActiveFigure = new StickFigure();
+				SelectedPair = null;
 
-			int ID = 0;
-			
-			ActiveFigure.Root = new StickFigure.Joint();
-			ActiveFigure.Root.Location = new PointF(250, 250);
-			ActiveFigure.Root.ID = 0;
-			var next = StickFigure.Joint.RelativeTo(ActiveFigure.Root, new PointF(0, 50), ref ID);
+				int ID = 0;
 
-			ActiveFigureState = (StickFigure.State)ActiveFigure.CreateRefState();
+				ActiveFigure.Root = new StickFigure.Joint();
+				ActiveFigure.Root.Location = new PointF(250, 300);
+				var next = StickFigure.Joint.RelativeTo(ActiveFigure.Root, new PointF(0, -50));
+
+				ActiveFigureState = (StickFigure.State)ActiveFigure.CreateRefState();
+			}
 
 			UpdateSelection();
         }
@@ -113,6 +133,7 @@ namespace TISFAT
 			{
 				UInt16 version = reader.ReadUInt16();
 				ActiveFigure.Read(reader, version);
+				reader.Close();
 			}
 
 			ActiveFigureState = (StickFigure.State)ActiveFigure.CreateRefState();
@@ -128,6 +149,7 @@ namespace TISFAT
 			{
 				writer.Write(FileFormat.Version);
 				ActiveFigure.Write(writer);
+				writer.Close();
 			}
 		}
 
@@ -150,13 +172,14 @@ namespace TISFAT
 			Cursor = ActiveFigure.TryManipulate(
 				ActiveFigureState, e.Location, e.Button, ModifierKeys) != null ? Cursors.Hand : Cursors.Default;
 
-			if(ActiveManipMode == EditorManipMode.Move && ActiveDragObject != null)
+			if(ActiveManipMode == EditorManipMode.Move && ActiveDragPair != null)
 			{
-				ActiveFigure.ManipulateUpdate(ActiveDragObject, ActiveDragParams, e.Location);
-				ActiveDragObject.GetEquivalentJoint(ActiveFigure.Root, ActiveDragObject.ID).ResetFrom(ActiveDragObject);
+				ActiveFigure.ManipulateUpdate(ActiveDragPair.Item2, ActiveDragParams, e.Location);
+				ActiveDragPair.Item1.ResetFrom(ActiveDragPair.Item2);
+
 				GLContext.Invalidate();
 			} 
-			else if(ActiveManipMode == EditorManipMode.Add && SelectedObject != null)
+			else if(ActiveManipMode == EditorManipMode.Add && SelectedPair != null)
 			{
 				GLContext.Invalidate();
 			}
@@ -166,34 +189,32 @@ namespace TISFAT
 		{
 			if (ActiveManipMode == EditorManipMode.Pointer || ActiveManipMode == EditorManipMode.Move)
 			{
-				ManipulateResult result = ActiveFigure.TryManipulate(
-					ActiveFigureState, e.Location, e.Button, ModifierKeys, !IKEnabled);
+				var pair = StickFigure.FindJointStatePair(ActiveFigure.Root, ActiveFigureState.Root, e.Location);
+				var result = ActiveFigure.TryManipulate(ActiveFigureState, e.Location, e.Button, ModifierKeys, !IKEnabled);
 
-				if (result != null)
+				if (result != null && pair != null)
 				{
 					if (e.Button != MouseButtons.Right)
-						SelectedObject = (StickFigure.Joint.State)result.Target;
+						SelectedPair = pair;
 
 					if (ActiveManipMode == EditorManipMode.Move)
 					{
-						ActiveDragObject = SelectedObject;
+						ActiveDragPair = pair;
 						ActiveDragParams = result.Params;
 					}
 				}
 			}
-			else if (ActiveManipMode == EditorManipMode.Add && SelectedObject != null)
+			else if (ActiveManipMode == EditorManipMode.Add && SelectedPair != null)
 			{
-				int ID = ActiveFigure.GetJointCount();
-				int ID2 = ID;
+				StickFigure.Joint joint = StickFigure.Joint.RelativeTo(SelectedPair.Item1, new PointF(-(SelectedPair.Item2.Location.X - e.X), -(SelectedPair.Item2.Location.Y - e.Y)));
+				StickFigure.Joint.State state = StickFigure.Joint.State.RelativeTo(SelectedPair.Item2, new PointF(-(SelectedPair.Item2.Location.X - e.X), -(SelectedPair.Item2.Location.Y - e.Y)));
 
-				// TODO: ban Evar from coding at 7 am
-				StickFigure.Joint.RelativeTo(ActiveFigureState.Root.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID), new PointF(-(SelectedObject.Location.X - e.X), -(SelectedObject.Location.Y - e.Y)), ref ID);
-				SelectedObject = StickFigure.Joint.State.RelativeTo(SelectedObject, new PointF(-(SelectedObject.Location.X - e.X), -(SelectedObject.Location.Y - e.Y)), ref ID2);
+				SelectedPair = new Tuple<StickFigure.Joint, StickFigure.Joint.State>(joint, state);
 			}
 			else if (ActiveManipMode == EditorManipMode.Delete)
 			{
-				ManipulateResult result = ActiveFigure.TryManipulate(
-					ActiveFigureState, e.Location, e.Button, ModifierKeys, !IKEnabled);
+				var pair = StickFigure.FindJointStatePair(ActiveFigure.Root, ActiveFigureState.Root, e.Location);
+				var result = ActiveFigure.TryManipulate(ActiveFigureState, e.Location, e.Button, ModifierKeys, !IKEnabled);
 
 				if (result != null)
 				{
@@ -201,10 +222,10 @@ namespace TISFAT
 					if (state.Parent == null) // No deleting everything allowed
 						return;
 
-                    ActiveFigureState.Root.GetEquivalentJoint(ActiveFigure.Root, state.ID).Delete();
-					state.Delete();
+                    pair.Item1.Delete();
+					pair.Item2.Delete();
 
-					SelectedObject = null;
+					SelectedPair = null;
 				}
 			}
 
@@ -213,7 +234,7 @@ namespace TISFAT
 
 		private void GLContext_MouseUp(object sender, MouseEventArgs e)
 		{
-			ActiveDragObject = null;
+			ActiveDragPair = null;
 		}
 
 		private void GLContext_KeyDown(object sender, KeyEventArgs e)
@@ -226,14 +247,14 @@ namespace TISFAT
 				ActiveManipMode = EditorManipMode.Add;
 			else if (e.KeyCode == Keys.D4)
 				ActiveManipMode = EditorManipMode.Delete;
-			else if (e.KeyCode == Keys.M && SelectedObject != null && SelectedObject.Parent != null)
+			else if (e.KeyCode == Keys.M && SelectedPair != null && SelectedPair.Item2.Parent != null)
 			{
-				StickFigure.Joint current = SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID);
+				StickFigure.Joint current = SelectedPair.Item1;
 
-				foreach (StickFigure.Joint.State state in SelectedObject.Children)
+				foreach (StickFigure.Joint.State state in SelectedPair.Item2.Children)
 				{
-					state.Parent = SelectedObject.Parent;
-					SelectedObject.Parent.Children.Add(state);
+					state.Parent = SelectedPair.Item2.Parent;
+					SelectedPair.Item2.Parent.Children.Add(state);
 				}
 
 				foreach (StickFigure.Joint joint in current.Children)
@@ -242,18 +263,18 @@ namespace TISFAT
 					current.Parent.Children.Add(joint);
 				}
 
-				SelectedObject.Parent.Children.Remove(SelectedObject);
+				SelectedPair.Item2.Parent.Children.Remove(SelectedPair.Item2);
 				current.Parent.Children.Remove(current);
 
-				SelectedObject = SelectedObject.Parent;
+				SelectedPair = new Tuple<StickFigure.Joint, StickFigure.Joint.State>(current, SelectedPair.Item2);
 				GLContext.Invalidate();
 			}
-			else if (e.KeyCode == Keys.S && SelectedObject != null && SelectedObject.Parent != null)
+			else if (e.KeyCode == Keys.S && SelectedPair != null && SelectedPair.Item2.Parent != null)
 			{
-				StickFigure.Joint SelectedJoint = SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID);
+				StickFigure.Joint SelectedJoint = SelectedPair.Item1;
 
-				float x = (SelectedObject.Location.X + SelectedObject.Parent.Location.X) / 2;
-				float y = (SelectedObject.Location.Y + SelectedObject.Parent.Location.Y) / 2;
+				float x = (SelectedPair.Item2.Location.X + SelectedPair.Item2.Parent.Location.X) / 2;
+				float y = (SelectedPair.Item2.Location.Y + SelectedPair.Item2.Parent.Location.Y) / 2;
 
 				int ID = ActiveFigure.GetJointCount();
 
@@ -262,7 +283,7 @@ namespace TISFAT
 				SelectedObject = StickFigure.Joint.State.RelativeTo(SelectedObject, new PointF(-(SelectedObject.Location.X - e.X), -(SelectedObject.Location.Y - e.Y)), ref ID2);
 				*/
 
-				StickFigure.Joint newJoint = new StickFigure.Joint(SelectedJoint.Parent, ID);
+				StickFigure.Joint newJoint = new StickFigure.Joint(SelectedJoint.Parent);
 				newJoint.Location = new PointF(x, y);
 				newJoint.HandleColor = SelectedJoint.Parent.HandleColor;
 				newJoint.JointColor = SelectedJoint.Parent.JointColor;
@@ -270,15 +291,15 @@ namespace TISFAT
 				newJoint.Children.Add(SelectedJoint);
 				SelectedJoint.Parent.Children.Add(newJoint);
 
-				StickFigure.Joint.State newState = new StickFigure.Joint.State(SelectedObject.Parent, ID);
-				newState.JointColor = SelectedObject.Parent.JointColor;
-				newState.Thickness = SelectedObject.Parent.Thickness;
+				StickFigure.Joint.State newState = new StickFigure.Joint.State(SelectedPair.Item2.Parent);
+				newState.JointColor = SelectedPair.Item2.Parent.JointColor;
+				newState.Thickness = SelectedPair.Item2.Parent.Thickness;
 				newState.Location = new PointF(x, y);
-				newState.Children.Add(SelectedObject);
-				SelectedObject.Parent.Children.Add(newState);
+				newState.Children.Add(SelectedPair.Item2);
+				SelectedPair.Item2.Parent.Children.Add(newState);
 
-				SelectedObject.Parent.Children.Remove(SelectedObject);
-				SelectedObject.Parent = newState;
+				SelectedPair.Item2.Parent.Children.Remove(SelectedPair.Item2);
+				SelectedPair.Item2.Parent = newState;
 
 				SelectedJoint.Parent.Children.Remove(SelectedJoint);
 				SelectedJoint.Parent = newJoint;
@@ -297,7 +318,7 @@ namespace TISFAT
 
 			ActiveFigure.Draw(ActiveFigureState);
 
-			if (SelectedObject != null)
+			if (SelectedPair != null)
 			{
 				if (ActiveManipMode == EditorManipMode.Add)
 				{
@@ -306,12 +327,12 @@ namespace TISFAT
 					GL.StencilFunc(StencilFunction.Equal, 0, 0xFFFFFF);
 					GL.StencilOp(StencilOp.Keep, StencilOp.Keep, StencilOp.Incr);
 
-					Drawing.CappedLine(SelectedObject.Location, MouseLoc, SelectedObject.Thickness, Color.FromArgb(127, 0, 0, 0));
+					Drawing.CappedLine(SelectedPair.Item2.Location, MouseLoc, SelectedPair.Item2.Thickness, Color.FromArgb(127, 0, 0, 0));
 
 					GL.Disable(EnableCap.StencilTest);
 				}
 
-				Drawing.RectangleLine(new PointF(SelectedObject.Location.X - 4, SelectedObject.Location.Y - 4), new SizeF(8, 8), Color.White);
+				Drawing.RectangleLine(new PointF(SelectedPair.Item2.Location.X - 4, SelectedPair.Item2.Location.Y - 4), new SizeF(8, 8), Color.White);
 			}
 
 			if(DrawHandles)
@@ -322,7 +343,7 @@ namespace TISFAT
 
 		private void UpdateSelection()
 		{
-			if(SelectedObject == null)
+			if(SelectedPair == null)
 			{
 				grp_handleProperties.Enabled = false;
 				grp_jointProperties.Enabled = false;
@@ -339,17 +360,30 @@ namespace TISFAT
 				cmb_drawMode.SelectedText = "";
 
 				num_jointThickness.Value = 0;
+
+				cmb_bitmaps.Items.Clear();
+				num_bitmapXOffset.Value = 0;
+				num_bitmapYOffset.Value = 0;
+				num_bitmapRotation.Value = 0;
+				tkb_bitmapRotation.Value = 0;
 			}
 			else
 			{
 				grp_handleProperties.Enabled = true;
-				grp_jointProperties.Enabled = SelectedObject.Parent != null;
-				grp_jointBitmaps.Enabled = false;
+				grp_jointProperties.Enabled = SelectedPair.Item2.Parent != null;
+				grp_jointBitmaps.Enabled = SelectedPair.Item2.Parent != null;
 
-				Color c1 = SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID).HandleColor;
-				Color c2 = SelectedObject.JointColor;
+				bool hasBitmap = SelectedPair.Item2.BitmapIndex != -1;
+				btn_bitmapRemove.Enabled = hasBitmap;
+				num_bitmapRotation.Enabled = hasBitmap;
+				num_bitmapXOffset.Enabled = hasBitmap;
+				num_bitmapYOffset.Enabled = hasBitmap;
+				tkb_bitmapRotation.Enabled = hasBitmap;
 
-				ckb_handleVisible.Checked = SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID).Visible;
+				Color c1 = SelectedPair.Item1.HandleColor;
+				Color c2 = SelectedPair.Item2.JointColor;
+
+				ckb_handleVisible.Checked = SelectedPair.Item1.Visible;
 
 				pnl_handleColorImg.BackColor = c1;
 				pnl_jointColorImg.BackColor = c2;
@@ -357,10 +391,41 @@ namespace TISFAT
 				lbl_handleColorNumbers.Text = string.Format("{0}, {1}, {2}", c1.R, c1.G, c1.B);
 				lbl_jointColorNumbers.Text = string.Format("{0}, {1}, {2}", c2.R, c2.G, c2.B);
 
-				cmb_drawMode.SelectedIndex = (int)SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID).DrawType;
+				cmb_drawMode.SelectedIndex = (int)SelectedPair.Item1.DrawType;
 
-				num_jointThickness.Value = (decimal)SelectedObject.Thickness;
+				num_jointThickness.Value = (decimal)SelectedPair.Item2.Thickness;
+
+				StickFigure.Joint Joint = SelectedPair.Item1;
+
+				cmb_bitmaps.Items.Clear();
+
+				cmb_bitmaps.Items.Add("(none)");
+
+				for (int i = 0; i < Joint.Bitmaps.Count; i++)
+					cmb_bitmaps.Items.Add(Joint.Bitmaps[i].Item2.Item1);
+
+				cmb_bitmaps.SelectedIndex = SelectedPair.Item2.BitmapIndex + 1;
+
+				if(SelectedPair.Item2.BitmapIndex != -1)
+				{
+					Bitmap bitmap = Joint.Bitmaps[SelectedPair.Item2.BitmapIndex].Item2.Item2;
+
+					num_bitmapXOffset.Value = (decimal)Joint.BitmapOffsets[bitmap].Item2.X;
+					num_bitmapYOffset.Value = (decimal)Joint.BitmapOffsets[bitmap].Item2.Y;
+					num_bitmapRotation.Value = (decimal)Joint.BitmapOffsets[bitmap].Item1;
+				}
 			}
+		}
+
+		public void AddBitmap(StickFigure.Joint joint, string name, Bitmap image)
+		{
+			joint.Bitmaps.Add(
+				new Tuple<int, Tuple<string, Bitmap>>(
+					Drawing.GenerateTexID(image),
+					new Tuple<string, Bitmap>(name, image)
+					));
+
+			joint.BitmapOffsets.Add(image, new Tuple<float, PointF>(0, new PointF(0, 0)));
 		}
 
 		private void btn_editModePointer_Click(object sender, EventArgs e)
@@ -395,7 +460,7 @@ namespace TISFAT
 
 		private void pnl_handleColorImg_Click(object sender, EventArgs e)
 		{
-			if (SelectedObject == null)
+			if (SelectedPair == null)
 				return;
 
 			ColorPickerDialog dlg = new ColorPickerDialog();
@@ -404,7 +469,7 @@ namespace TISFAT
 
 			if(dlg.ShowDialog() == DialogResult.OK)
 			{
-				SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID).HandleColor = dlg.Color;
+				SelectedPair.Item1.HandleColor = dlg.Color;
 				UpdateSelection();
 			}
 
@@ -413,7 +478,7 @@ namespace TISFAT
 
 		private void pnl_jointColorImg_Click(object sender, EventArgs e)
 		{
-			if (SelectedObject == null)
+			if (SelectedPair == null)
 				return;
 
 			ColorPickerDialog dlg = new ColorPickerDialog();
@@ -422,8 +487,8 @@ namespace TISFAT
 
 			if (dlg.ShowDialog() == DialogResult.OK)
 			{
-				SelectedObject.JointColor = dlg.Color;
-				SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID).JointColor = dlg.Color;
+				SelectedPair.Item1.JointColor = dlg.Color;
+				SelectedPair.Item2.JointColor = dlg.Color;
 
 				UpdateSelection();
 			}
@@ -433,10 +498,10 @@ namespace TISFAT
 
 		private void ckb_handleVisible_VisibleChanged(object sender, EventArgs e)
 		{
-			if (SelectedObject == null)
+			if (SelectedPair == null)
 				return;
 
-			SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID).Visible = ckb_handleVisible.Checked;
+			SelectedPair.Item1.Visible = ckb_handleVisible.Checked;
 			UpdateSelection();
 
 			GLContext.Invalidate();
@@ -444,11 +509,11 @@ namespace TISFAT
 
 		private void num_jointThickness_ValueChanged(object sender, EventArgs e)
 		{
-			if (SelectedObject == null)
+			if (SelectedPair == null)
 				return;
 
-			SelectedObject.Thickness = (float)num_jointThickness.Value;
-			SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID).Thickness = (float)num_jointThickness.Value;
+			SelectedPair.Item1.Thickness = (float)num_jointThickness.Value;
+			SelectedPair.Item2.Thickness = (float)num_jointThickness.Value;
 			UpdateSelection();
 
 			GLContext.Invalidate();
@@ -456,11 +521,11 @@ namespace TISFAT
 
 		private void cmb_drawMode_SelectionChangeCommitted(object sender, EventArgs e)
 		{
-			if (SelectedObject == null)
+			if (SelectedPair == null)
 				return;
 
 			DrawJointType type = (DrawJointType)Enum.Parse(typeof(DrawJointType), cmb_drawMode.SelectedIndex.ToString());
-			SelectedObject.GetEquivalentJoint(ActiveFigure.Root, SelectedObject.ID).DrawType = type;
+			SelectedPair.Item1.DrawType = type;
 
 			GLContext.Invalidate();
 		}
@@ -488,6 +553,8 @@ namespace TISFAT
 			{
 				ProjectOpen(dialog.FileName);
 			}
+
+			dialog.Dispose();
 		}
 
 		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -500,6 +567,119 @@ namespace TISFAT
 			{
 				ProjectSave(dialog.FileName);
 			}
+		}
+
+		private void btn_bitmapAdd_Click(object sender, EventArgs e)
+		{
+			OpenFileDialog dlg = new OpenFileDialog();
+
+			dlg.Title = "Open an Image";
+			dlg.Filter = "Image Files|*.png;*.jpg;*.jpeg;*.gif;*.bmp";
+
+			if (dlg.ShowDialog() == DialogResult.OK)
+			{
+				AddBitmap(SelectedPair.Item1, dlg.SafeFileName, (Bitmap)Image.FromFile(dlg.FileName));
+
+				SelectedPair.Item1.InitialBitmapIndex++;
+				SelectedPair.Item2.BitmapIndex++;
+
+				UpdateSelection();
+				GLContext.Invalidate();
+			}
+		}
+
+		private void btn_bitmapRemove_Click(object sender, EventArgs e)
+		{
+			StickFigure.Joint joint = SelectedPair.Item1;
+			int ind = cmb_bitmaps.SelectedIndex - 1;
+
+			Bitmap tmp = joint.Bitmaps[SelectedPair.Item2.BitmapIndex].Item2.Item2;
+			joint.Bitmaps.RemoveAt(ind);
+			joint.BitmapOffsets.Remove(tmp);
+			joint.InitialBitmapIndex = -1;
+			SelectedPair.Item2.BitmapIndex = -1;
+
+			cmb_bitmaps.Items.RemoveAt(cmb_bitmaps.SelectedIndex);
+
+			UpdateSelection();
+			GLContext.Invalidate();
+		}
+
+		private void num_bitmapRotation_ValueChanged(object sender, EventArgs e)
+		{
+			if (SelectedPair == null)
+				return;
+
+			StickFigure.Joint joint = SelectedPair.Item1;
+			Bitmap bitmap = joint.Bitmaps[SelectedPair.Item2.BitmapIndex].Item2.Item2;
+
+			tkb_bitmapRotation.Value = (int)num_bitmapRotation.Value;
+
+			joint.BitmapOffsets[bitmap] = new Tuple<float, PointF>((float)num_bitmapRotation.Value, joint.BitmapOffsets[bitmap].Item2);
+			GLContext.Invalidate();
+		}
+
+		private void tkb_bitmapRotation_ValueChanged(object sender, EventArgs e)
+		{
+			num_bitmapRotation.Value = (decimal)tkb_bitmapRotation.Value;
+		}
+
+		private void num_bitmapXOffset_ValueChanged(object sender, EventArgs e)
+		{
+			if (SelectedPair == null)
+				return;
+
+			StickFigure.Joint joint = SelectedPair.Item1;
+			Bitmap bitmap = joint.Bitmaps[SelectedPair.Item2.BitmapIndex].Item2.Item2;
+
+			joint.BitmapOffsets[bitmap] = new Tuple<float, PointF>(joint.BitmapOffsets[bitmap].Item1, new PointF((float)num_bitmapXOffset.Value, joint.BitmapOffsets[bitmap].Item2.Y));
+
+			GLContext.Invalidate();
+		}
+
+		private void num_bitmapYOffset_ValueChanged(object sender, EventArgs e)
+		{
+			if (SelectedPair == null)
+				return;
+
+			StickFigure.Joint joint = SelectedPair.Item1;
+			Bitmap bitmap = joint.Bitmaps[SelectedPair.Item2.BitmapIndex].Item2.Item2;
+
+			joint.BitmapOffsets[bitmap] = new Tuple<float, PointF>(joint.BitmapOffsets[bitmap].Item1, new PointF(joint.BitmapOffsets[bitmap].Item2.X, (float)num_bitmapYOffset.Value));
+
+			GLContext.Invalidate();
+		}
+
+		private void cmb_bitmaps_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (SelectedPair == null)
+				return;
+
+			StickFigure.Joint joint = SelectedPair.Item1;
+
+			SelectedPair.Item2.BitmapIndex = cmb_bitmaps.SelectedIndex - 1;
+			joint.InitialBitmapIndex = cmb_bitmaps.SelectedIndex - 1;
+
+			btn_bitmapRemove.Enabled = cmb_bitmaps.SelectedIndex > 0;
+
+			GLContext.Invalidate();
+		}
+
+		private void btn_saveBitmap_Click(object sender, EventArgs e)
+		{
+			SaveFileDialog dlg = new SaveFileDialog();
+
+			dlg.Filter = "PNG Files|*.png";
+			dlg.FileName = SelectedPair.Item1.Bitmaps[SelectedPair.Item2.BitmapIndex].Item2.Item1;
+
+			if(dlg.ShowDialog() == DialogResult.OK)
+			{
+				Bitmap bitmap = SelectedPair.Item1.Bitmaps[SelectedPair.Item2.BitmapIndex].Item2.Item2;
+
+				bitmap.Save(dlg.FileName);
+			}
+
+			dlg.Dispose();
 		}
 	}
 }

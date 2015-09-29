@@ -353,7 +353,7 @@ namespace TISFAT.Util
 			GL.Disable(EnableCap.Blend);
 		}
 
-		public static void Bitmap(PointF position, SizeF size, float rotation, int texID)
+		public static void BitmapOriginRotation(PointF position, SizeF size, float rotation, int texID)
 		{
 			GL.BindTexture(TextureTarget.Texture2D, texID);
 
@@ -363,7 +363,35 @@ namespace TISFAT.Util
 
 			GL.PushMatrix();
 			GL.Translate(position.X, position.Y, 0);
-			//GL.Rotate(rotation, 0, 0, 1);
+			GL.Rotate(rotation, 0, 0, 1);
+
+			GL.Color4(Color.White);
+
+			GL.Begin(PrimitiveType.Quads);
+			GL.TexCoord2(0, 0); GL.Vertex2(0, 0);
+			GL.TexCoord2(0, 1); GL.Vertex2(0, size.Height);
+			GL.TexCoord2(1, 1); GL.Vertex2(size.Width, size.Height);
+			GL.TexCoord2(1, 0); GL.Vertex2(size.Width, 0);
+			GL.End();
+
+			GL.PopMatrix();
+
+			GL.Disable(EnableCap.Blend);
+			GL.Disable(EnableCap.Texture2D);
+		}
+
+		public static void Bitmap(PointF position, SizeF size, float rotation, int texID)
+		{
+			GL.BindTexture(TextureTarget.Texture2D, texID);
+
+			GL.Enable(EnableCap.Texture2D);
+			GL.Enable(EnableCap.Blend);
+			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+
+			GL.PushMatrix();
+			GL.Translate(position.X + size.Width / 2, position.Y + size.Height / 2, 0);
+			GL.Rotate(rotation, 0, 0, 1);
+			GL.Translate(-size.Width / 2, -size.Height / 2, 0);
 
 			GL.Color4(Color.White);
 

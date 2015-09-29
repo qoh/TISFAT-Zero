@@ -43,11 +43,14 @@
 			System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem("Point Light", 3);
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddLayerDialog));
 			this.grp_Properties = new System.Windows.Forms.GroupBox();
+			this.pnl_PolygonProperties = new System.Windows.Forms.Panel();
+			this.label1 = new System.Windows.Forms.Label();
+			this.lbl_polyNumPoints = new System.Windows.Forms.Label();
+			this.num_polyNumPoints = new System.Windows.Forms.NumericUpDown();
 			this.pnl_PropertiesDescription = new System.Windows.Forms.Panel();
 			this.lbl_PropertiesDescription = new System.Windows.Forms.Label();
 			this.pnl_PointLightProperties = new System.Windows.Forms.Panel();
 			this.pnl_TextProperties = new System.Windows.Forms.Panel();
-			this.pnl_PolygonProperties = new System.Windows.Forms.Panel();
 			this.pnl_CircleProperties = new System.Windows.Forms.Panel();
 			this.pnl_RectangleProperties = new System.Windows.Forms.Panel();
 			this.pnl_LineProperties = new System.Windows.Forms.Panel();
@@ -71,24 +74,21 @@
 			this.btn_Add = new System.Windows.Forms.Button();
 			this.btn_Cancel = new System.Windows.Forms.Button();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.num_polyNumPoints = new System.Windows.Forms.NumericUpDown();
-			this.lbl_polyNumPoints = new System.Windows.Forms.Label();
-			this.label1 = new System.Windows.Forms.Label();
 			this.grp_Properties.SuspendLayout();
-			this.pnl_PropertiesDescription.SuspendLayout();
 			this.pnl_PolygonProperties.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_polyNumPoints)).BeginInit();
+			this.pnl_PropertiesDescription.SuspendLayout();
 			this.pnl_BitmapProperties.SuspendLayout();
 			this.pnl_DefaultFigureProperties.SuspendLayout();
 			this.pnl_CustomFigureProperties.SuspendLayout();
 			this.groupBox1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.num_polyNumPoints)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// grp_Properties
 			// 
 			this.grp_Properties.BackColor = System.Drawing.SystemColors.Control;
-			this.grp_Properties.Controls.Add(this.pnl_PolygonProperties);
 			this.grp_Properties.Controls.Add(this.pnl_PropertiesDescription);
+			this.grp_Properties.Controls.Add(this.pnl_PolygonProperties);
 			this.grp_Properties.Controls.Add(this.pnl_PointLightProperties);
 			this.grp_Properties.Controls.Add(this.pnl_TextProperties);
 			this.grp_Properties.Controls.Add(this.pnl_CircleProperties);
@@ -103,6 +103,53 @@
 			this.grp_Properties.TabIndex = 1;
 			this.grp_Properties.TabStop = false;
 			this.grp_Properties.Text = "Layer Properties";
+			// 
+			// pnl_PolygonProperties
+			// 
+			this.pnl_PolygonProperties.Controls.Add(this.label1);
+			this.pnl_PolygonProperties.Controls.Add(this.lbl_polyNumPoints);
+			this.pnl_PolygonProperties.Controls.Add(this.num_polyNumPoints);
+			this.pnl_PolygonProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnl_PolygonProperties.Location = new System.Drawing.Point(3, 16);
+			this.pnl_PolygonProperties.Name = "pnl_PolygonProperties";
+			this.pnl_PolygonProperties.Size = new System.Drawing.Size(246, 202);
+			this.pnl_PolygonProperties.TabIndex = 8;
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.label1.Location = new System.Drawing.Point(29, 115);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(189, 13);
+			this.label1.TabIndex = 2;
+			this.label1.Text = "* Minimum of 3 points, maximum of 100";
+			// 
+			// lbl_polyNumPoints
+			// 
+			this.lbl_polyNumPoints.AutoSize = true;
+			this.lbl_polyNumPoints.Location = new System.Drawing.Point(79, 75);
+			this.lbl_polyNumPoints.Name = "lbl_polyNumPoints";
+			this.lbl_polyNumPoints.Size = new System.Drawing.Size(88, 13);
+			this.lbl_polyNumPoints.TabIndex = 1;
+			this.lbl_polyNumPoints.Text = "Number of Points";
+			// 
+			// num_polyNumPoints
+			// 
+			this.num_polyNumPoints.Location = new System.Drawing.Point(63, 91);
+			this.num_polyNumPoints.Minimum = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+			this.num_polyNumPoints.Name = "num_polyNumPoints";
+			this.num_polyNumPoints.Size = new System.Drawing.Size(120, 20);
+			this.num_polyNumPoints.TabIndex = 0;
+			this.num_polyNumPoints.Value = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
 			// 
 			// pnl_PropertiesDescription
 			// 
@@ -141,17 +188,6 @@
 			this.pnl_TextProperties.Name = "pnl_TextProperties";
 			this.pnl_TextProperties.Size = new System.Drawing.Size(246, 202);
 			this.pnl_TextProperties.TabIndex = 9;
-			// 
-			// pnl_PolygonProperties
-			// 
-			this.pnl_PolygonProperties.Controls.Add(this.label1);
-			this.pnl_PolygonProperties.Controls.Add(this.lbl_polyNumPoints);
-			this.pnl_PolygonProperties.Controls.Add(this.num_polyNumPoints);
-			this.pnl_PolygonProperties.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnl_PolygonProperties.Location = new System.Drawing.Point(3, 16);
-			this.pnl_PolygonProperties.Name = "pnl_PolygonProperties";
-			this.pnl_PolygonProperties.Size = new System.Drawing.Size(246, 202);
-			this.pnl_PolygonProperties.TabIndex = 8;
 			// 
 			// pnl_CircleProperties
 			// 
@@ -432,42 +468,6 @@
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Layer Type";
 			// 
-			// num_polyNumPoints
-			// 
-			this.num_polyNumPoints.Location = new System.Drawing.Point(63, 91);
-			this.num_polyNumPoints.Minimum = new decimal(new int[] {
-            3,
-            0,
-            0,
-            0});
-			this.num_polyNumPoints.Name = "num_polyNumPoints";
-			this.num_polyNumPoints.Size = new System.Drawing.Size(120, 20);
-			this.num_polyNumPoints.TabIndex = 0;
-			this.num_polyNumPoints.Value = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
-			// 
-			// lbl_polyNumPoints
-			// 
-			this.lbl_polyNumPoints.AutoSize = true;
-			this.lbl_polyNumPoints.Location = new System.Drawing.Point(79, 75);
-			this.lbl_polyNumPoints.Name = "lbl_polyNumPoints";
-			this.lbl_polyNumPoints.Size = new System.Drawing.Size(88, 13);
-			this.lbl_polyNumPoints.TabIndex = 1;
-			this.lbl_polyNumPoints.Text = "Number of Points";
-			// 
-			// label1
-			// 
-			this.label1.AutoSize = true;
-			this.label1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.label1.Location = new System.Drawing.Point(29, 115);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(189, 13);
-			this.label1.TabIndex = 2;
-			this.label1.Text = "* Minimum of 3 points, maximum of 100";
-			// 
 			// AddLayerDialog
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -485,9 +485,10 @@
 			this.Text = "Add Layer";
 			this.Load += new System.EventHandler(this.AddLayerDialog_Load);
 			this.grp_Properties.ResumeLayout(false);
-			this.pnl_PropertiesDescription.ResumeLayout(false);
 			this.pnl_PolygonProperties.ResumeLayout(false);
 			this.pnl_PolygonProperties.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_polyNumPoints)).EndInit();
+			this.pnl_PropertiesDescription.ResumeLayout(false);
 			this.pnl_BitmapProperties.ResumeLayout(false);
 			this.pnl_BitmapProperties.PerformLayout();
 			this.pnl_DefaultFigureProperties.ResumeLayout(false);
@@ -495,7 +496,6 @@
 			this.pnl_CustomFigureProperties.ResumeLayout(false);
 			this.pnl_CustomFigureProperties.PerformLayout();
 			this.groupBox1.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.num_polyNumPoints)).EndInit();
 			this.ResumeLayout(false);
 
 		}
