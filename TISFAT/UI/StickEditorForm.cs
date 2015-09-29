@@ -133,6 +133,7 @@ namespace TISFAT
 			{
 				UInt16 version = reader.ReadUInt16();
 				ActiveFigure.Read(reader, version);
+				reader.Close();
 			}
 
 			ActiveFigureState = (StickFigure.State)ActiveFigure.CreateRefState();
@@ -148,6 +149,7 @@ namespace TISFAT
 			{
 				writer.Write(FileFormat.Version);
 				ActiveFigure.Write(writer);
+				writer.Close();
 			}
 		}
 
@@ -190,16 +192,14 @@ namespace TISFAT
 				var pair = StickFigure.FindJointStatePair(ActiveFigure.Root, ActiveFigureState.Root, e.Location);
 				var result = ActiveFigure.TryManipulate(ActiveFigureState, e.Location, e.Button, ModifierKeys, !IKEnabled);
 
-				if (result != null)
+				if (result != null && pair != null)
 				{
 					if (e.Button != MouseButtons.Right)
-					{
 						SelectedPair = pair;
-					}
 
 					if (ActiveManipMode == EditorManipMode.Move)
 					{
-						ActiveDragPair = new Tuple<StickFigure.Joint, StickFigure.Joint.State>(SelectedPair.Item1, SelectedPair.Item2);
+						ActiveDragPair = pair;
 						ActiveDragParams = result.Params;
 					}
 				}
@@ -553,6 +553,8 @@ namespace TISFAT
 			{
 				ProjectOpen(dialog.FileName);
 			}
+
+			dialog.Dispose();
 		}
 
 		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -605,6 +607,9 @@ namespace TISFAT
 
 		private void num_bitmapRotation_ValueChanged(object sender, EventArgs e)
 		{
+			if (SelectedPair == null)
+				return;
+
 			StickFigure.Joint joint = SelectedPair.Item1;
 			Bitmap bitmap = joint.Bitmaps[SelectedPair.Item2.BitmapIndex].Item2.Item2;
 
@@ -621,6 +626,9 @@ namespace TISFAT
 
 		private void num_bitmapXOffset_ValueChanged(object sender, EventArgs e)
 		{
+			if (SelectedPair == null)
+				return;
+
 			StickFigure.Joint joint = SelectedPair.Item1;
 			Bitmap bitmap = joint.Bitmaps[SelectedPair.Item2.BitmapIndex].Item2.Item2;
 
@@ -631,6 +639,9 @@ namespace TISFAT
 
 		private void num_bitmapYOffset_ValueChanged(object sender, EventArgs e)
 		{
+			if (SelectedPair == null)
+				return;
+
 			StickFigure.Joint joint = SelectedPair.Item1;
 			Bitmap bitmap = joint.Bitmaps[SelectedPair.Item2.BitmapIndex].Item2.Item2;
 
@@ -641,6 +652,9 @@ namespace TISFAT
 
 		private void cmb_bitmaps_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			if (SelectedPair == null)
+				return;
+
 			StickFigure.Joint joint = SelectedPair.Item1;
 
 			SelectedPair.Item2.BitmapIndex = cmb_bitmaps.SelectedIndex - 1;
@@ -649,6 +663,23 @@ namespace TISFAT
 			btn_bitmapRemove.Enabled = cmb_bitmaps.SelectedIndex > 0;
 
 			GLContext.Invalidate();
+		}
+
+		private void btn_saveBitmap_Click(object sender, EventArgs e)
+		{
+			SaveFileDialog dlg = new SaveFileDialog();
+
+			dlg.Filter = "PNG Files|*.png";
+			dlg.FileName = SelectedPair.Item1.Bitmaps[SelectedPair.Item2.BitmapIndex].Item2.Item1;
+
+			if(dlg.ShowDialog() == DialogResult.OK)
+			{
+				Bitmap bitmap = SelectedPair.Item1.Bitmaps[SelectedPair.Item2.BitmapIndex].Item2.Item2;
+
+				bitmap.Save(dlg.FileName);
+			}
+
+			dlg.Dispose();
 		}
 	}
 }

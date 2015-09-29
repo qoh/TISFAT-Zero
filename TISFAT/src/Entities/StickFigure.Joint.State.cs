@@ -48,7 +48,7 @@ namespace TISFAT.Entities
 
 					Manipulatable = true;
 				}
-				public override bool Equals(object obj)
+				public bool StateEquals(object obj)
 				{
 					if (obj == null || GetType() != obj.GetType())
 					{
@@ -56,10 +56,10 @@ namespace TISFAT.Entities
 					}
 					State state = obj as State;
 
-					return GetHashCode() == state.GetHashCode();
+					return GetStateHash() == state.GetStateHash();
 				}
 				
-				public override int GetHashCode()
+				public int GetStateHash()
 				{
 					int hash = 0;
 
@@ -74,7 +74,7 @@ namespace TISFAT.Entities
 
 				public State FindState(State target)
 				{
-					if (this.Equals(target))
+					if (this.StateEquals(target))
 						return this;
 
 					foreach(State child in Children)

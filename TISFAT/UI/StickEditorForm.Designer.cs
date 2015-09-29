@@ -610,6 +610,7 @@
 			this.btn_saveBitmap.TabIndex = 13;
 			this.btn_saveBitmap.Text = "Save Bitmap";
 			this.btn_saveBitmap.UseVisualStyleBackColor = true;
+			this.btn_saveBitmap.Click += new System.EventHandler(this.btn_saveBitmap_Click);
 			// 
 			// num_bitmapYOffset
 			// 
