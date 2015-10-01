@@ -353,7 +353,7 @@ namespace TISFAT.Util
 			GL.Disable(EnableCap.Blend);
 		}
 
-		public static void BitmapOriginRotation(PointF position, SizeF size, float rotation, int texID)
+		public static void BitmapOriginRotation(PointF position, SizeF size, float rotation, int alpha, int texID)
 		{
 			GL.BindTexture(TextureTarget.Texture2D, texID);
 
@@ -365,7 +365,7 @@ namespace TISFAT.Util
 			GL.Translate(position.X, position.Y, 0);
 			GL.Rotate(rotation, 0, 0, 1);
 
-			GL.Color4(Color.White);
+			GL.Color4(Color.FromArgb(alpha, Color.White));
 
 			GL.Begin(PrimitiveType.Quads);
 			GL.TexCoord2(0, 0); GL.Vertex2(0, 0);
@@ -380,7 +380,7 @@ namespace TISFAT.Util
 			GL.Disable(EnableCap.Texture2D);
 		}
 
-		public static void Bitmap(PointF position, SizeF size, float rotation, int texID)
+		public static void Bitmap(PointF position, SizeF size, float rotation, int alpha, int texID)
 		{
 			GL.BindTexture(TextureTarget.Texture2D, texID);
 
@@ -393,7 +393,7 @@ namespace TISFAT.Util
 			GL.Rotate(rotation, 0, 0, 1);
 			GL.Translate(-size.Width / 2, -size.Height / 2, 0);
 
-			GL.Color4(Color.White);
+			GL.Color4(Color.FromArgb(alpha, Color.White));
 
 			GL.Begin(PrimitiveType.Quads);
 			GL.TexCoord2(0, 0); GL.Vertex2(0, 0);
@@ -410,7 +410,7 @@ namespace TISFAT.Util
 
 		public static void Bitmap(PointF position, SizeF size, float rotation, string path)
 		{
-			Bitmap(position, size, rotation, GetCachedBitmap(path));
+			Bitmap(position, size, rotation, 255, GetCachedBitmap(path));
 		}
 
 		public static void Text(string Text, PointF position, Font font, Color color)
@@ -432,7 +432,7 @@ namespace TISFAT.Util
 
 			int id = GenerateTexID(bmp);
 
-			Bitmap(position, size, 0, id);
+			Bitmap(position, size, 0, 255, id);
 
 			GL.DeleteTexture(id);
 		}
@@ -441,7 +441,7 @@ namespace TISFAT.Util
 		{
 			int id = GetCachedTextRect(Text, area, font, color, alignment);
 
-			Bitmap(position, new SizeF(area.Width, area.Height), 0, id);
+			Bitmap(position, new SizeF(area.Width, area.Height), 0, 255, id);
 		}
 
 		public static void PointLight(PointF position, Color color, Vector3 attenuation, float radius)

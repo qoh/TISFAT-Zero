@@ -21,6 +21,7 @@ namespace TISFAT.Entities
 
 			state.Bounds = Interpolation.Interpolate(t, current.Bounds, target.Bounds, mode);
 			state.Rotation = Interpolation.Interpolate(t, current.Rotation, target.Rotation, mode);
+			state.BitmapAlpha = (int)Interpolation.Interpolate(t, current.BitmapAlpha, target.BitmapAlpha, mode);
 
 			return state;
 		}
@@ -28,7 +29,7 @@ namespace TISFAT.Entities
 		public void Draw(IEntityState _state)
 		{
 			State state = _state as State;
-			Drawing.Bitmap(state.Bounds.Location, state.Bounds.Size, state.Rotation, TextureID);
+			Drawing.Bitmap(state.Bounds.Location, state.Bounds.Size, state.Rotation, state.BitmapAlpha, TextureID);
 		}
 
 		private void DrawHandle(State state, Color c)
@@ -46,7 +47,7 @@ namespace TISFAT.Entities
 		{
 			State state = _state as State;
 
-			Drawing.Bitmap(state.Bounds.Location, state.Bounds.Size, state.Rotation, TextureID);
+			Drawing.Bitmap(state.Bounds.Location, state.Bounds.Size, state.Rotation, state.BitmapAlpha,TextureID);
 			DrawHandle(state, Color.Cyan);
 		}
 
@@ -136,7 +137,7 @@ namespace TISFAT.Entities
 
 		public IEntityState CreateRefState()
 		{
-			return new State() { Bounds = new RectangleF(10, 10, Texture.Width, Texture.Height), TexWidth = Texture.Width, TexHeight = Texture.Height };
+			return new State() { Bounds = new RectangleF(10, 10, Texture.Width, Texture.Height), BitmapAlpha = 255, TexWidth = Texture.Width, TexHeight = Texture.Height };
 		}
 
 		public void Write(BinaryWriter writer)

@@ -183,7 +183,12 @@ namespace TISFAT
 			float frame;
 
 			if (PlayStart != null)
-				frame = ((float)(DateTime.Now - (DateTime)PlayStart).TotalSeconds) * Program.ActiveProject.FPS;
+			{
+				frame = ((float)(DateTime.Now - (DateTime)PlayStart).TotalSeconds);
+				float x = 1.0f / Program.ActiveProject.FPS;
+				frame = (float)Math.Floor(frame / x) * x;
+				frame *= Program.ActiveProject.AnimSpeed;
+            }
 			else
 				frame = 0.0f;
 

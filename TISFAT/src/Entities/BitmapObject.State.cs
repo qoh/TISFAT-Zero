@@ -13,6 +13,7 @@ namespace TISFAT.Entities
 			public float TexWidth;
 			public float TexHeight;
 			public float Rotation;
+			public int BitmapAlpha;
 
 			public State() { }
 
@@ -23,6 +24,7 @@ namespace TISFAT.Entities
 				state.TexHeight = this.TexHeight;
 				state.TexWidth = this.TexWidth;
 				state.Rotation = this.Rotation;
+				state.BitmapAlpha = this.BitmapAlpha;
 				return state;
 			}
 
@@ -115,6 +117,7 @@ namespace TISFAT.Entities
 				writer.Write((double)TexWidth);
 				writer.Write((double)TexHeight);
 				writer.Write((double)Rotation);
+				writer.Write(BitmapAlpha);
 			}
 
 			public void Read(BinaryReader reader, UInt16 version)
@@ -129,6 +132,8 @@ namespace TISFAT.Entities
 				TexWidth = (float)reader.ReadDouble();
 				TexHeight = (float)reader.ReadDouble();
 				Rotation = (float)reader.ReadDouble();
+				if (version >= 5)
+					BitmapAlpha = reader.ReadInt32();
 			}
 		}
 	}

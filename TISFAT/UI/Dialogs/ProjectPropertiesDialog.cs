@@ -15,7 +15,8 @@ namespace TISFAT
 		{
 			num_CanvasWidth.Value = Program.ActiveProject.Width;
 			num_CanvasHeight.Value = Program.ActiveProject.Height;
-			num_AnimSpeed.Value = (int)Program.ActiveProject.FPS;
+			num_AnimSpeed.Value = (int)Program.ActiveProject.AnimSpeed;
+			num_FPS.Value = (int)Program.ActiveProject.FPS;
 
 			Color color = Program.ActiveProject.BackColor;
 			pnl_CanvasColor.BackColor = color;
@@ -26,7 +27,8 @@ namespace TISFAT
 		{
 			Program.ActiveProject.Width = (int)num_CanvasWidth.Value;
 			Program.ActiveProject.Height = (int)num_CanvasHeight.Value;
-			Program.ActiveProject.FPS = (float)num_AnimSpeed.Value;
+			Program.ActiveProject.AnimSpeed = (float)num_AnimSpeed.Value;
+			Program.ActiveProject.FPS = (float)num_FPS.Value;
 			Program.ActiveProject.BackColor = pnl_CanvasColor.BackColor;
 
 			Program.Form_Canvas.GLContext_Init();

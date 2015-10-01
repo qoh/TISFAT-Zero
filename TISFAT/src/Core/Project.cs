@@ -13,7 +13,8 @@ namespace TISFAT
 		public List<Layer> Layers;
 		public Dictionary<Type, int> LayerCount;
 
-		public float FPS = 10.0f;
+		public float AnimSpeed = 10.0f;
+		public float FPS = 60.0f;
 		public int Width;
 		public int Height;
 
@@ -56,7 +57,7 @@ namespace TISFAT
 							//float w = (float)(t * Program.ActiveProject.FPS % (time - prev.Time));
 							//layer.Draw(prev.Time + w);
 							float wrapped = (float)(t % 2.0);
-							float frames = (wrapped - 1) * Program.ActiveProject.FPS;
+							float frames = (wrapped - 1) * Program.ActiveProject.AnimSpeed;
 							layer.Draw(time + frames);
 
 							Program.MainTimeline.GLContext.Invalidate();
@@ -86,6 +87,7 @@ namespace TISFAT
 		public void Write(BinaryWriter writer)
 		{
 			FileFormat.WriteList(writer, Layers);
+			writer.Write((double)AnimSpeed);
 			writer.Write((double)FPS);
 			writer.Write(Width);
 			writer.Write(Height);
@@ -101,7 +103,12 @@ namespace TISFAT
 			Layers = FileFormat.ReadList<Layer>(reader, version);
 			if (version >= 1)
 			{
-				FPS = (float)reader.ReadDouble();
+				AnimSpeed = (float)reader.ReadDouble();
+
+				if (version >= 3)
+				{
+					FPS = (float)reader.ReadDouble();
+				}
 
 				if (version >= 2)
 				{

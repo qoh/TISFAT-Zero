@@ -279,7 +279,7 @@ namespace TISFAT
 			if (dlg.ShowDialog() != DialogResult.OK)
 				return;
 
-			int fps = 60;
+			float fps = ActiveProject.FPS;
 			float delta = 1.0f / fps;
 
 			float endTime = 0.0f;
@@ -293,7 +293,7 @@ namespace TISFAT
 			}
 
 			int n = 0;
-			int nt = (int)Math.Ceiling(endTime / ActiveProject.FPS / delta);
+			int nt = (int)Math.Ceiling(endTime / ActiveProject.AnimSpeed / delta);
 
 			ProgressDialog progress = new ProgressDialog();
 			
@@ -307,12 +307,12 @@ namespace TISFAT
 			progress.Canceled += frameCancelHandler;
 			progress.Work = () =>
 			{
-				for (float time = 0; time <= endTime / ActiveProject.FPS && !frameCanceled; time += delta)
+				for (float time = 0; time <= endTime / ActiveProject.AnimSpeed && !frameCanceled; time += delta)
 				{
 					progress.DetailText = "Frame " + (n + 1) + " of " + (nt + 1);
 					progress.ProgressValue = n * 100 / nt;
 
-					Form_Canvas.DrawFrame(time * ActiveProject.FPS, true, true);
+					Form_Canvas.DrawFrame(time * ActiveProject.AnimSpeed, true, true);
 					Image.FromHbitmap(Form_Canvas.TakeScreenshot()).Save(temp + "\\" + n + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 					Application.DoEvents();
 					n++;

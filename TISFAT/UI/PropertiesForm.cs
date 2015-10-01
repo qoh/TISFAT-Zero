@@ -101,9 +101,13 @@ namespace TISFAT
 						break;
 					case "BitmapObject":
 						float rotation = ((BitmapObject.State)Program.MainTimeline.SelectedKeyframe.State).Rotation;
+						int alpha = ((BitmapObject.State)Program.MainTimeline.SelectedKeyframe.State).BitmapAlpha;
 
 						num_bitmapAngle.Value = (decimal)rotation;
 						tkb_bitmapAngle.Value = (int)rotation;
+
+						num_bitmapAlpha.Value = (decimal)alpha;
+						tkb_bitmapAlpha.Value = alpha;
 
 						pnl_BitmapProperties.Visible = true;
 						break;
@@ -713,6 +717,35 @@ namespace TISFAT
 				return;
 
 			num_bitmapAngle.Value = (decimal)tkb_bitmapAngle.Value;
+		}
+
+
+
+		private void num_bitmapAlpha_ValueChanged(object sender, EventArgs e)
+		{
+
+			if (Program.MainTimeline.SelectedKeyframe == null)
+				return;
+			if (Program.MainTimeline.SelectedKeyframe.State.GetType() != typeof(BitmapObject.State))
+				return;
+
+			tkb_bitmapAlpha.Value = (int)num_bitmapAlpha.Value;
+
+			BitmapObject.State state = Program.MainTimeline.SelectedKeyframe.State as BitmapObject.State;
+
+			state.BitmapAlpha = (int)num_bitmapAlpha.Value;
+
+			Program.MainTimeline.GLContext.Invalidate();
+		}
+
+		private void tkb_bitmapAlpha_ValueChanged(object sender, EventArgs e)
+		{
+			if (Program.MainTimeline.SelectedKeyframe == null)
+				return;
+			if (Program.MainTimeline.SelectedKeyframe.State.GetType() != typeof(BitmapObject.State))
+				return;
+
+			num_bitmapAlpha.Value = (decimal)tkb_bitmapAlpha.Value;
 		}
 
 		private void btn_stickOpenInEditor_Click(object sender, EventArgs e)
