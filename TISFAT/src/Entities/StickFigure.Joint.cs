@@ -189,7 +189,7 @@ namespace TISFAT.Entities
 
 					Drawing.BitmapOriginRotation(new PointF(
 						state.Location.X + Offsets.X, 
-						state.Location.Y + Offsets.Y), bitmap.Size, (float)angle, ID);
+						state.Location.Y + Offsets.Y), bitmap.Size, (float)angle, 255, ID);
 				}
 			}
 

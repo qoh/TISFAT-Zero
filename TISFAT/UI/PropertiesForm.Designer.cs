@@ -30,6 +30,17 @@
         {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PropertiesForm));
 			this.grp_Main = new System.Windows.Forms.GroupBox();
+			this.pnl_StickFigureProperties = new System.Windows.Forms.Panel();
+			this.lbl_stickBitmap = new System.Windows.Forms.Label();
+			this.cmb_stickBitmaps = new System.Windows.Forms.ComboBox();
+			this.btn_stickOpenInEditor = new System.Windows.Forms.Button();
+			this.label1 = new System.Windows.Forms.Label();
+			this.btn_stickApplyToFrameset = new System.Windows.Forms.Button();
+			this.btn_stickApplyToLayer = new System.Windows.Forms.Button();
+			this.lbl_stickFigureColor = new System.Windows.Forms.Label();
+			this.pnl_stickFigureColor = new System.Windows.Forms.Panel();
+			this.lbl_stickFigureColorNumbers = new System.Windows.Forms.Label();
+			this.pnl_stickFigureColorImg = new System.Windows.Forms.Panel();
 			this.pnl_BitmapProperties = new System.Windows.Forms.Panel();
 			this.lbl_bitmapAngle = new System.Windows.Forms.Label();
 			this.num_bitmapAngle = new System.Windows.Forms.NumericUpDown();
@@ -93,18 +104,12 @@
 			this.pnl_lineColor = new System.Windows.Forms.Panel();
 			this.lbl_lineColorNumbers = new System.Windows.Forms.Label();
 			this.pnl_lineColorImg = new System.Windows.Forms.Panel();
-			this.pnl_StickFigureProperties = new System.Windows.Forms.Panel();
-			this.label1 = new System.Windows.Forms.Label();
-			this.btn_stickApplyToFrameset = new System.Windows.Forms.Button();
-			this.btn_stickApplyToLayer = new System.Windows.Forms.Button();
-			this.lbl_stickFigureColor = new System.Windows.Forms.Label();
-			this.pnl_stickFigureColor = new System.Windows.Forms.Panel();
-			this.lbl_stickFigureColorNumbers = new System.Windows.Forms.Label();
-			this.pnl_stickFigureColorImg = new System.Windows.Forms.Panel();
-			this.btn_stickOpenInEditor = new System.Windows.Forms.Button();
-			this.cmb_stickBitmaps = new System.Windows.Forms.ComboBox();
-			this.lbl_stickBitmap = new System.Windows.Forms.Label();
+			this.lbl_bitmapAlpha = new System.Windows.Forms.Label();
+			this.num_bitmapAlpha = new System.Windows.Forms.NumericUpDown();
+			this.tkb_bitmapAlpha = new System.Windows.Forms.TrackBar();
 			this.grp_Main.SuspendLayout();
+			this.pnl_StickFigureProperties.SuspendLayout();
+			this.pnl_stickFigureColor.SuspendLayout();
 			this.pnl_BitmapProperties.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.num_bitmapAngle)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.tkb_bitmapAngle)).BeginInit();
@@ -122,14 +127,14 @@
 			this.pnl_LineProperties.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.num_lineThickness)).BeginInit();
 			this.pnl_lineColor.SuspendLayout();
-			this.pnl_StickFigureProperties.SuspendLayout();
-			this.pnl_stickFigureColor.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_bitmapAlpha)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.tkb_bitmapAlpha)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// grp_Main
 			// 
-			this.grp_Main.Controls.Add(this.pnl_StickFigureProperties);
 			this.grp_Main.Controls.Add(this.pnl_BitmapProperties);
+			this.grp_Main.Controls.Add(this.pnl_StickFigureProperties);
 			this.grp_Main.Controls.Add(this.pnl_TextProperties);
 			this.grp_Main.Controls.Add(this.pnl_PolyProperties);
 			this.grp_Main.Controls.Add(this.pnl_CircleProperties);
@@ -145,8 +150,126 @@
 			this.grp_Main.TabStop = false;
 			this.grp_Main.Text = "Active Figure";
 			// 
+			// pnl_StickFigureProperties
+			// 
+			this.pnl_StickFigureProperties.Controls.Add(this.lbl_stickBitmap);
+			this.pnl_StickFigureProperties.Controls.Add(this.cmb_stickBitmaps);
+			this.pnl_StickFigureProperties.Controls.Add(this.btn_stickOpenInEditor);
+			this.pnl_StickFigureProperties.Controls.Add(this.label1);
+			this.pnl_StickFigureProperties.Controls.Add(this.btn_stickApplyToFrameset);
+			this.pnl_StickFigureProperties.Controls.Add(this.btn_stickApplyToLayer);
+			this.pnl_StickFigureProperties.Controls.Add(this.lbl_stickFigureColor);
+			this.pnl_StickFigureProperties.Controls.Add(this.pnl_stickFigureColor);
+			this.pnl_StickFigureProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnl_StickFigureProperties.Location = new System.Drawing.Point(3, 16);
+			this.pnl_StickFigureProperties.Name = "pnl_StickFigureProperties";
+			this.pnl_StickFigureProperties.Size = new System.Drawing.Size(188, 294);
+			this.pnl_StickFigureProperties.TabIndex = 3;
+			this.pnl_StickFigureProperties.Visible = false;
+			// 
+			// lbl_stickBitmap
+			// 
+			this.lbl_stickBitmap.AutoSize = true;
+			this.lbl_stickBitmap.Location = new System.Drawing.Point(75, 125);
+			this.lbl_stickBitmap.Name = "lbl_stickBitmap";
+			this.lbl_stickBitmap.Size = new System.Drawing.Size(39, 13);
+			this.lbl_stickBitmap.TabIndex = 7;
+			this.lbl_stickBitmap.Text = "Bitmap";
+			this.lbl_stickBitmap.Visible = false;
+			// 
+			// cmb_stickBitmaps
+			// 
+			this.cmb_stickBitmaps.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmb_stickBitmaps.FormattingEnabled = true;
+			this.cmb_stickBitmaps.Location = new System.Drawing.Point(34, 141);
+			this.cmb_stickBitmaps.Name = "cmb_stickBitmaps";
+			this.cmb_stickBitmaps.Size = new System.Drawing.Size(121, 21);
+			this.cmb_stickBitmaps.TabIndex = 6;
+			this.cmb_stickBitmaps.Visible = false;
+			this.cmb_stickBitmaps.SelectionChangeCommitted += new System.EventHandler(this.cmb_stickBitmaps_SelectionChangeCommitted);
+			// 
+			// btn_stickOpenInEditor
+			// 
+			this.btn_stickOpenInEditor.Location = new System.Drawing.Point(23, 204);
+			this.btn_stickOpenInEditor.Name = "btn_stickOpenInEditor";
+			this.btn_stickOpenInEditor.Size = new System.Drawing.Size(142, 23);
+			this.btn_stickOpenInEditor.TabIndex = 5;
+			this.btn_stickOpenInEditor.Text = "Open in Stick Editor";
+			this.btn_stickOpenInEditor.UseVisualStyleBackColor = true;
+			this.btn_stickOpenInEditor.Visible = false;
+			this.btn_stickOpenInEditor.Click += new System.EventHandler(this.btn_stickOpenInEditor_Click);
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(53, 64);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(82, 13);
+			this.label1.TabIndex = 4;
+			this.label1.Text = "Apply Color To..";
+			// 
+			// btn_stickApplyToFrameset
+			// 
+			this.btn_stickApplyToFrameset.Location = new System.Drawing.Point(23, 80);
+			this.btn_stickApplyToFrameset.Name = "btn_stickApplyToFrameset";
+			this.btn_stickApplyToFrameset.Size = new System.Drawing.Size(60, 23);
+			this.btn_stickApplyToFrameset.TabIndex = 3;
+			this.btn_stickApplyToFrameset.Text = "Frameset";
+			this.btn_stickApplyToFrameset.UseVisualStyleBackColor = true;
+			this.btn_stickApplyToFrameset.Click += new System.EventHandler(this.btn_stickApplyToFrameset_Click);
+			// 
+			// btn_stickApplyToLayer
+			// 
+			this.btn_stickApplyToLayer.Location = new System.Drawing.Point(89, 80);
+			this.btn_stickApplyToLayer.Name = "btn_stickApplyToLayer";
+			this.btn_stickApplyToLayer.Size = new System.Drawing.Size(77, 23);
+			this.btn_stickApplyToLayer.TabIndex = 2;
+			this.btn_stickApplyToLayer.Text = "Layer";
+			this.btn_stickApplyToLayer.UseVisualStyleBackColor = true;
+			this.btn_stickApplyToLayer.Click += new System.EventHandler(this.btn_stickApplyToLayer_Click);
+			// 
+			// lbl_stickFigureColor
+			// 
+			this.lbl_stickFigureColor.AutoSize = true;
+			this.lbl_stickFigureColor.Location = new System.Drawing.Point(63, 13);
+			this.lbl_stickFigureColor.Name = "lbl_stickFigureColor";
+			this.lbl_stickFigureColor.Size = new System.Drawing.Size(63, 13);
+			this.lbl_stickFigureColor.TabIndex = 1;
+			this.lbl_stickFigureColor.Text = "Figure Color";
+			// 
+			// pnl_stickFigureColor
+			// 
+			this.pnl_stickFigureColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pnl_stickFigureColor.Controls.Add(this.lbl_stickFigureColorNumbers);
+			this.pnl_stickFigureColor.Controls.Add(this.pnl_stickFigureColorImg);
+			this.pnl_stickFigureColor.Location = new System.Drawing.Point(36, 29);
+			this.pnl_stickFigureColor.Name = "pnl_stickFigureColor";
+			this.pnl_stickFigureColor.Size = new System.Drawing.Size(116, 32);
+			this.pnl_stickFigureColor.TabIndex = 0;
+			// 
+			// lbl_stickFigureColorNumbers
+			// 
+			this.lbl_stickFigureColorNumbers.Location = new System.Drawing.Point(33, 6);
+			this.lbl_stickFigureColorNumbers.Name = "lbl_stickFigureColorNumbers";
+			this.lbl_stickFigureColorNumbers.Size = new System.Drawing.Size(81, 18);
+			this.lbl_stickFigureColorNumbers.TabIndex = 1;
+			this.lbl_stickFigureColorNumbers.Text = "255, 255, 255";
+			this.lbl_stickFigureColorNumbers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// pnl_stickFigureColorImg
+			// 
+			this.pnl_stickFigureColorImg.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pnl_stickFigureColorImg.Location = new System.Drawing.Point(3, 3);
+			this.pnl_stickFigureColorImg.Name = "pnl_stickFigureColorImg";
+			this.pnl_stickFigureColorImg.Size = new System.Drawing.Size(24, 24);
+			this.pnl_stickFigureColorImg.TabIndex = 0;
+			this.pnl_stickFigureColorImg.Click += new System.EventHandler(this.pnl_stickFigureColorImg_Click);
+			// 
 			// pnl_BitmapProperties
 			// 
+			this.pnl_BitmapProperties.Controls.Add(this.lbl_bitmapAlpha);
+			this.pnl_BitmapProperties.Controls.Add(this.num_bitmapAlpha);
+			this.pnl_BitmapProperties.Controls.Add(this.tkb_bitmapAlpha);
 			this.pnl_BitmapProperties.Controls.Add(this.lbl_bitmapAngle);
 			this.pnl_BitmapProperties.Controls.Add(this.num_bitmapAngle);
 			this.pnl_BitmapProperties.Controls.Add(this.tkb_bitmapAngle);
@@ -791,120 +914,37 @@
 			this.pnl_lineColorImg.TabIndex = 0;
 			this.pnl_lineColorImg.Click += new System.EventHandler(this.pnl_lineColorImg_Click);
 			// 
-			// pnl_StickFigureProperties
+			// lbl_bitmapAlpha
 			// 
-			this.pnl_StickFigureProperties.Controls.Add(this.lbl_stickBitmap);
-			this.pnl_StickFigureProperties.Controls.Add(this.cmb_stickBitmaps);
-			this.pnl_StickFigureProperties.Controls.Add(this.btn_stickOpenInEditor);
-			this.pnl_StickFigureProperties.Controls.Add(this.label1);
-			this.pnl_StickFigureProperties.Controls.Add(this.btn_stickApplyToFrameset);
-			this.pnl_StickFigureProperties.Controls.Add(this.btn_stickApplyToLayer);
-			this.pnl_StickFigureProperties.Controls.Add(this.lbl_stickFigureColor);
-			this.pnl_StickFigureProperties.Controls.Add(this.pnl_stickFigureColor);
-			this.pnl_StickFigureProperties.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnl_StickFigureProperties.Location = new System.Drawing.Point(3, 16);
-			this.pnl_StickFigureProperties.Name = "pnl_StickFigureProperties";
-			this.pnl_StickFigureProperties.Size = new System.Drawing.Size(188, 294);
-			this.pnl_StickFigureProperties.TabIndex = 3;
-			this.pnl_StickFigureProperties.Visible = false;
+			this.lbl_bitmapAlpha.AutoSize = true;
+			this.lbl_bitmapAlpha.Location = new System.Drawing.Point(77, 104);
+			this.lbl_bitmapAlpha.Name = "lbl_bitmapAlpha";
+			this.lbl_bitmapAlpha.Size = new System.Drawing.Size(34, 13);
+			this.lbl_bitmapAlpha.TabIndex = 5;
+			this.lbl_bitmapAlpha.Text = "Alpha";
 			// 
-			// label1
+			// num_bitmapAlpha
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(53, 64);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(82, 13);
-			this.label1.TabIndex = 4;
-			this.label1.Text = "Apply Color To..";
+			this.num_bitmapAlpha.Location = new System.Drawing.Point(34, 120);
+			this.num_bitmapAlpha.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+			this.num_bitmapAlpha.Name = "num_bitmapAlpha";
+			this.num_bitmapAlpha.Size = new System.Drawing.Size(120, 20);
+			this.num_bitmapAlpha.TabIndex = 4;
+			this.num_bitmapAlpha.ValueChanged += new System.EventHandler(this.num_bitmapAlpha_ValueChanged);
 			// 
-			// btn_stickApplyToFrameset
+			// tkb_bitmapAlpha
 			// 
-			this.btn_stickApplyToFrameset.Location = new System.Drawing.Point(23, 80);
-			this.btn_stickApplyToFrameset.Name = "btn_stickApplyToFrameset";
-			this.btn_stickApplyToFrameset.Size = new System.Drawing.Size(60, 23);
-			this.btn_stickApplyToFrameset.TabIndex = 3;
-			this.btn_stickApplyToFrameset.Text = "Frameset";
-			this.btn_stickApplyToFrameset.UseVisualStyleBackColor = true;
-			this.btn_stickApplyToFrameset.Click += new System.EventHandler(this.btn_stickApplyToFrameset_Click);
-			// 
-			// btn_stickApplyToLayer
-			// 
-			this.btn_stickApplyToLayer.Location = new System.Drawing.Point(89, 80);
-			this.btn_stickApplyToLayer.Name = "btn_stickApplyToLayer";
-			this.btn_stickApplyToLayer.Size = new System.Drawing.Size(77, 23);
-			this.btn_stickApplyToLayer.TabIndex = 2;
-			this.btn_stickApplyToLayer.Text = "Layer";
-			this.btn_stickApplyToLayer.UseVisualStyleBackColor = true;
-			this.btn_stickApplyToLayer.Click += new System.EventHandler(this.btn_stickApplyToLayer_Click);
-			// 
-			// lbl_stickFigureColor
-			// 
-			this.lbl_stickFigureColor.AutoSize = true;
-			this.lbl_stickFigureColor.Location = new System.Drawing.Point(63, 13);
-			this.lbl_stickFigureColor.Name = "lbl_stickFigureColor";
-			this.lbl_stickFigureColor.Size = new System.Drawing.Size(63, 13);
-			this.lbl_stickFigureColor.TabIndex = 1;
-			this.lbl_stickFigureColor.Text = "Figure Color";
-			// 
-			// pnl_stickFigureColor
-			// 
-			this.pnl_stickFigureColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pnl_stickFigureColor.Controls.Add(this.lbl_stickFigureColorNumbers);
-			this.pnl_stickFigureColor.Controls.Add(this.pnl_stickFigureColorImg);
-			this.pnl_stickFigureColor.Location = new System.Drawing.Point(36, 29);
-			this.pnl_stickFigureColor.Name = "pnl_stickFigureColor";
-			this.pnl_stickFigureColor.Size = new System.Drawing.Size(116, 32);
-			this.pnl_stickFigureColor.TabIndex = 0;
-			// 
-			// lbl_stickFigureColorNumbers
-			// 
-			this.lbl_stickFigureColorNumbers.Location = new System.Drawing.Point(33, 6);
-			this.lbl_stickFigureColorNumbers.Name = "lbl_stickFigureColorNumbers";
-			this.lbl_stickFigureColorNumbers.Size = new System.Drawing.Size(81, 18);
-			this.lbl_stickFigureColorNumbers.TabIndex = 1;
-			this.lbl_stickFigureColorNumbers.Text = "255, 255, 255";
-			this.lbl_stickFigureColorNumbers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// pnl_stickFigureColorImg
-			// 
-			this.pnl_stickFigureColorImg.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pnl_stickFigureColorImg.Location = new System.Drawing.Point(3, 3);
-			this.pnl_stickFigureColorImg.Name = "pnl_stickFigureColorImg";
-			this.pnl_stickFigureColorImg.Size = new System.Drawing.Size(24, 24);
-			this.pnl_stickFigureColorImg.TabIndex = 0;
-			this.pnl_stickFigureColorImg.Click += new System.EventHandler(this.pnl_stickFigureColorImg_Click);
-			// 
-			// btn_stickOpenInEditor
-			// 
-			this.btn_stickOpenInEditor.Location = new System.Drawing.Point(23, 204);
-			this.btn_stickOpenInEditor.Name = "btn_stickOpenInEditor";
-			this.btn_stickOpenInEditor.Size = new System.Drawing.Size(142, 23);
-			this.btn_stickOpenInEditor.TabIndex = 5;
-			this.btn_stickOpenInEditor.Text = "Open in Stick Editor";
-			this.btn_stickOpenInEditor.UseVisualStyleBackColor = true;
-			this.btn_stickOpenInEditor.Visible = false;
-			this.btn_stickOpenInEditor.Click += new System.EventHandler(this.btn_stickOpenInEditor_Click);
-			// 
-			// cmb_stickBitmaps
-			// 
-			this.cmb_stickBitmaps.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cmb_stickBitmaps.FormattingEnabled = true;
-			this.cmb_stickBitmaps.Location = new System.Drawing.Point(34, 141);
-			this.cmb_stickBitmaps.Name = "cmb_stickBitmaps";
-			this.cmb_stickBitmaps.Size = new System.Drawing.Size(121, 21);
-			this.cmb_stickBitmaps.TabIndex = 6;
-			this.cmb_stickBitmaps.Visible = false;
-			this.cmb_stickBitmaps.SelectionChangeCommitted += new System.EventHandler(this.cmb_stickBitmaps_SelectionChangeCommitted);
-			// 
-			// lbl_stickBitmap
-			// 
-			this.lbl_stickBitmap.AutoSize = true;
-			this.lbl_stickBitmap.Location = new System.Drawing.Point(75, 125);
-			this.lbl_stickBitmap.Name = "lbl_stickBitmap";
-			this.lbl_stickBitmap.Size = new System.Drawing.Size(39, 13);
-			this.lbl_stickBitmap.TabIndex = 7;
-			this.lbl_stickBitmap.Text = "Bitmap";
-			this.lbl_stickBitmap.Visible = false;
+			this.tkb_bitmapAlpha.Location = new System.Drawing.Point(34, 145);
+			this.tkb_bitmapAlpha.Maximum = 255;
+			this.tkb_bitmapAlpha.Name = "tkb_bitmapAlpha";
+			this.tkb_bitmapAlpha.Size = new System.Drawing.Size(120, 45);
+			this.tkb_bitmapAlpha.TabIndex = 3;
+			this.tkb_bitmapAlpha.TickStyle = System.Windows.Forms.TickStyle.Both;
+			this.tkb_bitmapAlpha.ValueChanged += new System.EventHandler(this.tkb_bitmapAlpha_ValueChanged);
 			// 
 			// PropertiesForm
 			// 
@@ -921,6 +961,9 @@
 			this.Text = "Properties";
 			this.Enter += new System.EventHandler(this.ToolboxForm_Enter);
 			this.grp_Main.ResumeLayout(false);
+			this.pnl_StickFigureProperties.ResumeLayout(false);
+			this.pnl_StickFigureProperties.PerformLayout();
+			this.pnl_stickFigureColor.ResumeLayout(false);
 			this.pnl_BitmapProperties.ResumeLayout(false);
 			this.pnl_BitmapProperties.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.num_bitmapAngle)).EndInit();
@@ -944,9 +987,8 @@
 			this.pnl_LineProperties.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.num_lineThickness)).EndInit();
 			this.pnl_lineColor.ResumeLayout(false);
-			this.pnl_StickFigureProperties.ResumeLayout(false);
-			this.pnl_StickFigureProperties.PerformLayout();
-			this.pnl_stickFigureColor.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.num_bitmapAlpha)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.tkb_bitmapAlpha)).EndInit();
 			this.ResumeLayout(false);
 
         }
@@ -1027,5 +1069,8 @@
 		private System.Windows.Forms.Button btn_stickOpenInEditor;
 		private System.Windows.Forms.Label lbl_stickBitmap;
 		private System.Windows.Forms.ComboBox cmb_stickBitmaps;
+		private System.Windows.Forms.Label lbl_bitmapAlpha;
+		private System.Windows.Forms.NumericUpDown num_bitmapAlpha;
+		private System.Windows.Forms.TrackBar tkb_bitmapAlpha;
 	}
 }
