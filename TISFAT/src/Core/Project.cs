@@ -105,7 +105,7 @@ namespace TISFAT
 			{
 				AnimSpeed = (float)reader.ReadDouble();
 
-				if (version >= 3)
+				if (version >= 5)
 				{
 					FPS = (float)reader.ReadDouble();
 				}

@@ -171,6 +171,14 @@ namespace TISFAT
 			StickFigure defaultFig = new StickFigure();
 			ActiveProject.Layers.Add(defaultFig.CreateDefaultLayer(0, 20, new LayerCreationArgs(0, "")));
 
+			if (Form_Canvas != null)
+			{
+				Program.Form_Canvas.GLContext_Init();
+				Program.Form_Canvas.CanvasForm_Resize(null, null);
+
+				Program.Form_Canvas.Size = new Size(ActiveProject.Width, ActiveProject.Height);
+			}
+
 			if (MainTimeline != null)
 			{
 				MainTimeline.ClearSelection();
@@ -200,6 +208,14 @@ namespace TISFAT
 
 			MainTimeline.ClearSelection();
 			MainTimeline.SeekStart();
+
+			if (Form_Canvas != null)
+			{
+				Program.Form_Canvas.GLContext_Init();
+				Program.Form_Canvas.CanvasForm_Resize(null, null);
+
+				Program.Form_Canvas.Size = new Size(ActiveProject.Width, ActiveProject.Height);
+			}
 
 			if (MainTimeline != null)
 				MainTimeline.GLContext.Invalidate();

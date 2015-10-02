@@ -134,6 +134,8 @@ namespace TISFAT.Entities
 				Rotation = (float)reader.ReadDouble();
 				if (version >= 5)
 					BitmapAlpha = reader.ReadInt32();
+				else
+					BitmapAlpha = 255;
 			}
 		}
 	}
