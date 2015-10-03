@@ -96,7 +96,6 @@ namespace TISFAT
 
 				Location.X = x1;
 				Location.Y = y1;
-
 				
 				if (!mparams.AbsoluteDrag)
 				{
