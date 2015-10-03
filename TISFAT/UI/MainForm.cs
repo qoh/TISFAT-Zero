@@ -46,6 +46,12 @@ namespace TISFAT
 			}
 		}
 
+		public bool PreviewCamera
+		{
+			get { return ckb_PreviewCamera.Checked; } 
+			set { ckb_PreviewCamera.Checked = value; }
+		}
+
 		public Timeline MainTimeline
 		{
 			get { return Form_Timeline == null ? null : Form_Timeline.MainTimeline; }
@@ -448,6 +454,11 @@ namespace TISFAT
 				Program.MainTimeline.TogglePause();
 				Form_Timeline.PlayButton.Checked = MainTimeline.IsPlaying();
 			}
+		}
+
+		private void ckb_PreviewCamera_CheckedChanged(object sender, EventArgs e)
+		{
+			MainTimeline.GLContext.Invalidate();
 		}
 	}
 }

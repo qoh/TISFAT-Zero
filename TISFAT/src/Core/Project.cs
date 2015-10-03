@@ -24,6 +24,10 @@ namespace TISFAT
 		{
 			Layers = new List<Layer>();
 			LayerCount = new Dictionary<Type, int>();
+
+			Camera camera = new Camera();
+			Layers.Add(camera.CreateDefaultLayer(0, 20, null));
+
 			Width = 460;
 			Height = 360;
 

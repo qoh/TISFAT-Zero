@@ -20,7 +20,8 @@ namespace TISFAT.Util
 			{5, typeof(CircleObject)},
 			{6, typeof(PolyObject)},
 			{7, typeof(TextObject)},
-			{8, typeof(CustomFigure)}
+			{8, typeof(CustomFigure)},
+			{9, typeof(Camera)}
 		};
 
 		static Dictionary<UInt16, Type> EntityStateTypes = new Dictionary<UInt16, Type>()
@@ -33,7 +34,8 @@ namespace TISFAT.Util
 			{5, typeof(CircleObject.State)},
 			{6, typeof(PolyObject.State)},
 			{7, typeof(TextObject.State)},
-			{8, typeof(CustomFigure.State)}
+			{8, typeof(CustomFigure.State)},
+			{9, typeof(Camera.State)}
 		};
 
 		public static UInt16 GetEntityID(Type type)

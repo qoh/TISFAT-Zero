@@ -114,7 +114,8 @@ namespace TISFAT
 			List<Layer> Layers = Program.ActiveProject.Layers;
 			int LastTime = 0;
 			foreach (Layer layer in Layers)
-				LastTime = (int)Math.Max(layer.Framesets[layer.Framesets.Count - 1].EndTime, LastTime);
+				if(layer.Data.GetType() != typeof(Camera))
+					LastTime = (int)Math.Max(layer.Framesets[layer.Framesets.Count - 1].EndTime, LastTime);
 
 			return LastTime;
 		}

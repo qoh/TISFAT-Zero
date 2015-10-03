@@ -36,6 +36,13 @@ namespace TISFAT.Util
 			return PointInRect(A, new RectangleF(B.X - Tolerance, B.Y - Tolerance, Tolerance * 2, Tolerance * 2));
 		}
 
+		public static SizeF fitToSize(float srcWidth, float srcHeight, float maxWidth, float maxHeight)
+		{
+			var ratio = Math.Min(maxWidth / srcWidth, maxHeight / srcHeight);
+
+			return new SizeF(srcWidth * ratio, srcHeight * ratio);
+		}
+
 		public static PointF Rotate(PointF dir, float phi)
 		{
 			float c = (float)Math.Cos(phi);
@@ -67,6 +74,16 @@ namespace TISFAT.Util
 		public static double Length(PointF a, PointF b)
 		{
 			return Length(Difference(a, b));
+		}
+
+		public static PointF TranslatePoint(PointF a, PointF b)
+		{
+			return new PointF(a.X + b.X, a.Y + b.Y);
+		}
+
+		public static PointF ScalePoint(PointF a, float scale)
+		{
+			return new PointF(a.X * scale, a.Y * scale);
 		}
 	}
 }

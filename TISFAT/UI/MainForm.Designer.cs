@@ -30,6 +30,7 @@
         {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.sc_MainContainer = new System.Windows.Forms.SplitContainer();
+			this.ckb_PreviewCamera = new System.Windows.Forms.CheckBox();
 			this.btn_ExportProject = new TISFAT.Controls.BitmapButtonControl();
 			this.btn_Redo = new TISFAT.Controls.BitmapButtonControl();
 			this.btn_Undo = new TISFAT.Controls.BitmapButtonControl();
@@ -85,6 +86,7 @@
 			// sc_MainContainer.Panel1
 			// 
 			this.sc_MainContainer.Panel1.BackColor = System.Drawing.SystemColors.Control;
+			this.sc_MainContainer.Panel1.Controls.Add(this.ckb_PreviewCamera);
 			this.sc_MainContainer.Panel1.Controls.Add(this.btn_ExportProject);
 			this.sc_MainContainer.Panel1.Controls.Add(this.btn_Redo);
 			this.sc_MainContainer.Panel1.Controls.Add(this.btn_Undo);
@@ -109,6 +111,18 @@
 			this.sc_MainContainer.SplitterDistance = 29;
 			this.sc_MainContainer.SplitterWidth = 2;
 			this.sc_MainContainer.TabIndex = 0;
+			// 
+			// ckb_PreviewCamera
+			// 
+			this.ckb_PreviewCamera.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.ckb_PreviewCamera.AutoSize = true;
+			this.ckb_PreviewCamera.Location = new System.Drawing.Point(516, 5);
+			this.ckb_PreviewCamera.Name = "ckb_PreviewCamera";
+			this.ckb_PreviewCamera.Size = new System.Drawing.Size(103, 17);
+			this.ckb_PreviewCamera.TabIndex = 14;
+			this.ckb_PreviewCamera.Text = "Preview Camera";
+			this.ckb_PreviewCamera.UseVisualStyleBackColor = true;
+			this.ckb_PreviewCamera.CheckedChanged += new System.EventHandler(this.ckb_PreviewCamera_CheckedChanged);
 			// 
 			// btn_ExportProject
 			// 
@@ -484,6 +498,7 @@
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
 			this.sc_MainContainer.Panel1.ResumeLayout(false);
+			this.sc_MainContainer.Panel1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.sc_MainContainer)).EndInit();
 			this.sc_MainContainer.ResumeLayout(false);
 			this.menuStrip1.ResumeLayout(false);
@@ -529,6 +544,7 @@
 		private Controls.BitmapButtonControl btn_Redo;
 		private Controls.BitmapButtonControl btn_Undo;
 		private Controls.BitmapButtonControl btn_ExportProject;
+		private System.Windows.Forms.CheckBox ckb_PreviewCamera;
 	}
 }
 
