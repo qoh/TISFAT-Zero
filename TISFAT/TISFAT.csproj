@@ -118,6 +118,7 @@
     <Compile Include="src\Interfaces\IManipulatable.cs" />
     <Compile Include="src\Util\Drawing.cs" />
     <Compile Include="src\Util\FileFormat.cs" />
+    <Compile Include="src\Util\FileFormat.Legacy.cs" />
     <Compile Include="src\Util\MathUtil.cs" />
     <Compile Include="UI\CanvasForm.cs">
       <SubType>Form</SubType>
@@ -176,7 +177,7 @@
     <Compile Include="UI\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="UI\Program.cs" />
     <Compile Include="src\Core\Keyframe.cs" />
     <Compile Include="src\Core\Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

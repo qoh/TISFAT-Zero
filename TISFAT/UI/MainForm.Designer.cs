@@ -64,6 +64,9 @@
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.originalTISFATToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.legacyTISFATZeroToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			((System.ComponentModel.ISupportInitialize)(this.sc_MainContainer)).BeginInit();
 			this.sc_MainContainer.Panel1.SuspendLayout();
 			this.sc_MainContainer.SuspendLayout();
@@ -357,6 +360,7 @@
             this.toolStripSeparator4,
             this.projectPropertiesToolStripMenuItem,
             this.toolStripSeparator3,
+            this.importToolStripMenuItem,
             this.exportToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -482,6 +486,28 @@
 			this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
 			this.checkForUpdatesToolStripMenuItem.Text = "Check for Updates";
 			// 
+			// importToolStripMenuItem
+			// 
+			this.importToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.originalTISFATToolStripMenuItem,
+            this.legacyTISFATZeroToolStripMenuItem});
+			this.importToolStripMenuItem.Name = "importToolStripMenuItem";
+			this.importToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+			this.importToolStripMenuItem.Text = "Import";
+			// 
+			// originalTISFATToolStripMenuItem
+			// 
+			this.originalTISFATToolStripMenuItem.Name = "originalTISFATToolStripMenuItem";
+			this.originalTISFATToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+			this.originalTISFATToolStripMenuItem.Text = "Original TISFAT";
+			this.originalTISFATToolStripMenuItem.Click += new System.EventHandler(this.originalTISFATToolStripMenuItem_Click);
+			// 
+			// legacyTISFATZeroToolStripMenuItem
+			// 
+			this.legacyTISFATZeroToolStripMenuItem.Name = "legacyTISFATZeroToolStripMenuItem";
+			this.legacyTISFATZeroToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+			this.legacyTISFATZeroToolStripMenuItem.Text = "Legacy TISFAT Zero";
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -545,6 +571,9 @@
 		private Controls.BitmapButtonControl btn_Undo;
 		private Controls.BitmapButtonControl btn_ExportProject;
 		private System.Windows.Forms.CheckBox ckb_PreviewCamera;
+		private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem originalTISFATToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem legacyTISFATZeroToolStripMenuItem;
 	}
 }
 

@@ -222,7 +222,7 @@ namespace TISFAT
 			State state = new State();
 
 			state.Location = new PointF(0, 0);
-			state.Scale = 0.75f;
+			state.Scale = 1.0f;
 			state.Angle = 0.0f;
 
 			return state;

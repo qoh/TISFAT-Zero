@@ -105,6 +105,13 @@ namespace TISFAT
 		public void Read(BinaryReader reader, UInt16 version)
 		{
 			Layers = FileFormat.ReadList<Layer>(reader, version);
+			if (version < 6)
+			{
+				Camera camera = new Camera();
+				Layers.Insert(0, camera.CreateDefaultLayer(0, (uint)Program.MainTimeline.GetLastTime(), null));
+			}
+
+
 			if (version >= 1)
 			{
 				AnimSpeed = (float)reader.ReadDouble();

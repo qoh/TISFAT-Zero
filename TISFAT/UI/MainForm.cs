@@ -460,5 +460,17 @@ namespace TISFAT
 		{
 			MainTimeline.GLContext.Invalidate();
 		}
+
+		private void originalTISFATToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			OpenFileDialog dialog = new OpenFileDialog();
+			dialog.AddExtension = true;
+			dialog.Filter = "TISFAT Project|*.sif";
+
+			if (dialog.ShowDialog() == DialogResult.OK)
+			{
+				TISFAT.Util.Legacy.FileFormat.Load(dialog.FileName);
+			}
+		}
 	}
 }

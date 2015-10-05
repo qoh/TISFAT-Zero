@@ -650,7 +650,7 @@ namespace TISFAT
 
 		public void RemoveLayer()
 		{
-			if (SelectedLayer != null)
+			if (SelectedLayer != null && SelectedLayer.Data.GetType() != typeof(Camera))
 				if (Program.ActiveProject.Layers.IndexOf(SelectedLayer) != -1)
 					Program.Form_Main.Do(new LayerRemoveAction(SelectedLayer));
 		}
