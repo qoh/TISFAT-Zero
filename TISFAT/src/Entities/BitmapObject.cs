@@ -15,9 +15,14 @@ namespace TISFAT.Entities
 
 		public IEntityState Interpolate(float t, IEntityState _current, IEntityState _target, EntityInterpolationMode mode)
 		{
-			State current = _current as State;
-			State target = _target as State;
-			State state = new State();
+            return _Interpolate(t, _current, _target, mode);
+		}
+
+        private static IEntityState _Interpolate(float t, IEntityState _current, IEntityState _target, EntityInterpolationMode mode)
+        {
+            State current = _current as State;
+            State target = _target as State;
+            State state = new State();
 
 			state.Bounds = Interpolation.Interpolate(t, current.Bounds, target.Bounds, mode);
 			state.Rotation = Interpolation.Interpolate(t, current.Rotation, target.Rotation, mode);

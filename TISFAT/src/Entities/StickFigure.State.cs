@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using TISFAT.Util;
 
 namespace TISFAT.Entities
 {
@@ -16,7 +17,12 @@ namespace TISFAT.Entities
 				return new State { Root = this.Root.Clone() };
 			}
 
-			public void Write(BinaryWriter writer)
+            public IEntityState Interpolate(IEntityState target, float interpolationAmount)
+            {
+                return StickFigure._Interpolate(interpolationAmount, this, target, EntityInterpolationMode.Linear);
+            }
+
+            public void Write(BinaryWriter writer)
 			{
 				Root.Write(writer);
 			}

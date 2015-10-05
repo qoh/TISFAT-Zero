@@ -554,8 +554,10 @@ namespace TISFAT
 
 		public void InsertKeyframe()
 		{
-			Keyframe prev = null;
-			uint TargetTime = (uint)FrameNum;
+            Keyframe prev = null;
+            Keyframe next = null;
+
+            uint TargetTime = (uint)FrameNum;
 
 			for (int i = 0; i < SelectedFrameset.Keyframes.Count; i++)
 			{
@@ -563,15 +565,22 @@ namespace TISFAT
 					if (SelectedFrameset.Keyframes[i + 1] != null)
 						if (SelectedFrameset.Keyframes[i + 1].Time > TargetTime)
 						{
+                            // If there isn't a keyframe after this, something has gone horribly wrong, abort!
+                            if (i + 1 >= SelectedFrameset.Keyframes.Count)
+                                return;
+
 							prev = SelectedFrameset.Keyframes[i];
+                            next = SelectedFrameset.Keyframes[i + 1];
 							break;
 						}
 			}
 
-			if (prev == null)
+			if (prev == null || next == null)
 				return;
 
-			Program.Form_Main.Do(new KeyframeAddAction(SelectedLayer, SelectedFrameset, TargetTime, prev.State.Copy()));
+            // Add the new frame in an interpolated form between its neighbouring keyframes.
+            float interpolationAmount = (TargetTime - prev.Time) / (float)(next.Time - prev.Time);
+			Program.Form_Main.Do(new KeyframeAddAction(SelectedLayer, SelectedFrameset, TargetTime, prev.State.Copy(), next.State.Copy(), interpolationAmount));
 		}
 
 		public void RemoveKeyframe()

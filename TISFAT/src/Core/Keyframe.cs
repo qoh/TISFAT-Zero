@@ -18,13 +18,13 @@ namespace TISFAT
 		Keyframe AddedFrame;
 		int PrevSelectedFrame;
 
-		public KeyframeAddAction(Layer l, Frameset f, uint targ, IEntityState state)
+		public KeyframeAddAction(Layer l, Frameset f, uint targ, IEntityState start, IEntityState end, float interpolation)
 		{
 			LayerIndex = Program.ActiveProject.Layers.IndexOf(l);
 			FramesetIndex = l.Framesets.IndexOf(f);
 
-			Time = targ;
-			State = state;
+            Time = targ;
+			State = start.Interpolate(end, interpolation);
 		}
 
 		public bool Do()
