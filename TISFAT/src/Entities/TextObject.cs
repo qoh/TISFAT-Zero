@@ -13,14 +13,14 @@ namespace TISFAT.Entities
 	{
 		public TextObject() { }
 
-        public IEntityState Interpolate(float t, IEntityState _current, IEntityState _target, EntityInterpolationMode mode)
-        {
-            return _Interpolate(t, _current, _target, mode);
-        }
+		public IEntityState Interpolate(float t, IEntityState _current, IEntityState _target, EntityInterpolationMode mode)
+		{
+			return _Interpolate(t, _current, _target, mode);
+		}
 
-        private static IEntityState _Interpolate(float t, IEntityState _current, IEntityState _target, EntityInterpolationMode mode)
-        {
-            State current = _current as State;
+		private static IEntityState _Interpolate(float t, IEntityState _current, IEntityState _target, EntityInterpolationMode mode)
+		{
+			State current = _current as State;
 			State target = _target as State;
 			State state = new State();
 

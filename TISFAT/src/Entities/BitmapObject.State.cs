@@ -28,12 +28,12 @@ namespace TISFAT.Entities
 				return state;
 			}
 
-            public IEntityState Interpolate(IEntityState target, float interpolationAmount)
-            {
-                return BitmapObject._Interpolate(interpolationAmount, this, target, EntityInterpolationMode.Linear);
-            }
+			public IEntityState Interpolate(IEntityState target, float interpolationAmount)
+			{
+				return BitmapObject._Interpolate(interpolationAmount, this, target, EntityInterpolationMode.Linear);
+			}
 
-            public int HandleAtLocation(PointF location)
+			public int HandleAtLocation(PointF location)
 			{
 				float size = Math.Min(12, TexWidth / 2);
 

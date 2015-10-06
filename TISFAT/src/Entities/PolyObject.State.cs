@@ -30,12 +30,12 @@ namespace TISFAT.Entities
 				return state;
 			}
 
-            public IEntityState Interpolate(IEntityState target, float interpolationAmount)
-            {
-                return PolyObject._Interpolate(interpolationAmount, this, target, EntityInterpolationMode.Linear);
-            }
+			public IEntityState Interpolate(IEntityState target, float interpolationAmount)
+			{
+				return PolyObject._Interpolate(interpolationAmount, this, target, EntityInterpolationMode.Linear);
+			}
 
-            public void Move(PointF target, ManipulateParams mparams)
+			public void Move(PointF target, ManipulateParams mparams)
 			{
 				if(mparams.AbsoluteDrag)
 				{

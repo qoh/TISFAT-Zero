@@ -27,7 +27,7 @@ namespace TISFAT
 
 	public interface IEntityState : ISaveable
 	{
-        IEntityState Copy();
-        IEntityState Interpolate(IEntityState target, float interpolationAmount);
-    }
+		IEntityState Copy();
+		IEntityState Interpolate(IEntityState target, float interpolationAmount);
+	}
 }

@@ -23,7 +23,7 @@ namespace TISFAT
 			LayerIndex = Program.ActiveProject.Layers.IndexOf(l);
 			FramesetIndex = l.Framesets.IndexOf(f);
 
-            Time = targ;
+			Time = targ;
 			State = start.Interpolate(end, interpolation);
 		}
 

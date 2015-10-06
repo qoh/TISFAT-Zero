@@ -31,12 +31,12 @@ namespace TISFAT.Entities
 				return state;
 			}
 
-            public IEntityState Interpolate(IEntityState target, float interpolationAmount)
-            {
-                return LineObject._Interpolate(interpolationAmount, this, target, EntityInterpolationMode.Linear);
-            }
+			public IEntityState Interpolate(IEntityState target, float interpolationAmount)
+			{
+				return LineObject._Interpolate(interpolationAmount, this, target, EntityInterpolationMode.Linear);
+			}
 
-            public int HandleAtLocation(PointF location)
+			public int HandleAtLocation(PointF location)
 			{
 				if (MathUtil.IsPointInPoint(location, Handle1, 4))
 					return 0;
