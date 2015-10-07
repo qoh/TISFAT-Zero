@@ -40,6 +40,31 @@ namespace TISFAT.Util.Legacy
 
 	namespace Structures
 	{
+		public enum TBrushStyle
+		{
+			bsSolid,
+			bsClear,
+			bsHorizontal,
+			bsVertical,
+			bsFDiagonal,
+			bsBDiagonal,
+			bsCross,
+			bsDiagCross
+		}
+
+		public enum TPenStyle
+		{
+			psSolid,
+			psDash,
+			psDot,
+			psDashDot,
+			psDashDotDot,
+			psClear,
+			psInsideFrame,
+			psUserStyle,
+			psAlternate
+		}
+
 		public enum ObjectsEnum
 		{
 			O_RECTANGLE = 1,
@@ -84,8 +109,6 @@ namespace TISFAT.Util.Legacy
 			C_MAXPART = 200
 		}
 
-
-
 		public class TPntObj
 		{
 			public int Top;
@@ -114,15 +137,15 @@ namespace TISFAT.Util.Legacy
 			public int m_nMidX, m_nMidY;
 		}
 
-		public class TTextObj
+		public class TTextObj : TObject
 		{
 			public bool m_bMoving;
 			public int m_nX, m_nY;
 			public List<TPntObj> PntList;
 			public Color m_InColor, m_OutColor;
-			// TBrushStyle m_styleOuter;
+			public TBrushStyle m_styleOuter;
 			public string m_strFontName;
-			// TFontStyles m_FontStyle;
+			//TFontStyles m_FontStyle;
 			public string m_strCaption;
 			public byte m_alpha;
 			public float m_angle;
@@ -135,66 +158,71 @@ namespace TISFAT.Util.Legacy
 			public string m_strCaption;
 		}
 
-		public class TPolyObj
+		public class TObject
+		{
+
+		}
+
+		public class TPolyObj : TObject
 		{
 			public bool m_bMoving;
 			public int m_nX, m_nY;
 			public List<TPntObj> PntList;
 			public int m_nLineWidth;
 			public Color m_InColor, m_OutColor;
-			// TBrushStyle m_styleInner;
-			// TPenStyle m_StyleOuter;
+			public TBrushStyle m_styleInner;
+			public TPenStyle m_styleOuter;
 			public byte m_alpha;
 			public float m_angle;
 			public byte m_aliased;
 			public int m_body; // ptr
 		}
 
-		public class TSoundObj
+		public class TSoundObj : TObject
 		{
 			public bool m_bMoving;
 			public int m_nX, m_nY;
-			// TLabel Pnt;
+			//TLabel Pnt;
 			public string m_strFileName;
 		}
 
-		public class TOvalObj
+		public class TOvalObj : TObject
 		{
 			public bool m_bMoving;
 			public int m_nX, m_nY;
 			public List<TPntObj> PntList;
 			public int m_nLineWidth;
 			public Color m_InColor, m_OutColor;
-			// TBrushStyle m_styleInner;
-			// TPenStyle m_styleOuter;
+			public TBrushStyle m_styleInner;
+			public TPenStyle m_styleOuter;
 			public byte m_alpha;
 			public float m_angle;
 			public byte m_aliased;
 			public int m_body; // ptr
 		}
 
-		public class TSquareObj
+		public class TSquareObj : TObject
 		{
 			public bool m_bMoving;
 			public int m_nX, m_nY;
 			public List<TPntObj> PntList;
 			public int m_nLineWidth;
 			public Color m_InColor, m_OutColor;
-			// TBrushStyle m_styleInner;
-			// TPenStyle m_styleOuter;
+			public TBrushStyle m_styleInner;
+			public TPenStyle m_styleOuter;
 			public byte m_alpha;
 			public float m_angle;
 			public byte m_aliased;
 			public int m_body; // ptr
 		}
 
-		public class TBitman
+		public class TBitman : TObject
 		{
 			public bool m_bMoving;
 			public int m_nX, m_nY;
 			public string m_strFileName;
 			public List<TPntObj> PntList;
-			// TGPBitmap Imarge;
+			public Bitmap Imarge;
 			public bool m_bLoadNew;
 			public byte m_alpha;
 			public float m_angle;
@@ -203,7 +231,7 @@ namespace TISFAT.Util.Legacy
 			public int m_body; // ptr
 		}
 
-		public class TStickMan
+		public class TStickMan : TObject
 		{
 			// TpCanvas m_pCanvas;
 			public bool m_bMOving;
@@ -241,7 +269,7 @@ namespace TISFAT.Util.Legacy
 			public byte m_aliased;
 		}
 
-		public class TSpecialStickMan
+		public class TSpecialStickMan : TObject
 		{
 			public int m_nDrawStyle;
 			// TpCanvas m_pCanvas;
@@ -253,14 +281,14 @@ namespace TISFAT.Util.Legacy
 			public List<int> Lng; // capacity of 13
 			public Color m_InColor, m_OutColor;
 			public int m_nLineWidth;
-			// TBrushStyle m_styleInner;
-			// TPenStyle m_styleOuter;
+			public TBrushStyle m_styleInner;
+			public TPenStyle m_styleOuter;
 			public byte m_alpha;
 			public float m_angle;
 			public byte m_aliased;
 		}
 
-		public class TStickManBMP
+		public class TStickManBMP : TObject
 		{
 			// TpCanvas m_pCanvas;
 			public bool m_bMoving;
@@ -290,7 +318,7 @@ namespace TISFAT.Util.Legacy
 		public class TIFrame
 		{
 			public int m_nType;
-			public int m_pObject; // ptr
+			public TObject m_pObject; // ptr
 			public int m_FrameNo;
 			public int m_nOnion;
 		}
@@ -303,22 +331,22 @@ namespace TISFAT.Util.Legacy
 
 		public class TLayerObj
 		{
-			public int m_pObject; // ptr
-			public int m_pTempObject; // ptr
+			public TObject m_pObject; // ptr
+			public TObject m_pTempObject; // ptr
 			public int m_nType;
-			public List<object> m_olFrames;
+			public List<TSingleFrame> m_olFrames;
 			public string m_strName;
-			public List<object> m_olActions;
+			public List<TActionObj> m_olActions;
 			public bool m_bHidden;
 		}
 
-		public class TEditVideoObj
+		public class TEditVideoObj : TObject
 		{
 			public string m_strFileName;
 			public List<TPntObj> PntList;
 		}
 
-		public class TLimbList
+		public class TLimbList : TObject
 		{
 			public List<TJoint> m_olJoints;
 			public bool m_bCalcIK;
@@ -334,9 +362,38 @@ namespace TISFAT.Util.Legacy
 			public int m_nBitmapCount;
 			public List<Bitmap> m_olBitmaps;
 			public bool bShallowBitmaps;
+
+			public void Read(BinaryReader reader)
+			{
+				m_olJoints = new List<TJoint>();
+				m_olBitmaps = new List<Bitmap>();
+
+				m_nDrawMode = reader.ReadInt32();
+				m_sTension = reader.ReadSingle();
+				m_nCurveWidth = reader.ReadInt32();
+				m_nJointCount = reader.ReadInt32();
+				int nCount = reader.ReadInt32();
+
+				for (int i = 0; i < nCount; i++)
+				{
+					TJoint joint = new TJoint();
+					joint.Read(reader);
+					m_olJoints.Add(joint);
+				}
+
+				m_nPoseCount = reader.ReadInt32();
+				m_sAlpha = 1.0f - (m_nPoseCount / 255.0f);
+
+				m_nBitmapCount = reader.ReadInt32();
+				for (int f = 0; f < m_nBitmapCount; f++)
+				{
+					Bitmap bmp = FileFormat.LoadBitmap(reader);
+					m_olBitmaps.Add(bmp);
+				}
+			}
 		}
 
-		public class TJoint
+		public class TJoint : TObject
 		{
 			public int m_nX, m_nY;
 			public int m_nState;
@@ -358,6 +415,45 @@ namespace TISFAT.Util.Legacy
 			public int m_pData; // ptr
 			public string m_strName;
 			public List<TJoint> m_olChildren;
+
+			public void Read(BinaryReader reader)
+			{
+				int f;
+				TJoint pChild;
+				int nCount;
+
+				m_olChildren = new List<TJoint>();
+
+				m_nDrawAs = reader.ReadInt32();
+				m_nDrawWidth = reader.ReadInt32();
+				m_nLineWidth = reader.ReadInt32();
+				m_bShowLine = reader.ReadBoolean();
+				byte[] color = new byte[] { reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte() };
+				m_nColor = Functions.Helpers.ODDCOLORtoCOLOR(color);
+				byte[] inColor = new byte[] { reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte() };
+				m_nInColor = Functions.Helpers.ODDCOLORtoCOLOR(inColor);
+				m_bFill = reader.ReadBoolean();
+				m_nX = reader.ReadInt32();
+				m_nY = reader.ReadInt32();
+				m_nState = reader.ReadInt32();
+				m_nLength = reader.ReadInt32();
+				m_nIndex = reader.ReadInt32();
+				m_sAngleToParent = reader.ReadSingle();
+				m_nBitmap = reader.ReadInt32();
+				m_nBMPXoffs = reader.ReadInt32();
+				m_nBMPYoofs = reader.ReadInt32();
+				m_sBitmapRotation = reader.ReadSingle();
+				m_nBitmapAlpha = reader.ReadByte();
+				nCount = reader.ReadInt32();
+
+				for(f = 0; f < nCount; f++)
+				{
+					pChild = new TJoint();
+					pChild.m_pParent = this;
+					pChild.Read(reader);
+					m_olChildren.Add(pChild);
+				}
+			}
 		}
 	}
 
@@ -370,7 +466,7 @@ namespace TISFAT.Util.Legacy
 			byte[] img = reader.ReadBytes(l);
 			MemoryStream ms = new MemoryStream(img);
 
-			Bitmap bitmap = new Bitmap(ms);
+			Bitmap bitmap = (Bitmap)Image.FromStream(ms);
 
 			ms.Close();
 			ms.Dispose();
@@ -469,7 +565,7 @@ namespace TISFAT.Util.Legacy
 				bRead = false;
 				nActionCount = reader.ReadInt32();
 
-				List<TActionObj> Actions = new List<TActionObj>();
+				pLayer.m_olActions = new List<TActionObj>();
 
 				for(g = 0; g < nActionCount - 1; g++)
 				{
@@ -499,10 +595,10 @@ namespace TISFAT.Util.Legacy
 							break;
 					}
 
-					Actions.Add(action);
+					pLayer.m_olActions.Add(action);
 				}
 
-				List<TSingleFrame> Framesets = new List<TSingleFrame>();
+				pLayer.m_olFrames = new List<TSingleFrame>();
 
 				// for (f = 0; f < nFrameSetCount - 1; f++)
 				for (f = 0; f < nFrameSetCount; f++)
@@ -563,13 +659,13 @@ namespace TISFAT.Util.Legacy
 							}
 
 							obj.m_nLineWidth = reader.ReadInt32();
-							//obj.m_InColor = reader.ReadBytes(sizeof(m_InColor));
-							//obj.m_OutColor = reader.ReadBytes(sizeof(m_OutColor));
+							byte[] m_InColor = new byte[] { reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte() };
+							byte[] m_OutColor = new byte[] { reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte() };
 
-							//obj.m_styleInner = reader.ReadBytes(sizeof(m_styleInner));
-							//obj.m_styleOuter = reader.ReadBytes(sizeof(m_styleOuter));
+							obj.m_styleInner = (TBrushStyle)reader.ReadByte();
+							obj.m_styleOuter = (TPenStyle)reader.ReadByte();
 
-							if(bNewFormat)
+							if (bNewFormat)
 							{
 								obj.m_angle = reader.ReadSingle();
 								obj.m_alpha = reader.ReadByte();
@@ -662,6 +758,8 @@ namespace TISFAT.Util.Legacy
 								obj.m_alpha = reader.ReadByte();
 								obj.m_aliased = reader.ReadByte();
 							}
+
+							frame.m_pObject = obj;
 						}
 						else if (pLayer.m_nType == (int)ObjectsEnum.O_STICKMANBMP)
 						{
@@ -713,6 +811,8 @@ namespace TISFAT.Util.Legacy
 								obj.m_alpha = reader.ReadByte();
 								obj.m_aliased = reader.ReadByte();
 							}
+
+							frame.m_pObject = obj;
 						}
 						else if (pLayer.m_nType == (int)ObjectsEnum.O_TEXT)
 						{
@@ -735,7 +835,7 @@ namespace TISFAT.Util.Legacy
 							byte[] m_InColor = new byte[] { reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte() };
 							byte[] m_OutColor = new byte[] { reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte() };
 
-							// obj.m_styleOuter = reader.ReadBytes(sizeof(obj.m_styleOuter));
+							obj.m_styleOuter = (TBrushStyle)reader.ReadByte();
 							// obj.m_FontStyle = reader.ReadBytes(sizeof(obj.m_FontStyle));
 
 							i = reader.ReadInt32();
@@ -749,6 +849,8 @@ namespace TISFAT.Util.Legacy
 								obj.m_alpha = reader.ReadByte();
 								obj.m_aliased = reader.ReadByte();
 							}
+
+							frame.m_pObject = obj;
 						}
 						else if (pLayer.m_nType == (int)ObjectsEnum.O_OVAL)
 						{
@@ -779,6 +881,8 @@ namespace TISFAT.Util.Legacy
 								obj.m_alpha = reader.ReadByte();
 								obj.m_aliased = reader.ReadByte();
 							}
+
+							frame.m_pObject = obj;
 						}
 						else if (pLayer.m_nType == (int)ObjectsEnum.O_STICKMAN)
 						{
@@ -818,6 +922,8 @@ namespace TISFAT.Util.Legacy
 								obj.m_alpha = reader.ReadByte();
 								obj.m_aliased = reader.ReadByte();
 							}
+
+							frame.m_pObject = obj;
 						}
 						else if (pLayer.m_nType == (int)ObjectsEnum.O_T2STICK)
 						{
@@ -825,20 +931,16 @@ namespace TISFAT.Util.Legacy
 
 							if(!bRead)
 							{
-								// Read from stream
-								obj.m_nDrawMode = reader.ReadInt32();
-								obj.m_sTension = reader.ReadSingle();
-								obj.m_nCurveWidth = reader.ReadInt32();
-								obj.m_nJointCount = reader.ReadInt32();
-								int nCount = reader.ReadInt32();
-
-								for(i = 0; i < nCount; i++)
-								{
-
-								}
-
-								// Copy from temp object
+								obj.Read(reader);
+								//obj.CopyFrom(pLayer.m_pTempObject);
+								bRead = true;
 							}
+							else
+							{
+								obj.Read(reader);
+							}
+
+							frame.m_pObject = obj;
 						}
 						else if (pLayer.m_nType == (int)ObjectsEnum.O_SPECIALSTICK)
 						{
@@ -852,8 +954,8 @@ namespace TISFAT.Util.Legacy
 							obj.m_nLineWidth = reader.ReadInt32();
 							obj.m_nHeadDiam = reader.ReadInt32();
 
-							// obj.m_styleInner = reader.ReadBytes(sizeof(obj.m_styleInner));
-							// obj.m_styleOuter = reader.ReadBytes(sizeof(obj.m_styleOuter));
+							obj.m_styleInner = (TBrushStyle)reader.ReadByte();
+							obj.m_styleOuter = (TPenStyle)reader.ReadByte();
 
 							obj.PntList = new List<TPntObj>();
 
@@ -895,16 +997,52 @@ namespace TISFAT.Util.Legacy
 								obj.m_alpha = reader.ReadByte();
 								obj.m_aliased = reader.ReadByte();
 							}
+
+							frame.m_pObject = obj;
 						}
 						else if (pLayer.m_nType == (int) ObjectsEnum.O_NOTHING || pLayer.m_nType == (int)ObjectsEnum.O_POLY)
 						{
-							// stuff
+							pLayer.m_nType = (int)ObjectsEnum.O_POLY;
+							TPolyObj obj = new TPolyObj();
+
+							i = reader.ReadInt32();
+							if(pLayer.m_pObject == null)
+							{
+								pLayer.m_pObject = new TPolyObj();
+								pLayer.m_pTempObject = new TPolyObj();
+							}
+
+							TPolyObj theObj = pLayer.m_pObject as TPolyObj;
+
+							for(h = 0; h < i; h++)
+							{
+								x = reader.ReadInt32();
+								y = reader.ReadInt32();
+								theObj.PntList[h].Left = x;
+								theObj.PntList[h].Top = y;
+							}
+
+							theObj.m_nLineWidth = reader.ReadInt32();
+							byte[] m_InColor = new byte[] { reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte() };
+							byte[] m_OutColor = new byte[] { reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte() };
+
+							theObj.m_styleInner = (TBrushStyle)reader.ReadByte();
+							theObj.m_styleOuter = (TPenStyle)reader.ReadByte();
+
+							if (bNewFormat)
+							{
+								obj.m_angle = reader.ReadSingle();
+								obj.m_alpha = reader.ReadByte();
+								obj.m_aliased = reader.ReadByte();
+							}
+
+							frame.m_pObject = obj;
 						}
 
 						frameset.m_Frames.Add(frame);
 					}
-
-					Framesets.Add(frameset);
+					
+					pLayer.m_olFrames.Add(frameset);
 				}
 
 				pLayers.Add(pLayer);
