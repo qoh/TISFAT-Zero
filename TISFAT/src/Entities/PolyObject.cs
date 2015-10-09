@@ -48,7 +48,7 @@ namespace TISFAT.Entities
 			{
 				PointF loc = new PointF(point.Location.X - 2, point.Location.Y - 2);
 				Drawing.Rectangle(loc, new Size(4, 4), Color.Red);
-				Drawing.RectangleLine(loc, new Size(4, 4), Color.White);
+				Drawing.RectangleLine(loc, new Size(4, 4), 1, Color.White);
 			}
 		}
 

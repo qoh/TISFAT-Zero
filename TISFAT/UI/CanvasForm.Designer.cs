@@ -32,9 +32,8 @@
 			// 
 			// CanvasForm
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.AutoScroll = true;
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+			this.AutoSize = true;
 			this.CausesValidation = false;
 			this.ClientSize = new System.Drawing.Size(444, 321);
 			this.ControlBox = false;
@@ -43,6 +42,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "CanvasForm";
+			this.ShowIcon = false;
 			this.Text = "Canvas";
 			this.Load += new System.EventHandler(this.Canvas_Load);
 			this.Scroll += new System.Windows.Forms.ScrollEventHandler(this.CanvasForm_Scroll);

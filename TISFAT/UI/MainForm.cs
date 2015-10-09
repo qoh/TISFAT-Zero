@@ -46,6 +46,12 @@ namespace TISFAT
 			}
 		}
 
+		public bool PreviewCamera
+		{
+			get { return ckb_PreviewCamera.Checked; } 
+			set { ckb_PreviewCamera.Checked = value; }
+		}
+
 		public Timeline MainTimeline
 		{
 			get { return Form_Timeline == null ? null : Form_Timeline.MainTimeline; }
@@ -112,14 +118,26 @@ namespace TISFAT
 		private void UpdateUndoRedoButtons()
 		{
 			if (UndoList.Count > 0)
+			{
 				btn_Undo.ImageDefault = Properties.Resources.undo;
+				undoToolStripMenuItem.Image = Properties.Resources.undo_16;
+			}
 			else
+			{
 				btn_Undo.ImageDefault = Properties.Resources.undo_gray;
+				undoToolStripMenuItem.Image = Properties.Resources.undo_gray_16;
+			}
 
 			if (RedoList.Count > 0)
+			{
 				btn_Redo.ImageDefault = Properties.Resources.redo;
+				redoToolStripMenuItem.Image = Properties.Resources.redo_16;
+			}
 			else
+			{
 				btn_Redo.ImageDefault = Properties.Resources.redo_gray;
+				redoToolStripMenuItem.Image = Properties.Resources.redo_gray_16;
+			}
 		}
 
 		private void Undo()
@@ -214,7 +232,7 @@ namespace TISFAT
 				Program.Form_Canvas.GLContext_Init();
 				Program.Form_Canvas.CanvasForm_Resize(null, null);
 
-				Program.Form_Canvas.Size = new Size(ActiveProject.Width, ActiveProject.Height);
+				Program.Form_Canvas.ClientSize = new Size(ActiveProject.Width, ActiveProject.Height);
 			}
 
 			if (MainTimeline != null)
@@ -432,22 +450,34 @@ namespace TISFAT
 
 		public void CheckKeyPressed(KeyEventArgs e)
 		{
-			if (e.Control)
+			
+		}
+
+		private void ckb_PreviewCamera_CheckedChanged(object sender, EventArgs e)
+		{
+			MainTimeline.GLContext.Invalidate();
+		}
+
+		private void importToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			OpenFileDialog dialog = new OpenFileDialog();
+			dialog.AddExtension = true;
+			dialog.Filter = "TISFAT Project|*.sif";
+
+			if (dialog.ShowDialog() == DialogResult.OK)
 			{
-				if (e.KeyCode == Keys.S)
-					saveToolStripMenuItem_Click(null, null);
-				else if (e.KeyCode == Keys.O)
-					openToolStripMenuItem_Click(null, null);
-				else if (e.KeyCode == Keys.Z)
-					Undo();
-				else if (e.KeyCode == Keys.Y)
-					Redo();
+				TISFAT.Util.Legacy.FileFormat.Load(dialog.FileName);
 			}
-			else if (e.KeyCode == Keys.Space)
-			{
-				Program.MainTimeline.TogglePause();
-				Form_Timeline.PlayButton.Checked = MainTimeline.IsPlaying();
-			}
+		}
+
+		private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Undo();
+		}
+
+		private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Redo();
 		}
 	}
 }

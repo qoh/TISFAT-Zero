@@ -70,6 +70,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Core\Camera.cs" />
     <Compile Include="src\Core\Frameset.cs" />
     <Compile Include="src\Entities\BitmapObject.cs" />
     <Compile Include="src\Entities\BitmapObject.State.cs">
@@ -117,6 +118,7 @@
     <Compile Include="src\Interfaces\IManipulatable.cs" />
     <Compile Include="src\Util\Drawing.cs" />
     <Compile Include="src\Util\FileFormat.cs" />
+    <Compile Include="src\Util\FileFormat.Legacy.cs" />
     <Compile Include="src\Util\MathUtil.cs" />
     <Compile Include="UI\CanvasForm.cs">
       <SubType>Form</SubType>
@@ -175,7 +177,7 @@
     <Compile Include="UI\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="UI\Program.cs" />
     <Compile Include="src\Core\Keyframe.cs" />
     <Compile Include="src\Core\Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -327,6 +329,25 @@
     <Content Include="ffmpeg.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\cog_16.png" />
+    <None Include="Resources\bullet_disk_16.png" />
+    <None Include="Resources\update_16.png" />
+    <None Include="Resources\undo_gray_16.png" />
+    <None Include="Resources\undo_16.png" />
+    <None Include="Resources\setting_tools_16.png" />
+    <None Include="Resources\save_as_16.png" />
+    <None Include="Resources\redo_gray_16.png" />
+    <None Include="Resources\redo_16.png" />
+    <None Include="Resources\page_import_16.png" />
+    <None Include="Resources\page_go_16.png" />
+    <None Include="Resources\page_export_16.png" />
+    <None Include="Resources\page_add_16.png" />
+    <None Include="Resources\page_16.png" />
+    <None Include="Resources\information_16.png" />
+    <None Include="Resources\help_16.png" />
+    <None Include="Resources\document_export_16.png" />
+    <None Include="Resources\diskette_16.png" />
+    <None Include="Resources\delete_16.png" />
     <None Include="Resources\transform_move.png" />
     <None Include="Resources\cursor.png" />
     <None Include="Resources\bullet_delete.png" />

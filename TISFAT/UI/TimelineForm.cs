@@ -87,8 +87,12 @@ namespace TISFAT
 
 			toolStripSeparator4.Visible = FrameType != 0;
 
-			moveLayerUpToolStripMenuItem.Enabled = Program.ActiveProject.Layers.IndexOf(MainTimeline.SelectedLayer) > 0;
+			moveLayerUpToolStripMenuItem.Enabled = Program.ActiveProject.Layers.IndexOf(MainTimeline.SelectedLayer) > 1;
 			moveLayerDownToolStripMenuItem.Enabled = Program.ActiveProject.Layers.IndexOf(MainTimeline.SelectedLayer) < Program.ActiveProject.Layers.Count - 1;
+			moveLayerDownToolStripMenuItem.Enabled = MainTimeline.SelectedLayer.Data.GetType() != typeof(Camera);
+
+			removeLayerToolStripMenuItem.Enabled = MainTimeline.SelectedLayer.Data.GetType() != typeof(Camera);
+            removeLayerToolStripMenuItem.Visible = MainTimeline.SelectedLayer.Data.GetType() != typeof(Camera);
 
 			cxtm_Timeline.Show(GLContext, Location);
 		}
