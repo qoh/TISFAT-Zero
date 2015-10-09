@@ -422,6 +422,7 @@
 			// 
 			// importToolStripMenuItem
 			// 
+			this.importToolStripMenuItem.Enabled = false;
 			this.importToolStripMenuItem.Image = global::TISFAT.Properties.Resources.page_import_16;
 			this.importToolStripMenuItem.Name = "importToolStripMenuItem";
 			this.importToolStripMenuItem.Size = new System.Drawing.Size(214, 22);

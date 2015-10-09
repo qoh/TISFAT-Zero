@@ -232,7 +232,7 @@ namespace TISFAT
 				Program.Form_Canvas.GLContext_Init();
 				Program.Form_Canvas.CanvasForm_Resize(null, null);
 
-				Program.Form_Canvas.Size = new Size(ActiveProject.Width, ActiveProject.Height);
+				Program.Form_Canvas.ClientSize = new Size(ActiveProject.Width, ActiveProject.Height);
 			}
 
 			if (MainTimeline != null)
