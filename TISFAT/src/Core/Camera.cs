@@ -56,9 +56,9 @@ namespace TISFAT
 			public void Move(PointF target, ManipulateParams mparams)
 			{
 				var x1 = Location.X;
-				var x2 = Location.X + Program.ActiveProject.Width;
+				var x2 = Location.X + Program.ActiveProject.Width * Scale;
 				var y1 = Location.Y;
-				var y2 = Location.Y + Program.ActiveProject.Height;
+				var y2 = Location.Y + Program.ActiveProject.Height * Scale;
 
 				RectangleF Bounds = new RectangleF(Location, new SizeF(Program.ActiveProject.Width * Scale, Program.ActiveProject.Height * Scale));
 
@@ -148,12 +148,42 @@ namespace TISFAT
 		{
 			State state = _state as State;
 
-			Drawing.RectangleLine(state.Location, new SizeF(Program.ActiveProject.Width * state.Scale, Program.ActiveProject.Height * state.Scale), Color.Red);
+			if (Program.Form_Main.PreviewCamera)
+				return;
+
+			Drawing.RectangleLine(state.Location, new SizeF(Program.ActiveProject.Width * state.Scale, Program.ActiveProject.Height * state.Scale), 2, Color.Red);
 		}
 
-		public void DrawEditable(IEntityState state)
+		public void DrawEditable(IEntityState _state)
 		{
-			// I do nothing for now! :D
+			State state = _state as State;
+
+			Drawing.RectangleLine(state.Location, new SizeF(Program.ActiveProject.Width * state.Scale, Program.ActiveProject.Height * state.Scale), 2, Color.Red);
+
+			float offset = 15.0f;
+			float x1, x2;
+			float y1, y2;
+			float dx, dy;
+
+			x1 = state.Location.X;
+			y1 = state.Location.Y;
+			x2 = state.Location.X + Program.ActiveProject.Width * state.Scale;
+			y2 = state.Location.Y + Program.ActiveProject.Height * state.Scale;
+
+			dx = Program.ActiveProject.Width * state.Scale / 8.0f;
+			dy = Program.ActiveProject.Height * state.Scale / 8.0f;
+
+			Drawing.Line(new PointF(x1 + offset, y1 + offset), new PointF(x1 + offset, y1 + offset + dy), 2, Color.Red);
+			Drawing.Line(new PointF(x1 + offset, y1 + offset), new PointF(x1 + offset + dx, y1 + offset), 2, Color.Red);
+
+			Drawing.Line(new PointF(x2 - offset, y1 + offset), new PointF(x2 - offset, y1 + offset + dy), 2, Color.Red);
+			Drawing.Line(new PointF(x2 - offset, y1 + offset), new PointF(x2 - offset - dx, y1 + offset), 2, Color.Red);
+
+			Drawing.Line(new PointF(x1 + offset, y2 - offset), new PointF(x1 + offset, y2 - offset - dy), 2, Color.Red);
+			Drawing.Line(new PointF(x1 + offset, y2 - offset), new PointF(x1 + offset + dx, y2 - offset), 2, Color.Red);
+
+			Drawing.Line(new PointF(x2 - offset, y2 - offset), new PointF(x2 - offset, y2 - offset - dy), 2, Color.Red);
+			Drawing.Line(new PointF(x2 - offset, y2 - offset), new PointF(x2 - offset - dx, y2 - offset), 2, Color.Red);
 		}
 
 		public class ManipulateParams : IManipulatableParams
@@ -167,6 +197,9 @@ namespace TISFAT
 		public ManipulateResult TryManipulate(IEntityState _state, Point location, System.Windows.Forms.MouseButtons button, System.Windows.Forms.Keys modifiers)
 		{
 			State state = _state as State;
+
+			if (Program.Form_Main.PreviewCamera)
+				return null;
 
 			if (state == null)
 				return null;

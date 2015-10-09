@@ -99,7 +99,7 @@ namespace TISFAT
 							}
 
 							Drawing.Line(new PointF(FrameToPixels(keyframe.Time) + 12, y + 8),
-							new PointF(FrameToPixels(frameset.Keyframes[frameset.Keyframes.IndexOf(keyframe) + 1].Time) - 3, y + 8), lineColor);
+							new PointF(FrameToPixels(frameset.Keyframes[frameset.Keyframes.IndexOf(keyframe) + 1].Time) - 3, y + 8), 1, lineColor);
 						}
 					}
 
@@ -123,11 +123,11 @@ namespace TISFAT
 		public void DrawMisc(List<Layer> Layers, int layerHeight, int frameWidth, int frameCount)
 		{
 			// Layer separators
-			Drawing.Line(new PointF(80, 16), new PointF(80 + frameWidth, 16), Color.Gray);
+			Drawing.Line(new PointF(80, 16), new PointF(80 + frameWidth, 16), 1, Color.Gray);
 			for (int i = 0; i < Layers.Count; i++)
 			{
 				int y = 16 * (i + 2);
-				Drawing.Line(new PointF(80, y), new PointF(80 + frameWidth, y), Color.Gray);
+				Drawing.Line(new PointF(80, y), new PointF(80 + frameWidth, y), 1, Color.Gray);
 			}
 		}
 
@@ -138,14 +138,14 @@ namespace TISFAT
 
 			int tx = 79 + (int)Math.Floor(GetCurrentFrame() * 9);
 			Drawing.Rectangle(new PointF(tx + 4, 16), new SizeF(3, GLContext.Height - 16), Color.Red);
-			Drawing.RectangleLine(new PointF(tx + 2, 0), new SizeF(7, 15), Color.Red);
+			Drawing.RectangleLine(new PointF(tx + 2, 0), new SizeF(7, 15), 1, Color.Red);
 		}
 
 		public void DrawTimelineLayer()
 		{
 			// Draw TIMELINE layer
 			Drawing.Rectangle(new PointF(0, 0), new SizeF(80, 16), Color.FromArgb(70, 120, 255));
-			Drawing.RectangleLine(new PointF(0, 0), new SizeF(80, 16), Color.Black);
+			Drawing.RectangleLine(new PointF(0, 0), new SizeF(80, 16), 1, Color.Black);
 			Drawing.TextRect("Timeline", new PointF(0, 1), new Size(80, 16), new Font("Segoe UI", 9, FontStyle.Bold), Color.Black, StringAlignment.Center);
 
 		}
@@ -176,7 +176,7 @@ namespace TISFAT
 				Drawing.TextRect("" + (frame + 1) % 10, new PointF(x - 9, 0), new Size(9, 16), new Font("Segoe UI", 8), Color.Black, StringAlignment.Center);
 			}
 
-			Drawing.Line(new PointF(80, 16), new PointF(frameCount * 9, 16), Color.Gray);
+			Drawing.Line(new PointF(80, 16), new PointF(frameCount * 9, 16), 1, Color.Gray);
 		}
 
 		public void DrawTimelineOutlines(int frameCount, int layerHeight)
@@ -184,7 +184,7 @@ namespace TISFAT
 			for (int frame = 0; frame < frameCount; frame++)
 			{
 				int x = 80 + 9 * (frame + 1);
-				Drawing.Line(new PointF(x, 0), new PointF(x, 16 + layerHeight), Color.Gray);
+				Drawing.Line(new PointF(x, 0), new PointF(x, 16 + layerHeight), 1, Color.Gray);
 			}
 		}
 
@@ -196,7 +196,7 @@ namespace TISFAT
 				Layer layer = Layers[i];
 
 				Drawing.Rectangle(new PointF(0, 16 * (i + 1)), new SizeF(80, 16), layer.TimelineColor);
-				Drawing.RectangleLine(new PointF(0, 16 * (i + 1)), new SizeF(80, 16), Color.Black);
+				Drawing.RectangleLine(new PointF(0, 16 * (i + 1)), new SizeF(80, 16), 1, Color.Black);
 				Drawing.TextRect(layer.Name, new PointF(1, 16 * (i + 1) + 1), new Size(65, 16), new Font("Segoe UI", 9), Color.Black, StringAlignment.Near);
 
 				if (HoveredLayerIndex == i || !layer.Visible)

@@ -118,14 +118,26 @@ namespace TISFAT
 		private void UpdateUndoRedoButtons()
 		{
 			if (UndoList.Count > 0)
+			{
 				btn_Undo.ImageDefault = Properties.Resources.undo;
+				undoToolStripMenuItem.Image = Properties.Resources.undo_16;
+			}
 			else
+			{
 				btn_Undo.ImageDefault = Properties.Resources.undo_gray;
+				undoToolStripMenuItem.Image = Properties.Resources.undo_gray_16;
+			}
 
 			if (RedoList.Count > 0)
+			{
 				btn_Redo.ImageDefault = Properties.Resources.redo;
+				redoToolStripMenuItem.Image = Properties.Resources.redo_16;
+			}
 			else
+			{
 				btn_Redo.ImageDefault = Properties.Resources.redo_gray;
+				redoToolStripMenuItem.Image = Properties.Resources.redo_gray_16;
+			}
 		}
 
 		private void Undo()
@@ -438,22 +450,7 @@ namespace TISFAT
 
 		public void CheckKeyPressed(KeyEventArgs e)
 		{
-			if (e.Control)
-			{
-				if (e.KeyCode == Keys.S)
-					saveToolStripMenuItem_Click(null, null);
-				else if (e.KeyCode == Keys.O)
-					openToolStripMenuItem_Click(null, null);
-				else if (e.KeyCode == Keys.Z)
-					Undo();
-				else if (e.KeyCode == Keys.Y)
-					Redo();
-			}
-			else if (e.KeyCode == Keys.Space)
-			{
-				Program.MainTimeline.TogglePause();
-				Form_Timeline.PlayButton.Checked = MainTimeline.IsPlaying();
-			}
+			
 		}
 
 		private void ckb_PreviewCamera_CheckedChanged(object sender, EventArgs e)
@@ -461,7 +458,7 @@ namespace TISFAT
 			MainTimeline.GLContext.Invalidate();
 		}
 
-		private void originalTISFATToolStripMenuItem_Click(object sender, EventArgs e)
+		private void importToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			OpenFileDialog dialog = new OpenFileDialog();
 			dialog.AddExtension = true;
@@ -471,6 +468,16 @@ namespace TISFAT
 			{
 				TISFAT.Util.Legacy.FileFormat.Load(dialog.FileName);
 			}
+		}
+
+		private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Undo();
+		}
+
+		private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Redo();
 		}
 	}
 }

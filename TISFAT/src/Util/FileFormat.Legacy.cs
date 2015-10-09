@@ -7,6 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using TISFAT.Util.Legacy.Structures;
 
+// This stuff goes in this cage and NOBODY HAS PERMISSION TO LET IT OUT PLEASE NO.
+// Code for legacy format support goes here and lets just sort of forget it exists.
+// Currently its a carbon copy of noshbar's old code and data structures.
+
 namespace TISFAT.Util.Legacy
 {
 	namespace Functions

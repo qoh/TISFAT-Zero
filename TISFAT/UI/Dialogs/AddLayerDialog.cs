@@ -7,7 +7,6 @@ namespace TISFAT
 {
 	public partial class AddLayerDialog : Form
 	{
-		bool FigureFromFile;
 		StickFigure CustomFigure;
 		StickFigure.State CustomFigureState;
 

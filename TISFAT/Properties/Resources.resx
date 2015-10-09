@@ -334,4 +334,61 @@
   <data name="transform_move" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\transform_move.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="bullet_disk_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bullet_disk_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cog_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cog_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="delete_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\delete_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="diskette_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\diskette_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="document_export_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\document_export_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="help_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\help_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="information_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\information_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="page_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\page_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="page_add_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\page_add_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="page_export_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\page_export_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="page_go_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\page_go_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="page_import_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\page_import_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="redo_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\redo_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="redo_gray_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\redo_gray_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="save_as_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\save_as_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="setting_tools_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\setting_tools_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="undo_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\undo_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="undo_gray_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\undo_gray_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="update_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\update_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

@@ -42,9 +42,9 @@ namespace TISFAT.Entities
 			SizeF Siz = new SizeF(6, 6);
 
 			Drawing.Rectangle(Loc1, Siz, Color.Blue);
-			Drawing.RectangleLine(Loc1, Siz, Color.FromArgb(127, 255 - state.Color.R, 255 - state.Color.G, 255 - state.Color.B));
+			Drawing.RectangleLine(Loc1, Siz, 1, Color.FromArgb(127, 255 - state.Color.R, 255 - state.Color.G, 255 - state.Color.B));
 			Drawing.Rectangle(Loc2, Siz, Color.Red);
-			Drawing.RectangleLine(Loc2, Siz, Color.FromArgb(127, 255 - state.Color.R, 255 - state.Color.G, 255 - state.Color.B));
+			Drawing.RectangleLine(Loc2, Siz, 1, Color.FromArgb(127, 255 - state.Color.R, 255 - state.Color.G, 255 - state.Color.B));
 		}
 
 		public class ManipulateParams : IManipulatableParams

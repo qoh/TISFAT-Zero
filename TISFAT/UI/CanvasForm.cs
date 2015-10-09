@@ -39,6 +39,7 @@ namespace TISFAT
 
 			ContextContainer = new Panel();
 			ContextContainer.Padding = new Padding(1);
+			ContextContainer.Margin = new Padding(0);
 			ContextContainer.BackColor = Color.Black;
 
 			Console.WriteLine(ContextContainer.Anchor);
@@ -75,6 +76,7 @@ namespace TISFAT
 			GLContext.MakeCurrent();
 
 			ContextContainer.Size = new System.Drawing.Size(Program.ActiveProject.Width + 1, Program.ActiveProject.Height + 1);
+			ClientSize = new Size(Program.ActiveProject.Width + 2, Program.ActiveProject.Height + 2);
 
 			GL.MatrixMode(MatrixMode.Projection);
 			GL.LoadIdentity();
@@ -85,21 +87,12 @@ namespace TISFAT
 
 		public void CanvasForm_Resize(object sender, EventArgs e)
 		{
-			if (Width < ContextContainer.Width)
-			{
-				ContextContainer.Anchor |= AnchorStyles.Left;
-				ContextContainer.Location = new System.Drawing.Point(0, ContextContainer.Location.Y);
-			}
-			else
-				ContextContainer.Anchor &= ~AnchorStyles.Left;
+			AutoSize = false;
 
-			if (Height < ContextContainer.Height)
-			{
-				ContextContainer.Anchor |= AnchorStyles.Top;
-				ContextContainer.Location = new System.Drawing.Point(ContextContainer.Location.X, 0);
-			}
-			else
-				ContextContainer.Anchor &= ~AnchorStyles.Top;
+			ContextContainer.Left = (ClientSize.Width - ContextContainer.Width) / 2;
+			ContextContainer.Top = (ClientSize.Height - ContextContainer.Height) / 2;
+
+			AutoSize = true;
 		}
 		#endregion
 

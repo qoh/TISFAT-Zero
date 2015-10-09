@@ -201,7 +201,7 @@ namespace TISFAT.Entities
 				if (HandleVisible)
 				{
 					Drawing.Rectangle(Loc, Siz, HandleColor);
-					Drawing.RectangleLine(Loc, Siz, Color.FromArgb(255, 255 - JointColor.R, 255 - JointColor.G, 255 - JointColor.B));
+					Drawing.RectangleLine(Loc, Siz, 1, Color.FromArgb(255, 255 - JointColor.R, 255 - JointColor.G, 255 - JointColor.B));
 				}
 
 				for (var i = 0; i < Children.Count; i++)

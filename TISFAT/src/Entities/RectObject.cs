@@ -36,16 +36,16 @@ namespace TISFAT.Entities
 			float size = 6;
 			
 			Drawing.Rectangle(new PointF(state.Bounds.Left, state.Bounds.Top), new SizeF(size, size), Color.Red);
-			Drawing.RectangleLine(new PointF(state.Bounds.Left, state.Bounds.Top), new SizeF(size, size), Color.White);
+			Drawing.RectangleLine(new PointF(state.Bounds.Left, state.Bounds.Top), new SizeF(size, size), 1, Color.White);
 
 			Drawing.Rectangle(new PointF(state.Bounds.Right - size, state.Bounds.Top), new SizeF(size, size), Color.Blue);
-			Drawing.RectangleLine(new PointF(state.Bounds.Right - size, state.Bounds.Top), new SizeF(size, size), Color.White);
+			Drawing.RectangleLine(new PointF(state.Bounds.Right - size, state.Bounds.Top), new SizeF(size, size), 1, Color.White);
 
 			Drawing.Rectangle(new PointF(state.Bounds.Left, state.Bounds.Bottom - size), new SizeF(size, size), Color.Green);
-			Drawing.RectangleLine(new PointF(state.Bounds.Left, state.Bounds.Bottom - size), new SizeF(size, size), Color.White);
+			Drawing.RectangleLine(new PointF(state.Bounds.Left, state.Bounds.Bottom - size), new SizeF(size, size), 1, Color.White);
 
 			Drawing.Rectangle(new PointF(state.Bounds.Right - size, state.Bounds.Bottom - size), new SizeF(size, size), Color.Yellow);
-			Drawing.RectangleLine(new PointF(state.Bounds.Right - size, state.Bounds.Bottom - size), new SizeF(size, size), Color.White);
+			Drawing.RectangleLine(new PointF(state.Bounds.Right - size, state.Bounds.Bottom - size), new SizeF(size, size), 1, Color.White);
 		}
 
 		public void DrawEditable(IEntityState _state)
