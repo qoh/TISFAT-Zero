@@ -5,6 +5,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using TISFAT.Entities;
+using TISFAT.Util;
 
 namespace TISFAT
 {
@@ -38,6 +39,7 @@ namespace TISFAT
 
 			ContextContainer = new Panel();
 			ContextContainer.Padding = new Padding(1);
+			ContextContainer.Margin = new Padding(0);
 			ContextContainer.BackColor = Color.Black;
 
 			Console.WriteLine(ContextContainer.Anchor);
@@ -74,6 +76,7 @@ namespace TISFAT
 			GLContext.MakeCurrent();
 
 			ContextContainer.Size = new System.Drawing.Size(Program.ActiveProject.Width + 1, Program.ActiveProject.Height + 1);
+			ClientSize = new Size(Program.ActiveProject.Width + 2, Program.ActiveProject.Height + 2);
 
 			GL.MatrixMode(MatrixMode.Projection);
 			GL.LoadIdentity();
@@ -84,21 +87,12 @@ namespace TISFAT
 
 		public void CanvasForm_Resize(object sender, EventArgs e)
 		{
-			if (Width < ContextContainer.Width)
-			{
-				ContextContainer.Anchor |= AnchorStyles.Left;
-				ContextContainer.Location = new System.Drawing.Point(0, ContextContainer.Location.Y);
-			}
-			else
-				ContextContainer.Anchor &= ~AnchorStyles.Left;
+			AutoSize = false;
 
-			if (Height < ContextContainer.Height)
-			{
-				ContextContainer.Anchor |= AnchorStyles.Top;
-				ContextContainer.Location = new System.Drawing.Point(ContextContainer.Location.X, 0);
-			}
-			else
-				ContextContainer.Anchor &= ~AnchorStyles.Top;
+			ContextContainer.Left = (ClientSize.Width - ContextContainer.Width) / 2;
+			ContextContainer.Top = (ClientSize.Height - ContextContainer.Height) / 2;
+
+			AutoSize = true;
 		}
 		#endregion
 
@@ -112,13 +106,48 @@ namespace TISFAT
 			if (lights)
 				GLContext.MakeCurrent();
 
+			GL.PushMatrix();
+			
 			GL.ClearColor(Program.ActiveProject.BackColor);
 
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 
+			if (Program.Form_Main.PreviewCamera || render)
+			{
+				Camera.State state = (Camera.State)Program.ActiveProject.Layers[0].FindCurrentState(time);
+
+				if (state == null)
+				{
+					GLContext.SwapBuffers();
+					return;
+				}
+
+				GL.Translate(-state.Location.X * 1 / state.Scale, -state.Location.Y * 1 / state.Scale, 0.0f);
+				GL.Scale(1 / state.Scale, 1 / state.Scale, 1.0);
+				GL.Rotate(state.Angle, 1.0, 0.0, 0.0);
+			}
+
 			Program.ActiveProject.Draw(time, render, lights);
 
+			GL.PopMatrix();
+
 			GLContext.SwapBuffers();
+		}
+		
+		PointF UnprojectMousePos(PointF location)
+		{
+			Camera.State state = (Camera.State)Program.ActiveProject.Layers[0].FindCurrentState(Program.MainTimeline.SelectedKeyframe.Time);
+
+			PointF translate = Program.Form_Main.PreviewCamera ? state.Location : new PointF(0, 0);
+			float scale = Program.Form_Main.PreviewCamera ? state.Scale : 1;
+			float angle = Program.Form_Main.PreviewCamera ? state.Angle : 0;
+
+			return MathUtil.TranslatePoint(MathUtil.ScalePoint(MathUtil.Rotate(location, angle), scale), translate);
+		}
+		
+		Point RoundMousePos(PointF location)
+		{
+			return new Point((int)location.X, (int)location.Y);
 		}
 
 		public void GLContext_MouseDown(object sender, MouseEventArgs e)
@@ -131,11 +160,13 @@ namespace TISFAT
 			if (timeline.SelectedKeyframe == null)
 				return;
 
+			Point location = RoundMousePos(UnprojectMousePos(e.Location));
+
 			if (timeline.SelectedLayer.Data.GetType() == typeof(StickFigure) || timeline.SelectedLayer.Data.GetType() == typeof(CustomFigure))
-				StickFigurePair = StickFigure.FindJointStatePair(((StickFigure)timeline.SelectedLayer.Data).Root, ((StickFigure.State)timeline.SelectedKeyframe.State).Root, e.Location);
+				StickFigurePair = StickFigure.FindJointStatePair(((StickFigure)timeline.SelectedLayer.Data).Root, ((StickFigure.State)timeline.SelectedKeyframe.State).Root, location);
 
 			ManipulateResult result = timeline.SelectedLayer.Data.TryManipulate(
-				timeline.SelectedKeyframe.State, e.Location, e.Button, ModifierKeys);
+				timeline.SelectedKeyframe.State, location, e.Button, ModifierKeys);
 
 			if (result != null)
 			{
@@ -155,12 +186,15 @@ namespace TISFAT
 			if (timeline.SelectedKeyframe == null || timeline.SelectedLayer == null)
 				return;
 
+
+			Point location = RoundMousePos(UnprojectMousePos(e.Location));
+
 			if (ActiveDragObject == null)
-				Cursor = timeline.SelectedLayer.Data.TryManipulate(timeline.SelectedKeyframe.State, e.Location, e.Button, ModifierKeys) != null ? Cursors.Hand : Cursors.Default;
+				Cursor = timeline.SelectedLayer.Data.TryManipulate(timeline.SelectedKeyframe.State, location, e.Button, ModifierKeys) != null ? Cursors.Hand : Cursors.Default;
 			else
 			{
 				Cursor = Cursors.Hand;
-				timeline.SelectedLayer.Data.ManipulateUpdate(ActiveDragObject, ActiveDragParams, e.Location);
+				timeline.SelectedLayer.Data.ManipulateUpdate(ActiveDragObject, ActiveDragParams, location);
 				GLContext.Invalidate();
 			}
 		}
@@ -168,6 +202,7 @@ namespace TISFAT
 		public void GLContext_MouseUp(object sender, MouseEventArgs e)
 		{
 			Timeline timeline = Program.MainTimeline;
+			// Point location = RoundMousePos(UnprojectMousePos(e.Location));
 
 			if (ActiveDragObject != null)
 			{

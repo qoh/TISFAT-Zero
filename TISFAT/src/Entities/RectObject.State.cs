@@ -95,13 +95,6 @@ namespace TISFAT.Entities
 				}
 			}
 
-			public SizeF fitToSize(float srcWidth, float srcHeight, float maxWidth, float maxHeight)
-			{
-				var ratio = Math.Min(maxWidth / srcWidth, maxHeight / srcHeight);
-
-				return new SizeF(srcWidth * ratio, srcHeight * ratio);
-			}
-
 			public void Write(BinaryWriter writer)
 			{
 				writer.Write((double)Bounds.X);

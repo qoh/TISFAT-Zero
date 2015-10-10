@@ -36,7 +36,7 @@ namespace TISFAT.Entities
 		{
 			float size = Math.Min(12, Texture.Width / 2);
 
-			Drawing.RectangleLine(state.Bounds.Location, state.Bounds.Size, c);
+			Drawing.RectangleLine(state.Bounds.Location, state.Bounds.Size, 1, c);
 			Drawing.Rectangle(new PointF(state.Bounds.Left, state.Bounds.Top), new SizeF(size, size), c);
 			Drawing.Rectangle(new PointF(state.Bounds.Right - size, state.Bounds.Top), new SizeF(size, size), c);
 			Drawing.Rectangle(new PointF(state.Bounds.Left, state.Bounds.Bottom - size), new SizeF(size, size), c);

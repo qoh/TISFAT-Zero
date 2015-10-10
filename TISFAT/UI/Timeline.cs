@@ -114,7 +114,8 @@ namespace TISFAT
 			List<Layer> Layers = Program.ActiveProject.Layers;
 			int LastTime = 0;
 			foreach (Layer layer in Layers)
-				LastTime = (int)Math.Max(layer.Framesets[layer.Framesets.Count - 1].EndTime, LastTime);
+				if(layer.Data.GetType() != typeof(Camera))
+					LastTime = (int)Math.Max(layer.Framesets[layer.Framesets.Count - 1].EndTime, LastTime);
 
 			return LastTime;
 		}
@@ -649,7 +650,7 @@ namespace TISFAT
 
 		public void RemoveLayer()
 		{
-			if (SelectedLayer != null)
+			if (SelectedLayer != null && SelectedLayer.Data.GetType() != typeof(Camera))
 				if (Program.ActiveProject.Layers.IndexOf(SelectedLayer) != -1)
 					Program.Form_Main.Do(new LayerRemoveAction(SelectedLayer));
 		}

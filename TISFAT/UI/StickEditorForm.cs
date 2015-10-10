@@ -332,7 +332,7 @@ namespace TISFAT
 					GL.Disable(EnableCap.StencilTest);
 				}
 
-				Drawing.RectangleLine(new PointF(SelectedPair.Item2.Location.X - 4, SelectedPair.Item2.Location.Y - 4), new SizeF(8, 8), Color.White);
+				Drawing.RectangleLine(new PointF(SelectedPair.Item2.Location.X - 4, SelectedPair.Item2.Location.Y - 4), new SizeF(8, 8), 1, Color.White);
 			}
 
 			if(DrawHandles)

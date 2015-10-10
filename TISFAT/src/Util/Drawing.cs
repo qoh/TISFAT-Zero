@@ -209,9 +209,10 @@ namespace TISFAT.Util
 			return BitmapCache[path];
 		}
 
-		public static void Line(PointF start, PointF end, Color color)
+		public static void Line(PointF start, PointF end, float width, Color color)
 		{
 			GL.Enable(EnableCap.Blend);
+			GL.LineWidth(width);
 
 			GL.Begin(PrimitiveType.Lines);
 			GL.Color4(color);
@@ -295,10 +296,11 @@ namespace TISFAT.Util
 			GL.Disable(EnableCap.Blend);
 		}
 
-		public static void RectangleLine(PointF position, SizeF size, Color color)
+		public static void RectangleLine(PointF position, SizeF size, float width, Color color)
 		{
 			GL.Enable(EnableCap.Blend);
 			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+			GL.LineWidth(width);
 
 			GL.Begin(PrimitiveType.LineLoop);
 			GL.Color4(color);
