@@ -42,12 +42,14 @@ namespace TISFAT
 
 		public BitmapButtonControl PlayButton { get { return btn_PlayPause; } }
 
-		public void ShowCxtMenu(Point Location, int FrameType, int FrameIndex)
+		public void ShowFrameCxtMenu(Point Location, int FrameType, int FrameIndex)
 		{
 			// FrameTypes
 			// 0 - Null Frame
 			// 1 - Blank Frame
 			// 2 - Key Frame
+
+			// TODO: Fix this mess eventually
 
 			insertKeyframeToolStripMenuItem.Visible = FrameType == 1 || FrameType == 2;
 			insertKeyframeToolStripMenuItem.Enabled = FrameType == 1;
@@ -95,6 +97,11 @@ namespace TISFAT
             removeLayerToolStripMenuItem.Visible = MainTimeline.SelectedLayer.Data.GetType() != typeof(Camera);
 
 			cxtm_Timeline.Show(GLContext, Location);
+		}
+
+		public void ShowLayerCxtMenu(Point Location, int LayerIndex)
+		{
+			cxtm_Labels.Show(GLContext, Location);
 		}
 
 		#region GLContext <-> Timeline Hooks
@@ -337,6 +344,26 @@ namespace TISFAT
 		private void TimelineForm_KeyDown(object sender, KeyEventArgs e)
 		{
 			Program.Form_Main.CheckKeyPressed(e);
+		}
+
+		private void renameToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			RenameLayerDialog dlg = new RenameLayerDialog();
+
+			dlg.StartPosition = FormStartPosition.CenterParent;
+
+			if(dlg.ShowDialog() == DialogResult.OK)
+				MainTimeline.RenameLayer(dlg.ReturnText);
+		}
+
+		private void addToGroupToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			AddLayerGroupDialog dlg = new AddLayerGroupDialog();
+
+			dlg.StartPosition = FormStartPosition.CenterParent;
+
+			if (dlg.ShowDialog() == DialogResult.OK)
+				MainTimeline.AddLayerGroup(dlg.ReturnText);
 		}
 	}
 }

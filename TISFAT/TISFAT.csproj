@@ -171,6 +171,18 @@
     <Compile Include="UI\Dialogs\ProjectPropertiesDialog.Designer.cs">
       <DependentUpon>ProjectPropertiesDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Dialogs\AddLayerGroupDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\AddLayerGroupDialog.Designer.cs">
+      <DependentUpon>AddLayerGroupDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\RenameLayerDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\RenameLayerDialog.Designer.cs">
+      <DependentUpon>RenameLayerDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -236,6 +248,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Dialogs\ProjectPropertiesDialog.resx">
       <DependentUpon>ProjectPropertiesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\AddLayerGroupDialog.resx">
+      <DependentUpon>AddLayerGroupDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\RenameLayerDialog.resx">
+      <DependentUpon>RenameLayerDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -329,6 +347,27 @@
     <Content Include="ffmpeg.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\arrow_right_16.png" />
+    <None Include="Resources\arrow_turn_right_16.png" />
+    <None Include="Resources\arrow_turn_left_16.png" />
+    <None Include="Resources\key_add_16.png" />
+    <None Include="Resources\key_prev_16.png" />
+    <None Include="Resources\key_go_16.png" />
+    <None Include="Resources\key_delete_16.png" />
+    <None Include="Resources\control_fastforward_blue_16.png" />
+    <None Include="Resources\control_end_blue_16.png" />
+    <None Include="Resources\control_end_16.png" />
+    <None Include="Resources\resultset_previous_16.png" />
+    <None Include="Resources\resultset_next_16.png" />
+    <None Include="Resources\resultset_last_16.png" />
+    <None Include="Resources\resultset_first_16.png" />
+    <None Include="Resources\control_rewind_blue_16.png" />
+    <None Include="Resources\control_play_blue_16.png" />
+    <None Include="Resources\layer_add_16.png" />
+    <None Include="Resources\arrow_up_16.png" />
+    <None Include="Resources\arrow_down_16.png" />
+    <None Include="Resources\layer_edit_16.png" />
+    <None Include="Resources\layer_delete_16.png" />
     <None Include="Resources\cog_16.png" />
     <None Include="Resources\bullet_disk_16.png" />
     <None Include="Resources\update_16.png" />

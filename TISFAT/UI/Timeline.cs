@@ -27,6 +27,10 @@ namespace TISFAT
 		public bool IsDraggingKeyframe = false;
 		public bool IsDraggingFrameset = false;
 
+		public float SplitterDistance = 80;
+		public bool HoveringSplitter = false;
+		public bool IsDraggingSplitter = false;
+
 		public int HoveredLayerIndex = -1;
 		public bool HoveredLayerOverVis = false;
 
@@ -96,7 +100,7 @@ namespace TISFAT
 			int HContentLength = (LastTime + 101) * 9;
 			int VContentLength = (Program.ActiveProject.Layers.Count) * 16 + 16;
 
-			int TotWidth = GLContext.Width - 80;
+			int TotWidth = GLContext.Width - (int)SplitterDistance;
 			int TotHeight = GLContext.Height;
 
 			if (Program.Form_Main.Form_Timeline.VScrollVisible)
@@ -114,8 +118,9 @@ namespace TISFAT
 			List<Layer> Layers = Program.ActiveProject.Layers;
 			int LastTime = 0;
 			foreach (Layer layer in Layers)
-				if(layer.Data.GetType() != typeof(Camera))
-					LastTime = (int)Math.Max(layer.Framesets[layer.Framesets.Count - 1].EndTime, LastTime);
+				if(layer.Type == LayerTypeEnum.Entity)
+					if(layer.Data.GetType() != typeof(Camera))
+						LastTime = (int)Math.Max(layer.Framesets[layer.Framesets.Count - 1].EndTime, LastTime);
 
 			return LastTime;
 		}
@@ -226,9 +231,9 @@ namespace TISFAT
 			// Select keyframes
 			Project project = Program.ActiveProject;
 
-			int frameIndex = (int)Math.Floor((location.X - 80) / 9.0);
+			int frameIndex = (int)Math.Floor((location.X - SplitterDistance) / 9.0);
 			int layerIndex = (int)Math.Floor((location.Y - 16) / 16.0);
-			FrameNum = (float)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
+			FrameNum = (float)Math.Max(0, Math.Floor((location.X - SplitterDistance - 1) / 9.0f));
 
 			if (layerIndex < 0)
 			{
@@ -247,26 +252,30 @@ namespace TISFAT
 
 			ClearSelection();
 
-			foreach (Frameset frameset in layer.Framesets)
+			if(layer.Type == LayerTypeEnum.Entity)
 			{
-				foreach (Keyframe keyframe in frameset.Keyframes)
+				foreach (Frameset frameset in layer.Framesets)
 				{
-					if (keyframe.Time == frameIndex)
+					foreach (Keyframe keyframe in frameset.Keyframes)
 					{
-						selectedItems.Select(layer, frameset, keyframe);
+						if (keyframe.Time == frameIndex)
+						{
+							selectedItems.Select(layer, frameset, keyframe);
+
+							GLContext.Invalidate();
+							return;
+						}
+					}
+
+					if (frameIndex > frameset.StartTime && frameIndex < frameset.EndTime)
+					{
+						selectedItems.Select(SelectionType.BlankFrame, frameIndex);
+						selectedItems.Select(layer, frameset);
 
 						GLContext.Invalidate();
 						return;
 					}
-				}
 
-				if (frameIndex > frameset.StartTime && frameIndex < frameset.EndTime)
-				{
-					selectedItems.Select(SelectionType.BlankFrame, frameIndex);
-					selectedItems.Select(layer, frameset);
-
-					GLContext.Invalidate();
-					return;
 				}
 			}
 
@@ -281,13 +290,18 @@ namespace TISFAT
 			List<Layer> Layers = Program.ActiveProject.Layers;
 
 			float lastFrame = 0;
+			int layerHeight = 0;
 
 			foreach (Layer layer in Layers)
-				lastFrame = Math.Max(lastFrame, layer.Framesets[layer.Framesets.Count - 1].EndTime);
+			{
+				if (layer.Type == LayerTypeEnum.Entity)
+					lastFrame = Math.Max(lastFrame, layer.Framesets[layer.Framesets.Count - 1].EndTime);
+
+				layerHeight += layer.ThisShouldBeInTimeline(layer);
+			}
 
 			int frameCount = (int)Math.Ceiling(lastFrame + 101);
 			int frameWidth = frameCount * 9;
-			int layerHeight = Layers.Count * 16;
 
 			int dist = GLContext.Height - 17;
 			int TotalLayerHeight = Math.Min(Layers.Count * 16 + 16, dist);
@@ -328,7 +342,7 @@ namespace TISFAT
 
 			// Draw rect below layers to hide bottom of playhead when
 			// scrolling past the displayed layers.
-			Drawing.Rectangle(new PointF(0, Layers.Count * 16 + 17), new SizeF(81, GLContext.Height - (Layers.Count * 16 + 16)), Color.FromArgb(220, 220, 220));
+			//Drawing.Rectangle(new PointF(0, Layers.Count * 16 + 17), new SizeF(81, GLContext.Height - (Layers.Count * 16 + 16)), Color.FromArgb(220, 220, 220));
 
 			GLContext.SwapBuffers();
 
@@ -353,7 +367,7 @@ namespace TISFAT
 			if (IsPlaying())
 				return;
 
-			if (location.X - Program.Form_Main.Form_Timeline.HScrollVal > 80)
+			if (location.X - Program.Form_Main.Form_Timeline.HScrollVal > SplitterDistance && !HoveringSplitter)
 			{
 				ClearSelection();
 
@@ -378,6 +392,12 @@ namespace TISFAT
 			}
 			else if (button == MouseButtons.Left)
 			{
+				if (HoveringSplitter)
+				{
+					IsDraggingSplitter = true;
+					return;
+				}
+
 				if (HoveredLayerIndex >= 0 && HoveredLayerIndex < Program.ActiveProject.Layers.Count)
 					if (HoveredLayerOverVis)
 					{
@@ -401,14 +421,33 @@ namespace TISFAT
 				GLContext.Invalidate();
 			}
 
-			if (location.X - Program.Form_Main.Form_Timeline.HScrollVal > 80)
+			if (MathUtil.PointInRect(locationActual, new RectangleF(new PointF(SplitterDistance - 2, 16), new SizeF(4, Program.ActiveProject.Layers.Count * 16))))
+			{
+				Program.Form_Timeline.Cursor = Cursors.VSplit;
+				HoveringSplitter = true;
+			}
+			else
+			{
+				Program.Form_Timeline.Cursor = Cursors.Default;
+				HoveringSplitter = false;
+			}
+
+			if (IsDraggingSplitter)
+			{
+				SplitterDistance = Math.Max(locationActual.X, 80);
+				Resize();
+				GLContext.Invalidate();
+				return;
+			}
+
+			if (location.X - Program.Form_Main.Form_Timeline.HScrollVal > SplitterDistance)
 			{
 				if (IsMouseDown)
 					IsDragging = true;
 
 				if (IsDraggingKeyframe) // Keyframe stuff
 				{
-					uint TargetTime = (uint)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
+					uint TargetTime = (uint)Math.Max(0, Math.Floor((location.X - SplitterDistance - 1) / 9.0f));
 
 					for (int i = SelectedLayer.Framesets.IndexOf(SelectedFrameset) - 1; i < SelectedLayer.Framesets.IndexOf(SelectedFrameset) + 2; i++)
 					{
@@ -448,8 +487,8 @@ namespace TISFAT
 				}
 				else if (IsDraggingFrameset) // Frameset stuff
 				{
-					int StartTime = (int)Math.Max(0, Math.Floor((MouseDragStart.X - 79.0f) / 9.0f));
-					int TargetTime = (int)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
+					int StartTime = (int)Math.Max(0, Math.Floor((MouseDragStart.X - SplitterDistance - 1) / 9.0f));
+					int TargetTime = (int)Math.Max(0, Math.Floor((location.X - SplitterDistance - 1) / 9.0f));
 					int NewTime = TargetTime - StartTime;
 
 					float NewStartTime = SelectedFrameset.StartTime + NewTime;
@@ -494,7 +533,7 @@ namespace TISFAT
 					if (PlayStart != null)
 						PlayStart = DateTime.Now;
 
-					FrameNum = (float)Math.Max(0, Math.Floor((location.X - 79.0f) / 9.0f));
+					FrameNum = (float)Math.Max(0, Math.Floor((location.X - SplitterDistance - 1) / 9.0f));
 					GLContext.Invalidate();
 				}
 			}
@@ -508,7 +547,13 @@ namespace TISFAT
 				if (HoveredLayerIndex > Program.ActiveProject.Layers.Count - 1 || HoveredLayerIndex == -1)
 					return;
 
-				Rectangle VisButton = new Rectangle(new Point(65, 16 * (HoveredLayerIndex + 1) + 2), new Size(14, 14));
+				if (HoveredLayerIndex == 0)
+				{
+					HoveredLayerIndex = -1;
+					return;
+				}
+
+				RectangleF VisButton = new RectangleF(new PointF(SplitterDistance - 15, 16 * (HoveredLayerIndex + 1) + 2), new SizeF(14, 14));
 				if (MathUtil.PointInRect(new PointF(locationActual.X, y), VisButton))
 				{
 					HoveredLayerOverVis = true;
@@ -532,16 +577,22 @@ namespace TISFAT
 					Program.Form_Main.Do(new FramesetMoveAction(SelectedLayer, SelectedFrameset, (int)FramesetDragStartTime, (int)SelectedFrameset.Keyframes[0].Time));
 			}
 
-			if (Location.X > 80 && Location.Y < (Program.ActiveProject.Layers.Count * 16) + 16 &&
+			if (Location.X > SplitterDistance && Location.Y < (Program.ActiveProject.Layers.Count * 16) + 16 &&
 				Location.Y > 16 &&
 				button == MouseButtons.Right &&
 				!IsPlaying())
-				Program.Form_Main.Form_Timeline.ShowCxtMenu(Location, GetFrameType(), (int)FrameNum);
+				Program.Form_Main.Form_Timeline.ShowFrameCxtMenu(Location, GetFrameType(), (int)FrameNum);
+			else if (Location.Y < (Program.ActiveProject.Layers.Count * 16) + 16 && Location.Y > 16 && button == MouseButtons.Right &&
+				!IsPlaying())
+			{
+				Program.Form_Timeline.ShowLayerCxtMenu(Location, 0);
+			}
 
 			IsMouseDown = false;
 			IsDragging = false;
 			IsDraggingKeyframe = false;
 			IsDraggingFrameset = false;
+			IsDraggingSplitter = false;
 
 			GLContext.Invalidate();
 		}
@@ -553,6 +604,7 @@ namespace TISFAT
 		}
 		#endregion
 
+		#region Actions
 		public void InsertKeyframe()
 		{
 			Keyframe prev = null;
@@ -609,7 +661,7 @@ namespace TISFAT
 
 		public bool CanInsertFrameset()
 		{
-			if (!selectedItems.Contains(SelectionType.NullFrame))
+			if (!selectedItems.Contains(SelectionType.NullFrame) || SelectedLayer.Type != LayerTypeEnum.Entity)
 				return false;
 
 			if (selectedTime > SelectedLayer.Framesets[SelectedLayer.Framesets.Count - 1].EndTime)
@@ -664,10 +716,34 @@ namespace TISFAT
 					Program.Form_Main.Do(new LayerRemoveAction(SelectedLayer));
 		}
 
+		public void RenameLayer(string name)
+		{
+			if (HoveredLayerIndex != -1)
+			{
+				Program.ActiveProject.Layers[HoveredLayerIndex].Name = name;
+				GLContext.Invalidate();
+			}
+		}
+
+		public void AddLayerGroup(string name)
+		{
+			if (HoveredLayerIndex != -1)
+			{
+				Layer layer = new Layer(Program.ActiveProject.Layers[HoveredLayerIndex], Program.ActiveProject.Layers[HoveredLayerIndex].Depth);
+
+				layer.Name = name;
+
+				Program.ActiveProject.Layers.RemoveAt(HoveredLayerIndex);
+				Program.ActiveProject.Layers.Insert(HoveredLayerIndex, layer);
+				GLContext.Invalidate();
+			}
+		}
+
 		public void ChangeInterpolationMode(EntityInterpolationMode mode)
 		{
 			if (SelectedKeyframe != null)
 				Program.Form_Main.Do(new KeyframeChangeInterpModeAction(SelectedLayer, SelectedFrameset, SelectedKeyframe, mode));
-		}
+		} 
+		#endregion
 	}
 }
