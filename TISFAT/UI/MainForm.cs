@@ -239,7 +239,7 @@ namespace TISFAT
 				MainTimeline.GLContext.Invalidate();
 		}
 
-		public void ProjectSave(string filename)
+		public void ProjectSave(string filename, bool isAutoSave=false)
 		{
 			if (MainTimeline == null)
 				return;
@@ -252,8 +252,11 @@ namespace TISFAT
 				ActiveProject.Write(writer);
 			}
 
-			SetFileName(filename);
-			ProjectFileName = filename;
+			if (!isAutoSave)
+			{
+				SetFileName(filename);
+				ProjectFileName = filename;
+			}
 		}
 
 		public void AutoSave()
@@ -264,7 +267,7 @@ namespace TISFAT
 			if (!Directory.Exists(Path.GetDirectoryName(fileName)))
 				Directory.CreateDirectory(Path.GetDirectoryName(fileName));
 
-			ProjectSave(fileName);
+			ProjectSave(fileName, true);
 		}
 
 		private void newToolStripMenuItem_Click(object sender, EventArgs e)
