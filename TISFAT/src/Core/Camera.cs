@@ -30,6 +30,11 @@ namespace TISFAT
 				return state;
 			}
 
+			public IEntityState Interpolate(IEntityState target, float interpolationAmount)
+			{
+				return _Interpolate(interpolationAmount, this, target, EntityInterpolationMode.Linear);
+			}
+
 			public int HandleAtLocation(PointF location)
 			{
 				float size = 6; // Dis is handle size
@@ -132,6 +137,11 @@ namespace TISFAT
 		public Camera() { }
 
 		public IEntityState Interpolate(float t, IEntityState _current, IEntityState _target, EntityInterpolationMode mode)
+		{
+			return _Interpolate(t, _current, _target, mode);
+		}
+
+		public static IEntityState _Interpolate(float t, IEntityState _current, IEntityState _target, EntityInterpolationMode mode)
 		{
 			State state = new State();
 			State current = _current as State;

@@ -429,6 +429,10 @@ namespace TISFAT
 			Data = (IEntity)type.GetConstructor(args).Invoke(values);
 			Data.Read(reader, version);
 			Framesets = FileFormat.ReadList<Frameset>(reader, version);
+			if (!Program.ActiveProject.LayerCount.ContainsKey(Data.GetType()))
+				Program.ActiveProject.LayerCount.Add(Data.GetType(), 0);
+
+			Program.ActiveProject.LayerCount[Data.GetType()]++;
 		}
 		#endregion
 	}

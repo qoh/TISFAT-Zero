@@ -347,6 +347,8 @@
     <Content Include="ffmpeg.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\layer_arrange_back_16.png" />
+    <None Include="Resources\layer_arrange_16.png" />
     <None Include="Resources\arrow_right_16.png" />
     <None Include="Resources\arrow_turn_right_16.png" />
     <None Include="Resources\arrow_turn_left_16.png" />

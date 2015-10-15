@@ -367,6 +367,10 @@ namespace TISFAT
 			if (IsPlaying())
 				return;
 
+			int layerIndex = (int)Math.Floor((location.Y - 16) / 16.0);
+			if (layerIndex >= 0 && layerIndex < Program.ActiveProject.Layers.Count)
+				selectedItems.Select(Program.ActiveProject.Layers[layerIndex]);
+
 			if (location.X - Program.Form_Main.Form_Timeline.HScrollVal > SplitterDistance && !HoveringSplitter)
 			{
 				ClearSelection();

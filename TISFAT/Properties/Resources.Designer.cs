@@ -613,9 +613,29 @@ namespace TISFAT.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap layer_arrange_16 {
+            get {
+                object obj = ResourceManager.GetObject("layer_arrange_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap layer_arrange_back {
             get {
                 object obj = ResourceManager.GetObject("layer_arrange_back", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap layer_arrange_back_16 {
+            get {
+                object obj = ResourceManager.GetObject("layer_arrange_back_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
