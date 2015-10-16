@@ -113,9 +113,14 @@ namespace TISFAT
 			{
 				case SelectionType.Layer:
 					SelectedLayer = null;
+					SelectedFrameset = null;
+					SelectedKeyframe = null;
+					SelectedFrameTime = -1;
 					break;
 				case SelectionType.Frameset:
 					SelectedFrameset = null;
+					SelectedKeyframe = null;
+					SelectedFrameTime = -1;
 					break;
 				case SelectionType.Keyframe:
 					SelectedKeyframe = null;

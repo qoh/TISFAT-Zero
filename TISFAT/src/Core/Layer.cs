@@ -6,6 +6,13 @@ using TISFAT.Util;
 
 namespace TISFAT
 {
+	public enum LayerTypeEnum
+	{
+		Entity,
+		Category,
+		Special
+	}
+
 	public class LayerCreationArgs
 	{
 		public int Variant;
@@ -192,8 +199,28 @@ namespace TISFAT
 	public class Layer : ISaveable
 	{
 		public string Name;
-		public bool Visible;
 		public Color TimelineColor;
+
+		public bool Visible;
+		public bool Collapsed;
+		public bool IsChild;
+
+		public LayerTypeEnum Type;
+
+		private int _Depth;
+		public int Depth
+		{
+			get { return _Depth; }
+			set
+			{
+				_Depth = value;
+				if (Children != null)
+					foreach (Layer child in Children)
+						child.Depth = Depth + 1;
+            }
+		}
+		public List<Layer> Children;
+
 		public IEntity Data;
 		public List<Frameset> Framesets;
 
@@ -204,16 +231,37 @@ namespace TISFAT
 			Visible = true;
 			TimelineColor = Color.AliceBlue;
 			Framesets = new List<Frameset>();
+			Depth = 0;
 		}
 
 		public Layer(IEntity data)
 		{
 			Name = "Layer";
 			Visible = true;
+
+			Type = LayerTypeEnum.Entity;
+
 			TimelineColor = Color.DodgerBlue;
 			Data = data;
 			Framesets = new List<Frameset>();
+			Depth = 0;
 		}
+
+		public Layer(Layer child, int depth)
+		{
+			Name = "New Category";
+			Visible = true;
+			Collapsed = false;
+
+			Type = LayerTypeEnum.Category;
+
+			TimelineColor = Color.DodgerBlue;
+			Children = new List<Layer>();
+			Children.Add(child);
+
+			Depth = depth;
+		}
+
 		#endregion
 
 		public Frameset FindFrameset(float time)
@@ -289,6 +337,19 @@ namespace TISFAT
 			Data.Draw(state);
 		}
 
+		public int ThisShouldBeInTimeline(Layer me)
+		{
+			int height = 16;
+
+			if (Type == LayerTypeEnum.Category && !Collapsed && me.Children != null)
+			{
+				foreach (Layer layer in me.Children)
+					height += ThisShouldBeInTimeline(layer);
+			}
+
+			return height;
+		}
+
 		public void DrawEditable(float time)
 		{
 			IEntityState state = FindCurrentState(time);
@@ -297,6 +358,43 @@ namespace TISFAT
 				return;
 
 			Data.DrawEditable(state);
+		}
+
+		public void DrawLabel(int i, float SplitterDistance, bool Hovered, bool HoveredLayerOverVis)
+		{
+			int x = Depth * 9;
+
+			int On, OnHover;
+			int Off, OffHover;
+
+			On = Program.MainTimeline.VisibilityBitmapOn;
+			OnHover = Program.MainTimeline.VisibilityBitmapOn_hover;
+			Off = Program.MainTimeline.VisibilityBitmapOff;
+			OffHover = Program.MainTimeline.VisibilityBitmapOff_hover;
+
+			Drawing.Rectangle(new PointF(x, 16 * (i + 1)), new SizeF(SplitterDistance - x, 16), TimelineColor);
+			Drawing.RectangleLine(new PointF(x, 16 * (i + 1)), new SizeF(SplitterDistance - x, 16), 1, Color.Black);
+			Drawing.TextRect(Name, new PointF(x + 1, 16 * (i + 1) + 1), new SizeF(SplitterDistance - x, 16), new Font("Segoe UI", 9), Color.Black, i == 0 ? StringAlignment.Center : StringAlignment.Near);
+
+			if (x > 0)
+				Drawing.Rectangle(new PointF(0, 16 * (i + 1)), new SizeF(x, 17), Color.FromArgb(220, 220, 220));
+
+			if (Hovered || !Visible)
+				Drawing.Bitmap(new PointF(SplitterDistance - 15, 16 * (i + 1) + 2),
+					new Size(14, 14),
+					0, 255,
+					Visible ?
+					(HoveredLayerOverVis ? OnHover : On) :
+					(HoveredLayerOverVis ? OffHover : Off));
+
+
+			if (Type == LayerTypeEnum.Category && !Collapsed)
+			{
+				for (int j = 0; j < Children.Count; j++)
+				{
+					Children[j].DrawLabel(i + j + 1, SplitterDistance, Hovered, HoveredLayerOverVis);
+				}
+			}
 		}
 
 		#region File Saving / Loading
@@ -331,6 +429,10 @@ namespace TISFAT
 			Data = (IEntity)type.GetConstructor(args).Invoke(values);
 			Data.Read(reader, version);
 			Framesets = FileFormat.ReadList<Frameset>(reader, version);
+			if (!Program.ActiveProject.LayerCount.ContainsKey(Data.GetType()))
+				Program.ActiveProject.LayerCount.Add(Data.GetType(), 0);
+
+			Program.ActiveProject.LayerCount[Data.GetType()]++;
 		}
 		#endregion
 	}

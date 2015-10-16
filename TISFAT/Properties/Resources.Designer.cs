@@ -73,6 +73,56 @@ namespace TISFAT.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap arrow_down_16 {
+            get {
+                object obj = ResourceManager.GetObject("arrow_down_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_right_16 {
+            get {
+                object obj = ResourceManager.GetObject("arrow_right_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_turn_left_16 {
+            get {
+                object obj = ResourceManager.GetObject("arrow_turn_left_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_turn_right_16 {
+            get {
+                object obj = ResourceManager.GetObject("arrow_turn_right_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_up_16 {
+            get {
+                object obj = ResourceManager.GetObject("arrow_up_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap bullet_add {
             get {
                 object obj = ResourceManager.GetObject("bullet_add", resourceCulture);
@@ -123,9 +173,29 @@ namespace TISFAT.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap control_end_16 {
+            get {
+                object obj = ResourceManager.GetObject("control_end_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap control_end_blue {
             get {
                 object obj = ResourceManager.GetObject("control_end_blue", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap control_end_blue_16 {
+            get {
+                object obj = ResourceManager.GetObject("control_end_blue_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -146,6 +216,16 @@ namespace TISFAT.Properties {
         internal static System.Drawing.Bitmap control_fastforward_blue {
             get {
                 object obj = ResourceManager.GetObject("control_fastforward_blue", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap control_fastforward_blue_16 {
+            get {
+                object obj = ResourceManager.GetObject("control_fastforward_blue_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -193,6 +273,16 @@ namespace TISFAT.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap control_play_blue_16 {
+            get {
+                object obj = ResourceManager.GetObject("control_play_blue_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap control_rewind {
             get {
                 object obj = ResourceManager.GetObject("control_rewind", resourceCulture);
@@ -206,6 +296,16 @@ namespace TISFAT.Properties {
         internal static System.Drawing.Bitmap control_rewind_blue {
             get {
                 object obj = ResourceManager.GetObject("control_rewind_blue", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap control_rewind_blue_16 {
+            get {
+                object obj = ResourceManager.GetObject("control_rewind_blue_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -423,6 +523,46 @@ namespace TISFAT.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap key_add_16 {
+            get {
+                object obj = ResourceManager.GetObject("key_add_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap key_delete_16 {
+            get {
+                object obj = ResourceManager.GetObject("key_delete_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap key_go_16 {
+            get {
+                object obj = ResourceManager.GetObject("key_go_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap key_prev_16 {
+            get {
+                object obj = ResourceManager.GetObject("key_prev_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap label {
             get {
                 object obj = ResourceManager.GetObject("label", resourceCulture);
@@ -453,9 +593,29 @@ namespace TISFAT.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap layer_add_16 {
+            get {
+                object obj = ResourceManager.GetObject("layer_add_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap layer_arrange {
             get {
                 object obj = ResourceManager.GetObject("layer_arrange", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap layer_arrange_16 {
+            get {
+                object obj = ResourceManager.GetObject("layer_arrange_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -473,6 +633,16 @@ namespace TISFAT.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap layer_arrange_back_16 {
+            get {
+                object obj = ResourceManager.GetObject("layer_arrange_back_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap layer_delete {
             get {
                 object obj = ResourceManager.GetObject("layer_delete", resourceCulture);
@@ -483,9 +653,29 @@ namespace TISFAT.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap layer_delete_16 {
+            get {
+                object obj = ResourceManager.GetObject("layer_delete_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap layer_edit {
             get {
                 object obj = ResourceManager.GetObject("layer_edit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap layer_edit_16 {
+            get {
+                object obj = ResourceManager.GetObject("layer_edit_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -846,6 +1036,46 @@ namespace TISFAT.Properties {
         internal static System.Drawing.Bitmap redo_gray_16 {
             get {
                 object obj = ResourceManager.GetObject("redo_gray_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap resultset_first_16 {
+            get {
+                object obj = ResourceManager.GetObject("resultset_first_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap resultset_last_16 {
+            get {
+                object obj = ResourceManager.GetObject("resultset_last_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap resultset_next_16 {
+            get {
+                object obj = ResourceManager.GetObject("resultset_next_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap resultset_previous_16 {
+            get {
+                object obj = ResourceManager.GetObject("resultset_previous_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

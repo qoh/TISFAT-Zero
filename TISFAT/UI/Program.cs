@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace TISFAT
@@ -15,16 +16,27 @@ namespace TISFAT
 		public static Project ActiveProject { get { return Form_Main.ActiveProject; } }
 		public static Timeline MainTimeline { get { return Form_Main.MainTimeline; } }
 
+		public static string LoadFile = "";
+
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
 		[STAThread]
-		static void Main()
+		static void Main(string[] args)
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
 			_MainForm = new MainForm();
+
+			if (args.Length > 0)
+			{
+				string file = args[0];
+
+				if (File.Exists(file) && (Path.GetExtension(file) == ".tzp")) // or ".sif"
+					LoadFile = file;
+			}
+
 			Application.Run(Form_Main);
 		}
 	}

@@ -43,6 +43,36 @@
 
         <Icon Id="$(var.IconId)" SourceFile="$(var.IconSource)"/>
         <Icon Id="$(var.IconExeId)" SourceFile="$(var.IconSource)"/>
+		
+		<!--
+		
+		TODO: File Associations
+		
+		<Component Id="RegistryEntry" Directory="INSTALLFOLDER" Guid="*">
+
+			<RegistryValue Root="HKLM" Key="SOFTWARE\TisfatZero\Capabilities" Name="ApplicationDescription" Value="A 2D Stick Figure Animation Suite" Type="string" />
+			<RegistryValue Root="HKLM" Key="SOFTWARE\TisfatZero\Capabilities" Name="ApplicationIcon" Value="[INSTALLFOLDER]TISFAT.exe,0" Type="string" />
+			<RegistryValue Root="HKLM" Key="SOFTWARE\TisfatZero\Capabilities" Name="ApplicationName" Value="$(var.ProductName)" Type="string" />
+			<RegistryValue Root="HKLM" Key="SOFTWARE\TisfatZero\Capabilities\DefaultIcon" Value="[INSTALLFOLDER]TISFAT.exe,1" Type="string" />
+			<RegistryValue Root="HKLM" Key="SOFTWARE\TisfatZero\Capabilities\FileAssociations" Name=".tzp" Value="TisfatProject" Type="string" />
+			<RegistryValue Root="HKLM" Key="SOFTWARE\TisfatZero\Capabilities\MIMEAssociations" Name="application/tzp" Value="TisfatProject" Type="string" />
+			<RegistryValue Root="HKLM" Key="SOFTWARE\TisfatZero\Capabilities\shell\Open\command" Value="&quot;[INSTALLFOLDER]Tisfat.exe&quot;&quot;%1&quot;" Type="string" />
+			<RegistryValue Root="HKLM" Key="SOFTWARE\RegisteredApplications" Name="TisfatZero" Value="SOFTWARE\TisfatZero\Capabilities" Type="string" />
+
+			<RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\TISFAT.exe" Value="[!TISFAT.exe]" Type="string" />
+			<RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\TISFAT.exe" Name="Path" Value="[INSTALLFOLDER]" type="string" />
+
+			<RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Applications\TISFAT.exe\SupportedTypes" Name=".tzp" Value="" Type="string" />
+			<RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Applications\TISFAT.exe\shell\open" Name="FriendlyAppName" Value="$(var.ProductName)" Type="string" />
+			
+			<RegistryValue Root="HKLM" Key="SOFTWARE\Classes\TisfatProject" Name="FriendlyTypeName" Value="TISFAT Zero Project" Type="string" />
+			<ProgId Id="TisfatProject" Description="TISFAT Zero Project" Icon="$(var.IconId)" Advertise="yes">
+				<Verb Id="open" Command="!"
+			</ProgId>
+
+		</Component> 
+		
+		-->
 
 		<WixVariable Id="WixUILicenseRtf" Value="Resources\license.rtf"/>
 		<WixVariable Id="WixUIDialogBmp" Value="Resources\dialog.bmp"/>
