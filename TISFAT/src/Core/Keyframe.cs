@@ -18,13 +18,13 @@ namespace TISFAT
 		Keyframe AddedFrame;
 		int PrevSelectedFrame;
 
-		public KeyframeAddAction(Layer l, Frameset f, uint targ, IEntityState state)
+		public KeyframeAddAction(Layer l, Frameset f, uint targ, IEntityState start, IEntityState end, float interpolation)
 		{
 			LayerIndex = Program.ActiveProject.Layers.IndexOf(l);
 			FramesetIndex = l.Framesets.IndexOf(f);
 
 			Time = targ;
-			State = state;
+			State = start.Interpolate(end, interpolation);
 		}
 
 		public bool Do()
@@ -144,7 +144,7 @@ namespace TISFAT
 			TargetFrameset.Keyframes.RemoveAt(RemovedKeyframeIndex);
 			TargetFrameset.Keyframes = TargetFrameset.Keyframes.OrderBy(o => o.Time).ToList();
 
-			Program.MainTimeline.ClearSelection();
+			Program.MainTimeline.selectedItems.Clear(SelectionType.Keyframe);
 			Program.MainTimeline.selectedItems.Select(SelectionType.BlankFrame, (int)RemovedKeyframe.Time);
 
 			Program.MainTimeline.GLContext.Invalidate();

@@ -460,9 +460,18 @@ namespace TISFAT.Util
 			GL.ClearColor(Color.FromArgb(0, Program.ActiveProject.BackColor));
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 
+			GL.PushMatrix();
+
+			GL.MatrixMode(MatrixMode.Projection);
+			GL.LoadIdentity();
+			GL.Viewport(0, 0, size, size);
+			GL.Ortho(0, size, size, 0, -1, 1);
+
 			foreach (Layer l in Program.ActiveProject.Layers)
 				if (l.Data.GetType() != typeof(PointLight))
 					l.Draw(Program.MainTimeline.GetCurrentFrame());
+
+			GL.PopMatrix();
 
 			GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
 
@@ -475,7 +484,7 @@ namespace TISFAT.Util
 			GL.Uniform1(GL.GetUniformLocation(LightProgram, "s_Texture"), 0);
 			GL.BindTexture(TextureTarget.Texture2D, ShadowsTexture);
 
-			GL.Uniform2(GL.GetUniformLocation(LightProgram, "s_Res"), new Vector2(size, size));
+			GL.Uniform2(GL.GetUniformLocation(LightProgram, "s_Res"), new Vector2(size, -size));
 
 			GL.Uniform2(GL.GetUniformLocation(LightProgram, "lightPos"), PointToVector(position));
 			GL.Uniform3(GL.GetUniformLocation(LightProgram, "lightColor"), new Vector3(color.R / 255.0f, color.G / 255.0f, color.B / 255.0f));

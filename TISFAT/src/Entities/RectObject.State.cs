@@ -26,6 +26,11 @@ namespace TISFAT.Entities
 				return state;
 			}
 
+			public IEntityState Interpolate(IEntityState target, float interpolationAmount)
+			{
+				return RectObject._Interpolate(interpolationAmount, this, target, EntityInterpolationMode.Linear);
+			}
+
 			public int HandleAtLocation(PointF location)
 			{
 				float size = 6; // Dis is handle size
