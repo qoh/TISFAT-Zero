@@ -83,6 +83,9 @@ namespace TISFAT
 			Form_Timeline.Location = new Point(5, 0);
 			Form_Toolbox.Location = new Point(50, Form_Timeline.Location.Y + Form_Timeline.Height + 4);
 			Form_Canvas.Location = new Point(Form_Toolbox.Location.X + Form_Toolbox.Width + 20, Form_Timeline.Location.Y + Form_Timeline.Height + 4);
+
+			if (Program.LoadFile != "")
+				ProjectOpen(Program.LoadFile);
 		}
 
 		public void SetDirty(bool dirty)
