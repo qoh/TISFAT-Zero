@@ -150,7 +150,7 @@ namespace TISFAT
 
 			IAction item = UndoList.Pop();
 
-			SetDirty(UndoList.Count == 0 ? item != ItemSavedOn : ItemSavedOn != null);
+			SetDirty(UndoList.Count == 0 ? ItemSavedOn != null : item != ItemSavedOn);
 
 			LastAction = item;
 
@@ -185,6 +185,8 @@ namespace TISFAT
 			UndoList = new Stack<IAction>();
 			RedoList = new Stack<IAction>();
 
+			ItemSavedOn = null;
+
 			UpdateUndoRedoButtons();
 
 			SetFileName(null);
@@ -205,6 +207,8 @@ namespace TISFAT
 				MainTimeline.ClearSelection();
 				MainTimeline.GLContext.Invalidate();
 			}
+
+			SetDirty(false);
 		}
 
 		public void ProjectOpen(string filename)
@@ -216,6 +220,8 @@ namespace TISFAT
 
 			UndoList = new Stack<IAction>();
 			RedoList = new Stack<IAction>();
+
+			ItemSavedOn = null;
 
 			UpdateUndoRedoButtons();
 
@@ -262,6 +268,20 @@ namespace TISFAT
 			}
 		}
 
+		public DialogResult ProjectSaveAs()
+		{
+			SaveFileDialog dialog = new SaveFileDialog();
+			dialog.AddExtension = true;
+			dialog.Filter = "TISFAT Zero Project|*.tzp";
+
+			DialogResult result = dialog.ShowDialog();
+
+			if (result == DialogResult.OK)
+				ProjectSave(dialog.FileName);
+
+			return result;
+		}
+
 		public void AutoSave()
 		{
 			string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -295,19 +315,12 @@ namespace TISFAT
 			if (ProjectFileName != null)
 				ProjectSave(ProjectFileName);
 			else
-				saveAsToolStripMenuItem_Click(sender, e);
+				ProjectSaveAs();
 		}
 
 		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			SaveFileDialog dialog = new SaveFileDialog();
-			dialog.AddExtension = true;
-			dialog.Filter = "TISFAT Zero Project|*.tzp";
-
-			if (dialog.ShowDialog() == DialogResult.OK)
-			{
-				ProjectSave(dialog.FileName);
-			}
+			ProjectSaveAs();
 		}
 		#endregion
 
@@ -484,6 +497,95 @@ namespace TISFAT
 		private void redoToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			Redo();
+		}
+
+		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (ProjectDirty)
+			{
+				SaveChangesDialog dlg = new SaveChangesDialog();
+
+				dlg.StartPosition = FormStartPosition.CenterParent;
+
+				switch (dlg.ShowDialog())
+				{
+					case DialogResult.Yes:
+						if (ProjectFileName != null)
+							ProjectSave(ProjectFileName);
+						else
+							e.Cancel = ProjectSaveAs() != DialogResult.OK;
+						break;
+					case DialogResult.No: // TODO: Add a preference for overwriting the autosave file if you decline.
+						// AutoSave();
+						break;
+					case DialogResult.Cancel:
+						e.Cancel = true;
+						break;
+
+					default:
+						throw new ArgumentException("Unknown Dialog Result");
+				}
+			}
+		}
+
+		private void skipToStartToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			MainTimeline.SeekFirstFrame();
+		}
+
+		private void seekToEndToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			MainTimeline.SeekLastFrame();
+		}
+
+		private void nextFrameToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			MainTimeline.SeekNextFrame();
+		}
+
+		private void previousFrameToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			MainTimeline.SeekPrevFrame();
+		}
+
+		private void insertKeyframeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			MainTimeline.InsertKeyframe();
+		}
+
+		private void removeKeyframeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			MainTimeline.RemoveKeyframe();
+		}
+
+		private void nextKeyframeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			MainTimeline.NextKeyframe();
+		}
+
+		private void previousKeyframeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			MainTimeline.PrevKeyframe();
+		}
+
+		private void renameLayerToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Form_Timeline.renameToolStripMenuItem_Click(sender, e);
+        }
+
+		private void moveUpToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Form_Timeline.moveLayerUpToolStripMenuItem_Click(sender, e);
+		}
+
+		private void moveLayerDownToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Form_Timeline.moveLayerDownToolStripMenuItem_Click(sender, e);
+		}
+
+		private void playAnimationToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			MainTimeline.TogglePause();
 		}
 	}
 }

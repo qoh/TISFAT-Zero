@@ -144,14 +144,130 @@ namespace TISFAT
 			GLContext.Invalidate();
 		}
 
+		public bool CheckKeyframe(int time)
+		{
+			Keyframe target = null;
+
+			foreach (Frameset f in SelectedLayer.Framesets)
+			{
+				foreach (Keyframe frame in f.Keyframes)
+				{
+					if (frame.Time == time)
+					{
+						target = frame;
+
+						selectedItems.Select(frame);
+						break;
+					}
+				}
+
+				if (target != null)
+					break;
+			}
+
+			return target == null;
+		}
+
+		public Tuple<int, Frameset, Keyframe> FindAtTime(int time)
+		{ 
+			Frameset frameset = null;
+			Keyframe frame = null;
+
+			foreach(Frameset f in SelectedLayer.Framesets)
+			{
+				if(f.StartTime <= time && f.EndTime >= time)
+				{
+					frameset = f;
+					break;
+				}
+			}
+
+			if(frameset == null)
+				return new Tuple<int, Frameset, Keyframe>(0, null, null); // null frame
+
+			foreach(Keyframe k in frameset.Keyframes)
+			{
+				if (k.Time == time)
+				{
+					frame = k;
+					break;
+				}
+			}
+
+			if (frame == null)
+				return new Tuple<int, Frameset, Keyframe>(1, frameset, null); // blank frame
+
+			return new Tuple<int, Frameset, Keyframe>(2, frameset, frame); // keyframe
+		}
+
 		public void SeekPrevFrame()
 		{
-			// Go to the previous frame goddamnit
+			if (selectedItems.Contains(SelectionType.NullFrame) ||
+				selectedItems.Contains(SelectionType.BlankFrame) ||
+				selectedItems.Contains(SelectionType.Keyframe))
+			{
+				int time = selectedItems.Time;
+
+				time--;
+
+				if (time < 0)
+					return;
+
+				Tuple<int, Frameset, Keyframe> result = FindAtTime(time);
+
+				switch (result.Item1)
+				{
+					case 0:
+						selectedItems.Select(SelectionType.NullFrame, time);
+						break;
+					case 1:
+						selectedItems.Select(SelectionType.BlankFrame, time);
+						selectedItems.Select(result.Item2);
+						break;
+					case 2:
+						selectedItems.Select(result.Item2, result.Item3);
+						break;
+				}
+
+			}
+
+			if(FrameNum > 0)
+				FrameNum--;
+			GLContext.Invalidate();
 		}
 
 		public void SeekNextFrame()
 		{
-			// Go to the next frame goddamnit
+			if (selectedItems.Contains(SelectionType.NullFrame) ||
+				selectedItems.Contains(SelectionType.BlankFrame) ||
+				selectedItems.Contains(SelectionType.Keyframe))
+			{
+				int time = selectedItems.Time;
+
+				time++;
+
+				if (time < 0)
+					return;
+
+				Tuple<int, Frameset, Keyframe> result = FindAtTime(time);
+
+				switch (result.Item1)
+				{
+					case 0:
+						selectedItems.Select(SelectionType.NullFrame, time);
+						break;
+					case 1:
+						selectedItems.Select(SelectionType.BlankFrame, time);
+						selectedItems.Select(result.Item2);
+						break;
+					case 2:
+						selectedItems.Select(result.Item2, result.Item3);
+						break;
+				}
+			}
+
+			FrameNum++;
+			GLContext.Invalidate();
 		}
 
 		public void SeekLastFrame()
@@ -163,6 +279,74 @@ namespace TISFAT
 
 			ClearSelection();
 			GLContext.Invalidate();
+		}
+
+		public void NextKeyframe()
+		{
+			Keyframe frame = null;
+
+			if (selectedItems.Contains(SelectionType.Keyframe))
+			{
+				int KeyframeIndex = SelectedFrameset.Keyframes.IndexOf(SelectedKeyframe) + 1;
+
+				if (KeyframeIndex + 1 > SelectedFrameset.Keyframes.Count)
+					return;
+
+				frame = SelectedFrameset.Keyframes[KeyframeIndex];
+			}
+			else if (selectedItems.Contains(SelectionType.BlankFrame))
+			{
+				int time = selectedItems.Time;
+
+				foreach(Keyframe k in SelectedFrameset.Keyframes)
+				{
+					if(k.Time > time)
+					{
+						frame = k;
+						break;
+					}
+				}
+			}
+
+			if (frame != null)
+			{
+				selectedItems.Select(frame);
+				GLContext.Invalidate();
+			}
+		}
+
+		public void PrevKeyframe()
+		{
+			Keyframe frame = null;
+
+			if (selectedItems.Contains(SelectionType.Keyframe))
+			{
+				int KeyframeIndex = SelectedFrameset.Keyframes.IndexOf(SelectedKeyframe) - 1;
+
+				if (KeyframeIndex < 0)
+					return;
+
+				frame = SelectedFrameset.Keyframes[KeyframeIndex];
+			}
+			else if (selectedItems.Contains(SelectionType.BlankFrame))
+			{
+				int time = selectedItems.Time;
+
+				foreach (Keyframe k in SelectedFrameset.Keyframes)
+				{
+					if (k.Time < time)
+					{
+						frame = k;
+						break;
+					}
+				}
+			}
+
+			if (frame != null)
+			{
+				selectedItems.Select(frame);
+				GLContext.Invalidate();
+			}			
 		}
 
 		public void TogglePause()
@@ -611,6 +795,9 @@ namespace TISFAT
 		#region Actions
 		public void InsertKeyframe()
 		{
+			if (SelectedLayer == null || SelectedFrameset == null)
+				return;
+
 			Keyframe prev = null;
 			Keyframe next = null;
 
@@ -642,6 +829,9 @@ namespace TISFAT
 
 		public void RemoveKeyframe()
 		{
+			if (SelectedKeyframe == null)
+				return;
+
 			Program.Form_Main.Do(new KeyframeRemoveAction(SelectedLayer, SelectedFrameset, SelectedKeyframe));
 
 			GLContext.Invalidate();
@@ -701,16 +891,31 @@ namespace TISFAT
 		public void RemoveFrameset()
 		{
 			Program.Form_Main.Do(new FramesetRemoveAction(SelectedLayer, SelectedFrameset));
+			selectedItems.Clear(SelectionType.Frameset);
 		}
 
 		public void MoveLayerUp()
 		{
-			Program.Form_Main.Do(new LayerMoveUpAction(SelectedLayer));
+			if (SelectedLayer == null)
+				return;
+
+			if (SelectedLayer.Data.GetType() == typeof(Camera))
+				return;
+
+			if (Program.ActiveProject.Layers.IndexOf(SelectedLayer) > 1)
+				Program.Form_Main.Do(new LayerMoveUpAction(SelectedLayer));
 		}
 
 		public void MoveLayerDown()
 		{
-			Program.Form_Main.Do(new LayerMoveDownAction(SelectedLayer));
+			if (SelectedLayer == null)
+				return;
+
+			if (SelectedLayer.Data.GetType() == typeof(Camera))
+				return;
+
+			if(Program.ActiveProject.Layers.IndexOf(SelectedLayer) < Program.ActiveProject.Layers.Count - 1)
+				Program.Form_Main.Do(new LayerMoveDownAction(SelectedLayer));
 		}
 
 		public void RemoveLayer()
@@ -718,6 +923,8 @@ namespace TISFAT
 			if (SelectedLayer != null && SelectedLayer.Data.GetType() != typeof(Camera))
 				if (Program.ActiveProject.Layers.IndexOf(SelectedLayer) != -1)
 					Program.Form_Main.Do(new LayerRemoveAction(SelectedLayer));
+
+			selectedItems.Clear();
 		}
 
 		public void RenameLayer(string name)

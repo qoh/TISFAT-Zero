@@ -21,7 +21,7 @@ namespace TISFAT
 
 		private void RenameLayerDialog_Load(object sender, EventArgs e)
 		{
-			txt_layerName.Text = Program.ActiveProject.Layers[Program.MainTimeline.HoveredLayerIndex].Name;
+			txt_layerName.Text = Program.MainTimeline.SelectedLayer.Name;
 		}
 
 		private void txt_layerName_TextChanged(object sender, EventArgs e)

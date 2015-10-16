@@ -153,6 +153,12 @@
     <Compile Include="UI\Dialogs\ColorPickerDialog.Designer.cs">
       <DependentUpon>ColorPickerDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Dialogs\SaveChangesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\SaveChangesDialog.Designer.cs">
+      <DependentUpon>SaveChangesDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Dialogs\GLColorPickerDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -239,6 +245,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Dialogs\ColorPickerDialog.resx">
       <DependentUpon>ColorPickerDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\SaveChangesDialog.resx">
+      <DependentUpon>SaveChangesDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Dialogs\GLColorPickerDialog.resx">
       <DependentUpon>GLColorPickerDialog.cs</DependentUpon>

@@ -480,7 +480,7 @@
 			this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
 			this.undoToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
 			this.undoToolStripMenuItem.Text = "Undo";
-			this.undoToolStripMenuItem.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
+			this.undoToolStripMenuItem.Click += new System.EventHandler(this.btn_Undo_Click);
 			// 
 			// redoToolStripMenuItem
 			// 
@@ -489,7 +489,7 @@
 			this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
 			this.redoToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
 			this.redoToolStripMenuItem.Text = "Redo";
-			this.redoToolStripMenuItem.Click += new System.EventHandler(this.redoToolStripMenuItem_Click);
+			this.redoToolStripMenuItem.Click += new System.EventHandler(this.btn_Redo_Click);
 			// 
 			// toolStripSeparator2
 			// 
@@ -498,6 +498,7 @@
 			// 
 			// preferencesToolStripMenuItem
 			// 
+			this.preferencesToolStripMenuItem.Enabled = false;
 			this.preferencesToolStripMenuItem.Image = global::TISFAT.Properties.Resources.setting_tools_16;
 			this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
 			this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
@@ -532,6 +533,7 @@
 			this.playAnimationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Space)));
 			this.playAnimationToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
 			this.playAnimationToolStripMenuItem.Text = "Play Animation";
+			this.playAnimationToolStripMenuItem.Click += new System.EventHandler(this.playAnimationToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator5
 			// 
@@ -545,6 +547,7 @@
 			this.nextFrameToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Right)));
 			this.nextFrameToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
 			this.nextFrameToolStripMenuItem.Text = "Next Frame";
+			this.nextFrameToolStripMenuItem.Click += new System.EventHandler(this.nextFrameToolStripMenuItem_Click);
 			// 
 			// previousFrameToolStripMenuItem
 			// 
@@ -553,6 +556,7 @@
 			this.previousFrameToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Left)));
 			this.previousFrameToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
 			this.previousFrameToolStripMenuItem.Text = "Previous Frame";
+			this.previousFrameToolStripMenuItem.Click += new System.EventHandler(this.previousFrameToolStripMenuItem_Click);
 			// 
 			// seekToEndToolStripMenuItem
 			// 
@@ -561,6 +565,7 @@
 			this.seekToEndToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.End)));
 			this.seekToEndToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
 			this.seekToEndToolStripMenuItem.Text = "Seek to End";
+			this.seekToEndToolStripMenuItem.Click += new System.EventHandler(this.seekToEndToolStripMenuItem_Click);
 			// 
 			// skipToStartToolStripMenuItem
 			// 
@@ -569,6 +574,7 @@
 			this.skipToStartToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Home)));
 			this.skipToStartToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
 			this.skipToStartToolStripMenuItem.Text = "Seek to Start";
+			this.skipToStartToolStripMenuItem.Click += new System.EventHandler(this.skipToStartToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator6
 			// 
@@ -579,9 +585,10 @@
 			// 
 			this.insertKeyframeToolStripMenuItem.Image = global::TISFAT.Properties.Resources.key_add_16;
 			this.insertKeyframeToolStripMenuItem.Name = "insertKeyframeToolStripMenuItem";
-			this.insertKeyframeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
+			this.insertKeyframeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Insert)));
 			this.insertKeyframeToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
 			this.insertKeyframeToolStripMenuItem.Text = "Insert Keyframe";
+			this.insertKeyframeToolStripMenuItem.Click += new System.EventHandler(this.insertKeyframeToolStripMenuItem_Click);
 			// 
 			// removeKeyframeToolStripMenuItem
 			// 
@@ -590,6 +597,7 @@
 			this.removeKeyframeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Delete)));
 			this.removeKeyframeToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
 			this.removeKeyframeToolStripMenuItem.Text = "Remove Keyframe";
+			this.removeKeyframeToolStripMenuItem.Click += new System.EventHandler(this.removeKeyframeToolStripMenuItem_Click);
 			// 
 			// nextKeyframeToolStripMenuItem
 			// 
@@ -599,6 +607,7 @@
             | System.Windows.Forms.Keys.Right)));
 			this.nextKeyframeToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
 			this.nextKeyframeToolStripMenuItem.Text = "Next Keyframe";
+			this.nextKeyframeToolStripMenuItem.Click += new System.EventHandler(this.nextKeyframeToolStripMenuItem_Click);
 			// 
 			// previousKeyframeToolStripMenuItem
 			// 
@@ -608,6 +617,7 @@
             | System.Windows.Forms.Keys.Left)));
 			this.previousKeyframeToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
 			this.previousKeyframeToolStripMenuItem.Text = "Previous Keyframe";
+			this.previousKeyframeToolStripMenuItem.Click += new System.EventHandler(this.previousKeyframeToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator7
 			// 
@@ -616,23 +626,26 @@
 			// 
 			// skipForwardsToolStripMenuItem
 			// 
+			this.skipForwardsToolStripMenuItem.Enabled = false;
 			this.skipForwardsToolStripMenuItem.Image = global::TISFAT.Properties.Resources.arrow_turn_right_16;
 			this.skipForwardsToolStripMenuItem.Name = "skipForwardsToolStripMenuItem";
-			this.skipForwardsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+			this.skipForwardsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K)));
 			this.skipForwardsToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
 			this.skipForwardsToolStripMenuItem.Text = "Skip Forwards";
 			// 
 			// skipBackwardsToolStripMenuItem
 			// 
+			this.skipBackwardsToolStripMenuItem.Enabled = false;
 			this.skipBackwardsToolStripMenuItem.Image = global::TISFAT.Properties.Resources.arrow_turn_left_16;
 			this.skipBackwardsToolStripMenuItem.Name = "skipBackwardsToolStripMenuItem";
 			this.skipBackwardsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.S)));
+            | System.Windows.Forms.Keys.K)));
 			this.skipBackwardsToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
 			this.skipBackwardsToolStripMenuItem.Text = "Skip Backwards";
 			// 
 			// gotoFrameToolStripMenuItem
 			// 
+			this.gotoFrameToolStripMenuItem.Enabled = false;
 			this.gotoFrameToolStripMenuItem.Image = global::TISFAT.Properties.Resources.arrow_right_16;
 			this.gotoFrameToolStripMenuItem.Name = "gotoFrameToolStripMenuItem";
 			this.gotoFrameToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
@@ -656,15 +669,21 @@
 			// 
 			this.addLayerToolStripMenuItem.Image = global::TISFAT.Properties.Resources.layer_add_16;
 			this.addLayerToolStripMenuItem.Name = "addLayerToolStripMenuItem";
+			this.addLayerToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.Insert)));
 			this.addLayerToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
 			this.addLayerToolStripMenuItem.Text = "Add Layer";
+			this.addLayerToolStripMenuItem.Click += new System.EventHandler(this.btn_AddLayer_Click);
 			// 
 			// removeLayerToolStripMenuItem
 			// 
 			this.removeLayerToolStripMenuItem.Image = global::TISFAT.Properties.Resources.layer_delete_16;
 			this.removeLayerToolStripMenuItem.Name = "removeLayerToolStripMenuItem";
+			this.removeLayerToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.Delete)));
 			this.removeLayerToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
 			this.removeLayerToolStripMenuItem.Text = "Remove Layer";
+			this.removeLayerToolStripMenuItem.Click += new System.EventHandler(this.btn_RemoveLayer_Click);
 			// 
 			// toolStripSeparator8
 			// 
@@ -675,8 +694,10 @@
 			// 
 			this.renameLayerToolStripMenuItem.Image = global::TISFAT.Properties.Resources.layer_edit_16;
 			this.renameLayerToolStripMenuItem.Name = "renameLayerToolStripMenuItem";
+			this.renameLayerToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F2;
 			this.renameLayerToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
 			this.renameLayerToolStripMenuItem.Text = "Rename Layer";
+			this.renameLayerToolStripMenuItem.Click += new System.EventHandler(this.renameLayerToolStripMenuItem_Click);
 			// 
 			// moveUpToolStripMenuItem
 			// 
@@ -685,6 +706,7 @@
 			this.moveUpToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Up)));
 			this.moveUpToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
 			this.moveUpToolStripMenuItem.Text = "Move Layer Up";
+			this.moveUpToolStripMenuItem.Click += new System.EventHandler(this.moveUpToolStripMenuItem_Click);
 			// 
 			// moveLayerDownToolStripMenuItem
 			// 
@@ -693,6 +715,7 @@
 			this.moveLayerDownToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Down)));
 			this.moveLayerDownToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
 			this.moveLayerDownToolStripMenuItem.Text = "Move Layer Down";
+			this.moveLayerDownToolStripMenuItem.Click += new System.EventHandler(this.moveLayerDownToolStripMenuItem_Click);
 			// 
 			// helpToolStripMenuItem
 			// 
@@ -746,6 +769,7 @@
 			this.MinimumSize = new System.Drawing.Size(800, 580);
 			this.Name = "MainForm";
 			this.Text = "TISFAT Zero";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
 			this.sc_MainContainer.Panel1.ResumeLayout(false);

@@ -144,7 +144,7 @@ namespace TISFAT
 			TargetFrameset.Keyframes.RemoveAt(RemovedKeyframeIndex);
 			TargetFrameset.Keyframes = TargetFrameset.Keyframes.OrderBy(o => o.Time).ToList();
 
-			Program.MainTimeline.ClearSelection();
+			Program.MainTimeline.selectedItems.Clear(SelectionType.Keyframe);
 			Program.MainTimeline.selectedItems.Select(SelectionType.BlankFrame, (int)RemovedKeyframe.Time);
 
 			Program.MainTimeline.GLContext.Invalidate();

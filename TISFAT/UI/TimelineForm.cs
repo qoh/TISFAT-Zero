@@ -204,13 +204,13 @@ namespace TISFAT
 		private void btn_FastForward_Click(object sender, EventArgs e)
 		{
 			if (MainTimeline != null)
-				MainTimeline.SeekNextFrame();
+				MainTimeline.NextKeyframe();
 		}
 
 		private void btn_Rewind_Click(object sender, EventArgs e)
 		{
 			if (MainTimeline != null)
-				MainTimeline.SeekPrevFrame();
+				MainTimeline.PrevKeyframe();
 		}
 
 		private void btn_SeekStart_Click(object sender, EventArgs e)
@@ -274,13 +274,13 @@ namespace TISFAT
 				MainTimeline.RemoveFrameset();
 		}
 
-		private void moveLayerUpToolStripMenuItem_Click(object sender, EventArgs e)
+		public void moveLayerUpToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (MainTimeline != null)
 				MainTimeline.MoveLayerUp();
 		}
 
-		private void moveLayerDownToolStripMenuItem_Click(object sender, EventArgs e)
+		public void moveLayerDownToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (MainTimeline != null)
 				MainTimeline.MoveLayerDown();
@@ -289,7 +289,7 @@ namespace TISFAT
 		private void removeLayerToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (MainTimeline != null)
-				MainTimeline.RemoveLayer();
+					MainTimeline.RemoveLayer();
 		}
 		#endregion
 
@@ -346,14 +346,17 @@ namespace TISFAT
 			Program.Form_Main.CheckKeyPressed(e);
 		}
 
-		private void renameToolStripMenuItem_Click(object sender, EventArgs e)
+		public void renameToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			RenameLayerDialog dlg = new RenameLayerDialog();
+			if (MainTimeline.SelectedLayer != null)
+			{
+				RenameLayerDialog dlg = new RenameLayerDialog();
 
-			dlg.StartPosition = FormStartPosition.CenterParent;
+				dlg.StartPosition = FormStartPosition.CenterParent;
 
-			if(dlg.ShowDialog() == DialogResult.OK)
-				MainTimeline.RenameLayer(dlg.ReturnText);
+				if (dlg.ShowDialog() == DialogResult.OK)
+					MainTimeline.RenameLayer(dlg.ReturnText);
+			}
 		}
 
 		private void addToGroupToolStripMenuItem_Click(object sender, EventArgs e)
