@@ -195,7 +195,7 @@
     <Compile Include="UI\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Program.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="src\Core\Keyframe.cs" />
     <Compile Include="src\Core\Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

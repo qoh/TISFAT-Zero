@@ -150,6 +150,11 @@ namespace TISFAT
 			return new Point((int)location.X, (int)location.Y);
 		}
 
+		public void UpdateStickFigurePair()
+		{
+			StickFigurePair = null;
+		}
+
 		public void GLContext_MouseDown(object sender, MouseEventArgs e)
 		{
 			ActiveDragObject = null;
@@ -174,9 +179,9 @@ namespace TISFAT
 				ActiveDragParams = result.Params;
 				LastDragObject = result.Target;
 				ActiveDragPrevState = timeline.SelectedKeyframe.State.Copy();
-
-				Program.Form_Properties.UpdateStickFigurePanel();
 			}
+
+			Program.Form_Properties.UpdateStickFigurePanel();
 		}
 
 		public void GLContext_MouseMove(object sender, MouseEventArgs e)

@@ -68,6 +68,7 @@
 			this.btn_SeekEnd = new TISFAT.Controls.BitmapButtonControl();
 			this.btn_FastForward = new TISFAT.Controls.BitmapButtonControl();
 			this.btn_PlayPause = new TISFAT.Controls.BitmapButtonControl();
+			this.withInterpolatedStateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.pnl_ToolboxPanel.SuspendLayout();
 			this.cxtm_Timeline.SuspendLayout();
 			this.cxtm_Labels.SuspendLayout();
@@ -159,10 +160,12 @@
             this.toolStripSeparator5,
             this.gotoFrameToolStripMenuItem});
 			this.cxtm_Timeline.Name = "cxtm_Timeline";
-			this.cxtm_Timeline.Size = new System.Drawing.Size(234, 270);
+			this.cxtm_Timeline.Size = new System.Drawing.Size(234, 292);
 			// 
 			// insertKeyframeToolStripMenuItem
 			// 
+			this.insertKeyframeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.withInterpolatedStateToolStripMenuItem});
 			this.insertKeyframeToolStripMenuItem.Name = "insertKeyframeToolStripMenuItem";
 			this.insertKeyframeToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
 			this.insertKeyframeToolStripMenuItem.Text = "Insert Keyframe";
@@ -316,7 +319,7 @@
             this.moveLayerDownToolStripMenuItem1,
             this.removeLayerToolStripMenuItem1});
 			this.cxtm_Labels.Name = "cxtm_Labels";
-			this.cxtm_Labels.Size = new System.Drawing.Size(170, 142);
+			this.cxtm_Labels.Size = new System.Drawing.Size(170, 120);
 			// 
 			// renameToolStripMenuItem
 			// 
@@ -449,6 +452,13 @@
 			this.btn_PlayPause.ToolTipHint = "";
 			this.btn_PlayPause.Click += new System.EventHandler(this.btn_PlayPause_Click);
 			// 
+			// withInterpolatedStateToolStripMenuItem
+			// 
+			this.withInterpolatedStateToolStripMenuItem.Name = "withInterpolatedStateToolStripMenuItem";
+			this.withInterpolatedStateToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+			this.withInterpolatedStateToolStripMenuItem.Text = ".. With Interpolated State";
+			this.withInterpolatedStateToolStripMenuItem.Click += new System.EventHandler(this.withInterpolatedStateToolStripMenuItem_Click);
+			// 
 			// TimelineForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -517,5 +527,6 @@
 		private System.Windows.Forms.ToolStripMenuItem moveLayerUpToolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem moveLayerDownToolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem removeLayerToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem withInterpolatedStateToolStripMenuItem;
 	}
 }
