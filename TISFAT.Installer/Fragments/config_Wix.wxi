@@ -9,7 +9,7 @@
     <?define IconId="TISFAT_Icon"?>
     <?define IconSource="Resources\T0.ico"?>
     
-    <?define TargetArchitecture="64"?>
+    <?define TargetArchitecture="32"?>
 
     <?define ProgramFilesFolderName="TISFAT Zero"?>
     <?define StartMenuFolderId="TISFATStartMenuFolder"?>
@@ -18,24 +18,27 @@
     <?define FeatureName="TISFAT Zero"?>
     <?define ComponentGroupId="TISFATFiles"?>
     
-    <?define BinDirectory="..\TISFAT\bin\Release"?>
+	<?define Bin32="..\TISFAT\bin\x86\Release"?>
+	<?define Bin64="..\TISFAT\bin\x64\Release"?>
 
 
     <!--  Versioning. These must be changed for upgrades.
           Recompiling with newer files isn't enough -->
 
-    <?define VersionNumber="1.4.4.0" ?>
+    <?define VersionNumber="1.4.5.0" ?>
 
     <?define UpgradeCode="BAEE4265-CA67-4FE3-9626-3E2CCE77FF16"?>
     
     <!-- End Separator | Don't make changes below here -->
     
-    <?if $(var.TargetArchitecture) = "32"?>
+    <?if $(var.Platform) = "x86"?>
         <?define PFilesFolder="ProgramFilesFolder"?>
         <?define TargetPlatform="x86"?>
+		<?define BinDirectory="$(var.Bin32)"?>
     <?else?>
         <?define PFilesFolder="ProgramFiles64Folder"?>
         <?define TargetPlatform="x64"?>
+		<?define BinDirectory="$(var.Bin64)"?>
     <?endif?>
     
     <?define IconExeId="$(var.IconId).exe"?>

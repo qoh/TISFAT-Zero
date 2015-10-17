@@ -1,12 +1,12 @@
 @echo off
-rem GenFragments - 64.bat
+rem GenFragments - 32.bat
 rem Version 1.0.0.25
 
 rem Latest template version 1.0.0.0
 cd Fragments
 set Fragments=%CD%
 
-for /f "delims=" %%x in (config_Batch64.cfg) do (set "%%x")
+for /f "delims=" %%x in (config_Batch32.cfg) do (set "%%x")
 
 cd %BinDir%
 set InstallFiles="%CD%"
@@ -16,7 +16,7 @@ cd %Fragments%\..
 cd %TemplateDir%
 set TemplateDir=%CD%
 
-set Template="%Fragments%\FragmentTemplate - 64.xslt"
+set Template="%Fragments%\FragmentTemplate - 32.xslt"
 cd %BinDir%
 set CopyPath="..\..\..\%ProjectName%\bin\Release\"
 
