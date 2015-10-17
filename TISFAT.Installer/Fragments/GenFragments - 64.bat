@@ -6,7 +6,7 @@ rem Latest template version 1.0.0.0
 cd Fragments
 set Fragments=%CD%
 
-for /f "delims=" %%x in (config_Batch.cfg) do (set "%%x")
+for /f "delims=" %%x in (config_Batch64.cfg) do (set "%%x")
 
 cd %BinDir%
 set InstallFiles="%CD%"

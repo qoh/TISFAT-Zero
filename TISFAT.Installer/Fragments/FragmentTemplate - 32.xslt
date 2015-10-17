@@ -12,7 +12,7 @@
 	<xsl:template match="wix:Wix">
 		<xsl:copy>
 			<!-- The following enters the directive for adding the config.wxi include file to the dynamically generated file -->
-			<!--xsl:processing-instruction name="include">$(sys.CURRENTDIR)wix\config.wxi</xsl:processing-instruction-->
+			<xsl:processing-instruction name="include">$(sys.CURRENTDIR)Fragments\config_Wix.wxi</xsl:processing-instruction>
 			<xsl:apply-templates select="@*" />
 			<xsl:apply-templates />
 		</xsl:copy>
