@@ -33,6 +33,7 @@ namespace TISFAT
 			pnl_BitmapProperties.Visible = false;
 			pnl_TextProperties.Visible = false;
 			pnl_PointLightProperties.Visible = false;
+			pnl_CameraProperties.Visible = false;
 		}
 
 		public void SelectionChanged(SelectionType type)
