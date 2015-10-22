@@ -67,6 +67,7 @@ namespace TISFAT
 			InitializeComponent();
 		}
 
+		#region Load / Close Events
 		private void MainForm_Load(object sender, EventArgs e)
 		{
 			ProjectNew();
@@ -88,18 +89,37 @@ namespace TISFAT
 				ProjectOpen(Program.LoadFile);
 		}
 
-		public void SetDirty(bool dirty)
+		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			ProjectDirty = dirty;
-			Text = "TISFAT Zero - " + (Path.GetFileNameWithoutExtension(ProjectFileName) ?? "Untitled") + (dirty ? " *" : "");
-		}
+			if (ProjectDirty)
+			{
+				SaveChangesDialog dlg = new SaveChangesDialog();
 
-		private void SetFileName(string filename)
-		{
-			ProjectFileName = filename;
-			SetDirty(filename == null);
-		}
+				dlg.StartPosition = FormStartPosition.CenterParent;
 
+				switch (dlg.ShowDialog())
+				{
+					case DialogResult.Yes:
+						if (ProjectFileName != null)
+							ProjectSave(ProjectFileName);
+						else
+							e.Cancel = ProjectSaveAs() != DialogResult.OK;
+						break;
+					case DialogResult.No: // TODO: Add a preference for overwriting the autosave file if you decline.
+										  // AutoSave();
+						break;
+					case DialogResult.Cancel:
+						e.Cancel = true;
+						break;
+
+					default:
+						throw new ArgumentException("Unknown Dialog Result");
+				}
+			}
+		}
+		#endregion
+
+		#region Action Handling
 		public void Do(IAction action)
 		{
 			if (!action.Do())
@@ -116,31 +136,6 @@ namespace TISFAT
 
 			if (UndoList.Count % 10 == 0)
 				AutoSave();
-		}
-
-		private void UpdateUndoRedoButtons()
-		{
-			if (UndoList.Count > 0)
-			{
-				btn_Undo.ImageDefault = Properties.Resources.undo;
-				undoToolStripMenuItem.Image = Properties.Resources.undo_16;
-			}
-			else
-			{
-				btn_Undo.ImageDefault = Properties.Resources.undo_gray;
-				undoToolStripMenuItem.Image = Properties.Resources.undo_gray_16;
-			}
-
-			if (RedoList.Count > 0)
-			{
-				btn_Redo.ImageDefault = Properties.Resources.redo;
-				redoToolStripMenuItem.Image = Properties.Resources.redo_16;
-			}
-			else
-			{
-				btn_Redo.ImageDefault = Properties.Resources.redo_gray;
-				redoToolStripMenuItem.Image = Properties.Resources.redo_gray_16;
-			}
 		}
 
 		private void Undo()
@@ -176,6 +171,46 @@ namespace TISFAT
 
 			UpdateUndoRedoButtons();
 		}
+		#endregion
+
+		#region Button / Title Updating
+		private void UpdateUndoRedoButtons()
+		{
+			if (UndoList.Count > 0)
+			{
+				btn_Undo.ImageDefault = Properties.Resources.undo;
+				undoToolStripMenuItem.Image = Properties.Resources.undo_16;
+			}
+			else
+			{
+				btn_Undo.ImageDefault = Properties.Resources.undo_gray;
+				undoToolStripMenuItem.Image = Properties.Resources.undo_gray_16;
+			}
+
+			if (RedoList.Count > 0)
+			{
+				btn_Redo.ImageDefault = Properties.Resources.redo;
+				redoToolStripMenuItem.Image = Properties.Resources.redo_16;
+			}
+			else
+			{
+				btn_Redo.ImageDefault = Properties.Resources.redo_gray;
+				redoToolStripMenuItem.Image = Properties.Resources.redo_gray_16;
+			}
+		}
+
+		public void SetDirty(bool dirty)
+		{
+			ProjectDirty = dirty;
+			Text = "TISFAT Zero - " + (Path.GetFileNameWithoutExtension(ProjectFileName) ?? "Untitled") + (dirty ? " *" : "");
+		}
+
+		private void SetFileName(string filename)
+		{
+			ProjectFileName = filename;
+			SetDirty(filename == null);
+		} 
+		#endregion
 
 		#region File Saving / Loading
 		public void ProjectNew()
@@ -282,49 +317,7 @@ namespace TISFAT
 			return result;
 		}
 
-		public void AutoSave()
-		{
-			string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-			string fileName = Path.Combine(appData, "TISFAT Zero\\autosave.tzp");
-
-			if (!Directory.Exists(Path.GetDirectoryName(fileName)))
-				Directory.CreateDirectory(Path.GetDirectoryName(fileName));
-
-			ProjectSave(fileName, true);
-		}
-
-		private void newToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ProjectNew();
-		}
-
-		private void openToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			OpenFileDialog dialog = new OpenFileDialog();
-			dialog.AddExtension = true;
-			dialog.Filter = "TISFAT Zero Project|*.tzp";
-
-			if (dialog.ShowDialog() == DialogResult.OK)
-			{
-				ProjectOpen(dialog.FileName);
-			}
-		}
-
-		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (ProjectFileName != null)
-				ProjectSave(ProjectFileName);
-			else
-				ProjectSaveAs();
-		}
-
-		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ProjectSaveAs();
-		}
-		#endregion
-
-		private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+		public void ProjectExport()
 		{
 			SaveFileDialog dlg = new SaveFileDialog();
 			dlg.Filter = "Animated GIF|*.gif|Animated PNG|*.png|MPEG-4|*.mp4|AVI|*.avi|WebM|*.webm|Flash Video|*.flv|Windows Media Video|*.wmv";
@@ -349,7 +342,7 @@ namespace TISFAT
 			int nt = (int)Math.Ceiling(endTime / ActiveProject.AnimSpeed / delta);
 
 			ProgressDialog progress = new ProgressDialog();
-			
+
 			progress.StartPosition = FormStartPosition.CenterParent;
 
 			bool frameCanceled = false;
@@ -387,13 +380,25 @@ namespace TISFAT
 
 				ProcessStartInfo startInfo = new ProcessStartInfo();
 				startInfo.FileName = "ffmpeg.exe";
-				startInfo.Arguments = "-y -r " + fps + " -i \"" + temp + "\\%d.bmp\" \"" + dlg.FileName + "\"";
+				startInfo.Arguments = "-y -r " + fps + " -i \"" + temp + "\\%d.bmp\" \"" /* + "c:v libx264 -preset veryslow -qp 0" */ + dlg.FileName + "\"";
 				startInfo.UseShellExecute = false;
 				startInfo.CreateNoWindow = true;
+				startInfo.RedirectStandardOutput = true;
+				startInfo.RedirectStandardError = true;
 
 				Process processTemp = new Process();
 				processTemp.StartInfo = startInfo;
 				processTemp.EnableRaisingEvents = true;
+
+				processTemp.OutputDataReceived += (s, x) =>
+				{
+					Console.WriteLine(x.Data);
+				};
+
+				processTemp.ErrorDataReceived += (s, x) =>
+				{
+					MessageBox.Show(x.Data, "FFMPEG Error");
+				};
 
 				processTemp.Exited += (sender2, e2) =>
 				{
@@ -407,185 +412,16 @@ namespace TISFAT
 			progress.ShowDialog();
 		}
 
-		private void btn_EditModeDefault_Click(object sender, EventArgs e)
+		public void AutoSave()
 		{
-			ActiveEditMode = EditMode.Default;
+			string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+			string fileName = Path.Combine(appData, "TISFAT Zero\\autosave.tzp");
+
+			if (!Directory.Exists(Path.GetDirectoryName(fileName)))
+				Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+
+			ProjectSave(fileName, true);
 		}
-
-		private void btn_EditModeOnion_Click(object sender, EventArgs e)
-		{
-			ActiveEditMode = EditMode.Onion;
-		}
-
-		private void btn_EditModePhase_Click(object sender, EventArgs e)
-		{
-			ActiveEditMode = EditMode.Phase;
-		}
-
-		private void btn_RemoveLayer_Click(object sender, EventArgs e)
-		{
-			Form_Timeline.MainTimeline.RemoveLayer();
-		}
-
-		private void btn_AddLayer_Click(object sender, EventArgs e)
-		{
-			AddLayerDialog dlg = new AddLayerDialog();
-			
-			dlg.StartPosition = FormStartPosition.CenterParent;
-
-			dlg.ShowDialog();
-		}
-
-		private void btn_Undo_Click(object sender, EventArgs e)
-		{
-			Undo();
-		}
-
-		private void btn_Redo_Click(object sender, EventArgs e)
-		{
-			Redo();
-		}
-
-		private void projectPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ProjectPropertiesDialog dlg = new ProjectPropertiesDialog();
-			
-			dlg.StartPosition = FormStartPosition.CenterParent;
-
-			dlg.ShowDialog();
-		}
-
-		private void openColorPickerToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ColorPickerDialog dlg = new ColorPickerDialog();
-
-			dlg.ShowDialog();
-		}
-
-		private void MainForm_KeyDown(object sender, KeyEventArgs e)
-		{
-			CheckKeyPressed(e);
-		}
-
-		public void CheckKeyPressed(KeyEventArgs e)
-		{
-			
-		}
-
-		private void ckb_PreviewCamera_CheckedChanged(object sender, EventArgs e)
-		{
-			MainTimeline.GLContext.Invalidate();
-		}
-
-		private void importToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			OpenFileDialog dialog = new OpenFileDialog();
-			dialog.AddExtension = true;
-			dialog.Filter = "TISFAT Project|*.sif";
-
-			if (dialog.ShowDialog() == DialogResult.OK)
-			{
-				TISFAT.Util.Legacy.FileFormat.Load(dialog.FileName);
-			}
-		}
-
-		private void undoToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			Undo();
-		}
-
-		private void redoToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			Redo();
-		}
-
-		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			if (ProjectDirty)
-			{
-				SaveChangesDialog dlg = new SaveChangesDialog();
-
-				dlg.StartPosition = FormStartPosition.CenterParent;
-
-				switch (dlg.ShowDialog())
-				{
-					case DialogResult.Yes:
-						if (ProjectFileName != null)
-							ProjectSave(ProjectFileName);
-						else
-							e.Cancel = ProjectSaveAs() != DialogResult.OK;
-						break;
-					case DialogResult.No: // TODO: Add a preference for overwriting the autosave file if you decline.
-						// AutoSave();
-						break;
-					case DialogResult.Cancel:
-						e.Cancel = true;
-						break;
-
-					default:
-						throw new ArgumentException("Unknown Dialog Result");
-				}
-			}
-		}
-
-		private void skipToStartToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			MainTimeline.SeekFirstFrame();
-		}
-
-		private void seekToEndToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			MainTimeline.SeekLastFrame();
-		}
-
-		private void nextFrameToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			MainTimeline.SeekNextFrame();
-		}
-
-		private void previousFrameToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			MainTimeline.SeekPrevFrame();
-		}
-
-		private void insertKeyframeToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			MainTimeline.InsertKeyframe();
-		}
-
-		private void removeKeyframeToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			MainTimeline.RemoveKeyframe();
-		}
-
-		private void nextKeyframeToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			MainTimeline.NextKeyframe();
-		}
-
-		private void previousKeyframeToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			MainTimeline.PrevKeyframe();
-		}
-
-		private void renameLayerToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			Form_Timeline.renameToolStripMenuItem_Click(sender, e);
-        }
-
-		private void moveUpToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			Form_Timeline.moveLayerUpToolStripMenuItem_Click(sender, e);
-		}
-
-		private void moveLayerDownToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			Form_Timeline.moveLayerDownToolStripMenuItem_Click(sender, e);
-		}
-
-		private void playAnimationToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			MainTimeline.TogglePause();
-		}
+		#endregion
 	}
 }
