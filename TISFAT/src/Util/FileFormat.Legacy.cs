@@ -487,6 +487,12 @@ namespace TISFAT.Util.Legacy
 				m_nBitmapCount = reader.ReadInt32();
 				for (int f = 0; f < m_nBitmapCount; f++)
 				{
+					string bitmapName = "";
+					int nameLength = reader.ReadInt32();
+					reader.ReadByte(); //the first byte of a pascal string is the length
+					if (nameLength > 1)
+						bitmapName = new string(reader.ReadChars(nameLength - 1));
+											
 					Bitmap bmp = FileFormat.LoadBitmap(reader);
 					m_olBitmaps.Add(bmp);
 				}
