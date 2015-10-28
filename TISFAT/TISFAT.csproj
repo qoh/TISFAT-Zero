@@ -257,6 +257,10 @@
     <Compile Include="src\Interfaces\ISaveable.cs" />
     <Compile Include="src\Core\Layer.cs" />
     <Compile Include="src\Util\Interpolation.cs" />
+    <Compile Include="UI\MainForm.Events.cs">
+      <SubType>Form</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\StickEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
