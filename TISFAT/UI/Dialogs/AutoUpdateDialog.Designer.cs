@@ -29,80 +29,83 @@
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AutoUpdateDialog));
-			this.button1 = new System.Windows.Forms.Button();
-			this.button2 = new System.Windows.Forms.Button();
-			this.button3 = new System.Windows.Forms.Button();
-			this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-			this.label1 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.panel1.SuspendLayout();
+			this.btn_updateNow = new System.Windows.Forms.Button();
+			this.btn_updateOnClose = new System.Windows.Forms.Button();
+			this.btn_noThanks = new System.Windows.Forms.Button();
+			this.rtb_updateDesc = new System.Windows.Forms.RichTextBox();
+			this.lbl_updateAvailable = new System.Windows.Forms.Label();
+			this.lbl_Version = new System.Windows.Forms.Label();
+			this.pnl_updateDesc = new System.Windows.Forms.Panel();
+			this.pnl_updateDesc.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// button1
+			// btn_updateNow
 			// 
-			this.button1.Location = new System.Drawing.Point(318, 29);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(116, 23);
-			this.button1.TabIndex = 0;
-			this.button1.Text = "Update Now";
-			this.button1.UseVisualStyleBackColor = true;
+			this.btn_updateNow.Location = new System.Drawing.Point(318, 29);
+			this.btn_updateNow.Name = "btn_updateNow";
+			this.btn_updateNow.Size = new System.Drawing.Size(116, 23);
+			this.btn_updateNow.TabIndex = 0;
+			this.btn_updateNow.Text = "Update Now";
+			this.btn_updateNow.UseVisualStyleBackColor = true;
+			this.btn_updateNow.Click += new System.EventHandler(this.btn_updateNow_Click);
 			// 
-			// button2
+			// btn_updateOnClose
 			// 
-			this.button2.Location = new System.Drawing.Point(318, 58);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(116, 23);
-			this.button2.TabIndex = 1;
-			this.button2.Text = "Update on Close";
-			this.button2.UseVisualStyleBackColor = true;
+			this.btn_updateOnClose.Location = new System.Drawing.Point(318, 58);
+			this.btn_updateOnClose.Name = "btn_updateOnClose";
+			this.btn_updateOnClose.Size = new System.Drawing.Size(116, 23);
+			this.btn_updateOnClose.TabIndex = 1;
+			this.btn_updateOnClose.Text = "Update on Close";
+			this.btn_updateOnClose.UseVisualStyleBackColor = true;
+			this.btn_updateOnClose.Click += new System.EventHandler(this.btn_updateOnClose_Click);
 			// 
-			// button3
+			// btn_noThanks
 			// 
-			this.button3.Location = new System.Drawing.Point(318, 218);
-			this.button3.Name = "button3";
-			this.button3.Size = new System.Drawing.Size(116, 23);
-			this.button3.TabIndex = 2;
-			this.button3.Text = "No Thanks";
-			this.button3.UseVisualStyleBackColor = true;
+			this.btn_noThanks.Location = new System.Drawing.Point(318, 218);
+			this.btn_noThanks.Name = "btn_noThanks";
+			this.btn_noThanks.Size = new System.Drawing.Size(116, 23);
+			this.btn_noThanks.TabIndex = 2;
+			this.btn_noThanks.Text = "No Thanks";
+			this.btn_noThanks.UseVisualStyleBackColor = true;
+			this.btn_noThanks.Click += new System.EventHandler(this.btn_noThanks_Click);
 			// 
-			// richTextBox1
+			// rtb_updateDesc
 			// 
-			this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.richTextBox1.Location = new System.Drawing.Point(1, 1);
-			this.richTextBox1.Name = "richTextBox1";
-			this.richTextBox1.Size = new System.Drawing.Size(298, 210);
-			this.richTextBox1.TabIndex = 3;
-			this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
+			this.rtb_updateDesc.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.rtb_updateDesc.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.rtb_updateDesc.Location = new System.Drawing.Point(1, 1);
+			this.rtb_updateDesc.Name = "rtb_updateDesc";
+			this.rtb_updateDesc.Size = new System.Drawing.Size(298, 210);
+			this.rtb_updateDesc.TabIndex = 3;
+			this.rtb_updateDesc.Text = resources.GetString("rtb_updateDesc.Text");
 			// 
-			// label1
+			// lbl_updateAvailable
 			// 
-			this.label1.Location = new System.Drawing.Point(12, 9);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(300, 17);
-			this.label1.TabIndex = 4;
-			this.label1.Text = "There\'s an update available for download!  Changes include:\r\n";
-			this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+			this.lbl_updateAvailable.Location = new System.Drawing.Point(12, 9);
+			this.lbl_updateAvailable.Name = "lbl_updateAvailable";
+			this.lbl_updateAvailable.Size = new System.Drawing.Size(300, 17);
+			this.lbl_updateAvailable.TabIndex = 4;
+			this.lbl_updateAvailable.Text = "There\'s an update available for download!  Changes include:\r\n";
+			this.lbl_updateAvailable.TextAlign = System.Drawing.ContentAlignment.TopCenter;
 			// 
-			// label2
+			// lbl_Version
 			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(325, 99);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(103, 26);
-			this.label2.TabIndex = 5;
-			this.label2.Text = "Your Version: v1.4.5\r\nNew Version: v1.4.5\r\n";
+			this.lbl_Version.AutoSize = true;
+			this.lbl_Version.Location = new System.Drawing.Point(325, 99);
+			this.lbl_Version.Name = "lbl_Version";
+			this.lbl_Version.Size = new System.Drawing.Size(103, 26);
+			this.lbl_Version.TabIndex = 5;
+			this.lbl_Version.Text = "Your Version: v1.4.5\r\nNew Version: v1.4.5\r\n";
 			// 
-			// panel1
+			// pnl_updateDesc
 			// 
-			this.panel1.BackColor = System.Drawing.SystemColors.ButtonShadow;
-			this.panel1.Controls.Add(this.richTextBox1);
-			this.panel1.Location = new System.Drawing.Point(12, 29);
-			this.panel1.Name = "panel1";
-			this.panel1.Padding = new System.Windows.Forms.Padding(1);
-			this.panel1.Size = new System.Drawing.Size(300, 212);
-			this.panel1.TabIndex = 6;
+			this.pnl_updateDesc.BackColor = System.Drawing.SystemColors.ButtonShadow;
+			this.pnl_updateDesc.Controls.Add(this.rtb_updateDesc);
+			this.pnl_updateDesc.Location = new System.Drawing.Point(12, 29);
+			this.pnl_updateDesc.Name = "pnl_updateDesc";
+			this.pnl_updateDesc.Padding = new System.Windows.Forms.Padding(1);
+			this.pnl_updateDesc.Size = new System.Drawing.Size(300, 212);
+			this.pnl_updateDesc.TabIndex = 6;
 			// 
 			// AutoUpdateDialog
 			// 
@@ -110,16 +113,16 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(444, 251);
 			this.ControlBox = false;
-			this.Controls.Add(this.panel1);
-			this.Controls.Add(this.label2);
-			this.Controls.Add(this.label1);
-			this.Controls.Add(this.button3);
-			this.Controls.Add(this.button2);
-			this.Controls.Add(this.button1);
+			this.Controls.Add(this.pnl_updateDesc);
+			this.Controls.Add(this.lbl_Version);
+			this.Controls.Add(this.lbl_updateAvailable);
+			this.Controls.Add(this.btn_noThanks);
+			this.Controls.Add(this.btn_updateOnClose);
+			this.Controls.Add(this.btn_updateNow);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Name = "AutoUpdateDialog";
 			this.Text = "Auto Update";
-			this.panel1.ResumeLayout(false);
+			this.pnl_updateDesc.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -127,12 +130,12 @@
 
 		#endregion
 
-		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.Button button2;
-		private System.Windows.Forms.Button button3;
-		private System.Windows.Forms.RichTextBox richTextBox1;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Button btn_updateNow;
+		private System.Windows.Forms.Button btn_updateOnClose;
+		private System.Windows.Forms.Button btn_noThanks;
+		private System.Windows.Forms.RichTextBox rtb_updateDesc;
+		private System.Windows.Forms.Label lbl_updateAvailable;
+		private System.Windows.Forms.Label lbl_Version;
+		private System.Windows.Forms.Panel pnl_updateDesc;
 	}
 }

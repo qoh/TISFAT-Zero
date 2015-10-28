@@ -16,5 +16,20 @@ namespace TISFAT
 		{
 			InitializeComponent();
 		}
+
+		private void btn_updateNow_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btn_updateOnClose_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btn_noThanks_Click(object sender, EventArgs e)
+		{
+
+		}
 	}
 }
