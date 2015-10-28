@@ -72,7 +72,7 @@ namespace TISFAT
 
 			if (MainTimeline.SelectedFrameset != null && FrameType == 2)
 				removeKeyframeToolStripMenuItem.Enabled = FrameIndex != MainTimeline.SelectedFrameset.StartTime && FrameIndex != MainTimeline.SelectedFrameset.EndTime;
-
+			
 			setPoseToNextToolStripMenuItem.Visible = FrameType == 2;
 			setPoseToPreviousToolStripMenuItem.Visible = FrameType == 2;
 			if (MainTimeline.SelectedFrameset != null && FrameType == 2)
@@ -254,6 +254,8 @@ namespace TISFAT
 		{
 			if (MainTimeline != null)
 				MainTimeline.InsertKeyframe();
+
+			cxtm_Timeline.Close();
 		}
 
 		private void removeKeyframeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -367,6 +369,12 @@ namespace TISFAT
 
 			if (dlg.ShowDialog() == DialogResult.OK)
 				MainTimeline.AddLayerGroup(dlg.ReturnText);
+		}
+
+		private void withInterpolatedStateToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (MainTimeline != null)
+				MainTimeline.InsertKeyframe(true);
 		}
 	}
 }

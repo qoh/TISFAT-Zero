@@ -33,6 +33,7 @@ namespace TISFAT
 			pnl_BitmapProperties.Visible = false;
 			pnl_TextProperties.Visible = false;
 			pnl_PointLightProperties.Visible = false;
+			pnl_CameraProperties.Visible = false;
 		}
 
 		public void SelectionChanged(SelectionType type)
@@ -43,89 +44,96 @@ namespace TISFAT
 
 			if ((type & SelectionType.Keyframe) != 0)
 			{
-				switch(Program.MainTimeline.SelectedLayer.Data.GetType().ToString().Replace("TISFAT.Entities.", ""))
-                {
-					case "StickFigure":
-						c = ((StickFigure.State)Program.MainTimeline.SelectedKeyframe.State).Root.JointColor;
+				if (Program.MainTimeline.SelectedLayer.Data.GetType() == typeof(Camera))
+				{
+					pnl_CameraProperties.Visible = true;
+				}
+				else
+				{
+					switch (Program.MainTimeline.SelectedLayer.Data.GetType().ToString().Replace("TISFAT.Entities.", ""))
+					{
+						case "StickFigure":
+							c = ((StickFigure.State)Program.MainTimeline.SelectedKeyframe.State).Root.JointColor;
 
-						pnl_stickFigureColorImg.BackColor = c;
-						lbl_stickFigureColorNumbers.Text = string.Format("{0}, {1}, {2}", c.R, c.G, c.B);
+							pnl_stickFigureColorImg.BackColor = c;
+							lbl_stickFigureColorNumbers.Text = string.Format("{0}, {1}, {2}", c.R, c.G, c.B);
 
-						pnl_StickFigureProperties.Visible = true;
-						break;
-					case "CustomFigure":
-						c = ((StickFigure.State)Program.MainTimeline.SelectedKeyframe.State).Root.JointColor;
+							pnl_StickFigureProperties.Visible = true;
+							break;
+						case "CustomFigure":
+							c = ((StickFigure.State)Program.MainTimeline.SelectedKeyframe.State).Root.JointColor;
 
-						pnl_stickFigureColorImg.BackColor = c;
-						lbl_stickFigureColorNumbers.Text = string.Format("{0}, {1}, {2}", c.R, c.G, c.B);
+							pnl_stickFigureColorImg.BackColor = c;
+							lbl_stickFigureColorNumbers.Text = string.Format("{0}, {1}, {2}", c.R, c.G, c.B);
 
-						pnl_StickFigureProperties.Visible = true;
-						break;
-					case "LineObject":
-						c = ((LineObject.State)Program.MainTimeline.SelectedKeyframe.State).Color;
-						float thickness = ((LineObject.State)Program.MainTimeline.SelectedKeyframe.State).Thickness;
+							pnl_StickFigureProperties.Visible = true;
+							break;
+						case "LineObject":
+							c = ((LineObject.State)Program.MainTimeline.SelectedKeyframe.State).Color;
+							float thickness = ((LineObject.State)Program.MainTimeline.SelectedKeyframe.State).Thickness;
 
-						pnl_lineColorImg.BackColor = c;
-						lbl_lineColorNumbers.Text = string.Format("{0}, {1}, {2}", c.R, c.G, c.B);
+							pnl_lineColorImg.BackColor = c;
+							lbl_lineColorNumbers.Text = string.Format("{0}, {1}, {2}", c.R, c.G, c.B);
 
-						num_lineThickness.Value = (decimal)thickness;
+							num_lineThickness.Value = (decimal)thickness;
 
-						pnl_LineProperties.Visible = true;
-						break;
-					case "RectObject":
-						c = ((RectObject.State)Program.MainTimeline.SelectedKeyframe.State).Color;
+							pnl_LineProperties.Visible = true;
+							break;
+						case "RectObject":
+							c = ((RectObject.State)Program.MainTimeline.SelectedKeyframe.State).Color;
 
-						pnl_rectColorImg.BackColor = c;
-						lbl_rectColorNumbers.Text = string.Format("{0}, {1}, {2}", c.R, c.G, c.B);
+							pnl_rectColorImg.BackColor = c;
+							lbl_rectColorNumbers.Text = string.Format("{0}, {1}, {2}", c.R, c.G, c.B);
 
-						pnl_RectangleProperties.Visible = true;
-						break;
-					case "CircleObject":
-						c = ((CircleObject.State)Program.MainTimeline.SelectedKeyframe.State).Color;
-						float radius = ((CircleObject.State)Program.MainTimeline.SelectedKeyframe.State).Size;
+							pnl_RectangleProperties.Visible = true;
+							break;
+						case "CircleObject":
+							c = ((CircleObject.State)Program.MainTimeline.SelectedKeyframe.State).Color;
+							float radius = ((CircleObject.State)Program.MainTimeline.SelectedKeyframe.State).Size;
 
-						pnl_circleColorImg.BackColor = c;
-						lbl_circleColorNumbers.Text = string.Format("{0}, {1}, {2}", c.R, c.G, c.B);
+							pnl_circleColorImg.BackColor = c;
+							lbl_circleColorNumbers.Text = string.Format("{0}, {1}, {2}", c.R, c.G, c.B);
 
-						num_circleRadius.Value = (decimal)radius;
+							num_circleRadius.Value = (decimal)radius;
 
-						pnl_CircleProperties.Visible = true;
-						break;
-					case "PolyObject":
-						c = ((PolyObject.State)Program.MainTimeline.SelectedKeyframe.State).Color;
+							pnl_CircleProperties.Visible = true;
+							break;
+						case "PolyObject":
+							c = ((PolyObject.State)Program.MainTimeline.SelectedKeyframe.State).Color;
 
-						pnl_polyColorImg.BackColor = c;
-						lbl_polyColorNumbers.Text = string.Format("{0}, {1}, {2}", c.R, c.G, c.B);
+							pnl_polyColorImg.BackColor = c;
+							lbl_polyColorNumbers.Text = string.Format("{0}, {1}, {2}", c.R, c.G, c.B);
 
-						pnl_PolyProperties.Visible = true;
-						break;
-					case "BitmapObject":
-						float rotation = ((BitmapObject.State)Program.MainTimeline.SelectedKeyframe.State).Rotation;
-						int alpha = ((BitmapObject.State)Program.MainTimeline.SelectedKeyframe.State).BitmapAlpha;
+							pnl_PolyProperties.Visible = true;
+							break;
+						case "BitmapObject":
+							float rotation = ((BitmapObject.State)Program.MainTimeline.SelectedKeyframe.State).Rotation;
+							int alpha = ((BitmapObject.State)Program.MainTimeline.SelectedKeyframe.State).BitmapAlpha;
 
-						num_bitmapAngle.Value = (decimal)rotation;
-						tkb_bitmapAngle.Value = (int)rotation;
+							num_bitmapAngle.Value = (decimal)rotation;
+							tkb_bitmapAngle.Value = (int)rotation;
 
-						num_bitmapAlpha.Value = (decimal)alpha;
-						tkb_bitmapAlpha.Value = alpha;
+							num_bitmapAlpha.Value = (decimal)alpha;
+							tkb_bitmapAlpha.Value = alpha;
 
-						pnl_BitmapProperties.Visible = true;
-						break;
-					case "TextObject":
-						c = ((TextObject.State)Program.MainTimeline.SelectedKeyframe.State).TextColor;
-						Font font = ((TextObject.State)Program.MainTimeline.SelectedKeyframe.State).TextFont;
-						string txt = ((TextObject.State)Program.MainTimeline.SelectedKeyframe.State).Text;
+							pnl_BitmapProperties.Visible = true;
+							break;
+						case "TextObject":
+							c = ((TextObject.State)Program.MainTimeline.SelectedKeyframe.State).TextColor;
+							Font font = ((TextObject.State)Program.MainTimeline.SelectedKeyframe.State).TextFont;
+							string txt = ((TextObject.State)Program.MainTimeline.SelectedKeyframe.State).Text;
 
-						pnl_textColorImg.BackColor = c;
-						lbl_textColorNumbers.Text = string.Format("{0}, {1}, {2}", c.R, c.G, c.B);
+							pnl_textColorImg.BackColor = c;
+							lbl_textColorNumbers.Text = string.Format("{0}, {1}, {2}", c.R, c.G, c.B);
 
-						rtb_textText.Text = txt;
-						rtb_textText.Font = new Font(font.FontFamily, 8.25f, FontStyle.Regular);
+							rtb_textText.Text = txt;
+							rtb_textText.Font = new Font(font.FontFamily, 8.25f, FontStyle.Regular);
 
-						txt_textFont.Text = font.FontFamily.Name + ", " + font.Size + "pt";
+							txt_textFont.Text = font.FontFamily.Name + ", " + font.Size + "pt";
 
-						pnl_TextProperties.Visible = true;
-						break;
+							pnl_TextProperties.Visible = true;
+							break;
+					}
 				}
 			}
 			else
@@ -757,6 +765,36 @@ namespace TISFAT
 				Program.MainTimeline.SelectedLayer.Data = ed.CreatedFigure;
 				Program.MainTimeline.SelectedKeyframe.State = ed.CreatedFigureState;
 			}
+
+			Program.MainTimeline.GLContext.Invalidate();
+		}
+
+		private void btn_bitmapFitToCanvas_Click(object sender, EventArgs e)
+		{
+			if (Program.MainTimeline.SelectedKeyframe == null)
+				return;
+			if (Program.MainTimeline.SelectedKeyframe.State.GetType() != typeof(BitmapObject.State))
+				return;
+
+			BitmapObject.State state = Program.MainTimeline.SelectedKeyframe.State as BitmapObject.State;
+
+			state.Bounds.Location = new PointF(0, 0);
+			state.Bounds.Size = new SizeF(Program.ActiveProject.Width, Program.ActiveProject.Height);
+
+			Program.MainTimeline.GLContext.Invalidate();
+		}
+
+		private void btn_cameraFitToCanvas_Click(object sender, EventArgs e)
+		{
+			if (Program.MainTimeline.SelectedKeyframe == null)
+				return;
+			if (Program.MainTimeline.SelectedKeyframe.State.GetType() != typeof(Camera.State))
+				return;
+
+			Camera.State state = Program.MainTimeline.SelectedKeyframe.State as Camera.State;
+
+			state.Location = new PointF(0, 0);
+			state.Scale = 1.0f;
 
 			Program.MainTimeline.GLContext.Invalidate();
 		}

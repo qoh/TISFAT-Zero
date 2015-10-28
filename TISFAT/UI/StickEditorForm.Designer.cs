@@ -465,6 +465,11 @@
 			// num_jointThickness
 			// 
 			this.num_jointThickness.Location = new System.Drawing.Point(24, 4);
+			this.num_jointThickness.Maximum = new decimal(new int[] {
+            512,
+            0,
+            0,
+            0});
 			this.num_jointThickness.Name = "num_jointThickness";
 			this.num_jointThickness.Size = new System.Drawing.Size(121, 20);
 			this.num_jointThickness.TabIndex = 0;
@@ -615,6 +620,16 @@
 			// num_bitmapYOffset
 			// 
 			this.num_bitmapYOffset.Location = new System.Drawing.Point(59, 136);
+			this.num_bitmapYOffset.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+			this.num_bitmapYOffset.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
 			this.num_bitmapYOffset.Name = "num_bitmapYOffset";
 			this.num_bitmapYOffset.Size = new System.Drawing.Size(102, 20);
 			this.num_bitmapYOffset.TabIndex = 12;
@@ -633,6 +648,16 @@
 			// num_bitmapXOffset
 			// 
 			this.num_bitmapXOffset.Location = new System.Drawing.Point(59, 110);
+			this.num_bitmapXOffset.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+			this.num_bitmapXOffset.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
 			this.num_bitmapXOffset.Name = "num_bitmapXOffset";
 			this.num_bitmapXOffset.Size = new System.Drawing.Size(102, 20);
 			this.num_bitmapXOffset.TabIndex = 4;

@@ -551,10 +551,6 @@ namespace TISFAT
 			if (IsPlaying())
 				return;
 
-			int layerIndex = (int)Math.Floor((location.Y - 16) / 16.0);
-			if (layerIndex >= 0 && layerIndex < Program.ActiveProject.Layers.Count)
-				selectedItems.Select(Program.ActiveProject.Layers[layerIndex]);
-
 			if (location.X - Program.Form_Main.Form_Timeline.HScrollVal > SplitterDistance && !HoveringSplitter)
 			{
 				ClearSelection();
@@ -793,7 +789,7 @@ namespace TISFAT
 		#endregion
 
 		#region Actions
-		public void InsertKeyframe()
+		public void InsertKeyframe(bool currentPose = false)
 		{
 			if (SelectedLayer == null || SelectedFrameset == null)
 				return;
@@ -822,8 +818,12 @@ namespace TISFAT
 			if (prev == null || next == null)
 				return;
 
-            // Add the new frame in an interpolated form between its neighbouring keyframes.
-			float interpolationAmount = (TargetTime - prev.Time) / (float)(next.Time - prev.Time);
+			// Add the new frame in an interpolated form between its neighbouring keyframes.
+			float interpolationAmount = 0.0f;
+
+            if (currentPose)
+				interpolationAmount = (TargetTime - prev.Time) / (float)(next.Time - prev.Time);
+
 			Program.Form_Main.Do(new KeyframeAddAction(SelectedLayer, SelectedFrameset, TargetTime, prev.State.Copy(), next.State.Copy(), interpolationAmount));
 		}
 

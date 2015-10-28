@@ -61,6 +61,9 @@ namespace TISFAT
 						Current &= ~SelectionType.BlankFrame;
 					if ((SelectionType.NullFrame & Current) != 0)
 						Current &= ~SelectionType.NullFrame;
+
+					Program.Form_Canvas.UpdateStickFigurePair();
+					Program.Form_Properties.UpdateStickFigurePanel();
 				}
 				else
 					throw new ArgumentException("Attempting to select an unknown type!");
