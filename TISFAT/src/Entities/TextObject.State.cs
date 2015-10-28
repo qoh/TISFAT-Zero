@@ -126,6 +126,7 @@ namespace TISFAT.Entities
 				writer.Write(TextFont.FontFamily.ToString());
 				writer.Write((double)TextFont.Size);
 				writer.Write((int)TextFont.Style);
+				FileFormat.WriteColor(TextColor, writer);
 			}
 
 			public void Read(BinaryReader reader, UInt16 version)
@@ -143,6 +144,10 @@ namespace TISFAT.Entities
 				FontStyle style = (FontStyle)Enum.Parse(typeof(FontStyle), reader.ReadInt32().ToString());
 
 				TextFont = new Font(fontname, fontsize, style);
+				if (version > 7)
+					TextColor = FileFormat.ReadColor(reader);
+				else
+					TextColor = Color.Black;
 			}
 		}
 	}

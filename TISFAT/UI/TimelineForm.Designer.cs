@@ -34,14 +34,8 @@
 			this.scrl_HTimeline = new System.Windows.Forms.HScrollBar();
 			this.GLContext = new OpenTK.GLControl();
 			this.pnl_ToolboxPanel = new System.Windows.Forms.Panel();
-			this.btn_SeekStart = new TISFAT.Controls.BitmapButtonControl();
-			this.btn_Rewind = new TISFAT.Controls.BitmapButtonControl();
-			this.btn_SeekEnd = new TISFAT.Controls.BitmapButtonControl();
-			this.btn_FastForward = new TISFAT.Controls.BitmapButtonControl();
-			this.btn_PlayPause = new TISFAT.Controls.BitmapButtonControl();
 			this.cxtm_Timeline = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.insertKeyframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.withInterpolatedStateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.removeKeyframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.setPoseToPreviousToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.setPoseToNextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,6 +63,12 @@
 			this.moveLayerUpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.moveLayerDownToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.removeLayerToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.btn_SeekStart = new TISFAT.Controls.BitmapButtonControl();
+			this.btn_Rewind = new TISFAT.Controls.BitmapButtonControl();
+			this.btn_SeekEnd = new TISFAT.Controls.BitmapButtonControl();
+			this.btn_FastForward = new TISFAT.Controls.BitmapButtonControl();
+			this.btn_PlayPause = new TISFAT.Controls.BitmapButtonControl();
+			this.withInterpolatedStateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.pnl_ToolboxPanel.SuspendLayout();
 			this.cxtm_Timeline.SuspendLayout();
 			this.cxtm_Labels.SuspendLayout();
@@ -141,96 +141,6 @@
 			this.pnl_ToolboxPanel.Size = new System.Drawing.Size(751, 30);
 			this.pnl_ToolboxPanel.TabIndex = 6;
 			// 
-			// btn_SeekStart
-			// 
-			this.btn_SeekStart.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.btn_SeekStart.Checked = false;
-			this.btn_SeekStart.ImageDefault = global::TISFAT.Properties.Resources.control_start;
-			this.btn_SeekStart.ImageDown = global::TISFAT.Properties.Resources.control_start;
-			this.btn_SeekStart.ImageHover = global::TISFAT.Properties.Resources.control_start_blue;
-			this.btn_SeekStart.ImageOn = null;
-			this.btn_SeekStart.ImageOnDown = null;
-			this.btn_SeekStart.ImageOnHover = null;
-			this.btn_SeekStart.Location = new System.Drawing.Point(303, 3);
-			this.btn_SeekStart.Name = "btn_SeekStart";
-			this.btn_SeekStart.Size = new System.Drawing.Size(24, 24);
-			this.btn_SeekStart.TabIndex = 14;
-			this.btn_SeekStart.ToggleButton = false;
-			this.btn_SeekStart.ToolTipHint = "";
-			this.btn_SeekStart.Click += new System.EventHandler(this.btn_SeekStart_Click);
-			// 
-			// btn_Rewind
-			// 
-			this.btn_Rewind.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.btn_Rewind.Checked = false;
-			this.btn_Rewind.ImageDefault = global::TISFAT.Properties.Resources.control_rewind;
-			this.btn_Rewind.ImageDown = global::TISFAT.Properties.Resources.control_rewind;
-			this.btn_Rewind.ImageHover = global::TISFAT.Properties.Resources.control_rewind_blue;
-			this.btn_Rewind.ImageOn = null;
-			this.btn_Rewind.ImageOnDown = null;
-			this.btn_Rewind.ImageOnHover = null;
-			this.btn_Rewind.Location = new System.Drawing.Point(333, 3);
-			this.btn_Rewind.Name = "btn_Rewind";
-			this.btn_Rewind.Size = new System.Drawing.Size(24, 24);
-			this.btn_Rewind.TabIndex = 13;
-			this.btn_Rewind.ToggleButton = false;
-			this.btn_Rewind.ToolTipHint = "";
-			this.btn_Rewind.Click += new System.EventHandler(this.btn_Rewind_Click);
-			// 
-			// btn_SeekEnd
-			// 
-			this.btn_SeekEnd.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.btn_SeekEnd.Checked = false;
-			this.btn_SeekEnd.ImageDefault = global::TISFAT.Properties.Resources.control_end;
-			this.btn_SeekEnd.ImageDown = global::TISFAT.Properties.Resources.control_end;
-			this.btn_SeekEnd.ImageHover = global::TISFAT.Properties.Resources.control_end_blue;
-			this.btn_SeekEnd.ImageOn = null;
-			this.btn_SeekEnd.ImageOnDown = null;
-			this.btn_SeekEnd.ImageOnHover = null;
-			this.btn_SeekEnd.Location = new System.Drawing.Point(423, 3);
-			this.btn_SeekEnd.Name = "btn_SeekEnd";
-			this.btn_SeekEnd.Size = new System.Drawing.Size(24, 24);
-			this.btn_SeekEnd.TabIndex = 12;
-			this.btn_SeekEnd.ToggleButton = false;
-			this.btn_SeekEnd.ToolTipHint = "";
-			this.btn_SeekEnd.Click += new System.EventHandler(this.btn_SeekEnd_Click);
-			// 
-			// btn_FastForward
-			// 
-			this.btn_FastForward.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.btn_FastForward.Checked = false;
-			this.btn_FastForward.ImageDefault = global::TISFAT.Properties.Resources.control_fastforward;
-			this.btn_FastForward.ImageDown = global::TISFAT.Properties.Resources.control_fastforward;
-			this.btn_FastForward.ImageHover = global::TISFAT.Properties.Resources.control_fastforward_blue;
-			this.btn_FastForward.ImageOn = null;
-			this.btn_FastForward.ImageOnDown = null;
-			this.btn_FastForward.ImageOnHover = null;
-			this.btn_FastForward.Location = new System.Drawing.Point(393, 3);
-			this.btn_FastForward.Name = "btn_FastForward";
-			this.btn_FastForward.Size = new System.Drawing.Size(24, 24);
-			this.btn_FastForward.TabIndex = 11;
-			this.btn_FastForward.ToggleButton = false;
-			this.btn_FastForward.ToolTipHint = "";
-			this.btn_FastForward.Click += new System.EventHandler(this.btn_FastForward_Click);
-			// 
-			// btn_PlayPause
-			// 
-			this.btn_PlayPause.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.btn_PlayPause.Checked = false;
-			this.btn_PlayPause.ImageDefault = global::TISFAT.Properties.Resources.control_play;
-			this.btn_PlayPause.ImageDown = global::TISFAT.Properties.Resources.control_play;
-			this.btn_PlayPause.ImageHover = global::TISFAT.Properties.Resources.control_play_blue;
-			this.btn_PlayPause.ImageOn = global::TISFAT.Properties.Resources.control_pause;
-			this.btn_PlayPause.ImageOnDown = global::TISFAT.Properties.Resources.control_pause;
-			this.btn_PlayPause.ImageOnHover = global::TISFAT.Properties.Resources.control_pause_blue;
-			this.btn_PlayPause.Location = new System.Drawing.Point(363, 3);
-			this.btn_PlayPause.Name = "btn_PlayPause";
-			this.btn_PlayPause.Size = new System.Drawing.Size(24, 24);
-			this.btn_PlayPause.TabIndex = 10;
-			this.btn_PlayPause.ToggleButton = true;
-			this.btn_PlayPause.ToolTipHint = "";
-			this.btn_PlayPause.Click += new System.EventHandler(this.btn_PlayPause_Click);
-			// 
 			// cxtm_Timeline
 			// 
 			this.cxtm_Timeline.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -250,7 +160,7 @@
             this.toolStripSeparator5,
             this.gotoFrameToolStripMenuItem});
 			this.cxtm_Timeline.Name = "cxtm_Timeline";
-			this.cxtm_Timeline.Size = new System.Drawing.Size(234, 270);
+			this.cxtm_Timeline.Size = new System.Drawing.Size(234, 292);
 			// 
 			// insertKeyframeToolStripMenuItem
 			// 
@@ -260,13 +170,6 @@
 			this.insertKeyframeToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
 			this.insertKeyframeToolStripMenuItem.Text = "Insert Keyframe";
 			this.insertKeyframeToolStripMenuItem.Click += new System.EventHandler(this.insertKeyframeToolStripMenuItem_Click);
-			// 
-			// withInterpolatedStateToolStripMenuItem
-			// 
-			this.withInterpolatedStateToolStripMenuItem.Name = "withInterpolatedStateToolStripMenuItem";
-			this.withInterpolatedStateToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-			this.withInterpolatedStateToolStripMenuItem.Text = ".. With Interpolated State";
-			this.withInterpolatedStateToolStripMenuItem.Click += new System.EventHandler(this.withInterpolatedStateToolStripMenuItem_Click);
 			// 
 			// removeKeyframeToolStripMenuItem
 			// 
@@ -458,6 +361,103 @@
 			this.removeLayerToolStripMenuItem1.Size = new System.Drawing.Size(169, 22);
 			this.removeLayerToolStripMenuItem1.Text = "Remove Layer";
 			this.removeLayerToolStripMenuItem1.Click += new System.EventHandler(this.removeLayerToolStripMenuItem_Click);
+			// 
+			// btn_SeekStart
+			// 
+			this.btn_SeekStart.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.btn_SeekStart.Checked = false;
+			this.btn_SeekStart.ImageDefault = global::TISFAT.Properties.Resources.control_start;
+			this.btn_SeekStart.ImageDown = global::TISFAT.Properties.Resources.control_start;
+			this.btn_SeekStart.ImageHover = global::TISFAT.Properties.Resources.control_start_blue;
+			this.btn_SeekStart.ImageOn = null;
+			this.btn_SeekStart.ImageOnDown = null;
+			this.btn_SeekStart.ImageOnHover = null;
+			this.btn_SeekStart.Location = new System.Drawing.Point(303, 3);
+			this.btn_SeekStart.Name = "btn_SeekStart";
+			this.btn_SeekStart.Size = new System.Drawing.Size(24, 24);
+			this.btn_SeekStart.TabIndex = 14;
+			this.btn_SeekStart.ToggleButton = false;
+			this.btn_SeekStart.ToolTipHint = "";
+			this.btn_SeekStart.Click += new System.EventHandler(this.btn_SeekStart_Click);
+			// 
+			// btn_Rewind
+			// 
+			this.btn_Rewind.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.btn_Rewind.Checked = false;
+			this.btn_Rewind.ImageDefault = global::TISFAT.Properties.Resources.control_rewind;
+			this.btn_Rewind.ImageDown = global::TISFAT.Properties.Resources.control_rewind;
+			this.btn_Rewind.ImageHover = global::TISFAT.Properties.Resources.control_rewind_blue;
+			this.btn_Rewind.ImageOn = null;
+			this.btn_Rewind.ImageOnDown = null;
+			this.btn_Rewind.ImageOnHover = null;
+			this.btn_Rewind.Location = new System.Drawing.Point(333, 3);
+			this.btn_Rewind.Name = "btn_Rewind";
+			this.btn_Rewind.Size = new System.Drawing.Size(24, 24);
+			this.btn_Rewind.TabIndex = 13;
+			this.btn_Rewind.ToggleButton = false;
+			this.btn_Rewind.ToolTipHint = "";
+			this.btn_Rewind.Click += new System.EventHandler(this.btn_Rewind_Click);
+			// 
+			// btn_SeekEnd
+			// 
+			this.btn_SeekEnd.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.btn_SeekEnd.Checked = false;
+			this.btn_SeekEnd.ImageDefault = global::TISFAT.Properties.Resources.control_end;
+			this.btn_SeekEnd.ImageDown = global::TISFAT.Properties.Resources.control_end;
+			this.btn_SeekEnd.ImageHover = global::TISFAT.Properties.Resources.control_end_blue;
+			this.btn_SeekEnd.ImageOn = null;
+			this.btn_SeekEnd.ImageOnDown = null;
+			this.btn_SeekEnd.ImageOnHover = null;
+			this.btn_SeekEnd.Location = new System.Drawing.Point(423, 3);
+			this.btn_SeekEnd.Name = "btn_SeekEnd";
+			this.btn_SeekEnd.Size = new System.Drawing.Size(24, 24);
+			this.btn_SeekEnd.TabIndex = 12;
+			this.btn_SeekEnd.ToggleButton = false;
+			this.btn_SeekEnd.ToolTipHint = "";
+			this.btn_SeekEnd.Click += new System.EventHandler(this.btn_SeekEnd_Click);
+			// 
+			// btn_FastForward
+			// 
+			this.btn_FastForward.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.btn_FastForward.Checked = false;
+			this.btn_FastForward.ImageDefault = global::TISFAT.Properties.Resources.control_fastforward;
+			this.btn_FastForward.ImageDown = global::TISFAT.Properties.Resources.control_fastforward;
+			this.btn_FastForward.ImageHover = global::TISFAT.Properties.Resources.control_fastforward_blue;
+			this.btn_FastForward.ImageOn = null;
+			this.btn_FastForward.ImageOnDown = null;
+			this.btn_FastForward.ImageOnHover = null;
+			this.btn_FastForward.Location = new System.Drawing.Point(393, 3);
+			this.btn_FastForward.Name = "btn_FastForward";
+			this.btn_FastForward.Size = new System.Drawing.Size(24, 24);
+			this.btn_FastForward.TabIndex = 11;
+			this.btn_FastForward.ToggleButton = false;
+			this.btn_FastForward.ToolTipHint = "";
+			this.btn_FastForward.Click += new System.EventHandler(this.btn_FastForward_Click);
+			// 
+			// btn_PlayPause
+			// 
+			this.btn_PlayPause.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.btn_PlayPause.Checked = false;
+			this.btn_PlayPause.ImageDefault = global::TISFAT.Properties.Resources.control_play;
+			this.btn_PlayPause.ImageDown = global::TISFAT.Properties.Resources.control_play;
+			this.btn_PlayPause.ImageHover = global::TISFAT.Properties.Resources.control_play_blue;
+			this.btn_PlayPause.ImageOn = global::TISFAT.Properties.Resources.control_pause;
+			this.btn_PlayPause.ImageOnDown = global::TISFAT.Properties.Resources.control_pause;
+			this.btn_PlayPause.ImageOnHover = global::TISFAT.Properties.Resources.control_pause_blue;
+			this.btn_PlayPause.Location = new System.Drawing.Point(363, 3);
+			this.btn_PlayPause.Name = "btn_PlayPause";
+			this.btn_PlayPause.Size = new System.Drawing.Size(24, 24);
+			this.btn_PlayPause.TabIndex = 10;
+			this.btn_PlayPause.ToggleButton = true;
+			this.btn_PlayPause.ToolTipHint = "";
+			this.btn_PlayPause.Click += new System.EventHandler(this.btn_PlayPause_Click);
+			// 
+			// withInterpolatedStateToolStripMenuItem
+			// 
+			this.withInterpolatedStateToolStripMenuItem.Name = "withInterpolatedStateToolStripMenuItem";
+			this.withInterpolatedStateToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+			this.withInterpolatedStateToolStripMenuItem.Text = ".. With Interpolated State";
+			this.withInterpolatedStateToolStripMenuItem.Click += new System.EventHandler(this.withInterpolatedStateToolStripMenuItem_Click);
 			// 
 			// TimelineForm
 			// 

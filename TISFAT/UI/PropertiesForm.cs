@@ -246,6 +246,19 @@ namespace TISFAT
 
 			Program.MainTimeline.GLContext.Invalidate();
 		}
+
+		private void btn_stickOpenInEditor_Click(object sender, EventArgs e)
+		{
+			StickEditorForm ed = new StickEditorForm(((StickFigure)Program.MainTimeline.SelectedLayer.Data).Copy(), (StickFigure.State)Program.MainTimeline.SelectedKeyframe.State.Copy());
+
+			if (ed.ShowDialog() == DialogResult.OK)
+			{
+				Program.MainTimeline.SelectedLayer.Data = ed.CreatedFigure;
+				Program.MainTimeline.SelectedKeyframe.State = ed.CreatedFigureState;
+			}
+
+			Program.MainTimeline.GLContext.Invalidate();
+		}
 		#endregion
 
 		#region LineObject Panel
@@ -701,6 +714,7 @@ namespace TISFAT
 		}
 		#endregion
 
+		#region BitmapObject Panel
 		private void num_bitmapAngle_ValueChanged(object sender, EventArgs e)
 		{
 			if (Program.MainTimeline.SelectedKeyframe == null)
@@ -726,8 +740,6 @@ namespace TISFAT
 
 			num_bitmapAngle.Value = (decimal)tkb_bitmapAngle.Value;
 		}
-
-
 
 		private void num_bitmapAlpha_ValueChanged(object sender, EventArgs e)
 		{
@@ -756,19 +768,6 @@ namespace TISFAT
 			num_bitmapAlpha.Value = (decimal)tkb_bitmapAlpha.Value;
 		}
 
-		private void btn_stickOpenInEditor_Click(object sender, EventArgs e)
-		{
-			StickEditorForm ed = new StickEditorForm(((StickFigure)Program.MainTimeline.SelectedLayer.Data).Copy(), (StickFigure.State)Program.MainTimeline.SelectedKeyframe.State.Copy());
-
-			if (ed.ShowDialog() == DialogResult.OK)
-			{
-				Program.MainTimeline.SelectedLayer.Data = ed.CreatedFigure;
-				Program.MainTimeline.SelectedKeyframe.State = ed.CreatedFigureState;
-			}
-
-			Program.MainTimeline.GLContext.Invalidate();
-		}
-
 		private void btn_bitmapFitToCanvas_Click(object sender, EventArgs e)
 		{
 			if (Program.MainTimeline.SelectedKeyframe == null)
@@ -783,7 +782,9 @@ namespace TISFAT
 
 			Program.MainTimeline.GLContext.Invalidate();
 		}
+		#endregion
 
+		#region Camera Panel
 		private void btn_cameraFitToCanvas_Click(object sender, EventArgs e)
 		{
 			if (Program.MainTimeline.SelectedKeyframe == null)
@@ -797,6 +798,7 @@ namespace TISFAT
 			state.Scale = 1.0f;
 
 			Program.MainTimeline.GLContext.Invalidate();
-		}
+		} 
+		#endregion
 	}
 }

@@ -113,18 +113,6 @@ namespace TISFAT
 		}
 		#endregion
 
-		public int GetLastTime()
-		{
-			List<Layer> Layers = Program.ActiveProject.Layers;
-			int LastTime = 0;
-			foreach (Layer layer in Layers)
-				if(layer.Type == LayerTypeEnum.Entity)
-					if(layer.Data.GetType() != typeof(Camera))
-						LastTime = (int)Math.Max(layer.Framesets[layer.Framesets.Count - 1].EndTime, LastTime);
-
-			return LastTime;
-		}
-
 		#region Seeking / Playback Functions
 		public void SeekStart()
 		{
@@ -385,6 +373,18 @@ namespace TISFAT
 			return FrameNum + frame;
 		}
 
+		public int GetLastTime()
+		{
+			List<Layer> Layers = Program.ActiveProject.Layers;
+			int LastTime = 0;
+			foreach (Layer layer in Layers)
+				if (layer.Type == LayerTypeEnum.Entity)
+					if (layer.Data.GetType() != typeof(Camera))
+						LastTime = (int)Math.Max(layer.Framesets[layer.Framesets.Count - 1].EndTime, LastTime);
+
+			return LastTime;
+		}
+
 		public int GetFrameType()
 		{
 			if (selectedItems.Contains(SelectionType.Keyframe))
@@ -405,6 +405,7 @@ namespace TISFAT
 		}
 		#endregion
 
+		#region Selection Stuff
 		public void ClearSelection()
 		{
 			selectedItems.Clear();
@@ -436,7 +437,7 @@ namespace TISFAT
 
 			ClearSelection();
 
-			if(layer.Type == LayerTypeEnum.Entity)
+			if (layer.Type == LayerTypeEnum.Entity)
 			{
 				foreach (Frameset frameset in layer.Framesets)
 				{
@@ -467,7 +468,8 @@ namespace TISFAT
 			selectedItems.Select(layer);
 
 			GLContext.Invalidate();
-		}
+		} 
+		#endregion
 
 		public void GLContext_Paint(object sender, PaintEventArgs e)
 		{
@@ -551,27 +553,35 @@ namespace TISFAT
 			if (IsPlaying())
 				return;
 
-			if (location.X - Program.Form_Main.Form_Timeline.HScrollVal > SplitterDistance && !HoveringSplitter)
+			if (locationActual.X > SplitterDistance && !HoveringSplitter)
 			{
 				ClearSelection();
 
-				if (PlayStart != null)
-					PlayStart = DateTime.Now;
-
-				SelectFrame(location);
-
-				if (button == MouseButtons.Right)
-					return;
-
-				if (SelectedKeyframe != null)
+				if (locationActual.Y > 16)
 				{
-					KeyframeDragStartTime = SelectedKeyframe.Time;
-					IsDraggingKeyframe = true;
+					if (PlayStart != null)
+						PlayStart = DateTime.Now;
+
+					SelectFrame(location);
+
+					if (button == MouseButtons.Right)
+						return;
+
+					if (SelectedKeyframe != null)
+					{
+						KeyframeDragStartTime = SelectedKeyframe.Time;
+						IsDraggingKeyframe = true;
+					}
+					else if (selectedItems.Contains(SelectionType.BlankFrame) && selectedTime != -1)
+					{
+						FramesetDragStartTime = SelectedFrameset.Keyframes[0].Time;
+						IsDraggingFrameset = true;
+					}
 				}
-				else if (selectedItems.Contains(SelectionType.BlankFrame) && selectedTime != -1)
+				else
 				{
-					FramesetDragStartTime = SelectedFrameset.Keyframes[0].Time;
-					IsDraggingFrameset = true;
+					FrameNum = (float)Math.Max(0, Math.Floor((location.X - SplitterDistance - 1) / 9.0f));
+					GLContext.Invalidate();
 				}
 			}
 			else if (button == MouseButtons.Left)
@@ -624,7 +634,7 @@ namespace TISFAT
 				return;
 			}
 
-			if (location.X - Program.Form_Main.Form_Timeline.HScrollVal > SplitterDistance)
+			if (locationActual.X > SplitterDistance)
 			{
 				if (IsMouseDown)
 					IsDragging = true;
@@ -678,13 +688,8 @@ namespace TISFAT
 					float NewStartTime = SelectedFrameset.StartTime + NewTime;
 					float NewEndTime = SelectedFrameset.EndTime + NewTime;
 
-					//uhhh here you check if anything is overlapping but i dont quite remember gimme a minute
-					// btw the amount of frames a frameset takes up can be figured out with frameset.duration
-					// which is just frameset.starttime - frameset.endtime
-
 					if (NewStartTime < 0)
 						return;
-
 
 					foreach (Frameset x in SelectedLayer.Framesets)
 					{

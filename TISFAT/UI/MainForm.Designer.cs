@@ -447,7 +447,6 @@
 			// 
 			// importToolStripMenuItem
 			// 
-			this.importToolStripMenuItem.Enabled = false;
 			this.importToolStripMenuItem.Image = global::TISFAT.Properties.Resources.page_import_16;
 			this.importToolStripMenuItem.Name = "importToolStripMenuItem";
 			this.importToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
@@ -771,6 +770,7 @@
 			this.Text = "TISFAT Zero";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
 			this.sc_MainContainer.Panel1.ResumeLayout(false);
 			this.sc_MainContainer.Panel1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.sc_MainContainer)).EndInit();

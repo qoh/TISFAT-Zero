@@ -136,10 +136,10 @@ namespace TISFAT.Util
 		public static Color Interpolate(float t, Color a, Color b, EntityInterpolationMode mode)
 		{
 			return Color.FromArgb(
-			(int)Interpolate(t, a.A, b.A, mode),
-			(int)Interpolate(t, a.R, b.R, mode),
-			(int)Interpolate(t, a.G, b.G, mode),
-			(int)Interpolate(t, a.B, b.B, mode));
+			(int)Math.Max(Interpolate(t, a.A, b.A, mode), 0),
+			(int)Math.Min(Interpolate(t, a.R, b.R, mode), 255),
+			(int)Math.Min(Interpolate(t, a.G, b.G, mode), 255),
+			(int)Math.Min(Interpolate(t, a.B, b.B, mode), 255));
 		}
 	}
 }

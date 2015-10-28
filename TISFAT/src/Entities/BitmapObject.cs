@@ -26,7 +26,7 @@ namespace TISFAT.Entities
 
 			state.Bounds = Interpolation.Interpolate(t, current.Bounds, target.Bounds, mode);
 			state.Rotation = Interpolation.Interpolate(t, current.Rotation, target.Rotation, mode);
-			state.BitmapAlpha = (int)Interpolation.Interpolate(t, current.BitmapAlpha, target.BitmapAlpha, mode);
+			state.BitmapAlpha = (int)Math.Max(Interpolation.Interpolate(t, current.BitmapAlpha, target.BitmapAlpha, mode), 0);
 
 			return state;
 		}

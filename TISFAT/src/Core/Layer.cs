@@ -59,6 +59,7 @@ namespace TISFAT
 			Program.ActiveProject.Layers.Add(layer);
 			LayerIndex = Program.ActiveProject.Layers.IndexOf(layer);
 
+			Program.MainTimeline.Resize();
 			Program.MainTimeline.ClearSelection();
 			Program.MainTimeline.selectedItems.Select(layer, layer.Framesets[0], layer.Framesets[0].Keyframes[0]);
 
@@ -71,6 +72,8 @@ namespace TISFAT
 		{
 			Program.ActiveProject.Layers.RemoveAt(LayerIndex);
 			Program.ActiveProject.LayerCount[figureType]--;
+
+			Program.MainTimeline.Resize();
 			Program.MainTimeline.ClearSelection();
 
 			Program.MainTimeline.GLContext.Invalidate();

@@ -96,6 +96,11 @@ namespace TISFAT
 		}
 		#endregion
 
+		public void GLContext_Paint(object sender, PaintEventArgs e)
+		{
+			DrawFrame(Program.MainTimeline.GetCurrentFrame(), false, sender != null);
+		}
+
 		public void DrawFrame(float time, bool render, bool lights)
 		{
 			if (lights)
@@ -148,10 +153,6 @@ namespace TISFAT
 		public void UpdateStickFigurePair()
 		{
 			StickFigurePair = null;
-		}
-		public void GLContext_Paint(object sender, PaintEventArgs e)
-		{
-			DrawFrame(Program.MainTimeline.GetCurrentFrame(), false, sender != null);
 		}
 
 		public void GLContext_MouseDown(object sender, MouseEventArgs e)
