@@ -127,7 +127,7 @@ namespace TISFAT
 
 			dlg.StartPosition = FormStartPosition.CenterParent;
 
-			dlg.Show();
+			dlg.ShowDialog();
 
 			Close();
 		}
