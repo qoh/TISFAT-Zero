@@ -122,6 +122,7 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Name = "AutoUpdateDialog";
 			this.Text = "Auto Update";
+			this.Load += new System.EventHandler(this.AutoUpdateDialog_Load);
 			this.pnl_updateDesc.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();

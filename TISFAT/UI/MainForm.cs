@@ -87,6 +87,8 @@ namespace TISFAT
 
 			if (Program.LoadFile != "")
 				ProjectOpen(Program.LoadFile);
+
+			AutoUpdateDialog.CheckForUpdates(false);
 		}
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -110,10 +112,28 @@ namespace TISFAT
 						break;
 					case DialogResult.Cancel:
 						e.Cancel = true;
-						break;
+						return;
 
 					default:
 						throw new ArgumentException("Unknown Dialog Result");
+				}
+			}
+
+			if (!e.Cancel)
+			{
+				ProjectDirty = false;
+
+				if (Program.updateScheduled)
+				{
+					e.Cancel = true;
+					Program.updateScheduled = false;
+
+					Hide();
+
+					DownloadUpdateDialog dlg = new DownloadUpdateDialog(Program.updateUrl);
+
+					dlg.ShowDialog();
+					Close();
 				}
 			}
 		}
@@ -423,5 +443,10 @@ namespace TISFAT
 			ProjectSave(fileName, true);
 		}
 		#endregion
+
+		private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			AutoUpdateDialog.CheckForUpdates(true);
+		}
 	}
 }
