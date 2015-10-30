@@ -98,10 +98,9 @@
 		}
 
 		#endregion
-
-		private System.Windows.Forms.Label lbl_saveChanges;
 		private System.Windows.Forms.Button btn_Yes;
 		private System.Windows.Forms.Button btn_No;
 		private System.Windows.Forms.Button btn_Cancel;
+		public System.Windows.Forms.Label lbl_saveChanges;
 	}
 }
