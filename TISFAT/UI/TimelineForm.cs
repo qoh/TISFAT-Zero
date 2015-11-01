@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using TISFAT.Controls;
 
 namespace TISFAT
 {
@@ -10,18 +9,13 @@ namespace TISFAT
 		#region Properties
 		public Timeline MainTimeline;
 
-		public int HScrollVal
-		{
-			get { return scrl_HTimeline.Value; }
-		}
+		public int HScrollVal => scrl_HTimeline.Value;
 
-		public bool HScrollVisible { get { return scrl_HTimeline.Visible; } }
+		public bool HScrollVisible => scrl_HTimeline.Visible; 
 
-		public int VScrollVal
-		{
-			get { return scrl_VTimeline.Value; }
-		}
-		public bool VScrollVisible { get { return scrl_VTimeline.Visible; } }
+		public int VScrollVal => scrl_VTimeline.Value; 
+
+		public bool VScrollVisible => scrl_VTimeline.Visible; 
 		#endregion
 
 		public TimelineForm(Control parent)
@@ -39,8 +33,6 @@ namespace TISFAT
 			TopLevel = false;
 			parent.Controls.Add(this);
 		}
-
-		public BitmapButtonControl PlayButton { get { return btn_PlayPause; } }
 
 		public void ShowFrameCxtMenu(Point Location, int FrameType, int FrameIndex)
 		{
@@ -105,30 +97,13 @@ namespace TISFAT
 		}
 
 		#region GLContext <-> Timeline Hooks
+		private void GLContext_MouseMove(object sender, MouseEventArgs e) => MainTimeline?.MouseMoved(e.Location);
 
-		private void GLContext_MouseMove(object sender, MouseEventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.MouseMoved(e.Location);
-		}
+		private void GLContext_MouseLeave(object sender, EventArgs e) => MainTimeline?.MouseLeft();
 
-		private void GLContext_MouseLeave(object sender, EventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.MouseLeft();
-		}
+		private void GLContext_MouseDown(object sender, MouseEventArgs e) => MainTimeline?.MouseDown(e.Location, e.Button);
 
-		private void GLContext_MouseDown(object sender, MouseEventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.MouseDown(e.Location, e.Button);
-		}
-
-		private void GLContext_MouseUp(object sender, MouseEventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.MouseUp(e.Location, e.Button);
-		}
+		private void GLContext_MouseUp(object sender, MouseEventArgs e) => MainTimeline?.MouseUp(e.Location, e.Button);
 
 		private void GLContext_MouseWheel(object sender, MouseEventArgs e)
 		{
@@ -188,43 +163,19 @@ namespace TISFAT
 			pnl_ScrollSquare.Visible = scrl_HTimeline.Visible || scrl_VTimeline.Visible;
 		}
 
-		private void scrl_Timeline_Scroll(object sender, ScrollEventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.GLContext.Invalidate();
-		}
+		private void scrl_Timeline_Scroll(object sender, ScrollEventArgs e) => MainTimeline?.GLContext.Invalidate();
 		#endregion
 
 		#region Playback Control Hooks
-		public void btn_PlayPause_Click(object sender, EventArgs e)
-		{
-			MainTimeline.TogglePause();
-		}
+		public void btn_PlayPause_Click(object sender, EventArgs e) => MainTimeline?.TogglePause();
 
-		private void btn_FastForward_Click(object sender, EventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.NextKeyframe();
-		}
+		private void btn_FastForward_Click(object sender, EventArgs e) => MainTimeline?.NextKeyframe();
 
-		private void btn_Rewind_Click(object sender, EventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.PrevKeyframe();
-		}
+		private void btn_Rewind_Click(object sender, EventArgs e) => MainTimeline?.PrevKeyframe();
 
-		private void btn_SeekStart_Click(object sender, EventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.SeekFirstFrame();
-		}
+		private void btn_SeekStart_Click(object sender, EventArgs e) => MainTimeline?.SeekFirstFrame();
 
-		private void btn_SeekEnd_Click(object sender, EventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.SeekLastFrame();
-		}
-
+		private void btn_SeekEnd_Click(object sender, EventArgs e) => MainTimeline?.SeekLastFrame();
 		#endregion
 
 		#region Form Events
@@ -237,16 +188,9 @@ namespace TISFAT
 			}
 		}
 
-		private void TimelineForm_Resize(object sender, EventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.Resize();
-		}
+		private void TimelineForm_Resize(object sender, EventArgs e) => MainTimeline?.Resize();
 
-		private void TimelineForm_Enter(object sender, EventArgs e)
-		{
-			BringToFront();
-		}
+		private void TimelineForm_Enter(object sender, EventArgs e) => BringToFront();
 		#endregion
 
 		#region Context Menu Hooks
@@ -258,95 +202,33 @@ namespace TISFAT
 			cxtm_Timeline.Close();
 		}
 
-		private void removeKeyframeToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.RemoveKeyframe();
-		}
+		private void removeKeyframeToolStripMenuItem_Click(object sender, EventArgs e) => MainTimeline?.RemoveKeyframe();
 
-		private void insertFramesetToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.InsertFrameset();
-		}
+		private void insertFramesetToolStripMenuItem_Click(object sender, EventArgs e) => MainTimeline?.InsertFrameset();
 
-		private void removeFramesetToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.RemoveFrameset();
-		}
+		private void removeFramesetToolStripMenuItem_Click(object sender, EventArgs e) => MainTimeline?.RemoveFrameset();
 
-		public void moveLayerUpToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.MoveLayerUp();
-		}
+		public void moveLayerUpToolStripMenuItem_Click(object sender, EventArgs e) => MainTimeline?.MoveLayerUp();
 
-		public void moveLayerDownToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.MoveLayerDown();
-		}
+		public void moveLayerDownToolStripMenuItem_Click(object sender, EventArgs e) => MainTimeline?.MoveLayerDown();
 
-		private void removeLayerToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (MainTimeline != null)
-					MainTimeline.RemoveLayer();
-		}
-		#endregion
+		private void removeLayerToolStripMenuItem_Click(object sender, EventArgs e) => MainTimeline?.RemoveLayer();
 
-		private void setPoseToPreviousToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.SetPoseToPrevious();
-		}
+		private void setPoseToPreviousToolStripMenuItem_Click(object sender, EventArgs e) => MainTimeline?.SetPoseToPrevious();
 
-		private void setPoseToNextToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.SetPoseToNext();
-		}
+		private void setPoseToNextToolStripMenuItem_Click(object sender, EventArgs e) => MainTimeline?.SetPoseToNext();
 
-		private void noneToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.ChangeInterpolationMode(Util.EntityInterpolationMode.None);
-		}
+		private void noneToolStripMenuItem_Click(object sender, EventArgs e) => MainTimeline?.ChangeInterpolationMode(Util.EntityInterpolationMode.None);
 
-		private void linearToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.ChangeInterpolationMode(Util.EntityInterpolationMode.Linear);
-		}
+		private void linearToolStripMenuItem_Click(object sender, EventArgs e) => MainTimeline?.ChangeInterpolationMode(Util.EntityInterpolationMode.Linear);
 
-		private void quadInOutToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.ChangeInterpolationMode(Util.EntityInterpolationMode.QuadInOut);
-		}
+		private void quadInOutToolStripMenuItem_Click(object sender, EventArgs e) => MainTimeline?.ChangeInterpolationMode(Util.EntityInterpolationMode.QuadInOut);
 
-		private void bounceOutToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.ChangeInterpolationMode(Util.EntityInterpolationMode.BounceOut);
-		}
+		private void bounceOutToolStripMenuItem_Click(object sender, EventArgs e) => MainTimeline?.ChangeInterpolationMode(Util.EntityInterpolationMode.BounceOut);
 
-		private void backOutToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.ChangeInterpolationMode(Util.EntityInterpolationMode.BackOut);
-		}
+		private void backOutToolStripMenuItem_Click(object sender, EventArgs e) => MainTimeline?.ChangeInterpolationMode(Util.EntityInterpolationMode.BackOut);
 
-		private void expoInOutToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (MainTimeline != null)
-				MainTimeline.ChangeInterpolationMode(Util.EntityInterpolationMode.ExpoInOut);
-		}
-
-		private void TimelineForm_KeyDown(object sender, KeyEventArgs e)
-		{
-
-		}
+		private void expoInOutToolStripMenuItem_Click(object sender, EventArgs e) => MainTimeline?.ChangeInterpolationMode(Util.EntityInterpolationMode.ExpoInOut);
 
 		public void renameToolStripMenuItem_Click(object sender, EventArgs e)
 		{
@@ -371,10 +253,12 @@ namespace TISFAT
 				MainTimeline.AddLayerGroup(dlg.ReturnText);
 		}
 
-		private void withInterpolatedStateToolStripMenuItem_Click(object sender, EventArgs e)
+		private void withInterpolatedStateToolStripMenuItem_Click(object sender, EventArgs e) => MainTimeline?.InsertKeyframe(true);
+		#endregion
+
+		private void TimelineForm_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (MainTimeline != null)
-				MainTimeline.InsertKeyframe(true);
+			// Doesn't really do much anymore. Not removing it just yet though
 		}
 	}
 }

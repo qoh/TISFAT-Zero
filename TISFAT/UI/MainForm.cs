@@ -443,10 +443,5 @@ namespace TISFAT
 			ProjectSave(fileName, true);
 		}
 		#endregion
-
-		private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			AutoUpdateDialog.CheckForUpdates(true);
-		}
 	}
 }

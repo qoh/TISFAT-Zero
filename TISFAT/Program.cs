@@ -8,13 +8,13 @@ namespace TISFAT
 	{
 		private static MainForm _MainForm;
 
-		public static MainForm Form_Main { get { return _MainForm; } }
-		public static TimelineForm Form_Timeline { get { return Form_Main.Form_Timeline; } }
-		public static CanvasForm Form_Canvas { get { return Form_Main.Form_Canvas; } }
-		public static PropertiesForm Form_Properties { get { return Form_Main.Form_Toolbox; } }
+		public static MainForm Form_Main => _MainForm; 
+		public static TimelineForm Form_Timeline => Form_Main.Form_Timeline; 
+		public static CanvasForm Form_Canvas => Form_Main.Form_Canvas;
+		public static PropertiesForm Form_Properties => Form_Main.Form_Toolbox;
 
-		public static Project ActiveProject { get { return Form_Main.ActiveProject; } }
-		public static Timeline MainTimeline { get { return Form_Main.MainTimeline; } }
+		public static Project ActiveProject => Form_Main.ActiveProject;
+		public static Timeline MainTimeline => Form_Main.MainTimeline;
 
 		public static string LoadFile = "";
 

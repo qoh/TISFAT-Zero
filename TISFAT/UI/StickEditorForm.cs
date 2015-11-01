@@ -64,8 +64,8 @@ namespace TISFAT
 			}
 		}
 
-		public bool IKEnabled { get { return ckb_EnableIK.Checked; } }
-		public bool DrawHandles { get { return ckb_DrawHandles.Checked; } }
+		public bool IKEnabled => ckb_EnableIK.Checked; 
+		public bool DrawHandles => ckb_DrawHandles.Checked; 
 		#endregion
 
 		public StickEditorForm()
