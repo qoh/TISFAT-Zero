@@ -18,6 +18,16 @@ namespace TISFAT
 
 		public static string LoadFile = "";
 
+#if !WIN64
+		public static string TargetMsiName = "Tisfat.Zero-x86.msi";
+#else
+		public static string TargetMsiName = "Tisfat.Zero-x64.msi";
+#endif
+
+		public static bool updateScheduled = false;
+		public static string updateUrl;
+
+
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>

@@ -25,7 +25,7 @@
     <!--  Versioning. These must be changed for upgrades.
           Recompiling with newer files isn't enough -->
 
-    <?define VersionNumber="1.4.5.0" ?>
+    <?define VersionNumber="1.4.6.0" ?>
 
     <?define UpgradeCode="BAEE4265-CA67-4FE3-9626-3E2CCE77FF16"?>
     

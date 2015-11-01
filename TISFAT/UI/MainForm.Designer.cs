@@ -753,6 +753,7 @@
 			this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
 			this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
 			this.checkForUpdatesToolStripMenuItem.Text = "Check for Updates";
+			this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 
@@ -770,7 +771,6 @@
 			this.Text = "TISFAT Zero";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
-			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
 			this.sc_MainContainer.Panel1.ResumeLayout(false);
 			this.sc_MainContainer.Panel1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.sc_MainContainer)).EndInit();

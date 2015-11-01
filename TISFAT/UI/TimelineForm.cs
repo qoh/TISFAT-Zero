@@ -345,7 +345,7 @@ namespace TISFAT
 
 		private void TimelineForm_KeyDown(object sender, KeyEventArgs e)
 		{
-			Program.Form_Main.CheckKeyPressed(e);
+
 		}
 
 		public void renameToolStripMenuItem_Click(object sender, EventArgs e)
