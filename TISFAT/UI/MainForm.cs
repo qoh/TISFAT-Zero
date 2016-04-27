@@ -365,6 +365,13 @@ namespace TISFAT
 
 			progress.StartPosition = FormStartPosition.CenterParent;
 
+
+			if (Path.GetExtension(dlg.FileName) == ".gif")
+			{
+				Exporting.ExportGIF(ActiveProject, progress, dlg.FileName);
+				return;
+			}
+
 			bool frameCanceled = false;
 			EventHandler frameCancelHandler = (_1, _2) => { frameCanceled = true; };
 

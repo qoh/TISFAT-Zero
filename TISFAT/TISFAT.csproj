@@ -170,6 +170,7 @@
     <Compile Include="src\Interfaces\IAction.cs" />
     <Compile Include="src\Interfaces\IManipulatable.cs" />
     <Compile Include="src\Util\Drawing.cs" />
+    <Compile Include="src\Util\Exporting.cs" />
     <Compile Include="src\Util\FileFormat.cs" />
     <Compile Include="src\Util\FileFormat.Legacy.cs" />
     <Compile Include="src\Util\MathUtil.cs" />
