@@ -139,9 +139,9 @@ namespace TISFAT.Util
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 
-			int size = Math.Max(NextPowerOf2(Program.ActiveProject.Width), NextPowerOf2(Program.ActiveProject.Height));
+			// int size = Math.Max(NextPowerOf2(Program.ActiveProject.Width), NextPowerOf2(Program.ActiveProject.Height));
 
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, size, size, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
+			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, Program.ActiveProject.Width, Program.ActiveProject.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
 
 			GL.BindTexture(TextureTarget.Texture2D, 0);
 
@@ -453,7 +453,7 @@ namespace TISFAT.Util
 			if (!ShadowsInit)
 				InitShadows();
 
-			int size = NextPowerOf2(Math.Max(Program.ActiveProject.Width, Program.ActiveProject.Height));
+			// int size = NextPowerOf2(Math.Max(Program.ActiveProject.Width, Program.ActiveProject.Height));
 
 			GL.BindFramebuffer(FramebufferTarget.Framebuffer, ShadowsFBO);
 
@@ -464,11 +464,11 @@ namespace TISFAT.Util
 
 			GL.MatrixMode(MatrixMode.Projection);
 			GL.LoadIdentity();
-			GL.Viewport(0, 0, size, size);
-			GL.Ortho(0, size, size, 0, -1, 1);
+			GL.Viewport(0, 0, Program.ActiveProject.Width, Program.ActiveProject.Height);
+			GL.Ortho(0, Program.ActiveProject.Width, Program.ActiveProject.Height, 0, -1, 1);
 
 			foreach (Layer l in Program.ActiveProject.Layers)
-				if (l.Data.GetType() != typeof(PointLight))
+				if (l.Data.GetType() != typeof(PointLight) && l.Data.GetType() != typeof(Camera))
 					l.Draw(Program.MainTimeline.GetCurrentFrame());
 
 			GL.PopMatrix();
@@ -484,10 +484,11 @@ namespace TISFAT.Util
 			GL.Uniform1(GL.GetUniformLocation(LightProgram, "s_Texture"), 0);
 			GL.BindTexture(TextureTarget.Texture2D, ShadowsTexture);
 
-			GL.Uniform2(GL.GetUniformLocation(LightProgram, "s_Res"), new Vector2(size, -size));
+			GL.Uniform2(GL.GetUniformLocation(LightProgram, "s_Res"), new Vector2(Program.ActiveProject.Width, -Program.ActiveProject.Height));
 
 			GL.Uniform2(GL.GetUniformLocation(LightProgram, "lightPos"), PointToVector(position));
 			GL.Uniform3(GL.GetUniformLocation(LightProgram, "lightColor"), new Vector3(color.R / 255.0f, color.G / 255.0f, color.B / 255.0f));
+			GL.Uniform3(GL.GetUniformLocation(LightProgram, "ambientColor"), new Vector3(Program.ActiveProject.BackColor.R / 255.0f, Program.ActiveProject.BackColor.G / 255.0f, Program.ActiveProject.BackColor.B / 255.0f));
 			GL.Uniform3(GL.GetUniformLocation(LightProgram, "lightAttenuation"), attenuation);
 			GL.Uniform1(GL.GetUniformLocation(LightProgram, "lightRadius"), radius);
 

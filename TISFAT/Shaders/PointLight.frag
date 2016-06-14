@@ -4,6 +4,7 @@
 
 uniform vec2 lightPos;
 uniform vec3 lightColor;
+uniform vec3 ambientColor;
 uniform vec3 lightAttenuation;
 uniform float lightRadius;
 
@@ -80,30 +81,29 @@ void main()
 {
 	vec2 pos = gl_FragCoord.xy / s_Res;
 
-	float distance = length(lightPos - gl_FragCoord) / lightRadius;
-	float attenuation=1.0 / (lightAttenuation.x + lightAttenuation.y * distance + lightAttenuation.z * distance * distance);
 	vec4 s_Color = texture2D(s_Texture, pos);
-	//s_Color += vec4(lightColor, attenuation);
 
-	//gl_FragColor = vec4(blendLighting(pos, lightPos.xy), attenuation);
-	//gl_FragColor = vec4(getLighting(pos, lightPos.xy), attenuation);
-	//gl_FragColor = vec4(lightColor, attenuation);
-	//gl_FragColor = texture2D(s_Texture, vec2(pos.x, pos.y));
+	bool solid = isSolid(pos);
 
-	if(isSolid(pos))
+	float zDist = 10.0f;
+
+	if(solid) { zDist = 0.0f; }
+
+	float distance = length(vec3(lightPos - gl_FragCoord, zDist)) / lightRadius;
+	float attenuation=1.0 / (lightAttenuation.x + lightAttenuation.y * distance + lightAttenuation.z * distance * distance);
+
+	if(solid)
 	{
-		s_Color = mix(s_Color, vec4(lightColor, attenuation), attenuation);	
-		gl_FragColor = mix(s_Color / distance * lightRadius * attenuation, vec4(0.0, 0.0, 0.0, 1.0), s_Color.a);
+		//gl_FragColor = vec4(s_Color.rgb * lightColor * attenuation, 1.0f); // No ambient lighting
+		gl_FragColor = vec4(s_Color.rgb * (ambientColor + lightColor * attenuation), 1.0f);
 		return;
 	}
 
-	s_Color += vec4(lightColor, attenuation);
-
-
 	if (ray(pos, lightPos.xy / s_Res))
-		gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+		// gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); // No ambient lighting
+		gl_FragColor = vec4(s_Color.rgb * ambientColor, 1.0f);
 	else
-		gl_FragColor = texture2D(s_Texture, pos) * 0;
+		// gl_FragColor = vec4(s_Color.rgb * lightColor * attenuation, 1.0f); // No ambient lighting
+		gl_FragColor = vec4(s_Color.rgb * (ambientColor + lightColor * attenuation), 1.0f);
 
-	gl_FragColor = mix(gl_FragColor, vec4(s_Color.rgb, 1.0f), s_Color.a);
 }
